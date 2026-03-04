@@ -33,6 +33,7 @@ let filteredData = [];
 let chart = null;
 let activeFilters = {
     dataType: 'all', // filter for data type
+    aiMetric: 'all', // filter for AI metrics
     focus: 'all', // filter for research vs. practionner
     company: 'all', // filter for company size
     specificCompany: 'all', // filter for company dropdown
@@ -713,7 +714,13 @@ function filterData() {
         if (activeFilters.dataType !== 'all' && item.type !== activeFilters.dataType) {
             matches = false;
         }
-        if (activeFilters.focus !== 'all' && item.is_research !== parseInt(activeFilters.focus)) { 
+        if (activeFilters.aiMetric === 'ai-only' && !item.ai_specific_category) {
+            matches = false;
+        }
+        if (activeFilters.aiMetric === 'no-ai' && item.ai_specific_category) {
+            matches = false;
+        }
+        if (activeFilters.focus !== 'all' && item.is_research !== parseInt(activeFilters.focus)) {
             matches = false;
         }
         if (activeFilters.company !== 'all' && item.bigcompany !== parseInt(activeFilters.company)) {
@@ -929,6 +936,7 @@ function escapeCsvField(field) {
 function clearAllFilters() {
     activeFilters = {
         dataType: 'all',
+        aiMetric: 'all',
         focus: 'all',
         company: 'all',
         specificCompany: 'all',
