@@ -663,5 +663,10 @@
         "ref_number": "512",
         "ref_name": "DX (2025)",
         "ref_link": "https://getdx.com/uploads/ai-measurement-framework.pdf"
+    },
+    {
+        "ref_number": "513",
+        "ref_name": "Chen (2026)",
+        "ref_link": "https://arxiv.org/pdf/2602.03593"
     }
 ]
