@@ -211,7 +211,7 @@
     },
     {
         "ref_number": "199",
-        "ref_name": "Microsoft (Azure)",
+        "ref_name": "Microsoft",
         "ref_link": "https://techcommunity.microsoft.com/blog/azuredevcommunityblog/putting-tools-in-your-hands-to-improve-developer-productivity/2902225"
     },
     {
@@ -326,7 +326,7 @@
     },
     {
         "ref_number": "507",
-        "ref_name": "Microsoft (Azure)",
+        "ref_name": "Microsoft",
         "ref_link": "https://learn.microsoft.com/en-us/assessments/e50f7040-f235-4360-9d1d-cf753e12fed1/"
     },
     {
@@ -391,7 +391,7 @@
     },
     {
         "ref_number": "131j",
-        "ref_name": "Microsoft (Azure)",
+        "ref_name": "Microsoft",
         "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
     },
     {
@@ -541,7 +541,7 @@
     },
     {
         "ref_number": "501m",
-        "ref_name": "Microsoft (Azure)",
+        "ref_name": "Microsoft",
         "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
     },
     {
@@ -563,5 +563,90 @@
         "ref_number": "6a",
         "ref_name": "Google",
         "ref_link": "https://doi.org/10.1109/MS.2023.3305718"
+    },
+    {
+        "ref_number": "511",
+        "ref_name": "Orosz and Tacho (2025)",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511a",
+        "ref_name": "GitHub",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511b",
+        "ref_name": "Google",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511c",
+        "ref_name": "Dropbox",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511d",
+        "ref_name": "Monzo",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511e",
+        "ref_name": "Atlassian",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511f",
+        "ref_name": "Adyen",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511g",
+        "ref_name": "Booking.com",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511h",
+        "ref_name": "Grammarly",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511i",
+        "ref_name": "Glassdoor",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511j",
+        "ref_name": "Webflow",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511k",
+        "ref_name": "Toast",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511l",
+        "ref_name": "eBay",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511m",
+        "ref_name": "CircleCI",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511n",
+        "ref_name": "CarGurus",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511o",
+        "ref_name": "T-Mobile",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "511p",
+        "ref_name": "Xero",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
     }
 ]

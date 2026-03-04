@@ -7,7 +7,7 @@
     * Fill in the metric's name (**column B**), synonyms (**column C**), description (**column F**), and type (**column G**).
 2.  Assign a category.
     * Check the **"cardsort_group_IDs"** sheet.
-    * If the category already exists, paste its ID into **column H** and copy the formula from the cell above for **column I**.
+    * If the category already exists, paste its Name into **column H** and copy the formula from the cell above for **column I**.
     * If the category is new, add it to the list and continue the numbering.
     * Repeat this process for the **"cardsort_subgroup_IDs"** sheet and for **columns J and K**.
 3.  Fill in the remaining columns.

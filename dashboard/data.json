@@ -1874,5 +1874,20 @@
         "description": "A metric used to measure the percentage of test cases that fail during a specific testing period or for a particular software build.",
         "is_research": 2,
         "bigcompany": 0
+    },
+    {
+        "name": "DAU/WAU/MAU for AI tools",
+        "id": 140,
+        "parent": 327,
+        "alsoknownas": "-",
+        "company": "511a; 511b; 511c; 511d; 511e; 511f; 511g; 511h; 511i; 511j; 511k; 511l; 511m; 511n; 511o; 511p",
+        "research": "511",
+        "type": "telemetry/log-based",
+        "value": 17,
+        "company_mentions": 16,
+        "research_mentions": 1,
+        "description": "Daily, weekly or monthly active users of deployed AI tools.",
+        "is_research": 3,
+        "bigcompany": 0
     }
 ]
