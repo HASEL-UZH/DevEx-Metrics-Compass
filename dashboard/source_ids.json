@@ -536,7 +536,7 @@
     },
     {
         "ref_number": "501l",
-        "ref_name": "chime",
+        "ref_name": "Chime",
         "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
     },
     {
@@ -658,5 +658,10 @@
         "ref_number": "511r",
         "ref_name": "Microsoft",
         "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+    },
+    {
+        "ref_number": "512",
+        "ref_name": "DX (2025)",
+        "ref_link": "https://getdx.com/uploads/ai-measurement-framework.pdf"
     }
 ]
