@@ -707,6 +707,19 @@ a {
     color: #004085;
 }
 
+
+.metric-ai-specific-category-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-left: 5px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    background-color: #e8d5f5;
+    color: #4a0080;
+}
+
 /* No metrics can be shown */
 .centered-message {
     position: absolute; 

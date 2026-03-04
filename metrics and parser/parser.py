@@ -13,14 +13,20 @@ df = pd.read_excel(metrics_excel, sheet_name=sheet_with_metrics, engine="openpyx
 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]  # drop phantom columns from Excel
 
 rows_before = len(df)
+# Fill optional columns with defaults before dropna() so rows aren't dropped for missing them
+for optional_col in ['AI Specific Category', 'Related Metrics']:
+    if optional_col in df.columns:
+        df[optional_col] = df[optional_col].fillna('')
 df = df.dropna()
 rows_dropped = rows_before - len(df)
 if rows_dropped > 0:
     print(f"Warning: {rows_dropped} row(s) dropped due to missing values.")
 
-# convert 'Company' and 'Research' columns to string type
+# convert 'Company', 'Research', and optional columns to string type
 df['Company'] = df['Company'].astype(str)
 df['Research'] = df['Research'].astype(str)
+if 'Related Metrics' in df.columns:
+    df['Related Metrics'] = df['Related Metrics'].astype(str)
 
 # create dictionnary of cardsort groups
 cardsort_groups = {}
@@ -94,7 +100,9 @@ for idx, series in df.iterrows():
         "research_mentions": series["Number of research"],
         "description": series["Definition"],
         "is_research": series["IS_Research"],
-        "bigcompany": series["IS_BigCompany"]
+        "bigcompany": series["IS_BigCompany"],
+        "ai_specific_category": series["AI Specific Category"] if "AI Specific Category" in df.columns else "",
+        "related_metrics": series["Related Metrics"] if "Related Metrics" in df.columns else ""
     })
 
 # combine all entries into one list

@@ -270,12 +270,13 @@ function createChart(data) {
                 id: point.get('id'),
                 name: point.get('name'),
                 alsoknownas: point.get('alsoknownas'),
-                company: point.get('company'), 
-                research: point.get('research'), 
+                company: point.get('company'),
+                research: point.get('research'),
                 type: point.get('type'),
                 description: point.get('description'),
                 value: point.get('value'),
-                is_research: point.get('is_research') 
+                is_research: point.get('is_research'),
+                ai_specific_category: point.get('ai_specific_category')
             };
             showCustomTooltip(metricData, e.originalEvent); 
         }
@@ -300,14 +301,18 @@ function showCustomTooltip(metricData, event) {
     const metricDescription = metricData.description;
     const metricValue = metricData.value;
     const metricId = metricData.id;
-    const metricIs_Research = metricData.is_research; 
+    const metricIs_Research = metricData.is_research;
+    const metricAISpecificCategory = metricData.ai_specific_category;
 
     // Determine the class for the tag based on the type
     let typeTagClass = '';
+    let typeTagText = '';
     if (metricType === 'survey-based') {
         typeTagClass = 'survey-based';
+        typeTagText = 'Qualitative';
     } else if (metricType === 'telemetry/log-based') {
         typeTagClass = 'telemetry-log-based';
+        typeTagText = 'Automated';
     }
 
     // Determine the class and text for the research/practitioner tag 
@@ -323,6 +328,16 @@ function showCustomTooltip(metricData, event) {
     } else { // If metric used by practitioner and research
         focusTagClass = 'research-and-practitioners';
         focusTagText = 'Practitioners and research';
+    }
+
+    // Determine text for the AI-specific metrics tag
+    let AImetricTagText = ''
+    if (metricAISpecificCategory === "Utilization") {
+        AImetricTagText = "AI Utilization";
+    } else if (metricAISpecificCategory === "Impact") {
+        AImetricTagText = "AI Impact";
+    } else if (metricAISpecificCategory === "Cost") {
+        AImetricTagText = "AI Cost";
     }
 
     // Generate HTML for 'company' field with hyperlinks
@@ -356,28 +371,24 @@ function showCustomTooltip(metricData, event) {
         <br>
         <div class="metric-name-title">${metricName}</div> `;
 
-    content += `
-        <hr>
-        <div class="metric-detail"><strong>Description:</strong> ${metricDescription || 'No description available'}</div>
-        
-    `
+    content += `${metricDescription || 'No description available'}</div>`;
 
     if (metricAlsoKnownAs && metricAlsoKnownAs !== '-') { // Check for actual value
-        content += `<div class="metric-detail"><strong>Also known as:</strong> ${metricAlsoKnownAs}</div>`;
+        content += `<hr><div class="metric-detail"><strong>Also known as:</strong> ${metricAlsoKnownAs}</div>`;
     }
 
     content += `
-        <br>
-        <div class="metric-detail">
-            <strong>Tags:</strong> <span class="metric-type-tag ${typeTagClass}">${metricType}</span><span class="metric-focus-tag ${focusTagClass}">${focusTagText}</span> 
-        </div>
         <hr>
         <div class="metric-detail"><strong>Number of mentions:</strong> ${metricValue}</div>
         <div class="metric-detail"><strong>Companies:</strong> ${companyUsedByHtml}</div>
         <div class="metric-detail"><strong>Research:</strong> ${researchUsedByHtml}</div>
-        
-    
-        
+        <hr>
+        <div class="metric-detail">
+            <strong>Tags:</strong> 
+                <span class="metric-type-tag ${typeTagClass}">${typeTagText}</span>
+                <span class="metric-focus-tag ${focusTagClass}">${focusTagText}</span>
+                ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
+        </div>
         <br>
         <button data-metric-id="${metricId}">Add to selected metrics</button>
     `;
