@@ -274,8 +274,9 @@ input[type="radio"] {
 
 .clear-filters-button {
     padding: 6px 12px;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
+    background-color: #1B1AFF;
+    border: none;
+    color: white;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
@@ -296,6 +297,25 @@ input[type="radio"] {
 }
 
 .clear-filters-button:hover {
+    background-color: #85B9F2;
+}
+
+.clear-filters-chart-btn {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 12px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid #dddddd;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 12px;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.clear-filters-chart-btn:hover {
     background-color: #f0f0f0;
 }
 
@@ -428,15 +448,13 @@ input[type="radio"] {
 
 .download-csv-button:hover {
     background-color: #85B9F2;
-    /* Darker green on hover */
 }
 
 /* Start maturity assessment in filters container */
 .start-maturity-button {
     padding: 6px 12px;
-    background-color: #1B1AFF;
-    border: none;
-    color: white;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
@@ -456,7 +474,7 @@ input[type="radio"] {
 }
 
 .start-maturity-button:hover {
-    background-color: #85B9F2;
+    background-color: #f0f0f0;
 }
 
 /* Horizontal line in filters container */
@@ -731,8 +749,8 @@ a {
     padding: 50px; 
     box-sizing: border-box; 
     z-index: 5; 
-    background-color: #FA912A; 
-    color: white; 
+    background-color: #1B1AFF;
+    color: white;
     border-radius: 40px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     

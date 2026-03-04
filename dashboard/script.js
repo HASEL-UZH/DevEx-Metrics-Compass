@@ -792,6 +792,16 @@ function filterData() {
         noMetricsMessage.style.display = 'none';
         createChart(filteredData);
     }
+
+    updateClearFiltersVisibility(actualMatchingMetrics.length);
+}
+
+// Show/hide both "Clear all filters" buttons based on whether the full list is shown
+function updateClearFiltersVisibility(shownCount) {
+    const totalCount = originalData.filter(item => item.type).length;
+    const display = shownCount < totalCount ? '' : 'none';
+    document.getElementById('clear-filters').style.display = display;
+    document.getElementById('clear-filters-chart').style.display = display;
 }
 
 // Function to update metrics count display

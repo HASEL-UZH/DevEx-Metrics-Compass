@@ -22,23 +22,24 @@
         <!-- Container containing the visualization where the metrics are displayed -->
         <div class="left-container">
             <div id="container"></div>
+            <button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
 
             <div id="no-metrics-message" class="centered-message" style="display: none;">
-                No metrics match the current filters. <br> Please change the filters to show metrics.
+                No metrics match the current filters. Adapt or clear the filters.<br><br>
             </div>
 
         </div>
 
         <!-- Container containing the filters -->
         <div class="right-container">
-            <div class="controls-title"> Developer Experience Metrics Compass</div>
-            <div class="filter-metrics-title">Apply filters on metrics</div>
+            <div class="controls-title">Apply filter on developer experience metrics</div>
+            <!-- <div class="filter-metrics-title">Apply filters on metrics</div> -->
             <div class="metric-stats" id="metrics-count"></div>
 
 
             <!-- Clear filters and start maturity assessment buttons -->
             <div>
-                <button class="clear-filters-button" id="clear-filters">Clear all filters</button>
+                <button class="clear-filters-button" id="clear-filters" style="display: none;">Clear all filters</button>
                 <button class="start-maturity-button" id="openMaturityAssessmentBtn" style="margin-top: 10px;">
                     Start maturity assessment
                 </button>
@@ -72,7 +73,7 @@
             <div class="filter-group">
                 <label>Data collection type</label>
                 <div class="filter-description">
-                    Filter for metrics captured qualitatively (e.g. survey, interview, experience sampling) and/or automatically (logs, telemetry).
+                    Filter by metrics captured qualitatively (e.g. survey, interview, experience sampling) and/or automatically (logs, telemetry).
                 </div>
                 <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
                 <button id="quantitative" class="filter-btn" data-filter="survey-based"
@@ -85,7 +86,7 @@
             <div class="filter-group">
                 <label>AI metrics</label>
                 <div class="filter-description">
-                    Filter for metrics specific to AI tools and AI-assisted development (e.g. Claude Code, Cursor, Github Copilot).
+                    Filter by metrics specific to AI tools and AI-assisted development (e.g. Claude Code, Cursor, Github Copilot).
                 </div>
                 <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
                 <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">AI metrics only</button>
@@ -94,51 +95,47 @@
 
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
             <div class="filter-group">
-                <label>Research focus</label>
+                <label>Research &amp; industry focus</label>
                 <div class="filter-description">
-                    Use this filter to distinguish between metrics used only by research, only by practitioners or metrics that are used by both.
+                    Filter by metrics used only by research, industry or both.
                 </div>
                 <button id="all-focus" class="filter-btn active" data-filter="all" data-group="focus">All</button>
                 <button id="research-focus-only" class="filter-btn" data-filter="1" data-group="focus">Research only</button>
-                <button id="research-and-practitioner-focus" class="filter-btn" data-filter="3" data-group="focus">Practitioners and
-                    research</button>
-                <button id="practitioner-focus" class="filter-btn" data-filter="2" data-group="focus">Practitioners
-                    only</button>
+                <button id="practitioner-focus" class="filter-btn" data-filter="2" data-group="focus">Industry only</button>
+                <button id="research-and-practitioner-focus" class="filter-btn" data-filter="3" data-group="focus">Practitioners *and* industry </button>
                 <div class="filter-description">
-                    Or use the dropdown to filter for a specific research framework.
+                    Or use the dropdown to filter for a specific research framework:
                 </div>
                 <select id="research-dropdown" class="company-dropdown">
                     <option value="all">No research framework selected</option>
                 </select>
-            </div>
-
-            <!-- Filter for large companies vs. small companies. Companies dropdown -->
-            <div class="filter-group">
-                <label>Company focus</label>
                 <div class="filter-description">
-                    Use this filter to distinguish between large and smaller companies. In terms of simplicity, the
-                    following companies have been categorized as large companies: <strong>Amazon, Facebook / Meta,
-                        Google and Microsoft</strong>. Apple is not included as there is no publicly available
-                    information on developer productivity metrics used.
-                </div>
-                <button id="all-company" class="filter-btn active" data-filter="all" data-group="company">All</button>
-                <button id="big-company" class="filter-btn" data-filter="1" data-group="company">Large companies ("the
-                    big
-                    four")</button>
-                <button id="small-company" class="filter-btn" data-filter="0" data-group="company">Smaller
-                    companies</button>
-                <div class="filter-description">
-                    Or use the dropdown to filter for a specific company.
+                    Or use the dropdown to filter for a specific company:
                 </div>
                 <select id="company-dropdown" class="company-dropdown">
                     <option value="all">No company selected</option>
                 </select>
             </div>
 
+            <!-- Filter for large companies vs. small companies. Companies dropdown -->
+            <div class="filter-group">
+                <label>Company size</label>
+                <div class="filter-description">Filter by metrics applied at companies of varying size.</div>
+                <!-- <div class="filter-description">
+                    Use this filter to distinguish between large and smaller companies. In terms of simplicity, the
+                    following companies have been categorized as large companies: <strong>Amazon, Facebook / Meta,
+                        Google and Microsoft</strong>. Apple is not included as there is no publicly available
+                    information on developer productivity metrics used.
+                </div> -->
+                <button id="all-company" class="filter-btn active" data-filter="all" data-group="company">All</button>
+                <button id="big-company" class="filter-btn" data-filter="1" data-group="company">Big Four (Microsoft, Google, Meta, Amazon)</button>
+                <button id="small-company" class="filter-btn" data-filter="0" data-group="company">Smaller Companies</button>
+            </div>
+
             <!-- Shortlist for metrics, exportable as CSV file -->
             <div class="line"></div>
             <div class="clicked-metrics">
-                <div class="clicked-metrics-title">Select and export metrics</div>
+                <div class="controls-title">Select and export metrics</div>
                 <div class="filter-description">
                     Click on a metric in order to add it to the list. Click on the red cross in order to remove it from
                     the list.
