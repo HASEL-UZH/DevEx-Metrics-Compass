@@ -670,8 +670,6 @@ function extractFrameworks(data, currentFilters) {
         }
     });
 
-    console.log("Found frameworks:", frameworks);
-
     const sortedFrameworks = Array.from(frameworks).sort((a, b) => {
         if (a === 'all') return -1;
         if (b === 'all') return 1;
@@ -807,7 +805,7 @@ function updateClearFiltersVisibility(shownCount) {
 // Function to update metrics count display
 function updateMetricsCount(data) {
     const metricsWithType = data.filter(item => item.type);
-    document.getElementById('metrics-count').textContent = `Showing ${metricsWithType.length} metrics`;
+    document.getElementById('metrics-count').textContent = metricsWithType.length;
 }
 
 // Handle button clicks for filters

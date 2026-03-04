@@ -32,18 +32,16 @@
 
         <!-- Container containing the filters -->
         <div class="right-container">
-            <div class="controls-title">Filter developer experience metrics</div>
+            <div class="controls-title">
+                Showing <span id="metrics-count"></span> developer experience metrics
+            </div>
             <!-- <div class="filter-metrics-title">Apply filters on metrics</div> -->
-            <div class="metric-stats" id="metrics-count"></div>
-
+            <!-- <div class="filter-description">Use the filters below to narrow down.</div> -->
+            
             <!-- Clear filters and start maturity assessment buttons -->
             <div>
                 <button class="clear-filters-button" id="clear-filters" style="display: none;">Clear all filters</button>
-                <button class="start-maturity-button" id="openMaturityAssessmentBtn" style="margin-top: 10px;">
-                    Start maturity assessment
-                </button>
             </div>
-            <div class="line"></div>
 
             <!-- Keyword search field -->
             <div class="filter-group">
@@ -129,6 +127,15 @@
                 <button id="all-company" class="filter-btn active" data-filter="all" data-group="company">All</button>
                 <button id="big-company" class="filter-btn" data-filter="1" data-group="company">Big Four (Microsoft, Google, Meta, Amazon)</button>
                 <button id="small-company" class="filter-btn" data-filter="0" data-group="company">Smaller Companies</button>
+            </div>
+
+            <div class="line"></div>
+            <div>
+                <div class="controls-title">Guided metrics selection</div>
+                <div class="filter-description">Don't know where to start? Follow our guided metrics selction.</div>
+                <button class="start-maturity-button" id="openMaturityAssessmentBtn" style="margin-top: 10px;">
+                    Start guided metrics selection
+                </button>
             </div>
 
             <!-- Shortlist for metrics, exportable as CSV file -->
