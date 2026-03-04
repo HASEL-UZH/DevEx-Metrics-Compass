@@ -942,6 +942,15 @@ function escapeCsvField(field) {
     return str;
 }
 
+// Toggle shortlist section
+function toggleShortlist(titleEl) {
+    const content = document.getElementById('shortlist-collapsible');
+    const chevron = titleEl.querySelector('.collapse-chevron');
+    const isOpen = content.style.display !== 'none';
+    content.style.display = isOpen ? 'none' : 'block';
+    chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
 // Function to clear all filters
 function clearAllFilters() {
     activeFilters = {

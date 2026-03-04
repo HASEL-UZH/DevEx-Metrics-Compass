@@ -32,10 +32,9 @@
 
         <!-- Container containing the filters -->
         <div class="right-container">
-            <div class="controls-title">Apply filter on developer experience metrics</div>
+            <div class="controls-title">Filter developer experience metrics</div>
             <!-- <div class="filter-metrics-title">Apply filters on metrics</div> -->
             <div class="metric-stats" id="metrics-count"></div>
-
 
             <!-- Clear filters and start maturity assessment buttons -->
             <div>
@@ -135,30 +134,30 @@
             <!-- Shortlist for metrics, exportable as CSV file -->
             <div class="line"></div>
             <div class="clicked-metrics">
-                <div class="controls-title">Select and export metrics</div>
-                <div class="filter-description">
-                    Click on a metric in order to add it to the list. Click on the red cross in order to remove it from
-                    the list.
-                    Once you are done selecting metrics you can export them as a CSV-file.
+                <div class="controls-title collapsible-title" onclick="toggleShortlist(this)">
+                    Select and export metrics
+                    <span class="collapse-chevron">&#9660;</span>
                 </div>
-                <div class="clicked-metrics-list" id="clicked-metrics-list">
-                    <div class="no-metrics-message">No metrics selected yet.</div>
-                </div>
-                <div>
-                    <button class="clear-all-metrics" id="clear-all-metrics">Clear all metrics</button>
-                    <button class="download-csv-button" id="download-csv">Download CSV-file</button>
+                <div id="shortlist-collapsible" style="display: none;">
+                    <div class="filter-description">
+                        Click "Add to selected metrics" to add it to the list of metrics to be exported. When you're ready, you can export the list.
+                    </div>
+                    <div class="clicked-metrics-list" id="clicked-metrics-list">
+                        <div class="no-metrics-message">No metrics selected yet.</div>
+                    </div>
+                    <div>
+                        <button class="clear-all-metrics" id="clear-all-metrics">Clear all metrics</button>
+                        <button class="download-csv-button" id="download-csv">Download CSV-file</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Footer with email addresses -->
-            <footer>
-                <p style="font-size: 10px; color: #777; text-align: center; margin-top: 20px;">
-                    Created by: <a href="mailto:ameyer@ifi.uzh.ch">Dr. André Meyer</a>, Patrick Meyer and Prof. Dr. Thomas Fritz from <a href="https://hasel.dev" target="_blank">HASEL</a>
-                </p>
-            </footer>
-
         </div>
     </div>
+
+    <footer>
+        Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Dr. André Meyer</a>, Patrick Meyer &amp; Prof. Dr. Thomas Fritz at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &nbsp;|&nbsp; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric / error</a>
+    </footer>
 
 
     <!-- Hint for navigation in the visualization -->
