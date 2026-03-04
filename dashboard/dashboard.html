@@ -70,16 +70,15 @@
             
             <!-- Filter for metrics type, telemetry-based vs. survey-based -->
             <div class="filter-group">
-                <label>Data collection type </label>
+                <label>Data collection type</label>
                 <div class="filter-description">
-                    Use this filter to distinguish between metrics that are based on survey-based versus
-                    telemetry/log-based data.
+                    Filter for metrics captured qualitatively (e.g. survey, interview, experience sampling) and/or automatically (logs, telemetry).
                 </div>
                 <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
                 <button id="quantitative" class="filter-btn" data-filter="survey-based"
-                    data-group="dataType">Survey-based</button>
+                    data-group="dataType">Qualitative</button>
                 <button id="qualitative" class="filter-btn" data-filter="telemetry/log-based"
-                    data-group="dataType">Telemetry/Log-based</button>
+                    data-group="dataType">Automated</button>
             </div>
 
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
