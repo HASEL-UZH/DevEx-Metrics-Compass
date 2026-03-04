@@ -242,6 +242,9 @@ function createChart(data) {
     // Disable AnyChart's built-in tooltip
     chart.tooltip(false);
 
+    // Disable right-click context menu
+    chart.contextMenu().enabled(false);
+
     // Set calculation mode
     chart.calculationMode('parent-independent');
 
