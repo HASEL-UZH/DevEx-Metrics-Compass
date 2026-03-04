@@ -282,19 +282,11 @@ input[type="radio"] {
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
-    width: 49.5%;
+    width: 100%;
     text-align: center;
     box-sizing: border-box;
     margin-bottom: 8px;
     border-radius: 40px;
-}
-
-@media screen and (max-width: 2000px) {
-    .clear-filters-button {
-        width: 100%;
-        margin-bottom: 0px;
-    }
-    
 }
 
 .clear-filters-button:hover {
@@ -475,18 +467,11 @@ input[type="radio"] {
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
-    width: 49.5%;
+    width: 100%;
     text-align: center;
     box-sizing: border-box;
     margin-bottom: 8px;
     border-radius: 40px;
-}
-
-@media screen and (max-width: 2000px) {
-    .start-maturity-button {
-        width: 100%
-    }
-    
 }
 
 .start-maturity-button:hover {
