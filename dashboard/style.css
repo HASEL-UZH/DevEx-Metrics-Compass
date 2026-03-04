@@ -228,6 +228,12 @@ body {
     border-color: #1B1AFF;
 }
 
+.filter-btn.active:hover,
+.filter-radio.active:hover {
+    background-color: #85B9F2;
+    border-color: #85B9F2;
+}
+
 .filter-description {
     font-size: 0.8em;
     color: #777;
@@ -470,9 +476,10 @@ input[type="radio"] {
 /* Start maturity assessment in filters container */
 .start-maturity-button {
     padding: 6px 12px;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
+    background-color: #1B1AFF;
+    border: none;
+    color: white;
+    border-radius: 40px;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
@@ -480,11 +487,10 @@ input[type="radio"] {
     text-align: center;
     box-sizing: border-box;
     margin-bottom: 8px;
-    border-radius: 40px;
 }
 
 .start-maturity-button:hover {
-    background-color: #f0f0f0;
+    background-color: #85B9F2;
 }
 
 /* Horizontal line in filters container */
