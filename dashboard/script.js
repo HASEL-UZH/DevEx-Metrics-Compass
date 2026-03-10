@@ -36,6 +36,7 @@ let activeFilters = {
     aiMetric: 'all', // filter for AI metrics
     focus: 'all', // filter for research vs. practionner
     companySize: 'all', // filter for company size
+    outcomeGoals: 'all', // filter for outcome goals
     specificCompany: 'all', // filter for company dropdown
     specificFramework: 'all', // filter for research dropdown
     minMentions: 0 // min mentions slider
@@ -277,7 +278,8 @@ function createChart(data) {
                 description: point.get('description'),
                 value: point.get('value'),
                 is_research: point.get('is_research'),
-                ai_specific_category: point.get('ai_specific_category')
+                ai_specific_category: point.get('ai_specific_category'),
+                outcome_goals: point.get('outcome_goals')
             };
             showCustomTooltip(metricData, e.originalEvent); 
         }
@@ -304,6 +306,7 @@ function showCustomTooltip(metricData, event) {
     const metricId = metricData.id;
     const metricIs_Research = metricData.is_research;
     const metricAISpecificCategory = metricData.ai_specific_category;
+    const metricOutcomeGoals = metricData.outcome_goals;
 
     // Determine the class for the tag based on the type
     let typeTagClass = '';
@@ -396,7 +399,8 @@ function showCustomTooltip(metricData, event) {
                 <span class="metric-type-tag ${typeTagClass}">${typeTagText}</span>
                 <span class="metric-focus-tag ${focusTagClass}">${focusTagText}</span>
                 ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
-                ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">Company size: ${s}</span>`).join('')}
+                ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">${s} Company</span>`).join('')}
+                ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${metricOutcomeGoals}</span>` : ''}
         </div>
         <br>
         <button data-metric-id="${metricId}">Add to selected metrics</button>
@@ -732,6 +736,9 @@ function filterData() {
         if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) {
             matches = false;
         }
+        if (activeFilters.outcomeGoals !== 'all' && item.outcome_goals !== activeFilters.outcomeGoals) {
+            matches = false;
+        }
 
         // Logic for specificCompany and specificFramework with array of objects
         // The transformSources function ensures these are arrays of objects
@@ -970,6 +977,7 @@ function clearAllFilters() {
         aiMetric: 'all',
         focus: 'all',
         companySize: 'all',
+        outcomeGoals: 'all',
         specificCompany: 'all',
         specificFramework: 'all',
         minMentions: 0 // Reset slider min to 0

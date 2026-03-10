@@ -224,7 +224,8 @@
         "description": "Relates to engineers’ uptake and sustained use of internal tools, workflows, and platforms, reflecting how effectively these resources integrate into daily workflows and solve critical problems. It serves as a key metric for assessing DevEx success and alignment with productivity goals.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "140"
+        "related_metrics": "140",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Application Startup Duration",
@@ -240,7 +241,8 @@
         "description": "The time needed to startup an application locally.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Average Focus Time per Engineer",
@@ -256,7 +258,8 @@
         "description": "The average focus time without interruptions per engineer.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Branch Creation to Master Merge Time",
@@ -272,7 +275,8 @@
         "description": "The time elapsed between branch creation until master merge.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Burnout",
@@ -288,7 +292,8 @@
         "description": "Evaluates developers’ mental health, job fulfillment, and workplace conditions. It serves as a critical indicator of systemic issues that harm productivity and retention.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Business Objective Advancement",
@@ -304,7 +309,8 @@
         "description": "Refers to measuring how effectively software development efforts align with and contribute to achieving specific organizational goals. This metric focuses on outcome-driven impact rather than raw activity metrics (e.g., lines of code, commits).",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Change Failure Rate",
@@ -320,7 +326,8 @@
         "description": "The percentage of changes that result in degraded service or require remediation (e.g., lead to service impairment or outage, require a hotfix, rollback, fix forward, or patch).",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "CI Determinism",
@@ -336,7 +343,8 @@
         "description": "The opposite of test flakiness: the chance that a test suite’s result will be valid (not a flake) ensures that identical inputs in a continuous integration (CI) pipeline always produce the same outputs (binaries, artifacts, test results). This guarantees reproducibility, reliability, and traceability in software builds, critical for debugging, compliance, and safety-critical systems.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "CI Pipeline Failure Rate",
@@ -352,7 +360,8 @@
         "description": "Measures the percentage of builds or automated workflows in a continuous integration (CI) system that fail due to errors (e.g., compilation issues, test failures, dependency conflicts). ",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "CI Pipeline P50 Build Time",
@@ -368,7 +377,8 @@
         "description": "Refers to the median duration of successful builds in a continuous integration (CI) pipeline, representing the time by which 50% of builds complete. It is calculated by ordering all successful build durations and selecting the middle value, providing a reliable measure of typical performance while filtering out outliers.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Code Churn",
@@ -384,7 +394,8 @@
         "description": "Is the amount of code rewritten shortly after being written.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Code Review Timing and Velocity",
@@ -400,7 +411,8 @@
         "description": "Measures how long it takes, in business hours, for code reviewers to respond to each update of the code review from the author.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Code Rework Rate",
@@ -416,7 +428,8 @@
         "description": "Is the percentage of code changes that modify recently changed code.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Produced Code",
@@ -432,7 +445,8 @@
         "description": "Tracks contributions to the codebase (e.g., commits, PRs).",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Cognitive Load",
@@ -448,7 +462,8 @@
         "description": "The mental effort required to perform tasks. Avoiding multitasking, high WIP (work in progress) counts, and attention splitting to maintain focus and reduce cognitive overhead.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Continuous Integration and Deployment (CI/CD)",
@@ -464,7 +479,8 @@
         "description": "Measures the effectiveness of automated build, test, and deployment processes in enabling rapid, reliable software delivery.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Contribution Analysis",
@@ -480,7 +496,8 @@
         "description": "Assesses how individual developers and teams contribute to the software development process, with the goal of identifying trends that may inhibit or optimize team capacity and performance.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Cost Savings",
@@ -496,7 +513,8 @@
         "description": "Relates to strategic reductions in product development and operational expenses achieved through optimized engineering practices, aligning technical efficiency with business profitability. This is measured by tracking how engineering improvements directly lower costs while maintaining quality and delivery speed.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Customer Experience and Satisfaction",
@@ -512,7 +530,8 @@
         "description": "Measures how pleased customers are with a product, service, or interaction, typically via surveys. Responses are aggregated into a percentage score representing the proportion of satisfied customers",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Customer-Reported Defects",
@@ -528,7 +547,8 @@
         "description": "Bugs found by customers in production.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Cycle Time",
@@ -544,7 +564,8 @@
         "description": "Measures the time from code commit to code running in production. Shows how quickly team can respond to business needs.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Deep Work",
@@ -560,7 +581,8 @@
         "description": "Measures the percentage of uninterrupted, meeting-free blocks of time that allow developers to enter a flow state and concentrate deeply on their work.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Defects",
@@ -576,7 +598,8 @@
         "description": "The number of errors or failures in the software, which indicates the quality of the delivered value.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Deployment Frequency",
@@ -592,7 +615,8 @@
         "description": "How often an organization deploys code to production or releases it to end users.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Deployment Success Rate",
@@ -608,7 +632,8 @@
         "description": "Measures how often deployments succeed.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Deploys per Service",
@@ -624,7 +649,8 @@
         "description": "This metric in software engineering measures how often a specific service or microservice is deployed within a given timeframe. This metric is commonly used in DevOps and microservices architectures to track deployment frequency across different services.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Design",
@@ -640,7 +666,8 @@
         "description": "Captures documentation quality, architectural decisions, and prototyping efforts.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Local Build Time",
@@ -656,7 +683,8 @@
         "description": "Measures the time, in seconds, developers spend waiting for their builds to finish locally during development. Impacts developer flow and productivity.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Developer Efficacy",
@@ -672,7 +700,8 @@
         "description": "Refers to the holistic effectiveness of developers in achieving meaningful outcomes, balancing technical output with well-being, collaboration, and workflow efficiency. It integrates multiple SPACE dimensions to assess how effectively developers translate effort into impactful results.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Developer Satisfaction",
@@ -688,7 +717,8 @@
         "description": "Customer satisfaction score for developers. Measures developer and team happiness with regards to development systems.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Developer Velocity Index Benchmark",
@@ -704,7 +734,8 @@
         "description": "The Developer Velocity Index (DVI) is a survey that measures an enterprise’s technology, working practices, and organizational enablement and benchmarks them against peers. This comparison helps unearth specific areas of opportunity, whether in backlog management, testing, or security and compliance. For example, one company, well known for its technological progress and all-star developers, sought to define standard working practices more thoughtfully for cross-team collaboration after discovering a high amount of dissatisfaction, rework, and inefficiency reported by developers.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Diff Authoring Time",
@@ -720,7 +751,8 @@
         "description": "Aims to capture all active human developertime spent on a particular diff, split by the different roles involved. This information is made available in a privacy-aware manner. Active human work on a computer tends to be highly sequential, even if such individual sequences can be extremely short.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Discoverability of Documentation and Expertise",
@@ -736,7 +768,8 @@
         "description": "Refers to how easily developers can locate critical information (e.g., codebase guides, API references) or identify colleagues with specific knowledge.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Ease of Delivery",
@@ -752,7 +785,8 @@
         "description": "Refers to how simple, straightforward, and frictionless it is for developers or teams to deliver software, features, or updates through their development processes and tooling. Captures the perceived and actual effort required to move work from development to production.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Engineer Engagement",
@@ -768,7 +802,8 @@
         "description": "Refers to the emotional commitment, motivation, and involvement that software engineers or developers have toward their work, team, and organization.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Error Rates",
@@ -784,7 +819,8 @@
         "description": "Quantifies the frequency of user or system mistakes during interactions with a product (e.g., failed API requests, UI slips, or task errors)",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Experience of New Members",
@@ -800,7 +836,8 @@
         "description": "Is a combination of satisfaction, well-being and integration indicators to ensure new developers feel supported, included and able to contribute effectively.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Experiment Velocity",
@@ -816,7 +853,8 @@
         "description": "Refers to the speed and efficiency at which the platform conducts and evaluates A/B tests to optimize features, algorithms, and user experiences.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Failed Deployment Recovery Time",
@@ -832,7 +870,8 @@
         "description": "The average time it takes to restore service when a software change causes an outage or service failure in production.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Feedback Loops",
@@ -848,7 +887,8 @@
         "description": "The speed and quality of responses to developer actions.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Flow State",
@@ -864,7 +904,8 @@
         "description": "The ability to work with focus and enjoyment.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Flow Through the System",
@@ -880,7 +921,8 @@
         "description": "Measures the velocity of the system.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Handoffs",
@@ -896,7 +938,8 @@
         "description": "Measures the number of handoffs in the process.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Impact",
@@ -912,7 +955,8 @@
         "description": "Evaluates the tangible outcomes and value delivered by development efforts. Unlike raw outputs (e.g., lines of code), impact focuses on business results and user-centric effects of software work. Making significant contributions to one’s business unit or area of ownership, ensuring that work has a tangible impact.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Initiative Progress and ROI",
@@ -928,7 +972,8 @@
         "description": "Measures the financial impact and advancement of specific developer experience (DevEx) improvement projects, linking technical efforts to business outcomes. It evaluates whether investments in tools, processes, or workflows deliver measurable returns.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Inner / Outer Loop Time Spent",
@@ -944,7 +989,8 @@
         "description": "To identify specific areas for improvement, it’s helpful to think of the activities involved in software development as being arranged in two loops. An inner loop comprises activities directly related to creating the product: coding, building, and unit testing. An outer loop comprises other tasks developers must do to push their code to production: integration, integration testing, releasing, and deployment. From both a productivity and personal-experience standpoint, maximizing the amount of time developers spend in the inner loop is desirable: building products directly generates value and is what most developers are excited to do. Outer-loop activities are seen by most developers as necessary but generally unsatisfying chores. Putting time into better tooling and automation for the outer loop allows developers to spend more time on inner-loop activities.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Interruptions",
@@ -960,7 +1006,8 @@
         "description": "Measures the number of interruptions.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Lead Time",
@@ -976,7 +1023,8 @@
         "description": "The time it takes to go from code committed to code successfully running in production.\nMeasures the time between code commit and the start of the release to determine how long it takes to deliver value to your customers.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Line Coverage",
@@ -992,7 +1040,8 @@
         "description": "Line Coverage is a code coverage metric that measures the percentage of lines in a codebase that have been executed during testing. It helps determine how well a test suite exercises the code.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Linting Duration",
@@ -1008,7 +1057,8 @@
         "description": "The duration needed to lint apps and packages locally.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Mean Time to Recover",
@@ -1024,7 +1074,8 @@
         "description": "Mean Time to Recover (MTTR) is a key DevOps and IT reliability metric that measures the average time it takes to restore a system after a failure. It reflects how quickly teams can diagnose, fix, and recover from incidents.\nTime from bug report to fix deployment. Shows quality response capability.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Meeting Team Goals",
@@ -1040,10 +1091,11 @@
         "description": "When bottlenecks and inefficiencies are discovered (as informed by industry benchmarks), effective teams set data-backed goals against them (in addition to automated workflows). Regularly attaining these goals indicates both developer effectiveness and a good developer experience.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
-        "name": "Connection Graph",
+        "name": "Communication Network Density",
         "id": 67,
         "parent": 326,
         "alsoknownas": "-",
@@ -1056,7 +1108,8 @@
         "description": "Network metrics that show who is connected to whom and how.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Number of Deployments",
@@ -1072,7 +1125,8 @@
         "description": "Measures the number of deployments.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Number of Escaped Bugs",
@@ -1088,7 +1142,8 @@
         "description": "Tracks the number of defects or issues that escape testing and reach production. It measures the effectiveness of testing processes and helps identify weaknesses in quality assurance .",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Number of Handoffs in a Process",
@@ -1104,7 +1159,8 @@
         "description": "Tracks how many times work is transferred between individuals, teams, or systems during a workflow.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Onboarding Time for New Members",
@@ -1120,7 +1176,8 @@
         "description": "Measures the onboarding time for new members.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Operational Activity",
@@ -1136,7 +1193,8 @@
         "description": "Refers to the routine tasks and processes required to maintain, monitor, and support software systems in production. These activities ensure the system remains stable, secure, and performant while minimizing downtime.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Operational Efficiency",
@@ -1152,7 +1210,8 @@
         "description": "Measures how effectively a software team or system uses resources. It focuses on optimizing workflows, reducing bottlenecks, and improving performance.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Operational Excellence",
@@ -1168,7 +1227,8 @@
         "description": "The ability of a software development team to consistently deliver high-quality software, maintain system reliability, and optimize processes while continuously improving efficiency.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Operational Health and Security Metrics",
@@ -1184,7 +1244,8 @@
         "description": "Metrics that track system performance, reliability, and efficiency in production.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Perceived Ability to Stay in Flow",
@@ -1200,7 +1261,8 @@
         "description": "The perceived ability to work without interruption on a task.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Perceived Productivity",
@@ -1216,7 +1278,8 @@
         "description": "The perceived productivity by an individual.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Perceived Rate of Delivery",
@@ -1232,7 +1295,8 @@
         "description": "A subjective metric that reflects how fast stakeholders (e.g., customers, executives, or internal teams) believe software is being delivered, regardless of the actual speed. It’s influenced by communication, transparency, and user experience rather than just raw deployment frequency.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Perceived Software Quality",
@@ -1248,7 +1312,8 @@
         "description": "Evaluates how users perceive the overall quality of a software product. This metric is subjective and focuses on user satisfaction, usability, and the software’s ability to meet user expectations. It often involves collecting feedback through surveys, such as Customer Satisfaction (CSAT) scores, which measure user perceptions of quality based on their experience with the product.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Percentage of PRs under 250 lines",
@@ -1264,7 +1329,8 @@
         "description": "The percentage of PRs under 250 lines. A higher percentage indicates that most PRs are relatively small, which is generally considered beneficial because smaller PRs are easier to review, less likely to introduce defects, and can be merged more quickly.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Percentage of Regrettable Attrition",
@@ -1280,7 +1346,8 @@
         "description": "Refers to the voluntary departure of highly valued employees whose loss significantly impacts the organization.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Percentage of Time Spent on New Capabilities",
@@ -1296,7 +1363,8 @@
         "description": "Measures the proportion of a team's time dedicated to building new features or capabilities, as opposed to activities like maintenance, bug fixes, or refactoring. ",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Performance",
@@ -1312,7 +1380,8 @@
         "description": "Relates to system efficiency, code quality, and workflow reliability, ensuring tools and processes enable developers to deliver high-quality code with minimal friction. It emphasizes both technical outcomes (e.g., system stability) and developer-centric metrics (e.g., deploy speed).",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Post-Commit CI Speed",
@@ -1328,7 +1397,8 @@
         "description": "Measures how long it takes, in minutes, for each commit to get through the continuous integration (CI) pipeline.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Pull Request Cycle Time",
@@ -1344,7 +1414,8 @@
         "description": "Measures the total time a pull request spends in all stages of the development pipeline, from the first commit to when the pull request is merged into the codebase. It provides insights into the efficiency of the code review and merging process, helping teams identify bottlenecks and improve workflows.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Pull Request Maturity",
@@ -1360,7 +1431,8 @@
         "description": "It measures the percentage of code changes that occur within a pull request after it has been submitted for review. It aims at minimizing the back-and-forth in pull requests to ensure quick and decisive reviews, leading to faster integration of code changes. ",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Pull Request Size",
@@ -1376,7 +1448,8 @@
         "description": "An indicator of overall efficiency. Small PRs mean faster pickup time, reviews, and cycles–translating to faster time to value.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Custom Quality Metric",
@@ -1392,7 +1465,8 @@
         "description": "Relates to code reliability, maintainability, and alignment with user/business outcomes. It is measured through metrics that assess both technical rigor and real-world impact, emphasizing sustainable practices over superficial outputs.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Quality of Documentation",
@@ -1408,7 +1482,8 @@
         "description": "Measures how well documentation supports the software development process, particularly in enabling developers to work efficiently and effectively.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Quality of Code Reviews",
@@ -1424,7 +1499,8 @@
         "description": "Measures quality of code reviews contributed by team members.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "R&D as Percentage of Revenue",
@@ -1440,7 +1516,8 @@
         "description": "Measures how much of a company’s total revenue is invested in research and development (R&D).",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Release Frequency",
@@ -1456,7 +1533,8 @@
         "description": "How often features reach users.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Reliability",
@@ -1472,7 +1550,8 @@
         "description": "Assesses operational performance including availability, latency, performance, and scalability. ",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Response Time",
@@ -1488,7 +1567,8 @@
         "description": "Measures the server’s speed in fulfilling user requests.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Retention",
@@ -1504,7 +1584,8 @@
         "description": "How well an organization retains its employees over a given period.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Revenue Growth",
@@ -1520,7 +1601,8 @@
         "description": "Measures the growth of revenue.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Revenue per Engineer",
@@ -1536,7 +1618,8 @@
         "description": "Measures the average revenue per engineer.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Self-Serve Dependency Maintenance",
@@ -1552,7 +1635,8 @@
         "description": "Allows users to resolve issues without needing to rely on IT support.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Sentiment",
@@ -1568,7 +1652,8 @@
         "description": "Developers’ emotional responses and perceptions of their interactions with tools, documentation, and workflows. It focuses on how developers feel about using the platform and whether they find it empowering, frustrating, or aligned with their goals.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Service Uptime and Deployment Speed Metrics",
@@ -1584,7 +1669,8 @@
         "description": "Measures service uptime and deployment speed.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Speed",
@@ -1600,7 +1686,8 @@
         "description": "Relates to how quickly software engineers can accomplish their tasks, focusing on the efficiency of workflows and processes that enable rapid delivery without compromising quality. This includes quantiative metrics (logs for task durations, deployment statistics, and CI/CD pipeline metrics) and qualitative metrics (developer surveys, diary studies, and interviews to understand perceptions and identify pain points).",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Sprint Velocity",
@@ -1616,7 +1703,8 @@
         "description": "The amount of work completed per sprint/time period. Helps with planning and tracking.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Stability of Services",
@@ -1632,7 +1720,8 @@
         "description": "The stability of services and apps. An improved stability will enable higher operational efficiency as teams will spend less time addressing bugs and outages.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Talent Capability Score",
@@ -1648,7 +1737,8 @@
         "description": "Evaluates the alignment of an organization's workforce skills with its specific technical, domain, and operational needs. It aims to identify gaps in knowledge or expertise that could constrain delivery capacity or innovation opportunities.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Task Completion",
@@ -1664,7 +1754,8 @@
         "description": "Measures the task completion (number of story points completed) on an individual or team level.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Team Collaboration Effectiveness",
@@ -1680,7 +1771,8 @@
         "description": "Measures how effective collaboration in a team is.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Technical Debt Ratio",
@@ -1696,7 +1788,8 @@
         "description": "Is an estimate of maintenance burden in codebase. It essentially compares the cost of fixing existing technical debt to the total cost of developing the software.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Test Coverage",
@@ -1712,7 +1805,8 @@
         "description": "The percentage of code covered by automated tests. Shows confidence in change safety.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Test Runner Duration",
@@ -1728,7 +1822,8 @@
         "description": "Measures the duration to run tests for various apps and packages locally.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Time from Commit to Deploy",
@@ -1744,7 +1839,8 @@
         "description": "Measures the time from commit to deploy.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Time Measures Through a System",
@@ -1760,7 +1856,8 @@
         "description": "Measures the time through a system.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Time Spent in Code Review",
@@ -1776,7 +1873,8 @@
         "description": "Measures the time developers spend reviewing others’ code.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Time to Market for New Features",
@@ -1792,7 +1890,8 @@
         "description": "Is a metric that measures the duration from the initial conception of a feature to its availability for end-users",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Time to Xth Pull Request",
@@ -1808,7 +1907,8 @@
         "description": "Is a metric that measures the time it takes for a new engineer to create their 1st and 10th pull request (PR) after joining a development team or platform (e.g., GitHub). ",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Weekly Deployments per Weekly Active Developer",
@@ -1824,7 +1924,8 @@
         "description": "Measures the amount of weekly deployments per weekly active developer.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Weekly Number of Code Reviews per Developer",
@@ -1840,7 +1941,8 @@
         "description": "The weekly number of code reviews per engineer.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Weekly Number of Design DOCs Generated per Developer",
@@ -1856,7 +1958,8 @@
         "description": "The weekly number of design documents generated per engineer.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Throughput",
@@ -1872,7 +1975,8 @@
         "description": "The number of features, stories, PRs / diffs, … completed per developer within a time interval (e.g. week).",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Weekly Time Loss",
@@ -1888,7 +1992,8 @@
         "description": "Is a metric that quantifies the amount of developer time lost each week due to various inefficiencies, such as outdated tools, unclear requirements, excessive meetings, frequent context switching, or technical debt. It highlights the impact of these obstacles on productive coding and overall job satisfaction.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Bug-related Metrics",
@@ -1904,7 +2009,8 @@
         "description": "Metrics related to bugs or defects along the whole developing process.",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Career Development Opportunities",
@@ -1920,7 +2026,8 @@
         "description": "Is a metric that shows  the availability of career advancement opportunities.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Coding Behaviors",
@@ -1936,7 +2043,8 @@
         "description": "Metrics related to behaviors in the coding process (e.g., speed of correcting syntactical errors).",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Complexity",
@@ -1952,7 +2060,8 @@
         "description": "Metrics related to complexity of methods or tasks in the coding process.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Costs",
@@ -1968,7 +2077,8 @@
         "description": "Metrics related to cost or investments.",
         "is_research": 1,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Test Failure Rate",
@@ -1984,7 +2094,8 @@
         "description": "A metric used to measure the percentage of test cases that fail during a specific testing period or for a particular software build.",
         "is_research": 2,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "DAU/WAU/MAU for AI tools",
@@ -2000,7 +2111,8 @@
         "description": "Daily, weekly or monthly active users of deployed AI tools.",
         "is_research": 3,
         "ai_specific_category": "Utilization",
-        "related_metrics": "2"
+        "related_metrics": "2",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "PRs assisted by AI",
@@ -2016,7 +2128,8 @@
         "description": "Percentage of Pull Requests assisted by AI",
         "is_research": 3,
         "ai_specific_category": "Utilization",
-        "related_metrics": "129"
+        "related_metrics": "129",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Code written by AI",
@@ -2032,7 +2145,8 @@
         "description": "Percentage of code drafted or submitted by AI",
         "is_research": 3,
         "ai_specific_category": "Utilization",
-        "related_metrics": "19"
+        "related_metrics": "19",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Acceptance rate of AI suggestions",
@@ -2048,7 +2162,8 @@
         "description": "Metric used for various aspect, such as estimating how much AI code reaches production, satisfaction proxy or for product decisions.",
         "is_research": 2,
         "ai_specific_category": "Utilization",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "AI Power users",
@@ -2064,7 +2179,8 @@
         "description": "Identifying power users to help exchanging best practices.",
         "is_research": 2,
         "ai_specific_category": "Cost",
-        "related_metrics": "2"
+        "related_metrics": "2",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Unused AI licenses",
@@ -2080,7 +2196,8 @@
         "description": "Identifying unused AI licenses to foster adoption or save costs.",
         "is_research": 2,
         "ai_specific_category": "Cost",
-        "related_metrics": "2"
+        "related_metrics": "2",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "AI Spend",
@@ -2096,7 +2213,8 @@
         "description": "Costs or capacity of AI use.",
         "is_research": 3,
         "ai_specific_category": "Cost",
-        "related_metrics": "138"
+        "related_metrics": "138",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "AI adoption in products",
@@ -2112,7 +2230,8 @@
         "description": "Monitors AI being built into products, not just used by engineers.",
         "is_research": 2,
         "ai_specific_category": "Utilization",
-        "related_metrics": "2"
+        "related_metrics": "2",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Time savings",
@@ -2128,7 +2247,8 @@
         "description": "Estimated time savings from using AI",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "24"
+        "related_metrics": "24",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "AI change/trust confidence",
@@ -2144,7 +2264,8 @@
         "description": "Developers' confidence that a change won't change production",
         "is_research": 3,
         "ai_specific_category": "Impact",
-        "related_metrics": "109"
+        "related_metrics": "109",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Friction",
@@ -2160,7 +2281,8 @@
         "description": "Monitors friction introduced or removed across the developer workflow.",
         "is_research": 2,
         "ai_specific_category": "Impact",
-        "related_metrics": "40; 46; 59"
+        "related_metrics": "40; 46; 59",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Tasks assigned to AI agents",
@@ -2176,7 +2298,8 @@
         "description": "Number of tasks that developers assign to their AI agents.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Organizational Effectiveness"
     },
     {
         "name": "Self-sufficiency",
@@ -2192,7 +2315,8 @@
         "description": "Degree to which AI reduces context-switching and reliance on external resources.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-"
+        "related_metrics": "-",
+        "outcome_goals": "Developer Experience"
     },
     {
         "name": "Code ownership",
@@ -2208,7 +2332,8 @@
         "description": "Whether developers maintain deep understanding of and accountability for AI-assisted code.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "149"
+        "related_metrics": "149",
+        "outcome_goals": "Product Excellence"
     },
     {
         "name": "Ease of peer review",
@@ -2224,6 +2349,7 @@
         "description": "Perceived ease and effort to perform a PR.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "38"
+        "related_metrics": "38",
+        "outcome_goals": "Developer Experience"
     }
 ]

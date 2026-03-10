@@ -14,7 +14,7 @@ df = df.loc[:, ~df.columns.str.contains('^Unnamed')]  # drop phantom columns fro
 
 rows_before = len(df)
 # Fill optional columns with defaults before dropna() so rows aren't dropped for missing them
-for optional_col in ['AI Specific Category', 'Related Metrics']:
+for optional_col in ['AI Specific Category', 'Related Metrics', 'Outcome Goals']:
     if optional_col in df.columns:
         df[optional_col] = df[optional_col].fillna('')
 df = df.dropna()
@@ -101,7 +101,8 @@ for idx, series in df.iterrows():
         "description": series["Definition"],
         "is_research": series["IS_Research"],
         "ai_specific_category": series["AI Specific Category"] if "AI Specific Category" in df.columns else "",
-        "related_metrics": series["Related Metrics"] if "Related Metrics" in df.columns else ""
+        "related_metrics": series["Related Metrics"] if "Related Metrics" in df.columns else "",
+        "outcome_goals": series["Outcome Goals"] if "Outcome Goals" in df.columns else ""
     })
 
 # combine all entries into one list
