@@ -186,7 +186,7 @@ document.querySelectorAll('.show-metrics-btn').forEach(button => {
             applySpecificFilter('specificFramework', filterFramework, 'research-dropdown');
         } else if (filterDataType && filterFocus) {
             applySpecificFilter('dataType', filterDataType, 'dataType');
-            applySpecificFilter('focus', filterFocus, 'focus');
+            applySpecificFilter('focus', filterFocus, 'focus-dropdown');
         } else if (filterCompany) {
             applySpecificFilter('company', filterCompany, 'company');
         }
@@ -322,13 +322,13 @@ function showCustomTooltip(metricData, event) {
 
     if (metricIs_Research === 2) { // If it's *only* practitioner-focused (is_research is 2)
         focusTagClass = 'practitioners-only';
-        focusTagText = 'Practitioners only';
+        focusTagText = 'Applied in industry';
     } else if (metricIs_Research === 1) { // If research-focused (is_research is 1)
         focusTagClass = 'research-only';
-        focusTagText = 'Research only';
+        focusTagText = 'Proposed by research';
     } else { // If metric used by practitioner and research
         focusTagClass = 'research-and-practitioners';
-        focusTagText = 'Practitioners and research';
+        focusTagText = 'Applied by industry and research';
     }
 
     // Determine text for the AI-specific metrics tag
@@ -553,7 +553,7 @@ function extractCompanies(data, currentFilters) {
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType) {
             matches = false;
         }
-        if (currentFilters.focus !== 'all' && item.is_research !== parseInt(currentFilters.focus)) {
+        if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) {
             matches = false;
         }
         if (currentFilters.company !== 'all' && item.bigcompany !== parseInt(currentFilters.company)) {
@@ -631,7 +631,7 @@ function extractFrameworks(data, currentFilters) {
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType) {
             matches = false;
         }
-        if (currentFilters.focus !== 'all' && item.is_research !== parseInt(currentFilters.focus)) { 
+        if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { 
             matches = false;
         }
         if (currentFilters.company !== 'all' && item.bigcompany !== parseInt(currentFilters.company)) {
@@ -718,7 +718,7 @@ function filterData() {
         if (activeFilters.aiMetric === 'no-ai' && item.ai_specific_category) {
             matches = false;
         }
-        if (activeFilters.focus !== 'all' && item.is_research !== parseInt(activeFilters.focus)) {
+        if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) {
             matches = false;
         }
         if (activeFilters.company !== 'all' && item.bigcompany !== parseInt(activeFilters.company)) {
@@ -824,9 +824,15 @@ document.getElementById('company-dropdown').addEventListener('change', function(
     filterData();
 });
 
+// Handle research/industry focus dropdown change
+document.getElementById('focus-dropdown').addEventListener('change', function() {
+    applySpecificFilter('focus', this.value);
+    filterData();
+});
+
 // Handle research dropdown change
 document.getElementById('research-dropdown').addEventListener('change', function() {
-    applySpecificFilter('specificFramework', this.value); 
+    applySpecificFilter('specificFramework', this.value);
     filterData();
 });
 
@@ -968,6 +974,7 @@ function clearAllFilters() {
         }
     });
     document.getElementById('keyword-search').value = ''; // Clear keyword search
+    document.getElementById('focus-dropdown').value = 'all'; // Reset focus dropdown
     document.getElementById('company-dropdown').value = 'all'; // Reset company dropdown
     document.getElementById('research-dropdown').value = 'all'; // Reset framework dropdown
 
@@ -1004,6 +1011,14 @@ function initializeMentionsSlider() {
 
         activeFilters.minMentions = 0;
     }
+}
+
+// Map descriptive focus filter values to is_research integers
+function focusFilterValue(focusValue) {
+    if (focusValue === 'research-only') return 1;
+    if (focusValue === 'industry-only') return 2;
+    if (focusValue === 'research-and-industry') return 3;
+    return null;
 }
 
 // Function to transform source strings into an array of objects for 'company' and 'research'

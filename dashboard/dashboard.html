@@ -94,12 +94,14 @@
             <div class="filter-group">
                 <label>Research or industry focus</label>
                 <div class="filter-description">
-                    Filter by whether a metric appears in research, industry, or both.
+                    Filter by whether a metric appears in research, industry, or both:
                 </div>
-                <button id="all-focus" class="filter-btn active" data-filter="all" data-group="focus">All</button>
-                <button id="research-focus-only" class="filter-btn" data-filter="1" data-group="focus">Research only</button>
-                <button id="practitioner-focus" class="filter-btn" data-filter="2" data-group="focus">Industry only</button>
-                <button id="research-and-practitioner-focus" class="filter-btn" data-filter="3" data-group="focus">Practitioners *and* industry </button>
+                <select id="focus-dropdown" class="company-dropdown">
+                    <option value="all">Appears in research or industry</option>
+                    <option value="research-only">Appears only in research</option>
+                    <option value="industry-only">Appears only in industry</option>
+                    <option value="research-and-industry">Appears in industry *and* research</option>
+                </select>
                 <div class="filter-description">
                     Filter by research framework:
                 </div>
