@@ -35,7 +35,7 @@ let activeFilters = {
     dataType: 'all', // filter for data type
     aiMetric: 'all', // filter for AI metrics
     focus: 'all', // filter for research vs. practionner
-    company: 'all', // filter for company size
+    companySize: 'all', // filter for company size
     specificCompany: 'all', // filter for company dropdown
     specificFramework: 'all', // filter for research dropdown
     minMentions: 0 // min mentions slider
@@ -177,7 +177,7 @@ document.querySelectorAll('.show-metrics-btn').forEach(button => {
         const filterFramework = this.dataset.filterFramework;
         const filterDataType = this.dataset.filterDatatype;
         const filterFocus = this.dataset.filterFocus;
-        const filterCompany = this.dataset.filterCompany;
+        const filterCompanySize = this.dataset.filterCompanySize;
         const filterAll = this.dataset.filterAll;
 
         if (filterAll) {
@@ -187,8 +187,8 @@ document.querySelectorAll('.show-metrics-btn').forEach(button => {
         } else if (filterDataType && filterFocus) {
             applySpecificFilter('dataType', filterDataType, 'dataType');
             applySpecificFilter('focus', filterFocus, 'focus-dropdown');
-        } else if (filterCompany) {
-            applySpecificFilter('company', filterCompany, 'company');
+        } else if (filterCompanySize) {
+            applySpecificFilter('companySize', filterCompanySize, 'companySize');
         }
 
         filterData(); // Re-apply filters to update the chart
@@ -378,6 +378,13 @@ function showCustomTooltip(metricData, event) {
         content += `<hr><div class="metric-detail"><strong>Also known as:</strong> ${metricAlsoKnownAs}</div>`;
     }
 
+    // Collect unique company sizes (excluding N/A), sorted Enterprise → Large → Mid-size → Small
+    const companySizeOrder = ['Enterprise', 'Large', 'Mid-size', 'Small'];
+    const companySizes = Array.isArray(metricData.company)
+        ? [...new Set(metricData.company.map(s => s.company_size).filter(s => s && s !== 'N/A'))]
+            .sort((a, b) => companySizeOrder.indexOf(a) - companySizeOrder.indexOf(b))
+        : [];
+
     content += `
         <hr>
         <div class="metric-detail"><strong>Number of mentions:</strong> ${metricValue}</div>
@@ -385,10 +392,11 @@ function showCustomTooltip(metricData, event) {
         <div class="metric-detail"><strong>Research:</strong> ${researchUsedByHtml}</div>
         <hr>
         <div class="metric-detail">
-            <strong>Tags:</strong> 
+            <strong>Tags:</strong>
                 <span class="metric-type-tag ${typeTagClass}">${typeTagText}</span>
                 <span class="metric-focus-tag ${focusTagClass}">${focusTagText}</span>
                 ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
+                ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">Company size: ${s}</span>`).join('')}
         </div>
         <br>
         <button data-metric-id="${metricId}">Add to selected metrics</button>
@@ -556,7 +564,7 @@ function extractCompanies(data, currentFilters) {
         if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) {
             matches = false;
         }
-        if (currentFilters.company !== 'all' && item.bigcompany !== parseInt(currentFilters.company)) {
+        if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) {
             matches = false;
         }
         
@@ -634,7 +642,7 @@ function extractFrameworks(data, currentFilters) {
         if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { 
             matches = false;
         }
-        if (currentFilters.company !== 'all' && item.bigcompany !== parseInt(currentFilters.company)) {
+        if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) {
             matches = false;
         }
 
@@ -721,7 +729,7 @@ function filterData() {
         if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) {
             matches = false;
         }
-        if (activeFilters.company !== 'all' && item.bigcompany !== parseInt(activeFilters.company)) {
+        if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) {
             matches = false;
         }
 
@@ -961,7 +969,7 @@ function clearAllFilters() {
         dataType: 'all',
         aiMetric: 'all',
         focus: 'all',
-        company: 'all',
+        companySize: 'all',
         specificCompany: 'all',
         specificFramework: 'all',
         minMentions: 0 // Reset slider min to 0
@@ -1030,7 +1038,8 @@ function transformSources(sourceString, type) {
             const sourceInfo = Object.values(SOURCE_URL_MAPPING).find(source => source.ref_number === id);
             return {
                 name: sourceInfo ? sourceInfo.ref_name : id, // Use ref_name if found, otherwise the ID
-                url: sourceInfo ? sourceInfo.ref_link : null // Use ref_link if found, otherwise null
+                url: sourceInfo ? sourceInfo.ref_link : null, // Use ref_link if found, otherwise null
+                company_size: sourceInfo ? (sourceInfo.company_size || 'N/A') : 'N/A'
             };
         });
     }

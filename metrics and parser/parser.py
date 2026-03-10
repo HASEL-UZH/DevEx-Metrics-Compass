@@ -100,7 +100,6 @@ for idx, series in df.iterrows():
         "research_mentions": series["Number of research"],
         "description": series["Definition"],
         "is_research": series["IS_Research"],
-        "bigcompany": series["IS_BigCompany"],
         "ai_specific_category": series["AI Specific Category"] if "AI Specific Category" in df.columns else "",
         "related_metrics": series["Related Metrics"] if "Related Metrics" in df.columns else ""
     })
@@ -118,9 +117,12 @@ print(f"data.json written with {len(metrics_list_of_dicts)} metrics.")
 # import sheet with urls from file
 df = pd.read_excel(metrics_excel, sheet_name=sheet_with_sources, engine="openpyxl")
 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+# Fill company_size with 'N/A' before dropna so rows without it are not dropped
+if 'company_size' in df.columns:
+    df['company_size'] = df['company_size'].fillna('N/A')
 df = df.dropna()
 
-# convert 'Company' and 'Research' columns to string type
+# convert ref_number to string type
 df['ref_number'] = df['ref_number'].astype(str)
 
 source_ids = []
@@ -130,7 +132,8 @@ for idx, series in df.iterrows():
     source_ids.append({
         "ref_number": series["ref_number"],
         "ref_name": series["ref_name"],
-        "ref_link": series["ref_link"]
+        "ref_link": series["ref_link"],
+        "company_size": series["company_size"] if "company_size" in df.columns else "N/A"
     })
 
 # create json file for source ids and urls

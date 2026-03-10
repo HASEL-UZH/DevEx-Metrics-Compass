@@ -216,16 +216,15 @@
         "parent": 327,
         "alsoknownas": "% Adoption of Standards; % Adoption to Golden Standards",
         "company": "501a; 501b; 501k; 511a; 511b; 511c; 511d; 511e; 511f; 511g; 511h; 511i; 511j; 511k; 511l; 511m; 511n; 511o; 511p",
-        "research": "160; 501; 146",
+        "research": "160; 501; 146; 512",
         "type": "telemetry/log-based",
-        "value": 22,
+        "value": 23,
         "company_mentions": 19,
-        "research_mentions": 3,
+        "research_mentions": 4,
         "description": "Relates to engineers’ uptake and sustained use of internal tools, workflows, and platforms, reflecting how effectively these resources integrate into daily workflows and solve critical problems. It serves as a key metric for assessing DevEx success and alignment with productivity goals.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
-        "related_metrics": "-"
+        "related_metrics": "140"
     },
     {
         "name": "Application Startup Duration",
@@ -240,7 +239,6 @@
         "research_mentions": 0,
         "description": "The time needed to startup an application locally.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -257,7 +255,6 @@
         "research_mentions": 5,
         "description": "The average focus time without interruptions per engineer.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -274,7 +271,6 @@
         "research_mentions": 2,
         "description": "The time elapsed between branch creation until master merge.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -291,7 +287,6 @@
         "research_mentions": 3,
         "description": "Evaluates developers’ mental health, job fulfillment, and workplace conditions. It serves as a critical indicator of systemic issues that harm productivity and retention.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -308,7 +303,6 @@
         "research_mentions": 1,
         "description": "Refers to measuring how effectively software development efforts align with and contribute to achieving specific organizational goals. This metric focuses on outcome-driven impact rather than raw activity metrics (e.g., lines of code, commits).",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -325,7 +319,6 @@
         "research_mentions": 12,
         "description": "The percentage of changes that result in degraded service or require remediation (e.g., lead to service impairment or outage, require a hotfix, rollback, fix forward, or patch).",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -342,7 +335,6 @@
         "research_mentions": 0,
         "description": "The opposite of test flakiness: the chance that a test suite’s result will be valid (not a flake) ensures that identical inputs in a continuous integration (CI) pipeline always produce the same outputs (binaries, artifacts, test results). This guarantees reproducibility, reliability, and traceability in software builds, critical for debugging, compliance, and safety-critical systems.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -359,7 +351,6 @@
         "research_mentions": 1,
         "description": "Measures the percentage of builds or automated workflows in a continuous integration (CI) system that fail due to errors (e.g., compilation issues, test failures, dependency conflicts). ",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -376,7 +367,6 @@
         "research_mentions": 1,
         "description": "Refers to the median duration of successful builds in a continuous integration (CI) pipeline, representing the time by which 50% of builds complete. It is calculated by ordering all successful build durations and selecting the middle value, providing a reliable measure of typical performance while filtering out outliers.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -393,7 +383,6 @@
         "research_mentions": 3,
         "description": "Is the amount of code rewritten shortly after being written.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -410,7 +399,6 @@
         "research_mentions": 5,
         "description": "Measures how long it takes, in business hours, for code reviewers to respond to each update of the code review from the author.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -427,7 +415,6 @@
         "research_mentions": 1,
         "description": "Is the percentage of code changes that modify recently changed code.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -444,7 +431,6 @@
         "research_mentions": 21,
         "description": "Tracks contributions to the codebase (e.g., commits, PRs).",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -461,7 +447,6 @@
         "research_mentions": 5,
         "description": "The mental effort required to perform tasks. Avoiding multitasking, high WIP (work in progress) counts, and attention splitting to maintain focus and reduce cognitive overhead.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -478,7 +463,6 @@
         "research_mentions": 2,
         "description": "Measures the effectiveness of automated build, test, and deployment processes in enabling rapid, reliable software delivery.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -495,7 +479,6 @@
         "research_mentions": 2,
         "description": "Assesses how individual developers and teams contribute to the software development process, with the goal of identifying trends that may inhibit or optimize team capacity and performance.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -512,7 +495,6 @@
         "research_mentions": 1,
         "description": "Relates to strategic reductions in product development and operational expenses achieved through optimized engineering practices, aligning technical efficiency with business profitability. This is measured by tracking how engineering improvements directly lower costs while maintaining quality and delivery speed.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -529,7 +511,6 @@
         "research_mentions": 3,
         "description": "Measures how pleased customers are with a product, service, or interaction, typically via surveys. Responses are aggregated into a percentage score representing the proportion of satisfied customers",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -546,7 +527,6 @@
         "research_mentions": 1,
         "description": "Bugs found by customers in production.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -563,7 +543,6 @@
         "research_mentions": 5,
         "description": "Measures the time from code commit to code running in production. Shows how quickly team can respond to business needs.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -580,7 +559,6 @@
         "research_mentions": 1,
         "description": "Measures the percentage of uninterrupted, meeting-free blocks of time that allow developers to enter a flow state and concentrate deeply on their work.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -597,7 +575,6 @@
         "research_mentions": 1,
         "description": "The number of errors or failures in the software, which indicates the quality of the delivered value.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -614,7 +591,6 @@
         "research_mentions": 12,
         "description": "How often an organization deploys code to production or releases it to end users.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -631,7 +607,6 @@
         "research_mentions": 3,
         "description": "Measures how often deployments succeed.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -648,7 +623,6 @@
         "research_mentions": 1,
         "description": "This metric in software engineering measures how often a specific service or microservice is deployed within a given timeframe. This metric is commonly used in DevOps and microservices architectures to track deployment frequency across different services.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -665,7 +639,6 @@
         "research_mentions": 2,
         "description": "Captures documentation quality, architectural decisions, and prototyping efforts.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -682,7 +655,6 @@
         "research_mentions": 4,
         "description": "Measures the time, in seconds, developers spend waiting for their builds to finish locally during development. Impacts developer flow and productivity.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -699,7 +671,6 @@
         "research_mentions": 2,
         "description": "Refers to the holistic effectiveness of developers in achieving meaningful outcomes, balancing technical output with well-being, collaboration, and workflow efficiency. It integrates multiple SPACE dimensions to assess how effectively developers translate effort into impactful results.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -716,7 +687,6 @@
         "research_mentions": 15,
         "description": "Customer satisfaction score for developers. Measures developer and team happiness with regards to development systems.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -733,7 +703,6 @@
         "research_mentions": 1,
         "description": "The Developer Velocity Index (DVI) is a survey that measures an enterprise’s technology, working practices, and organizational enablement and benchmarks them against peers. This comparison helps unearth specific areas of opportunity, whether in backlog management, testing, or security and compliance. For example, one company, well known for its technological progress and all-star developers, sought to define standard working practices more thoughtfully for cross-team collaboration after discovering a high amount of dissatisfaction, rework, and inefficiency reported by developers.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -750,7 +719,6 @@
         "research_mentions": 13,
         "description": "Aims to capture all active human developertime spent on a particular diff, split by the different roles involved. This information is made available in a privacy-aware manner. Active human work on a computer tends to be highly sequential, even if such individual sequences can be extremely short.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -767,7 +735,6 @@
         "research_mentions": 2,
         "description": "Refers to how easily developers can locate critical information (e.g., codebase guides, API references) or identify colleagues with specific knowledge.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -784,7 +751,6 @@
         "research_mentions": 7,
         "description": "Refers to how simple, straightforward, and frictionless it is for developers or teams to deliver software, features, or updates through their development processes and tooling. Captures the perceived and actual effort required to move work from development to production.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -801,7 +767,6 @@
         "research_mentions": 2,
         "description": "Refers to the emotional commitment, motivation, and involvement that software engineers or developers have toward their work, team, and organization.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -818,7 +783,6 @@
         "research_mentions": 2,
         "description": "Quantifies the frequency of user or system mistakes during interactions with a product (e.g., failed API requests, UI slips, or task errors)",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -835,7 +799,6 @@
         "research_mentions": 2,
         "description": "Is a combination of satisfaction, well-being and integration indicators to ensure new developers feel supported, included and able to contribute effectively.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -852,7 +815,6 @@
         "research_mentions": 2,
         "description": "Refers to the speed and efficiency at which the platform conducts and evaluates A/B tests to optimize features, algorithms, and user experiences.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -869,7 +831,6 @@
         "research_mentions": 2,
         "description": "The average time it takes to restore service when a software change causes an outage or service failure in production.",
         "is_research": 1,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -886,7 +847,6 @@
         "research_mentions": 2,
         "description": "The speed and quality of responses to developer actions.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -903,7 +863,6 @@
         "research_mentions": 2,
         "description": "The ability to work with focus and enjoyment.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -920,7 +879,6 @@
         "research_mentions": 1,
         "description": "Measures the velocity of the system.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -937,7 +895,6 @@
         "research_mentions": 1,
         "description": "Measures the number of handoffs in the process.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -954,7 +911,6 @@
         "research_mentions": 3,
         "description": "Evaluates the tangible outcomes and value delivered by development efforts. Unlike raw outputs (e.g., lines of code), impact focuses on business results and user-centric effects of software work. Making significant contributions to one’s business unit or area of ownership, ensuring that work has a tangible impact.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -971,7 +927,6 @@
         "research_mentions": 1,
         "description": "Measures the financial impact and advancement of specific developer experience (DevEx) improvement projects, linking technical efforts to business outcomes. It evaluates whether investments in tools, processes, or workflows deliver measurable returns.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -988,7 +943,6 @@
         "research_mentions": 3,
         "description": "To identify specific areas for improvement, it’s helpful to think of the activities involved in software development as being arranged in two loops. An inner loop comprises activities directly related to creating the product: coding, building, and unit testing. An outer loop comprises other tasks developers must do to push their code to production: integration, integration testing, releasing, and deployment. From both a productivity and personal-experience standpoint, maximizing the amount of time developers spend in the inner loop is desirable: building products directly generates value and is what most developers are excited to do. Outer-loop activities are seen by most developers as necessary but generally unsatisfying chores. Putting time into better tooling and automation for the outer loop allows developers to spend more time on inner-loop activities.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1005,7 +959,6 @@
         "research_mentions": 4,
         "description": "Measures the number of interruptions.",
         "is_research": 1,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1022,7 +975,6 @@
         "research_mentions": 8,
         "description": "The time it takes to go from code committed to code successfully running in production.\nMeasures the time between code commit and the start of the release to determine how long it takes to deliver value to your customers.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1039,7 +991,6 @@
         "research_mentions": 2,
         "description": "Line Coverage is a code coverage metric that measures the percentage of lines in a codebase that have been executed during testing. It helps determine how well a test suite exercises the code.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1056,7 +1007,6 @@
         "research_mentions": 0,
         "description": "The duration needed to lint apps and packages locally.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1073,7 +1023,6 @@
         "research_mentions": 9,
         "description": "Mean Time to Recover (MTTR) is a key DevOps and IT reliability metric that measures the average time it takes to restore a system after a failure. It reflects how quickly teams can diagnose, fix, and recover from incidents.\nTime from bug report to fix deployment. Shows quality response capability.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1090,7 +1039,6 @@
         "research_mentions": 1,
         "description": "When bottlenecks and inefficiencies are discovered (as informed by industry benchmarks), effective teams set data-backed goals against them (in addition to automated workflows). Regularly attaining these goals indicates both developer effectiveness and a good developer experience.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1107,7 +1055,6 @@
         "research_mentions": 2,
         "description": "Network metrics that show who is connected to whom and how.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1124,7 +1071,6 @@
         "research_mentions": 2,
         "description": "Measures the number of deployments.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1141,7 +1087,6 @@
         "research_mentions": 2,
         "description": "Tracks the number of defects or issues that escape testing and reach production. It measures the effectiveness of testing processes and helps identify weaknesses in quality assurance .",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1158,7 +1103,6 @@
         "research_mentions": 2,
         "description": "Tracks how many times work is transferred between individuals, teams, or systems during a workflow.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1175,7 +1119,6 @@
         "research_mentions": 2,
         "description": "Measures the onboarding time for new members.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1192,7 +1135,6 @@
         "research_mentions": 2,
         "description": "Refers to the routine tasks and processes required to maintain, monitor, and support software systems in production. These activities ensure the system remains stable, secure, and performant while minimizing downtime.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1209,7 +1151,6 @@
         "research_mentions": 1,
         "description": "Measures how effectively a software team or system uses resources. It focuses on optimizing workflows, reducing bottlenecks, and improving performance.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1226,7 +1167,6 @@
         "research_mentions": 1,
         "description": "The ability of a software development team to consistently deliver high-quality software, maintain system reliability, and optimize processes while continuously improving efficiency.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1243,7 +1183,6 @@
         "research_mentions": 2,
         "description": "Metrics that track system performance, reliability, and efficiency in production.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1260,7 +1199,6 @@
         "research_mentions": 2,
         "description": "The perceived ability to work without interruption on a task.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1277,7 +1215,6 @@
         "research_mentions": 5,
         "description": "The perceived productivity by an individual.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1294,7 +1231,6 @@
         "research_mentions": 3,
         "description": "A subjective metric that reflects how fast stakeholders (e.g., customers, executives, or internal teams) believe software is being delivered, regardless of the actual speed. It’s influenced by communication, transparency, and user experience rather than just raw deployment frequency.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1311,7 +1247,6 @@
         "research_mentions": 1,
         "description": "Evaluates how users perceive the overall quality of a software product. This metric is subjective and focuses on user satisfaction, usability, and the software’s ability to meet user expectations. It often involves collecting feedback through surveys, such as Customer Satisfaction (CSAT) scores, which measure user perceptions of quality based on their experience with the product.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1328,7 +1263,6 @@
         "research_mentions": 1,
         "description": "The percentage of PRs under 250 lines. A higher percentage indicates that most PRs are relatively small, which is generally considered beneficial because smaller PRs are easier to review, less likely to introduce defects, and can be merged more quickly.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1345,7 +1279,6 @@
         "research_mentions": 1,
         "description": "Refers to the voluntary departure of highly valued employees whose loss significantly impacts the organization.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1362,7 +1295,6 @@
         "research_mentions": 2,
         "description": "Measures the proportion of a team's time dedicated to building new features or capabilities, as opposed to activities like maintenance, bug fixes, or refactoring. ",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1379,7 +1311,6 @@
         "research_mentions": 1,
         "description": "Relates to system efficiency, code quality, and workflow reliability, ensuring tools and processes enable developers to deliver high-quality code with minimal friction. It emphasizes both technical outcomes (e.g., system stability) and developer-centric metrics (e.g., deploy speed).",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1396,7 +1327,6 @@
         "research_mentions": 0,
         "description": "Measures how long it takes, in minutes, for each commit to get through the continuous integration (CI) pipeline.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1413,7 +1343,6 @@
         "research_mentions": 2,
         "description": "Measures the total time a pull request spends in all stages of the development pipeline, from the first commit to when the pull request is merged into the codebase. It provides insights into the efficiency of the code review and merging process, helping teams identify bottlenecks and improve workflows.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1430,7 +1359,6 @@
         "research_mentions": 2,
         "description": "It measures the percentage of code changes that occur within a pull request after it has been submitted for review. It aims at minimizing the back-and-forth in pull requests to ensure quick and decisive reviews, leading to faster integration of code changes. ",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1447,7 +1375,6 @@
         "research_mentions": 2,
         "description": "An indicator of overall efficiency. Small PRs mean faster pickup time, reviews, and cycles–translating to faster time to value.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1464,7 +1391,6 @@
         "research_mentions": 10,
         "description": "Relates to code reliability, maintainability, and alignment with user/business outcomes. It is measured through metrics that assess both technical rigor and real-world impact, emphasizing sustainable practices over superficial outputs.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1481,7 +1407,6 @@
         "research_mentions": 3,
         "description": "Measures how well documentation supports the software development process, particularly in enabling developers to work efficiently and effectively.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1498,7 +1423,6 @@
         "research_mentions": 2,
         "description": "Measures quality of code reviews contributed by team members.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1515,7 +1439,6 @@
         "research_mentions": 1,
         "description": "Measures how much of a company’s total revenue is invested in research and development (R&D).",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1532,7 +1455,6 @@
         "research_mentions": 2,
         "description": "How often features reach users.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1549,7 +1471,6 @@
         "research_mentions": 2,
         "description": "Assesses operational performance including availability, latency, performance, and scalability. ",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1566,7 +1487,6 @@
         "research_mentions": 1,
         "description": "Measures the server’s speed in fulfilling user requests.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1583,7 +1503,6 @@
         "research_mentions": 1,
         "description": "How well an organization retains its employees over a given period.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1600,7 +1519,6 @@
         "research_mentions": 1,
         "description": "Measures the growth of revenue.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1617,7 +1535,6 @@
         "research_mentions": 1,
         "description": "Measures the average revenue per engineer.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1634,7 +1551,6 @@
         "research_mentions": 1,
         "description": "Allows users to resolve issues without needing to rely on IT support.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1651,7 +1567,6 @@
         "research_mentions": 0,
         "description": "Developers’ emotional responses and perceptions of their interactions with tools, documentation, and workflows. It focuses on how developers feel about using the platform and whether they find it empowering, frustrating, or aligned with their goals.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1668,7 +1583,6 @@
         "research_mentions": 2,
         "description": "Measures service uptime and deployment speed.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1685,7 +1599,6 @@
         "research_mentions": 5,
         "description": "Relates to how quickly software engineers can accomplish their tasks, focusing on the efficiency of workflows and processes that enable rapid delivery without compromising quality. This includes quantiative metrics (logs for task durations, deployment statistics, and CI/CD pipeline metrics) and qualitative metrics (developer surveys, diary studies, and interviews to understand perceptions and identify pain points).",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1702,7 +1615,6 @@
         "research_mentions": 4,
         "description": "The amount of work completed per sprint/time period. Helps with planning and tracking.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1719,7 +1631,6 @@
         "research_mentions": 3,
         "description": "The stability of services and apps. An improved stability will enable higher operational efficiency as teams will spend less time addressing bugs and outages.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1736,7 +1647,6 @@
         "research_mentions": 2,
         "description": "Evaluates the alignment of an organization's workforce skills with its specific technical, domain, and operational needs. It aims to identify gaps in knowledge or expertise that could constrain delivery capacity or innovation opportunities.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1753,7 +1663,6 @@
         "research_mentions": 13,
         "description": "Measures the task completion (number of story points completed) on an individual or team level.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1770,7 +1679,6 @@
         "research_mentions": 1,
         "description": "Measures how effective collaboration in a team is.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1787,7 +1695,6 @@
         "research_mentions": 2,
         "description": "Is an estimate of maintenance burden in codebase. It essentially compares the cost of fixing existing technical debt to the total cost of developing the software.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1804,7 +1711,6 @@
         "research_mentions": 4,
         "description": "The percentage of code covered by automated tests. Shows confidence in change safety.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1821,7 +1727,6 @@
         "research_mentions": 0,
         "description": "Measures the duration to run tests for various apps and packages locally.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1838,7 +1743,6 @@
         "research_mentions": 1,
         "description": "Measures the time from commit to deploy.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1855,7 +1759,6 @@
         "research_mentions": 2,
         "description": "Measures the time through a system.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1872,7 +1775,6 @@
         "research_mentions": 4,
         "description": "Measures the time developers spend reviewing others’ code.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1889,7 +1791,6 @@
         "research_mentions": 3,
         "description": "Is a metric that measures the duration from the initial conception of a feature to its availability for end-users",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1906,7 +1807,6 @@
         "research_mentions": 4,
         "description": "Is a metric that measures the time it takes for a new engineer to create their 1st and 10th pull request (PR) after joining a development team or platform (e.g., GitHub). ",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1923,7 +1823,6 @@
         "research_mentions": 1,
         "description": "Measures the amount of weekly deployments per weekly active developer.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1940,7 +1839,6 @@
         "research_mentions": 2,
         "description": "The weekly number of code reviews per engineer.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1957,7 +1855,6 @@
         "research_mentions": 1,
         "description": "The weekly number of design documents generated per engineer.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -1974,7 +1871,6 @@
         "research_mentions": 11,
         "description": "The number of features, stories, PRs / diffs, … completed per developer within a time interval (e.g. week).",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -1991,7 +1887,6 @@
         "research_mentions": 3,
         "description": "Is a metric that quantifies the amount of developer time lost each week due to various inefficiencies, such as outdated tools, unclear requirements, excessive meetings, frequent context switching, or technical debt. It highlights the impact of these obstacles on productive coding and overall job satisfaction.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2008,7 +1903,6 @@
         "research_mentions": 9,
         "description": "Metrics related to bugs or defects along the whole developing process.",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -2025,7 +1919,6 @@
         "research_mentions": 1,
         "description": "Is a metric that shows  the availability of career advancement opportunities.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2042,7 +1935,6 @@
         "research_mentions": 1,
         "description": "Metrics related to behaviors in the coding process (e.g., speed of correcting syntactical errors).",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2059,7 +1951,6 @@
         "research_mentions": 6,
         "description": "Metrics related to complexity of methods or tasks in the coding process.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2076,7 +1967,6 @@
         "research_mentions": 1,
         "description": "Metrics related to cost or investments.",
         "is_research": 1,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2093,7 +1983,6 @@
         "research_mentions": 0,
         "description": "A metric used to measure the percentage of test cases that fail during a specific testing period or for a particular software build.",
         "is_research": 2,
-        "bigcompany": 0,
         "ai_specific_category": "",
         "related_metrics": "-"
     },
@@ -2110,7 +1999,6 @@
         "research_mentions": 1,
         "description": "Daily, weekly or monthly active users of deployed AI tools.",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Utilization",
         "related_metrics": "2"
     },
@@ -2127,7 +2015,6 @@
         "research_mentions": 1,
         "description": "Percentage of Pull Requests assisted by AI",
         "is_research": 3,
-        "bigcompany": 0,
         "ai_specific_category": "Utilization",
         "related_metrics": "129"
     },
@@ -2144,7 +2031,6 @@
         "research_mentions": 1,
         "description": "Percentage of code drafted or submitted by AI",
         "is_research": 3,
-        "bigcompany": 1,
         "ai_specific_category": "Utilization",
         "related_metrics": "19"
     },
@@ -2161,7 +2047,6 @@
         "research_mentions": 0,
         "description": "Metric used for various aspect, such as estimating how much AI code reaches production, satisfaction proxy or for product decisions.",
         "is_research": 2,
-        "bigcompany": 2,
         "ai_specific_category": "Utilization",
         "related_metrics": "-"
     },
@@ -2178,7 +2063,6 @@
         "research_mentions": 0,
         "description": "Identifying power users to help exchanging best practices.",
         "is_research": 2,
-        "bigcompany": 3,
         "ai_specific_category": "Cost",
         "related_metrics": "2"
     },
@@ -2195,7 +2079,6 @@
         "research_mentions": 0,
         "description": "Identifying unused AI licenses to foster adoption or save costs.",
         "is_research": 2,
-        "bigcompany": 4,
         "ai_specific_category": "Cost",
         "related_metrics": "2"
     },
@@ -2212,7 +2095,6 @@
         "research_mentions": 1,
         "description": "Costs or capacity of AI use.",
         "is_research": 3,
-        "bigcompany": 5,
         "ai_specific_category": "Cost",
         "related_metrics": "138"
     },
@@ -2229,7 +2111,6 @@
         "research_mentions": 0,
         "description": "Monitors AI being built into products, not just used by engineers.",
         "is_research": 2,
-        "bigcompany": 6,
         "ai_specific_category": "Utilization",
         "related_metrics": "2"
     },
@@ -2246,7 +2127,6 @@
         "research_mentions": 1,
         "description": "Estimated time savings from using AI",
         "is_research": 3,
-        "bigcompany": 7,
         "ai_specific_category": "Impact",
         "related_metrics": "24"
     },
@@ -2263,7 +2143,6 @@
         "research_mentions": 1,
         "description": "Developers' confidence that a change won't change production",
         "is_research": 3,
-        "bigcompany": 8,
         "ai_specific_category": "Impact",
         "related_metrics": "109"
     },
@@ -2280,7 +2159,6 @@
         "research_mentions": 0,
         "description": "Monitors friction introduced or removed across the developer workflow.",
         "is_research": 2,
-        "bigcompany": 9,
         "ai_specific_category": "Impact",
         "related_metrics": "40; 46; 59"
     },
@@ -2297,7 +2175,6 @@
         "research_mentions": 1,
         "description": "Number of tasks that developers assign to their AI agents.",
         "is_research": 1,
-        "bigcompany": 10,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -2314,7 +2191,6 @@
         "research_mentions": 1,
         "description": "Degree to which AI reduces context-switching and reliance on external resources.",
         "is_research": 1,
-        "bigcompany": 11,
         "ai_specific_category": "Impact",
         "related_metrics": "-"
     },
@@ -2331,7 +2207,6 @@
         "research_mentions": 1,
         "description": "Whether developers maintain deep understanding of and accountability for AI-assisted code.",
         "is_research": 1,
-        "bigcompany": 12,
         "ai_specific_category": "Impact",
         "related_metrics": "149"
     },
@@ -2348,7 +2223,6 @@
         "research_mentions": 1,
         "description": "Perceived ease and effort to perform a PR.",
         "is_research": 1,
-        "bigcompany": 13,
         "ai_specific_category": "Impact",
         "related_metrics": "38"
     }

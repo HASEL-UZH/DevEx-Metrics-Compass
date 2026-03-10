@@ -2,671 +2,805 @@
     {
         "ref_number": "5",
         "ref_name": "D’Angelo et al. (2024)",
-        "ref_link": "https://doi.org/10.1109/MS.2024.3386027"
+        "ref_link": "https://doi.org/10.1109/MS.2024.3386027",
+        "company_size": "N/A"
     },
     {
         "ref_number": "6",
         "ref_name": "Brown et al. (2023)",
-        "ref_link": "https://doi.org/10.1109/MS.2023.3305718"
+        "ref_link": "https://doi.org/10.1109/MS.2023.3305718",
+        "company_size": "N/A"
     },
     {
         "ref_number": "7",
         "ref_name": "Oliveira et al. (2020)",
-        "ref_link": "https://doi.org/10.1007/s10664-020-09820-z"
+        "ref_link": "https://doi.org/10.1007/s10664-020-09820-z",
+        "company_size": "N/A"
     },
     {
         "ref_number": "9",
         "ref_name": "Sanwal and Deva (2024)",
-        "ref_link": "https://www.ijtsrd.com/papers/ijtsrd69393.pdf"
+        "ref_link": "https://www.ijtsrd.com/papers/ijtsrd69393.pdf",
+        "company_size": "N/A"
     },
     {
         "ref_number": "11",
         "ref_name": "Gonçales et al. (2019)",
-        "ref_link": "https://doi.org/10.1109/ICPC.2019.00018"
+        "ref_link": "https://doi.org/10.1109/ICPC.2019.00018",
+        "company_size": "N/A"
     },
     {
         "ref_number": "13",
         "ref_name": "Edberg and Bowman (2015)",
-        "ref_link": "https://doi.org/10.1080/07421222.1996.11518117"
+        "ref_link": "https://doi.org/10.1080/07421222.1996.11518117",
+        "company_size": "N/A"
     },
     {
         "ref_number": "14",
         "ref_name": "Kokrehel and Bilicki (2021)",
-        "ref_link": "https://doi.org/10.1556/606.2021.00372"
+        "ref_link": "https://doi.org/10.1556/606.2021.00372",
+        "company_size": "N/A"
     },
     {
         "ref_number": "15",
         "ref_name": "Oliveira et al. (2017)",
-        "ref_link": "https://doi.org/10.5220/0006314400760087"
+        "ref_link": "https://doi.org/10.5220/0006314400760087",
+        "company_size": "N/A"
     },
     {
         "ref_number": "17",
         "ref_name": "Green et al. (2024)",
-        "ref_link": "https://doi.org/10.1109/MS.2023.3324830"
+        "ref_link": "https://doi.org/10.1109/MS.2023.3324830",
+        "company_size": "N/A"
     },
     {
         "ref_number": "19",
         "ref_name": "Meyer et al. (2014)",
-        "ref_link": "https://doi.org/10.1145/2635868.2635892"
+        "ref_link": "https://doi.org/10.1145/2635868.2635892",
+        "company_size": "N/A"
     },
     {
         "ref_number": "20",
         "ref_name": "Green et al. (2023)",
-        "ref_link": "https://doi.org/10.1109/MS.2023.3291158"
+        "ref_link": "https://doi.org/10.1109/MS.2023.3291158",
+        "company_size": "N/A"
     },
     {
         "ref_number": "21",
         "ref_name": "Treude et al. (2015)",
-        "ref_link": "https://doi.org/10.1145/2786805.2786827"
+        "ref_link": "https://doi.org/10.1145/2786805.2786827",
+        "company_size": "N/A"
     },
     {
         "ref_number": "31",
         "ref_name": "Bao et al. (2022)",
-        "ref_link": "https://doi.org/10.1007/s11432-020-3278-4"
+        "ref_link": "https://doi.org/10.1007/s11432-020-3278-4",
+        "company_size": "N/A"
     },
     {
         "ref_number": "32",
         "ref_name": "Cheng et al. (2022)",
-        "ref_link": "https://doi.org/10.1145/3540250.3558940"
+        "ref_link": "https://doi.org/10.1145/3540250.3558940",
+        "company_size": "N/A"
     },
     {
         "ref_number": "36",
         "ref_name": "Kuutila et al. (2020)",
-        "ref_link": "https://doi.org/10.1145/3387940.3392224"
+        "ref_link": "https://doi.org/10.1145/3387940.3392224",
+        "company_size": "N/A"
     },
     {
         "ref_number": "39",
         "ref_name": "Meyer et al. (2017)",
-        "ref_link": "https://doi.org/10.1109/TSE.2017.2656886"
+        "ref_link": "https://doi.org/10.1109/TSE.2017.2656886",
+        "company_size": "N/A"
     },
     {
         "ref_number": "43",
         "ref_name": "Bakal et al. (2025)",
-        "ref_link": "https://doi.org/10.48550/arXiv.2501.13282"
+        "ref_link": "https://doi.org/10.48550/arXiv.2501.13282",
+        "company_size": "N/A"
     },
     {
         "ref_number": "45",
         "ref_name": "Guglielmi et al. (2025)",
-        "ref_link": "https://doi.org/10.48550/arXiv.2504.06808"
+        "ref_link": "https://doi.org/10.48550/arXiv.2504.06808",
+        "company_size": "N/A"
     },
     {
         "ref_number": "46",
         "ref_name": "Gousios et al. (2008)",
-        "ref_link": "https://doi.org/10.1145/1370750.1370781"
+        "ref_link": "https://doi.org/10.1145/1370750.1370781",
+        "company_size": "N/A"
     },
     {
         "ref_number": "47",
         "ref_name": "Moser et al. (2008)",
-        "ref_link": "https://doi.org/10.1007/978-3-540-85279-7_20"
+        "ref_link": "https://doi.org/10.1007/978-3-540-85279-7_20",
+        "company_size": "N/A"
     },
     {
         "ref_number": "49",
         "ref_name": "Madeyski and Szała (2007) ",
-        "ref_link": "https://doi.org/10.1007/978-3-540-75381-0_18"
+        "ref_link": "https://doi.org/10.1007/978-3-540-75381-0_18",
+        "company_size": "N/A"
     },
     {
         "ref_number": "50",
         "ref_name": "Srinivasan et al. (2025)",
-        "ref_link": "http://dx.doi.org/10.20473/jisebi.11.1.79-90"
+        "ref_link": "http://dx.doi.org/10.20473/jisebi.11.1.79-90",
+        "company_size": "N/A"
     },
     {
         "ref_number": "51",
         "ref_name": "Lima et al. (2015)",
-        "ref_link": "https://doi.org/10.1109/ICSM.2015.7332509"
+        "ref_link": "https://doi.org/10.1109/ICSM.2015.7332509",
+        "company_size": "N/A"
     },
     {
         "ref_number": "52",
         "ref_name": "Caulo et al. (2021)",
-        "ref_link": "https://doi.org/10.1145/3463274.3463327"
+        "ref_link": "https://doi.org/10.1145/3463274.3463327",
+        "company_size": "N/A"
     },
     {
         "ref_number": "57",
         "ref_name": "Peng et al. (2023)",
-        "ref_link": "https://doi.org/10.48550/arXiv.2302.06590"
+        "ref_link": "https://doi.org/10.48550/arXiv.2302.06590",
+        "company_size": "N/A"
     },
     {
         "ref_number": "62",
         "ref_name": "Mockus (2009)",
-        "ref_link": "https://doi.org/10.1109/ICSE.2009.5070509"
+        "ref_link": "https://doi.org/10.1109/ICSE.2009.5070509",
+        "company_size": "N/A"
     },
     {
         "ref_number": "70",
         "ref_name": "Besker et al. (2019)",
-        "ref_link": "https://doi.org/10.1016/j.jss.2019.06.004"
+        "ref_link": "https://doi.org/10.1016/j.jss.2019.06.004",
+        "company_size": "N/A"
     },
     {
         "ref_number": "87",
         "ref_name": "Parrish et al. (2004)",
-        "ref_link": "https://doi.org/10.1109/MS.2004.1331306"
+        "ref_link": "https://doi.org/10.1109/MS.2004.1331306",
+        "company_size": "N/A"
     },
     {
         "ref_number": "92",
         "ref_name": "Unluturk and Kurtel (2016)",
-        "ref_link": "https://www.cai.sk/ojs/index.php/cai/article/view/969"
+        "ref_link": "https://www.cai.sk/ojs/index.php/cai/article/view/969",
+        "company_size": "N/A"
     },
     {
         "ref_number": "96",
         "ref_name": "Solanke (2024)",
-        "ref_link": "https://www.researchgate.net/publication/390585493_Software_Development_in_the_Age_of_AI_Quantifiable_Frameworks_for_Measuring_Enhanced_Developer_Productivity?enrichId=rgreq-cbf68995c55ab8589b5d2af0c0868704-XXX&enrichSource=Y292ZXJQYWdlOzM5MDU4NTQ5MztBUzoxMTQzMTI4MTM2MTA1MDUxOUAxNzQ0MTE3OTM3MjQ4&el=1_x_2&_esc=publicationCoverPdf"
+        "ref_link": "https://www.researchgate.net/publication/390585493_Software_Development_in_the_Age_of_AI_Quantifiable_Frameworks_for_Measuring_Enhanced_Developer_Productivity?enrichId=rgreq-cbf68995c55ab8589b5d2af0c0868704-XXX&enrichSource=Y292ZXJQYWdlOzM5MDU4NTQ5MztBUzoxMTQzMTI4MTM2MTA1MDUxOUAxNzQ0MTE3OTM3MjQ4&el=1_x_2&_esc=publicationCoverPdf",
+        "company_size": "N/A"
     },
     {
         "ref_number": "101",
         "ref_name": "Duncan (1988)",
-        "ref_link": "https://doi.org/10.1109/ICSE.1988.93686"
+        "ref_link": "https://doi.org/10.1109/ICSE.1988.93686",
+        "company_size": "N/A"
     },
     {
         "ref_number": "105",
         "ref_name": "James (2024)",
-        "ref_link": "https://www.researchgate.net/publication/385353040_Assessing_Developer_Productivity_and_Error_Reduction_with_TDD_and_BDD_Metrics?enrichId=rgreq-45cd3ad7386eef3482e34c5b530bcfa9-XXX&enrichSource=Y292ZXJQYWdlOzM4NTM1MzA0MDtBUzoxMTQzMTI4MTI4NzM3OTE1N0AxNzMwMjUxNzkxOTc3&el=1_x_2&_esc=publicationCoverPdf"
+        "ref_link": "https://www.researchgate.net/publication/385353040_Assessing_Developer_Productivity_and_Error_Reduction_with_TDD_and_BDD_Metrics?enrichId=rgreq-45cd3ad7386eef3482e34c5b530bcfa9-XXX&enrichSource=Y292ZXJQYWdlOzM4NTM1MzA0MDtBUzoxMTQzMTI4MTI4NzM3OTE1N0AxNzMwMjUxNzkxOTc3&el=1_x_2&_esc=publicationCoverPdf",
+        "company_size": "N/A"
     },
     {
         "ref_number": "108",
         "ref_name": "Beller et al. (2025)",
-        "ref_link": "https://doi.org/10.48550/arXiv.2503.10977"
+        "ref_link": "https://doi.org/10.48550/arXiv.2503.10977",
+        "company_size": "N/A"
     },
     {
         "ref_number": "111",
         "ref_name": "Sarimbekov et al (2014",
-        "ref_link": "https://doi.org/10.1016/j.scico.2014.03.014"
+        "ref_link": "https://doi.org/10.1016/j.scico.2014.03.014",
+        "company_size": "N/A"
     },
     {
         "ref_number": "115",
         "ref_name": "DX (2024a)",
-        "ref_link": "https://getdx.com/blog/how-google-measures-developer-productivity/"
+        "ref_link": "https://getdx.com/blog/how-google-measures-developer-productivity/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "131",
         "ref_name": "Gitpod (2025)",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "N/A"
     },
     {
         "ref_number": "146",
         "ref_name": "DX (2024b)",
-        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/"
+        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "160",
         "ref_name": "Jetbrains (2024)",
-        "ref_link": "https://www.jetbrains.com/lp/devecosystem-2024/"
+        "ref_link": "https://www.jetbrains.com/lp/devecosystem-2024/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "170",
         "ref_name": "LinkedIn",
-        "ref_link": "https://www.linkedin.com/blog/engineering/developer-experience-productivity/inside-look-measuring-developer-productivity-and-happiness-at-l"
+        "ref_link": "https://www.linkedin.com/blog/engineering/developer-experience-productivity/inside-look-measuring-developer-productivity-and-happiness-at-l",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "182",
         "ref_name": "Hatica (2024)",
-        "ref_link": "https://www.hatica.io/blog/how-leading-tech-companies-measure-developer-productivity/"
+        "ref_link": "https://www.hatica.io/blog/how-leading-tech-companies-measure-developer-productivity/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "183",
         "ref_name": "gun.io (2025)",
-        "ref_link": "https://gun.io/news/2025/01/how-to-measure-developer-productivity/"
+        "ref_link": "https://gun.io/news/2025/01/how-to-measure-developer-productivity/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "192",
         "ref_name": "Beller et al. (2020)",
-        "ref_link": "https://doi.org/10.1109/MS.2020.3048200"
+        "ref_link": "https://doi.org/10.1109/MS.2020.3048200",
+        "company_size": "N/A"
     },
     {
         "ref_number": "199",
         "ref_name": "Microsoft",
-        "ref_link": "https://techcommunity.microsoft.com/blog/azuredevcommunityblog/putting-tools-in-your-hands-to-improve-developer-productivity/2902225"
+        "ref_link": "https://techcommunity.microsoft.com/blog/azuredevcommunityblog/putting-tools-in-your-hands-to-improve-developer-productivity/2902225",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "201",
         "ref_name": "Lattice",
-        "ref_link": "https://tech.lattice.com/article/measuring-the-lattice-developer-experience-in-a-systematic-way"
+        "ref_link": "https://tech.lattice.com/article/measuring-the-lattice-developer-experience-in-a-systematic-way",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "202",
-        "ref_name": "DX (2025)",
-        "ref_link": "https://getdx.com/podcast/developer-experience-survey-at-peloton/"
+        "ref_name": "Peloton",
+        "ref_link": "https://getdx.com/podcast/developer-experience-survey-at-peloton/",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "203",
         "ref_name": "GitHub",
-        "ref_link": "https://github.blog/news-insights/research/research-how-github-copilot-helps-improve-developer-productivity/"
+        "ref_link": "https://github.blog/news-insights/research/research-how-github-copilot-helps-improve-developer-productivity/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "209",
         "ref_name": "Spotify",
-        "ref_link": "https://backstage.spotify.com/discover/blog/how-spotify-measures-backstage-roi/"
+        "ref_link": "https://backstage.spotify.com/discover/blog/how-spotify-measures-backstage-roi/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "214",
         "ref_name": "Forsgren et al. (2024)",
-        "ref_link": "http://dx.doi.org/10.1145/3643140"
+        "ref_link": "http://dx.doi.org/10.1145/3643140",
+        "company_size": "N/A"
     },
     {
         "ref_number": "232",
         "ref_name": "inorigin (2025)",
-        "ref_link": "https://www.inorigin.eu/how-uber-is-measuring-engineering-productivity-2/"
+        "ref_link": "https://www.inorigin.eu/how-uber-is-measuring-engineering-productivity-2/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "233",
         "ref_name": "Wagner and Deissenboeck (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_4"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_4",
+        "company_size": "N/A"
     },
     {
         "ref_number": "234",
         "ref_name": "Jaspan and  Sadowski (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_2"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_2",
+        "company_size": "N/A"
     },
     {
         "ref_number": "235",
         "ref_name": "Sadowski et al. (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_5"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_5",
+        "company_size": "N/A"
     },
     {
         "ref_number": "236",
         "ref_name": "Vogelezang and Heeringen (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_18"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_18",
+        "company_size": "N/A"
     },
     {
         "ref_number": "237",
         "ref_name": "Ko (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_3"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_3",
+        "company_size": "N/A"
     },
     {
         "ref_number": "238",
         "ref_name": "Murphy-Hill and Wagner (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_7"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_7",
+        "company_size": "N/A"
     },
     {
         "ref_number": "240",
         "ref_name": "Storey and Treude (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_16"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_16",
+        "company_size": "N/A"
     },
     {
         "ref_number": "241",
         "ref_name": "Murphy et al. (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_24"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_24",
+        "company_size": "N/A"
     },
     {
         "ref_number": "243",
         "ref_name": "Brumby et al. (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_9"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_9",
+        "company_size": "N/A"
     },
     {
         "ref_number": "244",
         "ref_name": "Treude and Filho (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_15"
+        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_15",
+        "company_size": "N/A"
     },
     {
         "ref_number": "501",
         "ref_name": "Orosz and Noda (2024)",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "N/A"
     },
     {
         "ref_number": "502",
         "ref_name": "Murphy-Hill et al. (2021)",
-        "ref_link": "https://doi.org/10.1109/TSE.2019.2900308"
+        "ref_link": "https://doi.org/10.1109/TSE.2019.2900308",
+        "company_size": "N/A"
     },
     {
         "ref_number": "503",
         "ref_name": "SPACE Framework",
-        "ref_link": "https://doi.org/10.1145/3454122.3454124"
+        "ref_link": "https://doi.org/10.1145/3454122.3454124",
+        "company_size": "N/A"
     },
     {
         "ref_number": "504",
         "ref_name": "DevEx Framework",
-        "ref_link": "https://doi.org/10.1145/3595878"
+        "ref_link": "https://doi.org/10.1145/3595878",
+        "company_size": "N/A"
     },
     {
         "ref_number": "505",
         "ref_name": "DORA Framework",
-        "ref_link": "https://dora.dev/research/"
+        "ref_link": "https://dora.dev/research/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "506",
         "ref_name": "McKinsey Framework",
-        "ref_link": "https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/yes-you-can-measure-software-developer-productivity#/"
+        "ref_link": "https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/yes-you-can-measure-software-developer-productivity#/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "507",
         "ref_name": "Microsoft",
-        "ref_link": "https://learn.microsoft.com/en-us/assessments/e50f7040-f235-4360-9d1d-cf753e12fed1/"
+        "ref_link": "https://learn.microsoft.com/en-us/assessments/e50f7040-f235-4360-9d1d-cf753e12fed1/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "508",
         "ref_name": "EEBO Framework",
-        "ref_link": "https://www.eebo.org/eebo-metrics-emergence.html"
+        "ref_link": "https://www.eebo.org/eebo-metrics-emergence.html",
+        "company_size": "N/A"
     },
     {
         "ref_number": "509",
         "ref_name": "DXI Framework",
-        "ref_link": "https://getdx.com/research/the-one-number-you-need-to-increase-roi-per-engineer/"
+        "ref_link": "https://getdx.com/research/the-one-number-you-need-to-increase-roi-per-engineer/",
+        "company_size": "N/A"
     },
     {
         "ref_number": "510",
         "ref_name": "Slack",
-        "ref_link": "https://slack.engineering/mobile-developer-experience-at-slack/"
+        "ref_link": "https://slack.engineering/mobile-developer-experience-at-slack/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131a",
         "ref_name": "Dropbox",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Large"
     },
     {
         "ref_number": "131b",
         "ref_name": "Netflix",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131c",
-        "ref_name": "Twitter",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_name": "Twitter/X",
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Large"
     },
     {
         "ref_number": "131d",
         "ref_name": "Mozilla",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "131e",
         "ref_name": "Atlassian",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131f",
         "ref_name": "SonarSource",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "131g",
         "ref_name": "Square",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131h",
         "ref_name": "Etsy",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Large"
     },
     {
         "ref_number": "131i",
-        "ref_name": "stripe",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_name": "Stripe",
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131j",
         "ref_name": "Microsoft",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131k",
         "ref_name": "Amazon (AWS)",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131l",
         "ref_name": "Meta",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131m",
         "ref_name": "Adobe",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131n",
         "ref_name": "Salesforce",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131o",
         "ref_name": "Uber",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131p",
         "ref_name": "used widely",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "N/A"
     },
     {
         "ref_number": "131q",
         "ref_name": "Intel",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131r",
         "ref_name": "IBM",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "131s",
         "ref_name": "GitLab",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "131t",
         "ref_name": "GitHub",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics"
+        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "146a",
         "ref_name": "GitLab",
-        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/"
+        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "146b",
         "ref_name": "Google",
-        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/"
+        "ref_link": "https://getdx.com/blog/developer-productivity-metrics/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "183a",
         "ref_name": "Amazon (AWS)",
-        "ref_link": "https://gun.io/news/2025/01/how-to-measure-developer-productivity/"
+        "ref_link": "https://gun.io/news/2025/01/how-to-measure-developer-productivity/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "202a",
         "ref_name": "Peloton",
-        "ref_link": "https://getdx.com/podcast/developer-experience-survey-at-peloton/"
+        "ref_link": "https://getdx.com/podcast/developer-experience-survey-at-peloton/",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "20a",
         "ref_name": "Google",
-        "ref_link": "https://doi.org/10.1109/MS.2023.3291158"
+        "ref_link": "https://doi.org/10.1109/MS.2023.3291158",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "232a",
         "ref_name": "Uber",
-        "ref_link": "https://www.inorigin.eu/how-uber-is-measuring-engineering-productivity-2/"
+        "ref_link": "https://www.inorigin.eu/how-uber-is-measuring-engineering-productivity-2/",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "32a",
         "ref_name": "Google",
-        "ref_link": "https://doi.org/10.1145/3540250.3558940"
+        "ref_link": "https://doi.org/10.1145/3540250.3558940",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501a",
         "ref_name": "Doordash",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501b",
         "ref_name": "GoodRx",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501c",
         "ref_name": "Amplitude",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501d",
         "ref_name": "Postman",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501e",
         "ref_name": "Intercom",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501f",
         "ref_name": "Notion",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501g",
         "ref_name": "Lattice",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501h",
         "ref_name": "Atlassian",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501i",
         "ref_name": "Etsy",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Large"
     },
     {
         "ref_number": "501j",
-        "ref_name": "stripe",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_name": "Stripe",
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501k",
         "ref_name": "Spotify",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501l",
         "ref_name": "Chime",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "501m",
         "ref_name": "Microsoft",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501n",
         "ref_name": "Uber",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "501o",
         "ref_name": "LinkedIn",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/measuring-developer-productivity-bae",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "5a",
         "ref_name": "Google",
-        "ref_link": "https://doi.org/10.1109/MS.2024.3386027"
+        "ref_link": "https://doi.org/10.1109/MS.2024.3386027",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "6a",
         "ref_name": "Google",
-        "ref_link": "https://doi.org/10.1109/MS.2023.3305718"
+        "ref_link": "https://doi.org/10.1109/MS.2023.3305718",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511",
         "ref_name": "Orosz and Tacho (2025)",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "N/A"
     },
     {
         "ref_number": "511a",
         "ref_name": "GitHub",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511b",
         "ref_name": "Google",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511c",
         "ref_name": "Dropbox",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Large"
     },
     {
         "ref_number": "511d",
         "ref_name": "Monzo",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Large"
     },
     {
         "ref_number": "511e",
         "ref_name": "Atlassian",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511f",
         "ref_name": "Adyen",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Large"
     },
     {
         "ref_number": "511g",
         "ref_name": "Booking.com",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511h",
         "ref_name": "Grammarly",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511i",
         "ref_name": "Glassdoor",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511j",
         "ref_name": "Webflow",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511k",
         "ref_name": "Toast",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511l",
         "ref_name": "eBay",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511m",
         "ref_name": "CircleCI",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511n",
         "ref_name": "CarGurus",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Mid-size"
     },
     {
         "ref_number": "511o",
         "ref_name": "T-Mobile",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511p",
         "ref_name": "Xero",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Large"
     },
     {
         "ref_number": "511q",
         "ref_name": "Vanguard",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "511r",
         "ref_name": "Microsoft",
-        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai"
+        "ref_link": "https://newsletter.pragmaticengineer.com/p/how-tech-companies-measure-the-impact-of-ai",
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "512",
         "ref_name": "DX (2025)",
-        "ref_link": "https://getdx.com/uploads/ai-measurement-framework.pdf"
+        "ref_link": "https://getdx.com/uploads/ai-measurement-framework.pdf",
+        "company_size": "N/A"
     },
     {
         "ref_number": "513",
         "ref_name": "Chen (2026)",
-        "ref_link": "https://arxiv.org/pdf/2602.03593"
+        "ref_link": "https://arxiv.org/pdf/2602.03593",
+        "company_size": "N/A"
     }
 ]

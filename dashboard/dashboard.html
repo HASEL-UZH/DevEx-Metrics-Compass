@@ -116,19 +116,15 @@
                 </select>
             </div>
 
-            <!-- Filter for large companies vs. small companies. Companies dropdown -->
+            <!-- Filter by company size -->
             <div class="filter-group">
                 <label>Company size</label>
                 <div class="filter-description">Filter by the size of companies that use the metric.</div>
-                <!-- <div class="filter-description">
-                    Use this filter to distinguish between large and smaller companies. In terms of simplicity, the
-                    following companies have been categorized as large companies: <strong>Amazon, Facebook / Meta,
-                        Google and Microsoft</strong>. Apple is not included as there is no publicly available
-                    information on developer productivity metrics used.
-                </div> -->
-                <button id="all-company" class="filter-btn active" data-filter="all" data-group="company">All</button>
-                <button id="big-company" class="filter-btn" data-filter="1" data-group="company">Big Four (Microsoft, Google, Meta, Amazon)</button>
-                <button id="small-company" class="filter-btn" data-filter="0" data-group="company">Smaller Companies</button>
+                <button class="filter-btn active" data-filter="all" data-group="companySize">All</button>
+                <button class="filter-btn" data-filter="Enterprise" data-group="companySize">Enterprise (5000+ developers)</button>
+                <button class="filter-btn" data-filter="Large" data-group="companySize">Large (501–5000 developers)</button>
+                <button class="filter-btn" data-filter="Mid-size" data-group="companySize">Mid-size (51–500 developers)</button>
+                <button class="filter-btn" data-filter="Small" data-group="companySize">Small (1–50 developers)</button>
             </div>
 
             <div class="line"></div>
@@ -719,13 +715,13 @@
 
                 <p>
                     <strong>Task: </strong>See what competitors do, especially large companies. What are metrics that are used / collected a lot? Identify gaps in the metrics and develop new metrics. <br>
-                        <em>All metrics used by large companies (Amazon, Facebook / Meta, Google and Microsoft) are shown when you click on the "Show metrics" button.</em>
+                        <em>All metrics used by enterprise-size companies (5000+ developers) are shown when you click on the "Show metrics" button.</em>
                 </p>
 
                 <div>
                     <button class="overlay-action-button go-back-btn" data-target-screen="question4-screen">Go
                         back</button>
-                    <button class="overlay-action-button show-metrics-btn" data-filter-company="1">Show metrics</button>
+                    <button class="overlay-action-button show-metrics-btn" data-filter-company-size="Enterprise">Show metrics</button>
                 </div>
 
             </div>
