@@ -57,10 +57,10 @@ function showCustomTooltip(metricData, event) {
 
     let typeTagClass = '';
     let typeTagText = '';
-    if (metricType === 'survey-based') {
+    if (metricType === 'survey') {
         typeTagClass = 'survey-based';
         typeTagText = 'Qualitative';
-    } else if (metricType === 'telemetry/log-based') {
+    } else if (metricType === 'telemetry') {
         typeTagClass = 'telemetry-log-based';
         typeTagText = 'Automated';
     }

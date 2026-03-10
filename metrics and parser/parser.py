@@ -94,7 +94,7 @@ for idx, series in df.iterrows():
         "alsoknownas": alsoknownas,
         "company": series["Company"],
         "research": series["Research"],
-        "type": series["Qual vs. quant"],
+        "type": series["Data Collection Type"],
         "value": series["value"],
         "company_mentions": series["Number of companies"],
         "research_mentions": series["Number of research"],
