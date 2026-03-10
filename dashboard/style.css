@@ -540,41 +540,14 @@ footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 16px;
     padding: 6px 14px;
     font-size: 11px;
     color: #999;
-    background-color: rgba(255, 255, 255, 0.92);
+    background-color: rgba(255, 255, 255, 0.85);
     border-top: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-top-right-radius: 8px;
     z-index: 5;
-}
-
-.footer-logos {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.footer-hasel-logo {
-    height: 28px;
-    width: auto;
-    filter: grayscale(100%);
-}
-
-.footer-uzh-logo {
-    height: 22px;
-    width: auto;
-    filter: grayscale(100%);
-}
-
-.footer-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
 }
 
 footer a {
