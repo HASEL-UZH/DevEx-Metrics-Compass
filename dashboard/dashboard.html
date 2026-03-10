@@ -79,11 +79,11 @@
                 <div class="filter-description">
                     Filter by how data is collected: qualitatively (surveys, interviews) or automatically (logs, telemetry).
                 </div>
-                <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
-                <button id="quantitative" class="filter-btn" data-filter="survey"
-                    data-group="dataType">📋 Qualitative</button>
-                <button id="qualitative" class="filter-btn" data-filter="telemetry"
-                    data-group="dataType">⚙️ Automated</button>
+                <div class="segmented-control">
+                    <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
+                    <button id="quantitative" class="filter-btn" data-filter="survey" data-group="dataType">📋 Qualitative</button>
+                    <button id="qualitative" class="filter-btn" data-filter="telemetry" data-group="dataType">⚙️ Automated</button>
+                </div>
             </div>
 
             <!-- Filter for AI metrics -->
@@ -92,9 +92,11 @@
                 <div class="filter-description">
                     Filter by whether a metric is specific to AI-assisted development (e.g. Copilot, Cursor, Claude Code).
                 </div>
-                <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
-                <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">🤖 AI metrics only</button>
-                <button id="no-ai" class="filter-btn" data-filter="no-ai" data-group="aiMetric">👤 No AI metrics</button>
+                <div class="segmented-control">
+                    <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
+                    <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">🤖 AI metrics only</button>
+                    <button id="no-ai" class="filter-btn" data-filter="no-ai" data-group="aiMetric">👤 No AI metrics</button>
+                </div>
             </div>
 
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
@@ -104,7 +106,7 @@
                     Filter by whether a metric appears in research, industry, or both:
                 </div>
                 <select id="focus-dropdown" class="company-dropdown">
-                    <option value="all">Appears in research or industry</option>
+                    <option value="all">Appears in industry or research</option>
                     <option value="research-only">Appears only in research</option>
                     <option value="industry-only">Appears only in industry</option>
                     <option value="research-and-industry">Appears in industry *and* research</option>
@@ -126,12 +128,14 @@
             <!-- Filter by company size -->
             <div class="filter-group">
                 <label>Company size</label>
-                <div class="filter-description">Filter by the size of companies that use the metric.</div>
-                <button class="filter-btn active" data-filter="all" data-group="companySize">All</button>
-                <button class="filter-btn" data-filter="Enterprise" data-group="companySize">🏢 Enterprise (5000+ developers)</button>
-                <button class="filter-btn" data-filter="Large" data-group="companySize">🏬 Large (501–5000 developers)</button>
-                <button class="filter-btn" data-filter="Mid-size" data-group="companySize">🏠 Mid-size (51–500 developers)</button>
-                <button class="filter-btn" data-filter="Small" data-group="companySize">🏡 Small (1–50 developers)</button>
+                <div class="filter-description">Filter by the size of companies that use the metric: Small (1–50), Mid-size (51–500), Large (501–5000), Enterprise (5000+).</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="companySize">All</button>
+                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize">🏢 Enterprise</button>
+                    <button class="filter-btn" data-filter="Large" data-group="companySize">🏬 Large</button>
+                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize">🏠 Mid-size</button>
+                    <button class="filter-btn" data-filter="Small" data-group="companySize">🏡 Small</button>
+                </div>
             </div>
 
             <!-- Filter by outcome goals -->
@@ -148,10 +152,12 @@
             <div class="filter-group">
                 <label>Ease of collection</label>
                 <div class="filter-description">Filter by how easy the metric is to collect.</div>
-                <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
-                <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🟢 Easy</button>
-                <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">🟡 Moderate</button>
-                <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔴 Complex</button>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
+                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🟢 Easy</button>
+                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">🟡 Moderate</button>
+                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔴 Complex</button>
+                </div>
             </div>
 
             <!-- Shortlist for metrics, exportable as CSV file -->
