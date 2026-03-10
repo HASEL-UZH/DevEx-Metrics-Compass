@@ -881,6 +881,43 @@ a {
     flex: 1;
 }
 
+/* Changelog overlay */
+.changelog-overlay-content {
+    max-width: 700px;
+    text-align: left;
+    align-items: flex-start;
+}
+
+.changelog-overlay-content h2 {
+    align-self: center;
+}
+
+.changelog-entries {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.changelog-entry {
+    margin-bottom: 24px;
+}
+
+.changelog-date {
+    font-weight: bold;
+    font-size: 14px;
+    color: #1B1AFF;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+}
+
+.changelog-entry ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
 /* Compass icon above the welcome heading */
 .overlay-compass-icon {
     margin-bottom: 8px;

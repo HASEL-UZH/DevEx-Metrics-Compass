@@ -117,6 +117,28 @@ document.getElementById('start-assessment-btn').addEventListener('click', () => 
     updateHintVisibility();
 });
 
+// Changelog open/close
+const changelogOverlay = document.getElementById('changelogOverlay');
+
+function openChangelog() {
+    changelogOverlay.style.display = 'flex';
+}
+
+function closeChangelog() {
+    changelogOverlay.style.display = 'none';
+}
+
+['openChangelogBtnFooter', 'openChangelogBtnOverlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', (e) => { e.preventDefault(); openChangelog(); });
+});
+
+document.getElementById('closeChangelogBtn').addEventListener('click', closeChangelog);
+
+changelogOverlay.addEventListener('click', (e) => {
+    if (e.target === changelogOverlay) closeChangelog();
+});
+
 // "Switch exploration mode" button — reopens the welcome screen to change mode
 openMaturityAssessmentBtn.addEventListener('click', () => {
     myOverlay.style.display = 'flex';
