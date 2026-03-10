@@ -4,7 +4,7 @@
 1.  Navigate to the **"metrics"** sheet.
     * Add the new metric to the first empty row.
     * Continue the numbering in **column A**.
-    * Fill in the metric's name (**column B**), synonyms (**column C**), description (**column F**), type (**column G**), AI specific category (**column P**) and Related Metrics (**column Q**).
+    * Fill in the metric's name (**column B**), synonyms (**column C**), description (**column F**), type (**column G**), AI specific category (**column P**), Outcome Goals (**column Q**), and Related Metrics (**column R**).
 2.  Assign a category.
     * Check the **"cardsort_group_IDs"** sheet.
     * If the category already exists, paste its Name into **column H** and copy the formula from the cell above for **column I**.
