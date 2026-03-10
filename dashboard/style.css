@@ -240,7 +240,7 @@ body {
     display: flex;
     width: 100%;
     border: 1px solid #dddddd;
-    border-radius: 8px;
+    border-radius: 40px;
     overflow: hidden;
     margin-bottom: 8px;
     box-sizing: border-box;

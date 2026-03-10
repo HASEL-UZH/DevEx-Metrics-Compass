@@ -128,13 +128,13 @@
             <!-- Filter by company size -->
             <div class="filter-group">
                 <label>Company size</label>
-                <div class="filter-description">Filter by the size of companies that use the metric: Small (1–50), Mid-size (51–500), Large (501–5000), Enterprise (5000+).</div>
+                <div class="filter-description">Filter by the size of companies that use the metric:</div>
                 <div class="segmented-control">
-                    <button class="filter-btn active" data-filter="all" data-group="companySize">All</button>
-                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize">🏢 Enterprise</button>
-                    <button class="filter-btn" data-filter="Large" data-group="companySize">🏬 Large</button>
-                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize">🏠 Mid-size</button>
-                    <button class="filter-btn" data-filter="Small" data-group="companySize">🏡 Small</button>
+                    <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
+                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
+                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large: 501–5000 developers">🏬 Large</button>
+                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size: 51–500 developers">🏠 Mid-size</button>
+                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small: 1–50 developers">🏡 Small</button>
                 </div>
             </div>
 
@@ -143,9 +143,9 @@
                 <label>Outcome goals</label>
                 <div class="filter-description">Filter by the intended outcome goal of the metric.</div>
                 <button class="filter-btn active" data-filter="all" data-group="outcomeGoals">All</button>
-                <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals">🧑‍💻 Developer Experience</button>
-                <button class="filter-btn" data-filter="Product Excellence" data-group="outcomeGoals">⭐ Product Excellence</button>
-                <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals">📈 Organizational Effectiveness</button>
+                <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals" title="Developer Experience: metrics about developer well-being, satisfaction, flow, focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">🧑‍💻 Developer Experience</button>
+                <button class="filter-btn" data-filter="Product Excellence" data-group="outcomeGoals" title="Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects). Aligned with H.E.A.R.T.-style frameworks.">⭐ Product Excellence</button>
+                <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals" title="Organizational Effectiveness: metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">📈 Organizational Effectiveness</button>
             </div>
 
             <!-- Filter by ease of collection -->
@@ -154,9 +154,9 @@
                 <div class="filter-description">Filter by how easy the metric is to collect.</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
-                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🟢 Easy</button>
-                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">🟡 Moderate</button>
-                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔴 Complex</button>
+                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection" title="Easy — Available out-of-the-box from standard tooling or a single survey question. No custom instrumentation required.">🟢 Easy</button>
+                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection" title="Moderate — Requires combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.">🟡 Moderate</button>
+                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection" title="Complex — Requires significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.">🔴 Complex</button>
                 </div>
             </div>
 
