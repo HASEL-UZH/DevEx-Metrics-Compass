@@ -32,7 +32,8 @@ function createChart(data) {
                 value: point.get('value'),
                 is_research: point.get('is_research'),
                 ai_specific_category: point.get('ai_specific_category'),
-                outcome_goals: point.get('outcome_goals')
+                outcome_goals: point.get('outcome_goals'),
+                ease_of_collection: point.get('ease_of_collection')
             };
             showCustomTooltip(metricData, e.originalEvent);
         }
@@ -54,6 +55,7 @@ function showCustomTooltip(metricData, event) {
     const metricIs_Research = metricData.is_research;
     const metricAISpecificCategory = metricData.ai_specific_category;
     const metricOutcomeGoals = metricData.outcome_goals;
+    const metricEaseOfCollection = metricData.ease_of_collection;
 
     let typeTagClass = '';
     let typeTagText = '';
@@ -137,6 +139,7 @@ function showCustomTooltip(metricData, event) {
                 ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
                 ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">${s} Company</span>`).join('')}
                 ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${metricOutcomeGoals}</span>` : ''}
+                ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${metricEaseOfCollection} to collect</span>` : ''}
         </div>
         <br>
         <button data-metric-id="${metricId}">Add to selected metrics</button>

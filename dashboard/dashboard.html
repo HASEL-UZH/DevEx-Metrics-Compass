@@ -144,6 +144,16 @@
                 <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals">Organizational Effectiveness</button>
             </div>
 
+            <!-- Filter by ease of collection -->
+            <div class="filter-group">
+                <label>Ease of collection</label>
+                <div class="filter-description">Filter by how easy the metric is to collect.</div>
+                <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
+                <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">Easy</button>
+                <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">Moderate</button>
+                <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">Complex</button>
+            </div>
+
             <!-- Shortlist for metrics, exportable as CSV file -->
             <div class="line"></div>
             <div class="clicked-metrics">
@@ -895,6 +905,7 @@
                     <ul>
                         <li>Redesigned getting started with three exploration modes: <em>Guided selection</em>, <em>Browse all metrics</em>, and <em>Explore by filtering</em></li>
                         <li>Added <em>Outcome Goals</em> as a filter dimension (Developer Experience, Product Excellence, Organizational Effectiveness)</li>
+                        <li>Added <em>Ease of Collection</em> as a filter dimension (Easy, Moderate, Complex)</li>
                     </ul>
                 </div>
 

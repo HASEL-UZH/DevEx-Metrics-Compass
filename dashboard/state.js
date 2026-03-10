@@ -39,6 +39,7 @@ let activeFilters = {
     focus: 'all',
     companySize: 'all',
     outcomeGoals: 'all',
+    easeOfCollection: 'all',
     specificCompany: 'all',
     specificFramework: 'all',
     minMentions: 0

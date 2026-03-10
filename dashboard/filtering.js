@@ -185,6 +185,7 @@ function hasAnyActiveFilter() {
         activeFilters.focus !== 'all' ||
         activeFilters.companySize !== 'all' ||
         activeFilters.outcomeGoals !== 'all' ||
+        activeFilters.easeOfCollection !== 'all' ||
         activeFilters.specificCompany !== 'all' ||
         activeFilters.specificFramework !== 'all' ||
         activeFilters.minMentions > sliderMin;
@@ -208,6 +209,7 @@ function filterData() {
         if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) { matches = false; }
         if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) { matches = false; }
         if (activeFilters.outcomeGoals !== 'all' && item.outcome_goals !== activeFilters.outcomeGoals) { matches = false; }
+        if (activeFilters.easeOfCollection !== 'all' && item.ease_of_collection !== activeFilters.easeOfCollection) { matches = false; }
 
         if (specificCompany !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.name === specificCompany))) { matches = false; }
         if (specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(source => source.name === specificFramework))) { matches = false; }
@@ -320,6 +322,7 @@ function clearAllFilters() {
         focus: 'all',
         companySize: 'all',
         outcomeGoals: 'all',
+        easeOfCollection: 'all',
         specificCompany: 'all',
         specificFramework: 'all',
         minMentions: 0

@@ -811,6 +811,31 @@ a {
     color: #1a3a80;
 }
 
+.metric-ease-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-left: 5px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.metric-ease-tag.ease-easy {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.metric-ease-tag.ease-moderate {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+.metric-ease-tag.ease-complex {
+    background-color: #fce4ec;
+    color: #b71c1c;
+}
+
 /* Welcome screen cards */
 .welcome-cards {
     display: grid;
