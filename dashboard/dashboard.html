@@ -86,19 +86,6 @@
                 </div>
             </div>
 
-            <!-- Filter for AI metrics -->
-            <div class="filter-group">
-                <label>AI metrics</label>
-                <div class="filter-description">
-                    Filter by whether a metric is specific to AI-assisted development (e.g. Copilot, Cursor, Claude Code).
-                </div>
-                <div class="segmented-control">
-                    <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
-                    <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">🤖 AI metrics only</button>
-                    <button id="no-ai" class="filter-btn" data-filter="no-ai" data-group="aiMetric">👤 No AI metrics</button>
-                </div>
-            </div>
-
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
             <div class="filter-group">
                 <label>Research or industry focus</label>
@@ -135,6 +122,19 @@
                     <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large: 501–5000 developers">🏬 Large</button>
                     <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size: 51–500 developers">🏠 Mid-size</button>
                     <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small: 1–50 developers">🏡 Small</button>
+                </div>
+            </div>
+            
+            <!-- Filter for AI metrics -->
+            <div class="filter-group">
+                <label>AI metrics</label>
+                <div class="filter-description">
+                    Filter by whether a metric is specific to AI-assisted development (e.g. Copilot, Cursor, Claude Code).
+                </div>
+                <div class="segmented-control">
+                    <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
+                    <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">🤖 AI metrics only</button>
+                    <button id="no-ai" class="filter-btn" data-filter="no-ai" data-group="aiMetric">👤 No AI metrics</button>
                 </div>
             </div>
 
@@ -190,7 +190,7 @@
             <a href="https://uzh.ch" target="_blank"><img src="uzh-logo.svg" alt="UZH Logo" class="footer-uzh-logo"></a>
         </div>
         <div class="footer-text">
-            <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric / error</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
+            <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
             <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a systematic literature review and does not claim to be exhaustive.</div>
         </div>
     </footer>
