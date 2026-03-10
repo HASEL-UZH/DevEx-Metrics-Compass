@@ -4,7 +4,7 @@ import json
 from itertools import cycle
 
 # set names of excel and sheets
-metrics_excel = "final_list_of_metrics.xlsx"
+metrics_excel = "DevEx_Metrics.xlsx"
 sheet_with_metrics = "metrics"
 sheet_with_sources = "urls"
 
