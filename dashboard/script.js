@@ -42,6 +42,15 @@ let activeFilters = {
     minMentions: 0 // min mentions slider
 };
 
+// Named mode constants for clarity and logging
+const MODE = { BROWSE: 'browse', ADDITIVE: 'additive', GUIDED: 'guided' };
+let currentMode = MODE.BROWSE;
+
+// In additive mode, tracks whether the canvas should be blank.
+// true = blank canvas (entry state or after "Clear all filters").
+// false = show matching metrics (set whenever the user interacts with any filter).
+let additiveBlankCanvas = false;
+
 // Store clicked metrics
 let clickedMetrics = [];
 
@@ -85,25 +94,34 @@ function updateHintVisibility() {
 showOverlayScreen(initialChoiceScreen);
 updateHintVisibility();
 
-// Start from scratch button
+// Start additive (explore by filtering) button
+document.getElementById('start-additive-btn').addEventListener('click', () => {
+    myOverlay.style.display = 'none';
+    currentMode = MODE.ADDITIVE;
+    clearAllFilters(); // resets filters and calls filterData()
+    updateHintVisibility();
+});
+
+// Start from scratch (browse all) button
 document.getElementById('start-scratch-btn').addEventListener('click', () => {
-    myOverlay.style.display = 'none'; // Hide the overlay
-    clearAllFilters(); // Ensure no filters are active by default 
-    updateHintVisibility(); // Update hint visibility after hiding overlay
+    myOverlay.style.display = 'none';
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+    updateHintVisibility();
 });
 
 // Start maturity assessment button
 document.getElementById('start-assessment-btn').addEventListener('click', () => {
-    myOverlay.style.display = 'flex'; // Ensure overlay is visible if not already
-    showOverlayScreen(question1Screen); // Go to the first question
-    updateHintVisibility(); // Update hint visibility after activating overlay
+    myOverlay.style.display = 'flex';
+    showOverlayScreen(question1Screen);
+    updateHintVisibility();
 });
 
-// Event listener for the button outside the overlay to open Maturity Assessment directly
+// "Switch exploration mode" button — reopens the welcome screen to change mode
 openMaturityAssessmentBtn.addEventListener('click', () => {
-    myOverlay.style.display = 'flex'; // Make the overlay visible
-    showOverlayScreen(question1Screen); // Jump directly to Question 1 of the assessment
-    updateHintVisibility(); // Update hint visibility after activating overlay
+    myOverlay.style.display = 'flex';
+    showOverlayScreen(initialChoiceScreen);
+    updateHintVisibility();
 });
 
 // Close overlay button
@@ -171,7 +189,8 @@ document.querySelectorAll('.go-back-btn').forEach(button => {
 // Show metrics buttons ---
 document.querySelectorAll('.show-metrics-btn').forEach(button => {
     button.addEventListener('click', function() {
-        myOverlay.style.display = 'none'; // Hide overlay
+        myOverlay.style.display = 'none';
+        currentMode = MODE.GUIDED; // user arrived via the guided assessment
         clearAllFilters(); // Clear previous filters first
 
         // Apply specific filters based on data attributes
@@ -706,7 +725,22 @@ function populateFrameworkDropdown(frameworks, selectedFramework) {
     dropdown.value = selectedFramework || 'all';
 }
 
-// Function to filter data 
+// Returns true if the user has applied any filter (used for additive mode)
+function hasAnyActiveFilter() {
+    const keyword = document.getElementById('keyword-search').value.trim();
+    const sliderMin = minMentionsSlider ? parseInt(minMentionsSlider.min) : 0;
+    return keyword !== '' ||
+        activeFilters.dataType !== 'all' ||
+        activeFilters.aiMetric !== 'all' ||
+        activeFilters.focus !== 'all' ||
+        activeFilters.companySize !== 'all' ||
+        activeFilters.outcomeGoals !== 'all' ||
+        activeFilters.specificCompany !== 'all' ||
+        activeFilters.specificFramework !== 'all' ||
+        activeFilters.minMentions > sliderMin;
+}
+
+// Function to filter data
 function filterData() {
     const keyword = document.getElementById('keyword-search').value.toLowerCase();
     const specificCompany = activeFilters.specificCompany;
@@ -787,23 +821,44 @@ function filterData() {
         }
     });
 
-    updateMetricsCount(actualMatchingMetrics);
-
     const availableCompanies = extractCompanies(originalData, activeFilters);
     populateCompanyDropdown(availableCompanies, activeFilters.specificCompany);
 
     const availableFrameworks = extractFrameworks(originalData, activeFilters);
     populateFrameworkDropdown(availableFrameworks, activeFilters.specificFramework);
 
-    if (actualMatchingMetrics.length === 0) {
+    const additiveModeMessage = document.getElementById('additive-mode-message');
+    const rightContainer = document.querySelector('.right-container');
+
+    if (currentMode === MODE.ADDITIVE && additiveBlankCanvas) {
+        // Additive mode in blank-canvas state: show hint, hide chart
+        if (chart) {
+            chart.dispose();
+            chart = null;
+        }
+        noMetricsMessage.style.display = 'none';
+        if (additiveModeMessage) additiveModeMessage.style.display = 'block';
+        updateMetricsCount([]);
+    } else if (actualMatchingMetrics.length === 0) {
         if (chart) {
             chart.dispose();
             chart = null;
         }
         noMetricsMessage.style.display = 'block';
+        if (additiveModeMessage) additiveModeMessage.style.display = 'none';
+        updateMetricsCount(actualMatchingMetrics);
     } else {
         noMetricsMessage.style.display = 'none';
+        if (additiveModeMessage) additiveModeMessage.style.display = 'none';
+        updateMetricsCount(actualMatchingMetrics);
         createChart(filteredData);
+    }
+
+    // Toggle neutral filter visuals in additive blank-canvas state
+    if (currentMode === MODE.ADDITIVE && additiveBlankCanvas) {
+        rightContainer.classList.add('mode-additive-unset');
+    } else {
+        rightContainer.classList.remove('mode-additive-unset');
     }
 
     updateClearFiltersVisibility(actualMatchingMetrics.length);
@@ -823,39 +878,46 @@ function updateMetricsCount(data) {
     document.getElementById('metrics-count').textContent = metricsWithType.length;
 }
 
+// Wrapper called by all user-triggered filter interactions.
+// Clears the blank-canvas state so the user's action reveals metrics.
+function onUserFilterChange() {
+    additiveBlankCanvas = false;
+    filterData();
+}
+
 // Handle button clicks for filters
 document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', function() {
         const filterGroup = this.dataset.group;
         const filterValue = this.dataset.filter;
-        applySpecificFilter(filterGroup, filterValue, filterGroup); // Use applySpecificFilter
-        filterData();
+        applySpecificFilter(filterGroup, filterValue, filterGroup);
+        onUserFilterChange();
     });
 });
 
 // Handle company dropdown change
 document.getElementById('company-dropdown').addEventListener('change', function() {
-    applySpecificFilter('specificCompany', this.value); 
-    filterData();
+    applySpecificFilter('specificCompany', this.value);
+    onUserFilterChange();
 });
 
 // Handle research/industry focus dropdown change
 document.getElementById('focus-dropdown').addEventListener('change', function() {
     applySpecificFilter('focus', this.value);
-    filterData();
+    onUserFilterChange();
 });
 
 // Handle research dropdown change
 document.getElementById('research-dropdown').addEventListener('change', function() {
     applySpecificFilter('specificFramework', this.value);
-    filterData();
+    onUserFilterChange();
 });
 
-// Handle radio button changes 
+// Handle radio button changes
 document.querySelectorAll('input[name="dataType"]').forEach(radio => {
     radio.addEventListener('change', function() {
         activeFilters.dataType = this.value;
-        filterData();
+        onUserFilterChange();
     });
 });
 
@@ -864,7 +926,7 @@ minMentionsSlider.addEventListener('input', function() {
     let minValue = parseInt(this.value);
     activeFilters.minMentions = minValue;
     minMentionsDisplay.textContent = minValue;
-    filterData();
+    onUserFilterChange();
 });
 
 // Handle clear all clicked metrics button
@@ -880,7 +942,7 @@ document.getElementById('clear-filters').addEventListener('click', function() {
 });
 
 // Handle keyword search
-document.getElementById('keyword-search').addEventListener('input', filterData);
+document.getElementById('keyword-search').addEventListener('input', onUserFilterChange);
 
 // Set active button style
 function setActiveButton(activeBtn) {
@@ -970,8 +1032,10 @@ function toggleShortlist(titleEl) {
     chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
 }
 
-// Function to clear all filters
+// Function to clear all filters (currentMode is intentionally NOT reset here —
+// in additive mode this returns to the blank canvas; in browse mode it shows all metrics)
 function clearAllFilters() {
+    if (currentMode === MODE.ADDITIVE) additiveBlankCanvas = true;
     activeFilters = {
         dataType: 'all',
         aiMetric: 'all',

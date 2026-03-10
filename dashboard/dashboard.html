@@ -28,20 +28,27 @@
                 No metrics match the current filters. Adapt or clear the filters.<br><br>
             </div>
 
+            <div id="additive-mode-message" class="centered-message" style="display: none;">
+                Apply a filter to start discovering metrics.<br><br>
+            </div>
+
         </div>
 
         <!-- Container containing the filters -->
         <div class="right-container">
             <div class="controls-title">
-                Showing <span id="metrics-count"></span> developer experience metrics
+                Exploring <span id="metrics-count"></span> DevEx metrics
             </div>
             <!-- <div class="filter-metrics-title">Apply filters on metrics</div> -->
             <!-- <div class="filter-description">Use the filters below to narrow down.</div> -->
             
             <!-- Clear filters and start maturity assessment buttons -->
             <div>
+                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Switch exploration mode</button>
                 <button class="clear-filters-button" id="clear-filters" style="display: none;">Clear all filters</button>
-            </div>
+            </div>                            
+
+            <!-- <div class="line"></div> -->
 
             <!-- Keyword search field -->
             <div class="filter-group">
@@ -137,15 +144,6 @@
                 <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals">Organizational Effectiveness</button>
             </div>
 
-            <div class="line"></div>
-            <div>
-                <div class="controls-title">Guided metrics selection</div>
-                <div class="filter-description">Not sure where to start? Use our guided selection to find the right metrics for your organization or team.</div>
-                <button class="start-maturity-button" id="openMaturityAssessmentBtn" style="margin-top: 10px;">
-                    Start guided metrics selection
-                </button>
-            </div>
-
             <!-- Shortlist for metrics, exportable as CSV file -->
             <div class="line"></div>
             <div class="clicked-metrics">
@@ -176,7 +174,7 @@
             <a href="https://uzh.ch" target="_blank"><img src="uzh-logo.svg" alt="UZH Logo" class="footer-uzh-logo"></a>
         </div>
         <div class="footer-text">
-            <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Dr. André Meyer</a>, Patrick Meyer &amp; Prof. Dr. Thomas Fritz at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &nbsp;|&nbsp; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric / error</a></div>
+            <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &nbsp;|&nbsp; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric / error</a></div>
             <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a systematic literature review and does not claim to be exhaustive.</div>
         </div>
     </footer>
@@ -196,19 +194,49 @@
 
             <!-- Landing page -->
             <div id="initial-choice-screen" class="overlay-screen">
+                <div class="overlay-compass-icon">
+                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="28" cy="28" r="26" fill="#e8eafd" stroke="#1B1AFF" stroke-width="2"/>
+                        <polygon points="28,10 32,28 28,32 24,28" fill="#1B1AFF"/>
+                        <polygon points="28,46 32,28 28,24 24,28" fill="#1B1AFF" opacity="0.25"/>
+                        <circle cx="28" cy="28" r="3.5" fill="#1B1AFF"/>
+                        <line x1="28" y1="4" x2="28" y2="10" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="28" y1="46" x2="28" y2="52" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4" y1="28" x2="10" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="46" y1="28" x2="52" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 <h2>Welcome to the Developer Experience Metrics Compass</h2>
-                <p>This dashboard provides an overview of developer experience metrics used in research and by practitioners. It does not claim to be exhaustive.
-                    <br>The goal of this dashboard is to help teams and companies of all developer experience maturity levels discover new metrics that can be applied in their organization.
-                    </p>
-                <p><strong>How to use this website: </strong>you can use this website by either Browse through metrics or by starting with a maturity assessment of your team / company.
-                    <br>Once you are in the metric overview you can apply filters, search for research frameworks or companies or delve deeper into specific topics. <br>
-                    By hovering over a metric details regarding the metric are shown. If you click on a metric it is added onto a watch list and can be exported once you are happy
-                    with your selection.<br><br>
-                    <strong>Do you want to start with a maturity level assessment or start from scratch (browse through metrics)?</strong>
+                <p>
+                    Frameworks like SPACE, DORA, and others have introduced a broad range of developer
+                    experience metrics &mdash; from satisfaction and flow to deployment frequency and code churn.
+                    But with abundance comes a challenge: <strong>which metrics actually matter</strong> for <em>your</em> team, context, and goals?
                 </p>
-                <div>
-                    <button class="overlay-action-button" id="start-scratch-btn">Start from Scratch</button>
-                    <button class="overlay-action-button" id="start-assessment-btn">Maturity Assessment</button>
+                <p>
+                    The DevEx Metrics Compass <strong>curates metrics from both research and industry</strong>, making them
+                    explorable across multiple dimensions &mdash; automated vs. qualitative data collection,
+                    research or industry origin, outcome goals, company size, and GenAI relevance.
+                </p>
+                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Choose how you'd like to start:</p>
+                <div class="welcome-cards">
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
+                        <div class="welcome-card-title">Guided selection</div>
+                        <div class="welcome-card-description">Answer a few questions about metrics that interest you to get tailored recommendations.</div>
+                        <button class="overlay-action-button" id="start-assessment-btn">Start guided selection</button>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--browse">&#8801;</div>
+                        <div class="welcome-card-title">Browse all metrics</div>
+                        <div class="welcome-card-description">See all metrics at once and narrow them down using filters.</div>
+                        <button class="overlay-action-button" id="start-scratch-btn">Show all metrics</button>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--additive">+</div>
+                        <div class="welcome-card-title">Explore by filtering</div>
+                        <div class="welcome-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
+                        <button class="overlay-action-button" id="start-additive-btn">Start exploring</button>
+                    </div>
                 </div>
             </div>
 
@@ -843,6 +871,12 @@
                     <button class="overlay-action-button show-metrics-btn" data-filter-all="true">Show metrics</button>
                 </div>
 
+            </div>
+
+            <div class="overlay-footer">
+                Developer Experience Metrics Compass</em>
+                &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
+                <a href="https://hasel.dev" target="_blank">HASEL</a>, University of Zurich
             </div>
 
         </div>
