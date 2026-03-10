@@ -528,22 +528,19 @@ footer {
 .footer-hasel-logo {
     height: 28px;
     width: auto;
+    filter: grayscale(100%);
 }
 
 .footer-uzh-logo {
     height: 22px;
     width: auto;
+    filter: grayscale(100%);
 }
 
 .footer-text {
     display: flex;
     flex-direction: column;
     gap: 2px;
-}
-
-.footer-disclaimer {
-    color: #bbb;
-    font-style: italic;
 }
 
 footer a {
