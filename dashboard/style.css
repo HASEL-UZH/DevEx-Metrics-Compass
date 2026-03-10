@@ -506,14 +506,44 @@ footer {
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
     padding: 6px 14px;
     font-size: 11px;
     color: #999;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.92);
     border-top: 1px solid #e0e0e0;
-    border-right: 1px solid #e0e0e0;
-    border-top-right-radius: 8px;
     z-index: 5;
+}
+
+.footer-logos {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.footer-hasel-logo {
+    height: 28px;
+    width: auto;
+}
+
+.footer-uzh-logo {
+    height: 22px;
+    width: auto;
+}
+
+.footer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.footer-disclaimer {
+    color: #bbb;
+    font-style: italic;
 }
 
 footer a {
@@ -616,12 +646,6 @@ tr:last-child td {
 }
 
 /* UZH logo for landing page */
-.uzh-logo {
-    width: 400px; 
-    height: auto; 
-    text-align: left;
-    margin-bottom: 20px;
-}
 
 /* New color for links */
 a {
