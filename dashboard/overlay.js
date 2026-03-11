@@ -190,7 +190,12 @@ document.querySelectorAll('.skip-wizard-btn').forEach(btn => {
 
 document.querySelectorAll('.go-back-btn').forEach(button => {
     button.addEventListener('click', function() {
-        const targetScreen = document.getElementById(this.dataset.targetScreen);
+        let targetId = this.dataset.targetScreen;
+        // (special case) Skip Q4 on the way back unless "used in practice" was chosen in Q3 (only that path includes Q4)
+        if (targetId === 'question4-screen' && wizardAnswers.focus !== 'industry-only') {
+            targetId = 'question3-screen';
+        }
+        const targetScreen = document.getElementById(targetId);
         if (targetScreen) { showOverlayScreen(targetScreen); }
     });
 });

@@ -186,7 +186,7 @@
 
     <footer>
         <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
-        <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a systematic literature review and does not claim to be exhaustive.</div>
+        <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a literature review and does not claim to be exhaustive.</div>
     </footer>
 
 
@@ -231,7 +231,7 @@
                 <div class="welcome-cards">
                     <div class="welcome-card">
                         <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
-                        <div class="welcome-card-title">Guided selection</div>
+                        <div class="welcome-card-title">Guided metrics selection</div>
                         <div class="welcome-card-description">Answer a few questions about metrics that interest you to get tailored recommendations.</div>
                         <button class="overlay-action-button" id="start-assessment-btn">Start guided selection</button>
                     </div>
@@ -259,10 +259,10 @@
                         <span>No preference, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="telemetry" data-next="question2-screen">
-                        <span>⚙️ Automated (telemetry/log-based)</span><span class="wizard-option-count"></span>
+                        <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="survey" data-next="question2-screen">
-                        <span>📋 Qualitative (survey/self-report)</span><span class="wizard-option-count"></span>
+                        <span>📋 <strong>Qualitative</strong> (survey/self-report)</span><span class="wizard-option-count"></span>
                     </button>
                 </div>
                 <div class="wizard-nav">
@@ -303,10 +303,10 @@
                 <p class="wizard-step-label">Guided metrics selection &bull; Question 3 of 5</p>
                 <h2>What type of evidence do you prefer to rely on?</h2>
                 <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all" data-next="question4-screen">
+                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all" data-next="question5-screen">
                         <span>No preference, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only" data-next="question4-screen">
+                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only" data-next="question5-screen">
                         <span class="option-num">🔬</span><span class="option-content"><strong>Research-validated</strong>: Metrics that appear in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx).</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only" data-next="question4-screen">
@@ -315,17 +315,17 @@
                 </div>
                 <div class="wizard-nav">
                     <button class="wizard-back-btn go-back-btn" data-target-screen="question2-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="question4-screen">Skip →</button>
+                    <button class="skip-wizard-btn" data-next="question5-screen">Skip →</button>
                 </div>
             </div>
 
             <!-- Guided wizard: Question 4 -->
             <div id="question4-screen" class="overlay-screen hidden">
                 <p class="wizard-step-label">Guided metrics selection &bull; Question 4 of 5</p>
-                <h2>What best describes your company size?</h2>
+                <h2>Which company size do you want to see metrics from?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="all" data-next="question5-screen">
-                        <span>All</span><span class="wizard-option-count"></span>
+                        <span>No preference, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="Enterprise" data-next="question5-screen">
                         <span class="option-num">🏢</span><span>Enterprise (5000+ developers)</span><span class="wizard-option-count"></span>
