@@ -7,10 +7,10 @@
 1.  **Open the Terminal**.
 2.  Navigate to the directory containing the dashboard files using the `cd` command. For example:
     ```bash
-    cd "path to directory with dashboard.html"
+    cd "path to directory with index.html"
     ```
     The directory must contain the following files:
-    * `dashboard.html`
+    * `index.html`
     * `script.js`
     * `style.css`
     * `data.json`
@@ -22,7 +22,7 @@
     python -m http.server
     ```
     
-4.  Open your web browser and go to `http://localhost:8000/dashboard.html`.
+4.  Open your web browser and go to `http://localhost:8000/index.html`.
 
 ***
 
@@ -30,11 +30,11 @@
 
 1.  **Upload all the dashboard files** to the web server. All files must be in the same directory.
     The directory must contain these files:
-    * `dashboard.html`
+    * `index.html`
     * `script.js`
     * `style.css`
     * `data.json`
     * `source_ids.json`
     * `favicon.png`
     * `uzh-logo.svg`
-2.  Navigate to `dashboard.html` on your web server to view the dashboard.
+2.  Navigate to `index.html` on your web server to view the dashboard.
