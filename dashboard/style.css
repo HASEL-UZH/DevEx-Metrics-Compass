@@ -247,6 +247,15 @@ body {
     color: #1B1AFF;
 }
 
+.wizard-option-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: #999;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-left: 8px;
+}
+
 /* Metrics filters */
 .controls-title {
     font-weight: bold;

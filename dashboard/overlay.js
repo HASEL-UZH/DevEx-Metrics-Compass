@@ -1,11 +1,36 @@
 // ─── Overlay navigation, hint system, assessment flow, changelog ──────────────
 
+function countMetricsForOption(filterKey, filterValue) {
+    const hypothetical = Object.assign({}, wizardAnswers, { [filterKey]: filterValue });
+    return originalData.filter(item => {
+        if (!item.type) return false;
+        if (hypothetical.dataType !== 'all' && item.type !== hypothetical.dataType) return false;
+        if (hypothetical.easeOfCollection !== 'all' && item.ease_of_collection !== hypothetical.easeOfCollection) return false;
+        if (hypothetical.focus !== 'all' && item.is_research !== focusFilterValue(hypothetical.focus)) return false;
+        if (hypothetical.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(s => s.company_size === hypothetical.companySize))) return false;
+        if (hypothetical.outcomeGoals !== 'all' && item.outcome_goals !== hypothetical.outcomeGoals) return false;
+        return true;
+    }).length;
+}
+
+function updateWizardOptionCounts(screenEl) {
+    screenEl.querySelectorAll('.wizard-option-btn').forEach(btn => {
+        const countEl = btn.querySelector('.wizard-option-count');
+        if (!countEl) return;
+        const count = countMetricsForOption(btn.dataset.filterKey, btn.dataset.filterValue);
+        countEl.textContent = count;
+    });
+}
+
 function showOverlayScreen(screenToShow) {
     document.querySelectorAll('.overlay-screen').forEach(screen => {
         screen.classList.add('hidden');
     });
     screenToShow.classList.remove('hidden');
     currentOverlayScreen = screenToShow;
+    if (screenToShow.querySelector('.wizard-option-btn')) {
+        updateWizardOptionCounts(screenToShow);
+    }
 }
 
 function updateHintVisibility() {
