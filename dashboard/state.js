@@ -12,14 +12,10 @@ const openMaturityAssessmentBtn = document.getElementById('openMaturityAssessmen
 // Overlay screens
 const initialChoiceScreen = document.getElementById('initial-choice-screen');
 const question1Screen = document.getElementById('question1-screen');
-const level1Screen = document.getElementById('level1-screen');
 const question2Screen = document.getElementById('question2-screen');
-const level2Screen = document.getElementById('level2-screen');
 const question3Screen = document.getElementById('question3-screen');
-const level3Screen = document.getElementById('level3-screen');
 const question4Screen = document.getElementById('question4-screen');
-const level4Screen = document.getElementById('level4-screen');
-const level5Screen = document.getElementById('level5-screen');
+const question5Screen = document.getElementById('question5-screen');
 
 // Navigation hint elements
 const navigationHint = document.getElementById('navigation-hint');

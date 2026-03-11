@@ -40,6 +40,7 @@ document.getElementById('start-scratch-btn').addEventListener('click', () => {
 });
 
 document.getElementById('start-assessment-btn').addEventListener('click', () => {
+    resetWizardAnswers();
     myOverlay.style.display = 'flex';
     showOverlayScreen(question1Screen);
     updateHintVisibility();
@@ -107,19 +108,58 @@ if (navigationHint && closeHintButton) {
     });
 }
 
-// ─── Assessment question handlers ─────────────────────────────────────────────
+// ─── Guided wizard ─────────────────────────────────────────────────────────────
 
-document.getElementById('q1-yes-btn').addEventListener('click', () => showOverlayScreen(question2Screen));
-document.getElementById('q1-no-btn').addEventListener('click', () => showOverlayScreen(level1Screen));
+let wizardAnswers = {};
 
-document.getElementById('q2-yes-btn').addEventListener('click', () => showOverlayScreen(question3Screen));
-document.getElementById('q2-no-btn').addEventListener('click', () => showOverlayScreen(level2Screen));
+function resetWizardAnswers() {
+    wizardAnswers = {
+        dataType: 'all',
+        easeOfCollection: 'all',
+        focus: 'all',
+        companySize: 'all',
+        outcomeGoals: 'all'
+    };
+}
+resetWizardAnswers();
 
-document.getElementById('q3-yes-btn').addEventListener('click', () => showOverlayScreen(question4Screen));
-document.getElementById('q3-no-btn').addEventListener('click', () => showOverlayScreen(level3Screen));
+function applyWizardFilters() {
+    myOverlay.style.display = 'none';
+    currentMode = MODE.GUIDED;
+    clearAllFilters();
+    if (wizardAnswers.dataType !== 'all')         applySpecificFilter('dataType',         wizardAnswers.dataType,         'dataType');
+    if (wizardAnswers.easeOfCollection !== 'all') applySpecificFilter('easeOfCollection', wizardAnswers.easeOfCollection, 'easeOfCollection');
+    if (wizardAnswers.focus !== 'all')            applySpecificFilter('focus',            wizardAnswers.focus,            'focus-dropdown');
+    if (wizardAnswers.companySize !== 'all')      applySpecificFilter('companySize',      wizardAnswers.companySize,      'companySize');
+    if (wizardAnswers.outcomeGoals !== 'all')     applySpecificFilter('outcomeGoals',     wizardAnswers.outcomeGoals,     'outcomeGoals');
+    filterData();
+    updateHintVisibility();
+}
 
-document.getElementById('q4-yes-btn').addEventListener('click', () => showOverlayScreen(level5Screen));
-document.getElementById('q4-no-btn').addEventListener('click', () => showOverlayScreen(level4Screen));
+document.querySelectorAll('.wizard-option-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const key = this.dataset.filterKey;
+        const value = this.dataset.filterValue;
+        const nextScreen = this.dataset.next;
+        if (key) wizardAnswers[key] = value;
+        if (nextScreen) {
+            showOverlayScreen(document.getElementById(nextScreen));
+        } else {
+            applyWizardFilters();
+        }
+    });
+});
+
+document.querySelectorAll('.skip-wizard-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const nextScreen = this.dataset.next;
+        if (nextScreen) {
+            showOverlayScreen(document.getElementById(nextScreen));
+        } else {
+            applyWizardFilters();
+        }
+    });
+});
 
 // ─── Go-back buttons ──────────────────────────────────────────────────────────
 
@@ -127,35 +167,5 @@ document.querySelectorAll('.go-back-btn').forEach(button => {
     button.addEventListener('click', function() {
         const targetScreen = document.getElementById(this.dataset.targetScreen);
         if (targetScreen) { showOverlayScreen(targetScreen); }
-    });
-});
-
-// ─── Show-metrics buttons (guided assessment result) ──────────────────────────
-
-document.querySelectorAll('.show-metrics-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        myOverlay.style.display = 'none';
-        currentMode = MODE.GUIDED;
-        clearAllFilters();
-
-        const filterFramework = this.dataset.filterFramework;
-        const filterDataType = this.dataset.filterDatatype;
-        const filterFocus = this.dataset.filterFocus;
-        const filterCompanySize = this.dataset.filterCompanySize;
-        const filterAll = this.dataset.filterAll;
-
-        if (filterAll) {
-            // filters already cleared to 'all'
-        } else if (filterFramework) {
-            applySpecificFilter('specificFramework', filterFramework, 'research-dropdown');
-        } else if (filterDataType && filterFocus) {
-            applySpecificFilter('dataType', filterDataType, 'dataType');
-            applySpecificFilter('focus', filterFocus, 'focus-dropdown');
-        } else if (filterCompanySize) {
-            applySpecificFilter('companySize', filterCompanySize, 'companySize');
-        }
-
-        filterData();
-        updateHintVisibility();
     });
 });
