@@ -458,6 +458,7 @@ input[type="radio"] {
     background-color: #85B9F2;
 }
 
+
 .slider-container {
     width: 100%;
 }
@@ -606,9 +607,9 @@ input[type="radio"] {
 /* Start maturity assessment in filters container */
 .start-maturity-button {
     padding: 6px 12px;
-    background-color: #1B1AFF;
-    border: none;
-    color: white;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    color: inherit;
     border-radius: 40px;
     cursor: pointer;
     font-size: 12px;
@@ -616,11 +617,11 @@ input[type="radio"] {
     width: 100%;
     text-align: center;
     box-sizing: border-box;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .start-maturity-button:hover {
-    background-color: #85B9F2;
+    background-color: #f0f0f0;
 }
 
 /* Horizontal line in filters container */
@@ -921,21 +922,8 @@ a {
     font-size: 12px;
     font-weight: normal;
     white-space: nowrap;
-}
-
-.metric-ease-tag.ease-easy {
     background-color: #e8f5e9;
-    color: #2e7d32;
-}
-
-.metric-ease-tag.ease-moderate {
-    background-color: #fff8e1;
-    color: #f57f17;
-}
-
-.metric-ease-tag.ease-complex {
-    background-color: #fce4ec;
-    color: #b71c1c;
+    color: #2e7d32; 
 }
 
 /* Welcome screen cards */
