@@ -17,10 +17,6 @@ const question3Screen = document.getElementById('question3-screen');
 const question4Screen = document.getElementById('question4-screen');
 const question5Screen = document.getElementById('question5-screen');
 
-// Navigation hint elements
-const navigationHint = document.getElementById('navigation-hint');
-const closeHintButton = document.getElementById('close-hint');
-
 // Slider elements
 const minMentionsSlider = document.getElementById('min-mentions-slider');
 const minMentionsDisplay = document.getElementById('min-mentions-display');

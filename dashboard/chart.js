@@ -39,6 +39,7 @@ function createChart(data) {
         }
     });
 
+    chart.interactivity().selectionMode("none"); // disable drill-down
     chart.container('container');
     chart.draw();
 }

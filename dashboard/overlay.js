@@ -33,20 +33,8 @@ function showOverlayScreen(screenToShow) {
     }
 }
 
-function updateHintVisibility() {
-    const overlayIsActive = window.getComputedStyle(myOverlay).display !== 'none';
-    if (!overlayIsActive) {
-        if (localStorage.getItem('navigationHintDismissed') !== 'true') {
-            navigationHint.style.display = 'block';
-        }
-    } else {
-        navigationHint.style.display = 'none';
-    }
-}
-
-// Initial state: show the choice screen and update hint
+// Initial state: show the choice screen
 showOverlayScreen(initialChoiceScreen);
-updateHintVisibility();
 
 // ─── Mode selection buttons ───────────────────────────────────────────────────
 
@@ -54,21 +42,21 @@ document.getElementById('start-additive-btn').addEventListener('click', () => {
     myOverlay.style.display = 'none';
     currentMode = MODE.ADDITIVE;
     clearAllFilters();
-    updateHintVisibility();
+
 });
 
 document.getElementById('start-scratch-btn').addEventListener('click', () => {
     myOverlay.style.display = 'none';
     currentMode = MODE.BROWSE;
     clearAllFilters();
-    updateHintVisibility();
+
 });
 
 document.getElementById('start-assessment-btn').addEventListener('click', () => {
     resetWizardAnswers();
     myOverlay.style.display = 'flex';
     showOverlayScreen(question1Screen);
-    updateHintVisibility();
+
 });
 
 // ─── Changelog ────────────────────────────────────────────────────────────────
@@ -99,7 +87,7 @@ changelogOverlay.addEventListener('click', (e) => {
 openMaturityAssessmentBtn.addEventListener('click', () => {
     myOverlay.style.display = 'flex';
     showOverlayScreen(initialChoiceScreen);
-    updateHintVisibility();
+
 });
 
 // ─── Close overlay ────────────────────────────────────────────────────────────
@@ -107,31 +95,16 @@ openMaturityAssessmentBtn.addEventListener('click', () => {
 closeOverlayBtn.addEventListener('click', () => {
     myOverlay.style.display = 'none';
     showOverlayScreen(initialChoiceScreen);
-    updateHintVisibility();
+
 });
 
 myOverlay.addEventListener('click', (event) => {
     if (event.target === myOverlay) {
         myOverlay.style.display = 'none';
         showOverlayScreen(initialChoiceScreen);
-        updateHintVisibility();
+    
     }
 });
-
-// ─── Hint dismissal ───────────────────────────────────────────────────────────
-
-if (navigationHint && closeHintButton) {
-    closeHintButton.addEventListener('click', function(event) {
-        event.stopPropagation();
-        navigationHint.style.display = 'none';
-        localStorage.setItem('navigationHintDismissed', 'true');
-    });
-
-    navigationHint.addEventListener('click', function() {
-        this.style.display = 'none';
-        localStorage.setItem('navigationHintDismissed', 'true');
-    });
-}
 
 // ─── Guided wizard ─────────────────────────────────────────────────────────────
 
@@ -158,7 +131,7 @@ function applyWizardFilters() {
     if (wizardAnswers.companySize !== 'all')      applySpecificFilter('companySize',      wizardAnswers.companySize,      'companySize');
     if (wizardAnswers.outcomeGoals !== 'all')     applySpecificFilter('outcomeGoals',     wizardAnswers.outcomeGoals,     'outcomeGoals');
     filterData();
-    updateHintVisibility();
+
 }
 
 document.querySelectorAll('.wizard-option-btn').forEach(btn => {
