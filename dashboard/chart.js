@@ -6,7 +6,14 @@ function createChart(data) {
     const dataTree = anychart.data.tree(data, 'as-table');
     chart = anychart.sunburst(dataTree);
 
-    chart.tooltip(false);
+    chart.tooltip().format(function() {
+        if (this.getData('type')) {
+            return this.getData('name') + '\n' + this.getData('value') + ' mentions · Click for details';
+        }
+        return this.getData('name');
+    });
+    chart.tooltip().title(false);
+    chart.tooltip().separator(false);
     chart.contextMenu().enabled(false);
     chart.calculationMode('parent-independent');
     chart.labels().format("{%name}");
