@@ -1,14 +1,38 @@
 // ─── AnyChart sunburst & custom tooltip ──────────────────────────────────────
 
+function addMetricCounts(data) {
+    const childrenMap = {};
+    for (const node of data) {
+        if (node.parent != null) {
+            (childrenMap[node.parent] ??= []).push(node);
+        }
+    }
+    function countMetrics(nodeId) {
+        const children = childrenMap[nodeId] ?? [];
+        return children.reduce((sum, child) =>
+            sum + (child.type ? 1 : countMetrics(child.id)), 0);
+    }
+    for (const node of data) {
+        if (!node.type) {
+            node.metricCount = countMetrics(node.id);
+        }
+    }
+}
+
 function createChart(data) {
     if (chart) { chart.dispose(); }
 
+    addMetricCounts(data);
     const dataTree = anychart.data.tree(data, 'as-table');
     chart = anychart.sunburst(dataTree);
 
     chart.tooltip().format(function() {
         if (this.getData('type')) {
             return this.getData('name') + '\n' + this.getData('value') + ' mentions · Click for details';
+        }
+        const count = this.getData('metricCount');
+        if (count) {
+            return this.getData('name') + '\n' + count + ' metric' + (count !== 1 ? 's' : '');
         }
         return this.getData('name');
     });
