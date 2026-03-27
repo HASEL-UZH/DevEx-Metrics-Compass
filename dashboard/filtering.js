@@ -178,7 +178,6 @@ function populateFrameworkDropdown(frameworks, selectedFramework) {
 // Returns true if the user has applied any filter
 function hasAnyActiveFilter() {
     const keyword = document.getElementById('keyword-search').value.trim();
-    const sliderMin = minMentionsSlider ? parseInt(minMentionsSlider.min) : 0;
     return keyword !== '' ||
         activeFilters.dataType !== 'all' ||
         activeFilters.aiMetric !== 'all' ||
@@ -188,7 +187,21 @@ function hasAnyActiveFilter() {
         activeFilters.easeOfCollection !== 'all' ||
         activeFilters.specificCompany !== 'all' ||
         activeFilters.specificFramework !== 'all' ||
-        activeFilters.minMentions > sliderMin;
+        activeFilters.minMentions !== 'all';
+}
+
+// Compute the minimum mention count for a given top-percentile filter value.
+// e.g. '25' → return the threshold so only the top 25% of metrics (by value) pass.
+function getMinMentionsThreshold(percentileFilter) {
+    if (percentileFilter === 'all') return 0;
+
+    const allValues = originalData
+        .filter(item => item.value !== undefined && item.type)
+        .map(item => item.value)
+        .sort((a, b) => b - a); // descending
+
+    const topN = Math.ceil((parseInt(percentileFilter) / 100) * allValues.length);
+    return topN > 0 ? allValues[topN - 1] : 0;
 }
 
 // Filter data and redraw chart
@@ -196,7 +209,7 @@ function filterData() {
     const keyword = document.getElementById('keyword-search').value.toLowerCase();
     const specificCompany = activeFilters.specificCompany;
     const specificFramework = activeFilters.specificFramework;
-    const minMentions = activeFilters.minMentions;
+    const minMentions = getMinMentionsThreshold(activeFilters.minMentions);
 
     const actualMatchingMetrics = originalData.filter(item => {
         if (!item.type) { return false; }
@@ -325,7 +338,7 @@ function clearAllFilters() {
         easeOfCollection: 'all',
         specificCompany: 'all',
         specificFramework: 'all',
-        minMentions: 0
+        minMentions: 'all'
     };
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -335,31 +348,7 @@ function clearAllFilters() {
     document.getElementById('focus-dropdown').value = 'all';
     document.getElementById('company-dropdown').value = 'all';
     document.getElementById('research-dropdown').value = 'all';
-    initializeMentionsSlider();
     filterData();
-}
-
-// Initialize the mentions slider based on data
-function initializeMentionsSlider() {
-    const allMentionValues = originalData
-        .filter(item => item.value !== undefined && item.type)
-        .map(item => item.value);
-
-    if (allMentionValues.length > 0) {
-        const minVal = Math.min(...allMentionValues);
-        const maxVal = Math.max(...allMentionValues);
-        minMentionsSlider.min = minVal;
-        minMentionsSlider.max = maxVal;
-        minMentionsSlider.value = minVal;
-        minMentionsDisplay.textContent = minVal;
-        activeFilters.minMentions = minVal;
-    } else {
-        minMentionsSlider.min = 0;
-        minMentionsSlider.max = 100;
-        minMentionsSlider.value = 0;
-        minMentionsDisplay.textContent = 0;
-        activeFilters.minMentions = 0;
-    }
 }
 
 // ─── Filter event listeners ───────────────────────────────────────────────────
@@ -391,13 +380,6 @@ document.querySelectorAll('input[name="dataType"]').forEach(radio => {
         activeFilters.dataType = this.value;
         onUserFilterChange();
     });
-});
-
-minMentionsSlider.addEventListener('input', function() {
-    const minValue = parseInt(this.value);
-    activeFilters.minMentions = minValue;
-    minMentionsDisplay.textContent = minValue;
-    onUserFilterChange();
 });
 
 document.getElementById('clear-filters').addEventListener('click', function() {

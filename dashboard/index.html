@@ -59,17 +59,17 @@
                     style="text-align: left;">
             </div>
 
-            <!-- Slider for minimum mentions -->
+            <!-- Popularity filter (percentile buttons) -->
             <div class="filter-group">
-                <label>Minimum number of mentions</label>
+                <label>Popularity filter</label>
                 <div class="filter-description">
-                    Show only metrics mentioned by the selected number of sources.
+                    Show only the most frequently cited metrics across sources.
                 </div>
-                <div class="slider-container">
-                    <input type="range" id="min-mentions-slider" min="0" max="100" value="0" class="slider">
-                    <div class="metric-stats">
-                        Minimum number of mentions: <span id="min-mentions-display">0</span>
-                    </div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="minMentions">All</button>
+                    <button class="filter-btn" data-filter="50" data-group="minMentions">Top 50%</button>
+                    <button class="filter-btn" data-filter="25" data-group="minMentions">Top 25%</button>
+                    <button class="filter-btn" data-filter="10" data-group="minMentions">Top 10%</button>
                 </div>
             </div>
             

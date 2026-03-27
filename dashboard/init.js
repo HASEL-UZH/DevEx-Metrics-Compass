@@ -19,7 +19,6 @@ anychart.onDocumentReady(function() {
             return item;
         });
 
-        initializeMentionsSlider();
         filterData();
         updateHintVisibility();
     })

@@ -17,10 +17,6 @@ const question3Screen = document.getElementById('question3-screen');
 const question4Screen = document.getElementById('question4-screen');
 const question5Screen = document.getElementById('question5-screen');
 
-// Slider elements
-const minMentionsSlider = document.getElementById('min-mentions-slider');
-const minMentionsDisplay = document.getElementById('min-mentions-display');
-
 // Data stores
 let originalData = [];
 let filteredData = [];
@@ -34,7 +30,7 @@ let activeFilters = {
     easeOfCollection: 'all',
     specificCompany: 'all',
     specificFramework: 'all',
-    minMentions: 0
+    minMentions: 'all'
 };
 
 // Named mode constants for clarity and logging
