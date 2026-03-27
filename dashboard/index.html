@@ -63,7 +63,7 @@
             <div class="filter-group">
                 <label>Popularity filter</label>
                 <div class="filter-description">
-                    Show only the most frequently cited metrics across sources.
+                    Filter by the popularity of metrics across sources:
                 </div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="minMentions">All</button>
@@ -77,7 +77,7 @@
             <div class="filter-group">
                 <label>Data collection type</label>
                 <div class="filter-description">
-                    Filter by how data is collected: self-reported (surveys, pop-ups, interviews) or automatically (logs, telemetry).
+                    Filter by how data is collected: self-reported (surveys, pop-ups, interviews) or automatically (logs, telemetry):
                 </div>
                 <div class="segmented-control">
                     <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
@@ -88,16 +88,7 @@
 
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
             <div class="filter-group">
-                <label>Research or industry focus</label>
-                <div class="filter-description">
-                    Filter by whether a metric appears in research, industry, or both:
-                </div>
-                <select id="focus-dropdown" class="company-dropdown">
-                    <option value="all">Appears in industry or research</option>
-                    <option value="research-only">Appears only in research</option>
-                    <option value="industry-only">Appears only in industry</option>
-                    <option value="research-and-industry">Appears in industry *and* research</option>
-                </select>
+                <label>Metrics Source</label>
                 <div class="filter-description">
                     Filter by research <strong>framework</strong>:
                 </div>
@@ -110,18 +101,27 @@
                 <select id="company-dropdown" class="company-dropdown">
                     <option value="all">No company selected</option>
                 </select>
+                <div class="filter-description">
+                    Filter by whether a metric appears in research, industry, or both:
+                </div>
+                <select id="focus-dropdown" class="company-dropdown">
+                    <option value="all">Appears in industry or research</option>
+                    <option value="research-only">Appears only in research</option>
+                    <option value="industry-only">Appears only in industry</option>
+                    <option value="research-and-industry">Appears in industry *and* research</option>
+                </select>
             </div>
 
             <!-- Filter by company size -->
             <div class="filter-group">
                 <label>Company size</label>
-                <div class="filter-description">Filter by the size of companies that use the metric:</div>
+                <div class="filter-description">Filter by the size of companies that disclosed using the metric:</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
                     <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
-                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large: 501–5000 developers">🏬 Large</button>
-                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size: 51–500 developers">🏠 Mid-size</button>
-                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small: 1–50 developers">🏡 Small</button>
+                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large company: 501–5000 developers">🏬 Large</button>
+                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size company: 51–500 developers">🏠 Mid-size</button>
+                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers">🏡 Small</button>
                 </div>
             </div>
             
@@ -129,29 +129,32 @@
             <div class="filter-group">
                 <label>AI metrics</label>
                 <div class="filter-description">
-                    Filter by whether a metric is specific to AI-assisted development (e.g. Copilot, Cursor, Claude Code).
+                    Filter by how AI impact is measured.
                 </div>
                 <div class="segmented-control">
                     <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
-                    <button id="ai-only" class="filter-btn" data-filter="ai-only" data-group="aiMetric">🤖 AI metrics only</button>
-                    <button id="no-ai" class="filter-btn" data-filter="no-ai" data-group="aiMetric">👤 No AI metrics</button>
+                    <button id="ai-impact" class="filter-btn" data-filter="ai-impact" data-group="aiMetric" title="AI Impact: metrics that show whether AI tools improve delivery speed, code quality, and developer experience.">🎯 AI impact</button>
+                    <button id="ai-utilization" class="filter-btn" data-filter="ai-utilization" data-group="aiMetric" title="AI Utilization: metrics that reveal how many and what types of developers are adopting AI tooling, and how much work is being touched by AI.">📊 AI utilization</button>
+                    <button id="ai-cost" class="filter-btn" data-filter="ai-cost" data-group="aiMetric" title="AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.">💰 AI cost</button>
                 </div>
             </div>
 
             <!-- Filter by outcome goals -->
             <div class="filter-group">
                 <label>Outcome goals</label>
-                <div class="filter-description">Filter by the intended outcome goal of the metric.</div>
-                <button class="filter-btn active" data-filter="all" data-group="outcomeGoals">All</button>
-                <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals" title="Developer Experience: metrics about developer well-being, satisfaction, flow, focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">🧑‍💻 Developer Experience</button>
-                <button class="filter-btn" data-filter="Product Excellence" data-group="outcomeGoals" title="Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">⭐ Product Excellence</button>
-                <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals" title="Organizational Effectiveness: metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">📈 Organizational Effectiveness</button>
+                <div class="filter-description">Filter by the intended outcome goal of the metric:</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="outcomeGoals">All</button>
+                    <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals" title="Developer Experience: metrics about developer well-being, satisfaction, flow, focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">🧑‍💻 Developer Experience</button>
+                    <button class="filter-btn" data-filter="Product Excellence" data-group="outcomeGoals" title="Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">⭐ Product Excellence</button>
+                    <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals" title="Organizational Effectiveness: metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">📈 Organizat. Effectiveness</button>
+                </div>
             </div>
 
             <!-- Filter by ease of collection -->
             <div class="filter-group">
                 <label>Ease of collection</label>
-                <div class="filter-description">Filter by what your measurement setup needs to support.</div>
+                <div class="filter-description">Filter by what your measurement setup needs to support:</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
                     <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection" title="Getting started — Available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.">🟢 Getting started</button>
@@ -208,7 +211,7 @@
                         <line x1="46" y1="28" x2="52" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </div>
-                <h2>Welcome to the Developer Experience Metrics Compass</h2>
+                <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
                 <p>
                     Frameworks like SPACE, DORA, and others have introduced a broad range of developer
                     experience metrics &mdash; from satisfaction and flow to deployment frequency and code churn.

@@ -217,8 +217,9 @@ function filterData() {
         let matches = true;
 
         if (activeFilters.dataType !== 'all' && item.type !== activeFilters.dataType) { matches = false; }
-        if (activeFilters.aiMetric === 'ai-only' && !item.ai_specific_category) { matches = false; }
-        if (activeFilters.aiMetric === 'no-ai' && item.ai_specific_category) { matches = false; }
+        if (activeFilters.aiMetric === 'ai-impact' && item.ai_specific_category !== 'Impact') { matches = false; }
+        if (activeFilters.aiMetric === 'ai-utilization' && item.ai_specific_category !== 'Utilization') { matches = false; }
+        if (activeFilters.aiMetric === 'ai-cost' && item.ai_specific_category !== 'Cost') { matches = false; }
         if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) { matches = false; }
         if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) { matches = false; }
         if (activeFilters.outcomeGoals !== 'all' && item.outcome_goals !== activeFilters.outcomeGoals) { matches = false; }
