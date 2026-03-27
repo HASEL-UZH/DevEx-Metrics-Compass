@@ -77,11 +77,11 @@
             <div class="filter-group">
                 <label>Data collection type</label>
                 <div class="filter-description">
-                    Filter by how data is collected: qualitatively (surveys, interviews) or automatically (logs, telemetry).
+                    Filter by how data is collected: self-reported (surveys, pop-ups, interviews) or automatically (logs, telemetry).
                 </div>
                 <div class="segmented-control">
                     <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
-                    <button id="quantitative" class="filter-btn" data-filter="survey" data-group="dataType">📋 Qualitative</button>
+                    <button id="quantitative" class="filter-btn" data-filter="survey" data-group="dataType">📋 Self-reported</button>
                     <button id="qualitative" class="filter-btn" data-filter="telemetry" data-group="dataType">⚙️ Automated</button>
                 </div>
             </div>
@@ -254,7 +254,7 @@
                         <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="survey" data-next="question2-screen">
-                        <span>📋 <strong>Qualitative</strong> (survey/self-report)</span><span class="wizard-option-count"></span>
+                        <span>📋 <strong>Self-reported</strong> (surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
                     </button>
                 </div>
                 <div class="wizard-nav">
