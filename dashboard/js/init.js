@@ -4,8 +4,8 @@ anychart.onDocumentReady(function() {
     loadClickedMetricsFromLocalStorage();
 
     Promise.all([
-        fetch("data.json").then(response => response.json()),
-        fetch("source_ids.json").then(response => response.json())
+        fetch("data/data.json").then(response => response.json()),
+        fetch("data/source_ids.json").then(response => response.json())
     ])
     .then(([data, urls]) => {
         SOURCE_URL_MAPPING = urls.reduce((acc, current) => {
