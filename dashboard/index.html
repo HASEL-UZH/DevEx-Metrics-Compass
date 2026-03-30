@@ -81,8 +81,8 @@
                 </div>
                 <div class="segmented-control">
                     <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
-                    <button id="quantitative" class="filter-btn" data-filter="survey" data-group="dataType">📋 Self-reported</button>
-                    <button id="qualitative" class="filter-btn" data-filter="telemetry" data-group="dataType">⚙️ Automated</button>
+                    <button id="quantitative" class="filter-btn" data-filter="qualitative" data-group="dataType">📋 Self-reported</button>
+                    <button id="qualitative" class="filter-btn" data-filter="quantitative" data-group="dataType">⚙️ Automated</button>
                 </div>
             </div>
 
@@ -253,10 +253,10 @@
                     <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="all" data-next="question2-screen">
                         <span>No preference, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="telemetry" data-next="question2-screen">
+                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative" data-next="question2-screen">
                         <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="survey" data-next="question2-screen">
+                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="qualitative" data-next="question2-screen">
                         <span>📋 <strong>Self-reported</strong> (surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
                     </button>
                 </div>

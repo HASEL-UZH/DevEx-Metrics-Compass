@@ -27,7 +27,7 @@
 
 
 ### **2. Run the `parser.py`**
-* Run the `parser.py` script to process the new data.
+* Run the `parser.py` script to process the new data by calling `python parser.py`.
 * **Note:** If you've changed the names of the Excel file or its sheets, remember to update these in the `parser.py` file before running the script.
 
 

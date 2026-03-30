@@ -133,8 +133,8 @@ function downloadCsv() {
             : '';
 
         const rawType = (metric.type || '').toLowerCase();
-        const typeLabel = rawType.startsWith('telemetry') ? 'Automated'
-            : rawType.startsWith('survey') ? 'Self-reported'
+        const typeLabel = rawType.startsWith('quantitative') ? 'Automated'
+            : rawType.startsWith('qualitative') ? 'Self-reported'
             : metric.type;
 
         const escapedFields = [
