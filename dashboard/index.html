@@ -127,9 +127,9 @@
             
             <!-- Filter for AI metrics -->
             <div class="filter-group">
-                <label>AI metrics</label>
+                <label>AI impact metrics</label>
                 <div class="filter-description">
-                    Filter by how AI impact is measured.
+                    Filter by how AI impact is measured:
                 </div>
                 <div class="segmented-control">
                     <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
@@ -167,12 +167,12 @@
             <div class="line"></div>
             <div class="clicked-metrics">
                 <div class="controls-title collapsible-title" onclick="toggleShortlist(this)">
-                    Select and export metrics
+                    <span>Collect and export metrics <span id="metrics-count-badge" class="metrics-count-badge" style="display:none;"></span></span>
                     <span class="collapse-chevron">&#9660;</span>
                 </div>
                 <div id="shortlist-collapsible" style="display: none;">
                     <div class="filter-description">
-                        Click a metric and select "Add to shortlist" to build your list. Export it as a CSV when ready.
+                        Click any metric and set its collection status to build your list. Export it as a CSV when ready.
                     </div>
                     <div class="clicked-metrics-list" id="clicked-metrics-list">
                         <div class="no-metrics-message">No metrics selected yet.</div>

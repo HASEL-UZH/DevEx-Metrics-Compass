@@ -173,8 +173,21 @@ function showCustomTooltip(metricData, event) {
                 ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${metricOutcomeGoals}</span>` : ''}
                 ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${metricEaseOfCollection} to collect</span>` : ''}
         </div>
-        <br>
-        <button data-metric-id="${metricId}">Add to selected metrics</button>
+        ${(function() {
+            const existing = clickedMetrics.find(m => m.id === metricId);
+            const status = existing ? existing.collectionStatus : null;
+            const activeNone      = !status      ? 'active' : '';
+            const activeCapturing = status === 'capturing' ? 'active' : '';
+            const activePlanning  = status === 'planning'  ? 'active' : '';
+            return `
+        <hr>
+        <div class="metric-detail"><strong>Your collection status</strong></div>
+        <div class="segmented-control tooltip-status-control">
+            <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">No status</button>
+            <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already capturing</button>
+            <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to capture</button>
+        </div>`;
+        })()}
     `;
 
     customTooltip.innerHTML = content;
@@ -193,14 +206,20 @@ function showCustomTooltip(metricData, event) {
         ? `${event.clientY - tooltipRect.height - 15}px`
         : `${y}px`;
 
-    const addButton = customTooltip.querySelector('button[data-metric-id]');
-    if (addButton) {
-        addButton.addEventListener('click', function(e) {
+    customTooltip.querySelectorAll('button[data-metric-id]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            addClickedMetric(metricData);
-            hideCustomTooltip();
+            const status = this.getAttribute('data-status');
+            if (status === 'none') {
+                removeClickedMetric(metricData.id);
+            } else {
+                addClickedMetric(metricData, status);
+            }
+            // Update active state in-place without closing the tooltip
+            customTooltip.querySelectorAll('button[data-metric-id]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
         });
-    }
+    });
 
     const closeButton = customTooltip.querySelector('.close-tooltip-button');
     if (closeButton) {

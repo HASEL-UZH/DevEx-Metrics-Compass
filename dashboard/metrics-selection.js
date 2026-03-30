@@ -1,11 +1,23 @@
 // ─── Metrics shortlist, CSV export ───────────────────────────────────────────
 
-function addClickedMetric(metric) {
-    const exists = clickedMetrics.some(m => m.id === metric.id);
-    if (!exists) {
-        clickedMetrics.push(metric);
-        updateClickedMetricsList();
-        saveClickedMetricsToLocalStorage();
+function addClickedMetric(metric, status) {
+    const existingIndex = clickedMetrics.findIndex(m => m.id === metric.id);
+    if (existingIndex >= 0) {
+        clickedMetrics[existingIndex].collectionStatus = status;
+    } else {
+        clickedMetrics.push({ ...metric, collectionStatus: status });
+    }
+    updateClickedMetricsList();
+    saveClickedMetricsToLocalStorage();
+    expandShortlist();
+}
+
+function expandShortlist() {
+    const content = document.getElementById('shortlist-collapsible');
+    const chevron = document.querySelector('.collapsible-title .collapse-chevron');
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
     }
 }
 
@@ -23,17 +35,40 @@ function clearAllClickedMetrics() {
 
 function updateClickedMetricsList() {
     const listElement = document.getElementById('clicked-metrics-list');
+    const countBadge = document.getElementById('metrics-count-badge');
     listElement.innerHTML = '';
+
+    if (countBadge) {
+        if (clickedMetrics.length > 0) {
+            countBadge.textContent = clickedMetrics.length;
+            countBadge.style.display = 'inline';
+        } else {
+            countBadge.style.display = 'none';
+        }
+    }
 
     if (clickedMetrics.length === 0) {
         listElement.innerHTML = '<div class="no-metrics-message">No metrics selected yet.</div>';
         return;
     }
 
-    clickedMetrics.forEach(metric => {
+    const sorted = [...clickedMetrics].sort((a, b) => {
+        if (a.collectionStatus !== b.collectionStatus) {
+            return a.collectionStatus === 'capturing' ? -1 : 1;
+        }
+        return a.name.localeCompare(b.name);
+    });
+
+    sorted.forEach(metric => {
         const metricElement = document.createElement('div');
         metricElement.className = 'clicked-metric-item';
         metricElement.setAttribute('title', metric.description);
+
+        const statusBadge = document.createElement('span');
+        const isCapturing = metric.collectionStatus === 'capturing';
+        statusBadge.className = `metric-status-badge ${isCapturing ? 'status-capturing' : 'status-planning'}`;
+        statusBadge.textContent = isCapturing ? '✓' : '+';
+        statusBadge.title = isCapturing ? 'Already capturing' : 'Plan to capture';
 
         const nameElement = document.createElement('span');
         nameElement.className = 'clicked-metric-name';
@@ -46,6 +81,7 @@ function updateClickedMetricsList() {
             removeClickedMetric(metric.id);
         });
 
+        metricElement.appendChild(statusBadge);
         metricElement.appendChild(nameElement);
         metricElement.appendChild(removeElement);
         listElement.appendChild(metricElement);
@@ -78,51 +114,58 @@ function downloadCsv() {
         return;
     }
 
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += ["name", "alsoknownas", "companies", "research", "type", "description"].join(",") + "\r\n";
+    let csvContent = ["name", "also_known_as", "collection_status", "description", "type", "outcome_goals", "number_of_mentions", "companies", "research"].join(",") + "\r\n";
 
-    clickedMetrics.forEach(metric => {
-        const companySourcesFormatted = [];
-        if (Array.isArray(metric.company) && metric.company.length > 0) {
-            metric.company.forEach(source => {
-                companySourcesFormatted.push(source.url && source.url !== '' ? `${source.name}: ${source.url}` : source.name);
-            });
+    const sorted = [...clickedMetrics].sort((a, b) => {
+        if (a.collectionStatus !== b.collectionStatus) {
+            return a.collectionStatus === 'capturing' ? -1 : 1;
         }
+        return a.name.localeCompare(b.name);
+    });
 
-        const researchSourcesFormatted = [];
-        if (Array.isArray(metric.research) && metric.research.length > 0) {
-            metric.research.forEach(source => {
-                researchSourcesFormatted.push(source.url && source.url !== '' ? `${source.name}: ${source.url}` : source.name);
-            });
-        }
+    sorted.forEach(metric => {
+        const companyNames = Array.isArray(metric.company)
+            ? metric.company.map(s => s.name).join('; ')
+            : '';
+
+        const researchNames = Array.isArray(metric.research)
+            ? metric.research.map(s => s.name).join('; ')
+            : '';
+
+        const rawType = (metric.type || '').toLowerCase();
+        const typeLabel = rawType.startsWith('telemetry') ? 'Automated'
+            : rawType.startsWith('survey') ? 'Self-reported'
+            : metric.type;
 
         const escapedFields = [
             escapeCsvField(metric.name),
             escapeCsvField(metric.alsoknownas),
-            escapeCsvField(companySourcesFormatted.join('; ')),
-            escapeCsvField(researchSourcesFormatted.join('; ')),
-            escapeCsvField(metric.type),
-            escapeCsvField(metric.description)
+            escapeCsvField(metric.collectionStatus === 'capturing' ? 'Already capturing' : 'Plan to capture'),
+            escapeCsvField(metric.description),
+            escapeCsvField(typeLabel),
+            escapeCsvField(metric.outcome_goals),
+            escapeCsvField(metric.value),
+            escapeCsvField(companyNames),
+            escapeCsvField(researchNames)
         ];
         csvContent += escapedFields.join(",") + "\r\n";
     });
 
-    const encodedUri = encodeURI(csvContent);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", url);
     link.setAttribute("download", "selected_developer_experience_metrics.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }
 
 function escapeCsvField(field) {
     if (field === undefined || field === null) return '""';
     const str = String(field);
-    if (str.includes(',') || str.includes('\n') || str.includes('"')) {
-        return '"' + str.replace(/"/g, '""') + '"';
-    }
-    return str;
+    return '"' + str.replace(/"/g, '""') + '"';
 }
 
 // ─── Event listeners ──────────────────────────────────────────────────────────

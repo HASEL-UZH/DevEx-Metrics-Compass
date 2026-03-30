@@ -41,6 +41,7 @@ body {
 
 .right-container {
     flex: 1.2;
+    max-width: 500px;
     background-color: #f5f5f5;
     padding: 20px;
     box-sizing: border-box;
@@ -508,6 +509,36 @@ input[type="radio"] {
 
 .clicked-metric-name {
     font-weight: 500;
+    flex: 1;
+}
+
+.metric-status-badge {
+    font-size: 11px;
+    border-radius: 10px;
+    padding: 1px 6px;
+    margin-right: 6px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.status-capturing {
+    background-color: #DCFCE7;
+    color: #16A34A;
+}
+
+.status-planning {
+    background-color: #DBEAFE;
+    color: #1B1AFF;
+}
+
+.metrics-count-badge {
+    background-color: #1B1AFF;
+    color: white;
+    border-radius: 12px;
+    padding: 1px 7px;
+    font-size: 11px;
+    margin-left: 4px;
+    font-weight: bold;
 }
 
 .remove-metric {
@@ -730,7 +761,9 @@ a {
     pointer-events: none; 
     opacity: 0; 
     transition: opacity 0.2s ease-in-out; 
-    width: 20%; 
+    width: 20%;
+    min-width: 380px;
+    max-width: 600px;
     font-size: 14px;
     text-align: left;
     position: absolute; 
@@ -758,26 +791,30 @@ a {
     margin: 8px 0;
 }
 
-.custom-tooltip button {
-    display: block; 
-    width: 100%;
-    padding: 8px 12px;
-    margin-top: 10px;
-    background-color: #1B1AFF;
-    color: white;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.2s ease;
-}
-
-.custom-tooltip button:hover {
-    background-color: #85B9F2;
-}
 
 .custom-tooltip .metric-detail {
     margin-bottom: 5px;
+}
+
+.tooltip-status-control {
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+
+.tooltip-status-control .filter-btn {
+    font-size: 12px;
+}
+
+.tooltip-status-control .filter-btn[data-status="capturing"].active {
+    background-color: #DCFCE7;
+    color: #16A34A;
+    border-color: #16A34A;
+}
+
+.tooltip-status-control .filter-btn[data-status="planning"].active {
+    background-color: #DBEAFE;
+    color: #1B1AFF;
+    border-color: #1B1AFF;
 }
 
 .custom-tooltip .close-tooltip-button {
