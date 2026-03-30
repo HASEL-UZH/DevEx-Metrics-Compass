@@ -81,11 +81,6 @@
         "parent": 202
     },
     {
-        "name": "Focus Work",
-        "id": 305,
-        "parent": 203
-    },
-    {
         "name": "Cycle Time",
         "id": 306,
         "parent": 204
@@ -186,6 +181,11 @@
         "parent": 206
     },
     {
+        "name": "Focus Work",
+        "id": 305,
+        "parent": 203
+    },
+    {
         "name": "HR",
         "id": 329,
         "parent": 201
@@ -245,24 +245,6 @@
         "related_metrics": "-",
         "outcome_goals": "Developer Experience",
         "ease_of_collection": "Easy"
-    },
-    {
-        "name": "Average Focus Time per Engineer",
-        "id": 7,
-        "parent": 305,
-        "alsoknownas": "Avg. Number of Days with Sufficient Focus Time; Avg. Weekly Focus Time per Engineer; Focus Time and Interruption Metrics; Uninterrupted Focus Time",
-        "company": "501n; 501j; 6a",
-        "research": "240; 6; 501;183;",
-        "type": "quantitative",
-        "value": 8,
-        "company_mentions": 3,
-        "research_mentions": 5,
-        "description": "The average focus time without interruptions per engineer.",
-        "is_research": 3,
-        "ai_specific_category": "",
-        "related_metrics": "-",
-        "outcome_goals": "Developer Experience",
-        "ease_of_collection": "Complex"
     },
     {
         "name": "Branch Creation to Master Merge Time",
@@ -587,24 +569,6 @@
         "related_metrics": "-",
         "outcome_goals": "Organizational Effectiveness",
         "ease_of_collection": "Easy"
-    },
-    {
-        "name": "Deep Work",
-        "id": 28,
-        "parent": 305,
-        "alsoknownas": "-",
-        "company": "501b",
-        "research": "501",
-        "type": "quantitative",
-        "value": 2,
-        "company_mentions": 1,
-        "research_mentions": 1,
-        "description": "Measures the percentage of uninterrupted, meeting-free blocks of time that allow developers to enter a flow state and concentrate deeply on their work.",
-        "is_research": 3,
-        "ai_specific_category": "",
-        "related_metrics": "-",
-        "outcome_goals": "Developer Experience",
-        "ease_of_collection": "Complex"
     },
     {
         "name": "Defects",
@@ -934,17 +898,17 @@
         "name": "Flow State",
         "id": 50,
         "parent": 305,
-        "alsoknownas": "-",
-        "company": "-",
-        "research": "504; 214",
-        "type": "qualitative",
-        "value": 2,
-        "company_mentions": 0,
-        "research_mentions": 2,
-        "description": "The ability to work with focus and enjoyment.",
-        "is_research": 1,
+        "alsoknownas": "Deep Work; Focus Time; Focused Work; Uninterrupted Time",
+        "company": "501n; 501j; 501b; 203; 6a; 501m",
+        "research": "504; 214; 6; 501; 240; 183; 503",
+        "type": "both",
+        "value": 13,
+        "company_mentions": 6,
+        "research_mentions": 7,
+        "description": "The ability to work in focus or flow, i.e. uninterrupted, in meeting-free blocks that allow the developer to concentrate deeply on their work. Often reported as percentage of total time or average time.",
+        "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-",
+        "related_metrics": "59",
         "outcome_goals": "Developer Experience",
         "ease_of_collection": "Complex"
     },
@@ -1052,9 +1016,9 @@
         "description": "Measures the number of interruptions.",
         "is_research": 1,
         "ai_specific_category": "Impact",
-        "related_metrics": "-",
+        "related_metrics": "50",
         "outcome_goals": "Developer Experience",
-        "ease_of_collection": "Moderate"
+        "ease_of_collection": "Complex"
     },
     {
         "name": "Lead Time",
@@ -1307,24 +1271,6 @@
         "related_metrics": "-",
         "outcome_goals": "Organizational Effectiveness",
         "ease_of_collection": "Moderate"
-    },
-    {
-        "name": "Perceived Ability to Stay in Flow",
-        "id": 77,
-        "parent": 305,
-        "alsoknownas": "-",
-        "company": "501m",
-        "research": "503; 501",
-        "type": "qualitative",
-        "value": 3,
-        "company_mentions": 1,
-        "research_mentions": 2,
-        "description": "The perceived ability to work without interruption on a task.",
-        "is_research": 3,
-        "ai_specific_category": "",
-        "related_metrics": "-",
-        "outcome_goals": "Developer Experience",
-        "ease_of_collection": "Easy"
     },
     {
         "name": "Perceived Productivity",

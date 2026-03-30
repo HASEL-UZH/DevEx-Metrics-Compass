@@ -12,6 +12,12 @@
         "company_size": "N/A"
     },
     {
+        "ref_number": "6a",
+        "ref_name": "Google",
+        "ref_link": "https://doi.org/10.1109/MS.2023.3305718",
+        "company_size": "Enterprise"
+    },
+    {
         "ref_number": "7",
         "ref_name": "Oliveira et al. (2020)",
         "ref_link": "https://doi.org/10.1007/s10664-020-09820-z",
