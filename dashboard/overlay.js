@@ -33,8 +33,43 @@ function showOverlayScreen(screenToShow) {
     }
 }
 
-// Initial state: show the choice screen
-showOverlayScreen(initialChoiceScreen);
+// ─── Password gate (temporary – remove before public launch) ──────────────────
+
+const PASSWORD_KEY = 'dxmetrics_unlocked';
+const CORRECT_PASSWORD = 'dxmetrics';
+
+const passwordScreen = document.getElementById('password-screen');
+const passwordInput = document.getElementById('password-input');
+const passwordError = document.getElementById('password-error');
+
+function unlockAndProceed() {
+    localStorage.setItem(PASSWORD_KEY, 'true');
+    myOverlay.classList.remove('password-locked');
+    passwordError.style.display = 'none';
+    showOverlayScreen(initialChoiceScreen);
+}
+
+document.getElementById('password-submit-btn').addEventListener('click', () => {
+    if (passwordInput.value === CORRECT_PASSWORD) {
+        unlockAndProceed();
+    } else {
+        passwordError.style.display = 'block';
+        passwordInput.value = '';
+        passwordInput.focus();
+    }
+});
+
+passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('password-submit-btn').click();
+});
+
+// Initial state: show password screen or skip if already unlocked
+if (localStorage.getItem(PASSWORD_KEY) === 'true') {
+    showOverlayScreen(initialChoiceScreen);
+} else {
+    myOverlay.classList.add('password-locked');
+    showOverlayScreen(passwordScreen);
+}
 
 // ─── Mode selection buttons ───────────────────────────────────────────────────
 
@@ -93,6 +128,7 @@ openMaturityAssessmentBtn.addEventListener('click', () => {
 // ─── Close overlay ────────────────────────────────────────────────────────────
 
 closeOverlayBtn.addEventListener('click', () => {
+    if (currentOverlayScreen === passwordScreen) return;
     myOverlay.style.display = 'none';
     showOverlayScreen(initialChoiceScreen);
 
@@ -100,9 +136,10 @@ closeOverlayBtn.addEventListener('click', () => {
 
 myOverlay.addEventListener('click', (event) => {
     if (event.target === myOverlay) {
+        if (currentOverlayScreen === passwordScreen) return;
         myOverlay.style.display = 'none';
         showOverlayScreen(initialChoiceScreen);
-    
+
     }
 });
 
