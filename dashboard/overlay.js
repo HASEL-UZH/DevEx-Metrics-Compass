@@ -1,5 +1,25 @@
 // ─── Overlay navigation, hint system, assessment flow, changelog ──────────────
 
+// ─── Compass needle mouse tracking ───────────────────────────────────────────
+(function () {
+    function enableMouseTracking(needle) {
+        needle.style.animation = 'none';
+        document.addEventListener('mousemove', (e) => {
+            const rect = needle.closest('svg').getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const angle = Math.atan2(e.clientX - cx, -(e.clientY - cy)) * (180 / Math.PI);
+            needle.style.transform = `rotate(${angle}deg)`;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.compass-needle').forEach(needle => {
+            needle.addEventListener('animationend', () => enableMouseTracking(needle), { once: true });
+        });
+    });
+})();
+
 document.querySelectorAll('.welcome-provenance-tab').forEach(tab => {
     tab.addEventListener('click', () => {
         const key = tab.dataset.tab;

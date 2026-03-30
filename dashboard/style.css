@@ -1105,6 +1105,20 @@ a {
     margin-bottom: 8px;
 }
 
+@keyframes compass-settle {
+    0%   { transform: rotate(0deg); }
+    40%  { transform: rotate(400deg); }
+    60%  { transform: rotate(388deg); }
+    75%  { transform: rotate(395deg); }
+    88%  { transform: rotate(391deg); }
+    100% { transform: rotate(393deg); }
+}
+
+.compass-needle {
+    transform-origin: 28px 28px;
+    animation: compass-settle 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
 /* Footer inside the overlay — paper attribution */
 .overlay-footer {
     margin-top: auto;
