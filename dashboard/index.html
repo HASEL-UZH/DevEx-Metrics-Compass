@@ -237,16 +237,11 @@
                 </div>
                 <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
                 <p>
-                    Frameworks like SPACE, DORA, and others have introduced a broad range of developer
-                    experience metrics &mdash; from satisfaction and flow to deployment frequency and code churn.
-                    But with abundance comes a challenge: <strong>which metrics actually matter</strong> for <em>your</em> team, context, and goals?
+                    Research and industry practice have collectively surfaced 120+ developer experience metrics
+                    &mdash; spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
+                    and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
                 </p>
-                <p>
-                    The DevEx Metrics Compass <strong>curates metrics from both research and industry</strong>, making them
-                    explorable across multiple dimensions &mdash; automated vs. qualitative data collection,
-                    research or industry origin, outcome goals, company size, and GenAI relevance.
-                </p>
-                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Choose how you'd like to start:</p>
+                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
                 <div class="welcome-cards">
                     <div class="welcome-card">
                         <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
@@ -265,6 +260,32 @@
                         <div class="welcome-card-title">Explore by filtering</div>
                         <div class="welcome-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
                         <button class="overlay-action-button" id="start-additive-btn">Start exploring</button>
+                    </div>
+                </div>
+                <div class="welcome-provenance-group">
+                    <div class="welcome-provenance-tabs">
+                        <span class="welcome-provenance-tab" data-tab="created">How was the Compass created?</span>
+                        <span class="welcome-provenance-sep">&bull;</span>
+                        <span class="welcome-provenance-tab" data-tab="who">Who created the compass?</span>
+                        <span class="welcome-provenance-sep">&bull;</span>
+                        <span class="welcome-provenance-tab" data-tab="report">Missing metric or error?</span>
+                    </div>
+                    <div class="welcome-provenance-body hidden" data-tab="created">
+                        The Compass curates metrics from scientific literature and public company resources
+                        (engineering blogs, case studies, and talks from organizations such as Google, Microsoft,
+                        Atlassian, and Spotify), bringing together perspectives from both research and industry.
+                        Each metric is coded across dimensions including data collection method, source context,
+                        company size, framework or company of origin, AI impact assessment, and outcome goal.
+                    </div>
+                    <div class="welcome-provenance-body hidden" data-tab="who">
+                        The Compass was created by Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy,
+                        and Prof. Dr. Thomas Fritz as part of research at the University of Zurich (UZH) and
+                        the University of British Columbia (UBC).
+                    </div>
+                    <div class="welcome-provenance-body hidden" data-tab="report">
+                        We'd love to hear from you. Please reach out via
+                        <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> to report missing metrics,
+                        incorrect data, or suggestions for improvement.
                     </div>
                 </div>
             </div>

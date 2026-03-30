@@ -930,6 +930,54 @@ a {
     color: #2e7d32; 
 }
 
+/* Welcome screen provenance toggles */
+.welcome-provenance-group {
+    width: 100%;
+    max-width: 980px;
+    margin-top: 8px;
+    align-self: center;
+    text-align: left;
+}
+
+.welcome-provenance-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.welcome-provenance-tab {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+}
+
+.welcome-provenance-tab:hover {
+    color: #555;
+}
+
+.welcome-provenance-tab.active {
+    color: #444;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.welcome-provenance-sep {
+    font-size: 0.75rem;
+    color: #ccc;
+}
+
+.welcome-provenance-body {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: #999;
+    line-height: 1.6;
+    text-align: center;
+}
+
 /* Welcome screen cards */
 .welcome-cards {
     display: grid;
