@@ -61,7 +61,7 @@ function extractCompanies(data, currentFilters) {
         let matches = true;
 
         if (!item.type) { matches = false; }
-        if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType) { matches = false; }
+        if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
         if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
@@ -125,7 +125,7 @@ function extractFrameworks(data, currentFilters) {
     data.forEach(item => {
         let matches = true;
 
-        if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType) { matches = false; }
+        if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
         if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
@@ -216,7 +216,7 @@ function filterData() {
 
         let matches = true;
 
-        if (activeFilters.dataType !== 'all' && item.type !== activeFilters.dataType) { matches = false; }
+        if (activeFilters.dataType !== 'all' && item.type !== activeFilters.dataType && item.type !== 'both') { matches = false; }
         if (activeFilters.aiMetric === 'ai-impact' && item.ai_specific_category !== 'Impact') { matches = false; }
         if (activeFilters.aiMetric === 'ai-utilization' && item.ai_specific_category !== 'Utilization') { matches = false; }
         if (activeFilters.aiMetric === 'ai-cost' && item.ai_specific_category !== 'Cost') { matches = false; }

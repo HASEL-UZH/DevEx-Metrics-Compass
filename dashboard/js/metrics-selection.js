@@ -133,7 +133,8 @@ function downloadCsv() {
             : '';
 
         const rawType = (metric.type || '').toLowerCase();
-        const typeLabel = rawType.startsWith('quantitative') ? 'Automated'
+        const typeLabel = rawType === 'both' ? 'Self-reported & Automated'
+            : rawType.startsWith('quantitative') ? 'Automated'
             : rawType.startsWith('qualitative') ? 'Self-reported'
             : metric.type;
 

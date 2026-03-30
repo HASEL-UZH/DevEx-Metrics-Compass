@@ -37,7 +37,7 @@ function countMetricsForOption(filterKey, filterValue) {
     const hypothetical = Object.assign({}, wizardAnswers, { [filterKey]: filterValue });
     return originalData.filter(item => {
         if (!item.type) return false;
-        if (hypothetical.dataType !== 'all' && item.type !== hypothetical.dataType) return false;
+        if (hypothetical.dataType !== 'all' && item.type !== hypothetical.dataType && item.type !== 'both') return false;
         if (hypothetical.easeOfCollection !== 'all' && item.ease_of_collection !== hypothetical.easeOfCollection) return false;
         if (hypothetical.focus !== 'all' && item.is_research !== focusFilterValue(hypothetical.focus)) return false;
         if (hypothetical.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(s => s.company_size === hypothetical.companySize))) return false;

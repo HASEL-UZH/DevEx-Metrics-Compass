@@ -97,6 +97,9 @@ function showCustomTooltip(metricData, event) {
     } else if (metricType === 'quantitative') {
         typeTagClass = 'telemetry-log-based';
         typeTagText = 'Automated';
+    } else if (metricType === 'both') {
+        typeTagClass = 'both-types';
+        typeTagText = 'Self-reported & Automated';
     }
 
     let focusTagClass = '';

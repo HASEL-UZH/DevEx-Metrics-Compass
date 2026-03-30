@@ -852,8 +852,13 @@ a {
 }
 
 .metric-type-tag.telemetry-log-based {
-    background-color: #d4edda; 
-    color: #155724; 
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.metric-type-tag.both-types {
+    background-color: #e0e9f7;
+    color: #0c3460;
 }
 
 .metric-focus-tag {
