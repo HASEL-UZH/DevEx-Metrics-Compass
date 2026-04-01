@@ -151,15 +151,15 @@
                 </div>
             </div>
 
-            <!-- Filter by ease of collection -->
+            <!-- Filter by collection maturity -->
             <div class="filter-group">
-                <label>Ease of collection</label>
-                <div class="filter-description">Filter by what your measurement setup needs to support:</div>
+                <label>Collection maturity</label>
+                <div class="filter-description">Filter by your team's/organization's current measurement maturity:</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
-                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection" title="Getting started — Available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.">🟢 Getting started</button>
-                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection" title="Established — Requires combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.">🟡 Established</button>
-                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection" title="Advanced — Requires significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.">🔴 Advanced</button>
+                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection" title="Getting started: Includes metrics available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.">🟢 Getting started</button>
+                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection" title="Established: Includes Getting started metrics, plus those requiring combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.">🟡 Established</button>
+                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection" title="Advanced: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.">🔴 Advanced</button>
                 </div>
             </div>
 
@@ -318,22 +318,22 @@
             <!-- Guided wizard: Question 2 -->
             <div id="question2-screen" class="overlay-screen hidden">
                 <p class="wizard-step-label">Guided metrics selection &bull; Question 2 of 5</p>
-                <h2>What describes your measurement setup?</h2>
+                <h2>What is your team's or organization's measurement maturity?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="all" data-next="question3-screen">
                         <span>No preference, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy" data-next="question3-screen">
                         <span class="option-num">🟢</span>
-                        <span class="option-content"><strong>Getting started</strong>: Standard tooling (code repo, CI, issue tracker) covers most of these out-of-the-box, or quick survey suffices. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
+                        <span class="option-content"><strong>Getting started</strong>: Includes metrics available out-of-the-box from standard tooling (code repo, CI, issue tracker) or a quick survey. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Moderate" data-next="question3-screen">
                         <span class="option-num">🟡</span>
-                        <span class="option-content"><strong>Established</strong>: Requires combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
+                        <span class="option-content"><strong>Established</strong>: Includes Getting started metrics, plus those requiring combining data sources, a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Complex" data-next="question3-screen">
                         <span class="option-num">🔴</span>
-                        <span class="option-content"><strong>Advanced</strong>: Requires significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
+                        <span class="option-content"><strong>Advanced</strong>: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
                     </button>
                 </div>
                 <div class="wizard-nav">
