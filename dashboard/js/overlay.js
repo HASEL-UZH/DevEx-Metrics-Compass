@@ -67,6 +67,7 @@ function showOverlayScreen(screenToShow) {
     if (screenToShow.querySelector('.wizard-option-btn')) {
         updateWizardOptionCounts(screenToShow);
     }
+    if (screenToShow.id === 'wizard-summary-screen') populateWizardSummary();
 }
 
 // ─── Password gate (temporary – remove before public launch) ──────────────────
@@ -231,6 +232,45 @@ document.querySelectorAll('.skip-wizard-btn').forEach(btn => {
         }
     });
 });
+
+// ─── Wizard summary screen ────────────────────────────────────────────────────
+
+const WIZARD_QUESTION_LABELS = {
+    easeOfCollection: 'Maturity',
+    dataType:         'Data access',
+    focus:            'Evidence',
+    companySize:      'Company size',
+    outcomeGoals:     'Outcome goal'
+};
+
+function populateWizardSummary() {
+    const list = document.getElementById('wizard-summary-list');
+    const seeBtn = document.getElementById('wizard-see-metrics-btn');
+    list.innerHTML = Object.entries(WIZARD_QUESTION_LABELS).map(([key, label]) => {
+        const value = wizardAnswers[key];
+        let valueText = 'Any';
+        if (value !== 'all') {
+            const btn = document.querySelector(`.wizard-option-btn[data-filter-key="${key}"][data-filter-value="${value}"]`);
+            if (btn) {
+                const strong = btn.querySelector('strong');
+                if (strong) {
+                    valueText = strong.innerText.trim();
+                } else {
+                    const span = [...btn.querySelectorAll('span')].find(s => !s.classList.contains('option-num') && !s.classList.contains('wizard-option-count'));
+                    valueText = span ? span.innerText.trim() : value;
+                }
+            }
+        }
+        return `<div class="wizard-summary-row">
+            <span class="wizard-summary-row-label">${label}</span>
+            <span class="wizard-summary-row-value${value === 'all' ? ' wizard-summary-row-value--any' : ''}">${valueText}</span>
+        </div>`;
+    }).join('');
+    const count = countMetricsForOption('outcomeGoals', wizardAnswers.outcomeGoals);
+    seeBtn.textContent = `See ${count} metric${count !== 1 ? 's' : ''} →`;
+}
+
+document.getElementById('wizard-see-metrics-btn').addEventListener('click', applyWizardFilters);
 
 // ─── Go-back buttons ──────────────────────────────────────────────────────────
 

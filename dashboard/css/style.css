@@ -261,6 +261,68 @@ body {
     padding-left: 8px;
 }
 
+.wizard-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 600px;
+    margin: 16px auto 20px;
+}
+
+.wizard-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    background: #f4f5ff;
+    border-radius: 8px;
+    font-size: 15px;
+    text-align: left;
+}
+
+.wizard-summary-row-label {
+    color: #888;
+    font-size: 13px;
+    flex-shrink: 0;
+    width: 110px;
+}
+
+.wizard-summary-row-value {
+    font-weight: 500;
+    color: #222;
+}
+
+.wizard-summary-row-value--any {
+    font-weight: normal;
+    color: #aaa;
+}
+
+.wizard-summary-count {
+    display: none;
+}
+
+.wizard-nav--summary {
+    margin-top: 8px;
+}
+
+.wizard-see-metrics-btn {
+    padding: 12px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #1B1AFF;
+    color: white;
+    border: 2px solid #1B1AFF;
+    border-radius: 40px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.wizard-see-metrics-btn:hover {
+    background-color: #0f0ecc;
+    border-color: #0f0ecc;
+}
+
 /* Metrics filters */
 .controls-title {
     font-weight: bold;

@@ -392,22 +392,34 @@
                 <p class="wizard-step-label">Guided metrics selection &bull; Question 5 of 5</p>
                 <h2>Do you have a key outcome goal?</h2>
                 <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" data-next="" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
+                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" data-next="wizard-summary-screen" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
                         <span class="option-num">🧑‍💻</span><span class="option-content"><strong>Developer Experience</strong>: Metrics about developer well-being, satisfaction, flow/focus, and tooling friction.</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Product Excellence" data-next="" title="Metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">
+                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Product Excellence" data-next="wizard-summary-screen" title="Metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">
                         <span class="option-num">⭐</span><span class="option-content"><strong>Product Excellence</strong>: Metrics about software quality, reliability, and user-facing outcomes.</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Organizational Effectiveness" data-next="" title="Metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">
+                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Organizational Effectiveness" data-next="wizard-summary-screen" title="Metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">
                         <span class="option-num">📈</span><span class="option-content"><strong>Organizational Effectiveness</strong>: Metrics about delivery throughput, business outcomes, and resource efficiency.</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="all" data-next="">
+                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="all" data-next="wizard-summary-screen">
                         <span>No specific goal, show all metrics.</span><span class="wizard-option-count"></span>
                     </button>
                 </div>
                 <div class="wizard-nav">
                     <button class="wizard-back-btn go-back-btn" data-target-screen="question4-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="">Skip →</button>
+                    <button class="skip-wizard-btn" data-next="wizard-summary-screen">Skip →</button>
+                </div>
+            </div>
+
+            <!-- Guided wizard: Summary -->
+            <div id="wizard-summary-screen" class="overlay-screen hidden">
+                <p class="wizard-step-label">Guided metrics selection &bull; Your selection</p>
+                <h2>Here's what you selected</h2>
+                <div id="wizard-summary-list" class="wizard-summary-list"></div>
+                <div id="wizard-summary-count" class="wizard-summary-count"></div>
+                <div class="wizard-nav wizard-nav--summary">
+                    <button class="wizard-back-btn go-back-btn" data-target-screen="question5-screen">← Go back</button>
+                    <button id="wizard-see-metrics-btn" class="wizard-see-metrics-btn">See metrics →</button>
                 </div>
             </div>
 
