@@ -62,7 +62,6 @@ function extractCompanies(data, currentFilters) {
 
         if (!item.type) { matches = false; }
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
-        if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
         const keyword = document.getElementById('keyword-search').value.toLowerCase();
@@ -73,11 +72,6 @@ function extractCompanies(data, currentFilters) {
             (Array.isArray(item.company) && item.company.some(source => source.name.toLowerCase().includes(keyword))) ||
             (Array.isArray(item.research) && item.research.some(source => source.name.toLowerCase().includes(keyword)))
         )) { matches = false; }
-
-        if (currentFilters.specificFramework !== 'all' && Array.isArray(item.research)) {
-            const frameworkNames = item.research.map(source => source.name);
-            if (!frameworkNames.includes(currentFilters.specificFramework)) { matches = false; }
-        }
 
         if (matches && Array.isArray(item.company)) {
             item.company.forEach(source => {
@@ -126,7 +120,6 @@ function extractFrameworks(data, currentFilters) {
         let matches = true;
 
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
-        if (currentFilters.focus !== 'all' && item.is_research !== focusFilterValue(currentFilters.focus)) { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
         const keyword = document.getElementById('keyword-search').value.toLowerCase();
@@ -137,11 +130,6 @@ function extractFrameworks(data, currentFilters) {
             (Array.isArray(item.research) && item.research.some(source => source.name.toLowerCase().includes(keyword))) ||
             (item.alsoknownas && item.alsoknownas.toLowerCase().includes(keyword))
         )) { matches = false; }
-
-        if (currentFilters.specificCompany !== 'all' && Array.isArray(item.company)) {
-            const companyNames = item.company.map(source => source.name);
-            if (!companyNames.includes(currentFilters.specificCompany)) { matches = false; }
-        }
 
         if (matches && Array.isArray(item.research)) {
             item.research.forEach(source => {
@@ -269,6 +257,13 @@ function filterData() {
     const availableFrameworks = extractFrameworks(originalData, activeFilters);
     populateFrameworkDropdown(availableFrameworks, activeFilters.specificFramework);
 
+    // Auto-reset framework if it becomes unavailable due to focus filter
+    // (research frameworks can't have industry-only metrics, so this is a genuine conflict)
+    if (activeFilters.specificFramework !== 'all' && !availableFrameworks.includes(activeFilters.specificFramework)) {
+        activeFilters.specificFramework = 'all';
+        document.getElementById('research-dropdown').value = 'all';
+    }
+
     const additiveModeMessage = document.getElementById('additive-mode-message');
     const rightContainer = document.querySelector('.right-container');
 
@@ -359,6 +354,30 @@ function clearAllFilters() {
     filterData();
 }
 
+// Reset the other source filter (company/framework are mutually exclusive; focus is independent)
+function resetOtherSourceFilters(except) {
+    if (except !== 'specificFramework') {
+        activeFilters.specificFramework = 'all';
+        document.getElementById('research-dropdown').value = 'all';
+    }
+    if (except !== 'specificCompany') {
+        activeFilters.specificCompany = 'all';
+        document.getElementById('company-dropdown').value = 'all';
+        // Also reset company size when company is reset
+        activeFilters.companySize = 'all';
+        document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === 'all') btn.classList.add('active');
+        });
+    }
+}
+
+// Look up a company's size from SOURCE_URL_MAPPING
+function getCompanySizeForCompany(companyName) {
+    const source = Object.values(SOURCE_URL_MAPPING).find(s => s.ref_name === companyName);
+    return (source && source.company_size && source.company_size !== 'N/A') ? source.company_size : null;
+}
+
 // ─── Filter event listeners ───────────────────────────────────────────────────
 
 document.querySelectorAll('.filter-btn').forEach(button => {
@@ -370,16 +389,28 @@ document.querySelectorAll('.filter-btn').forEach(button => {
 
 document.getElementById('company-dropdown').addEventListener('change', function() {
     applySpecificFilter('specificCompany', this.value);
+    if (this.value !== 'all') {
+        resetOtherSourceFilters('specificCompany');
+        const size = getCompanySizeForCompany(this.value);
+        if (size) applySpecificFilter('companySize', size, 'companySize');
+    }
     onUserFilterChange();
 });
 
 document.getElementById('focus-dropdown').addEventListener('change', function() {
     applySpecificFilter('focus', this.value);
+    // Reset company size when focus changes
+    activeFilters.companySize = 'all';
+    document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === 'all') btn.classList.add('active');
+    });
     onUserFilterChange();
 });
 
 document.getElementById('research-dropdown').addEventListener('change', function() {
     applySpecificFilter('specificFramework', this.value);
+    if (this.value !== 'all') resetOtherSourceFilters('specificFramework');
     onUserFilterChange();
 });
 
