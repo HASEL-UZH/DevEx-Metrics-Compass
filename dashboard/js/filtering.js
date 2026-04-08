@@ -309,7 +309,11 @@ function updateClearFiltersVisibility(shownCount) {
 // Update metrics count display
 function updateMetricsCount(data) {
     const metricsWithType = data.filter(item => item.type);
-    document.getElementById('metrics-count').textContent = metricsWithType.length;
+    const totalMetrics = originalData.filter(item => item.type).length;
+    const countDisplay = metricsWithType.length === totalMetrics
+        ? `${metricsWithType.length}`
+        : `${metricsWithType.length} of ${totalMetrics}`;
+    document.getElementById('metrics-count').textContent = countDisplay;
 }
 
 // Wrapper called by all user-triggered filter interactions.
