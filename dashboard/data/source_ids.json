@@ -409,7 +409,7 @@
     },
     {
         "ref_number": "509",
-        "ref_name": "DXI Framework",
+        "ref_name": "DXI Metric",
         "ref_link": "https://getdx.com/research/the-one-number-you-need-to-increase-roi-per-engineer/",
         "company_size": "N/A"
     },
@@ -807,6 +807,12 @@
         "ref_number": "513",
         "ref_name": "Chen (2026)",
         "ref_link": "https://arxiv.org/pdf/2602.03593",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "514",
+        "ref_name": "DX Core 4 Framework",
+        "ref_link": "https://getdx.com/research/measuring-developer-productivity-with-the-dx-core-4/",
         "company_size": "N/A"
     }
 ]
