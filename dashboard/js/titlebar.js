@@ -24,6 +24,10 @@ function switchToStep(step) {
     if (diffView)     diffView.style.display     = step === STEP.COMPARE   ? 'flex' : 'none';
     if (nextstepsView) nextstepsView.style.display = step === STEP.NEXTSTEPS ? 'flex' : 'none';
 
+    // Hide inline mode picker when leaving Explore step
+    const exploreStartView = document.getElementById('explore-start-view');
+    if (exploreStartView && step !== STEP.EXPLORE) exploreStartView.style.display = 'none';
+
     // Hide/show explore messages (only in Explore step)
     const msgs = ['no-metrics-message', 'additive-mode-message', 'clear-filters-chart'];
     msgs.forEach(id => {
@@ -120,11 +124,10 @@ function updateStepBar() {
         }
     }
 
-    // Activate/dim Step 3 button based on shortlist
+    // Highlight Step 3 button when shortlist has content
     const step3Btn = document.getElementById('step-btn-nextsteps');
     if (step3Btn) {
         step3Btn.classList.toggle('step-btn--has-content', hasShortlist);
-        step3Btn.classList.toggle('step-btn--dimmed', !hasShortlist && currentStep !== STEP.NEXTSTEPS);
     }
 
     // 3 — Action phrase (always visible)
@@ -155,14 +158,6 @@ function getStepHint(hasShortlist) {
 // Wire step button clicks
 document.querySelectorAll('.step-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        // Don't allow clicking dimmed buttons
-        if (btn.classList.contains('step-btn--dimmed')) return;
         switchToStep(btn.dataset.step);
     });
-});
-
-// Initialize dimmed state for Step 3 on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const step3Btn = document.getElementById('step-btn-nextsteps');
-    if (step3Btn) step3Btn.classList.add('step-btn--dimmed');
 });

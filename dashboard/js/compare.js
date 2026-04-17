@@ -129,7 +129,7 @@ function renderDiffView() {
 
     const sortWrapper = document.getElementById('compare-sort-group-wrapper');
     if (!bothSelected) {
-        diffView.innerHTML = '<div class="centered-message">Select items on both sides to see the comparison →</div>';
+        diffView.innerHTML = '<div class="centered-message">Choose what you want to compare →</div>';
         updateCompareSummary(null);
         if (sortWrapper) sortWrapper.style.display = 'none';
         return;

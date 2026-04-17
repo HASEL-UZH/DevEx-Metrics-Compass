@@ -141,7 +141,9 @@ function renderInsights() {
     const el = document.getElementById('ns-insights');
     if (!el) return;
 
-    if (clickedMetrics.length === 0) {
+    const allSelected = clickedMetrics.filter(m => m.collectionStatus === 'capturing' || m.collectionStatus === 'planning');
+
+    if (allSelected.length === 0) {
         el.style.display = 'none';
         el.innerHTML = '';
         return;
@@ -156,9 +158,9 @@ function renderInsights() {
             const sorted = [...leafMetrics].sort((a, b) => b.value - a.value);
             const threshold = Math.ceil(sorted.length * 0.1);
             const top10Set = new Set(sorted.slice(0, threshold).map(m => m.id));
-            const topCount = clickedMetrics.filter(m => top10Set.has(m.id)).length;
+            const topCount = allSelected.filter(m => top10Set.has(m.id)).length;
             if (topCount > 0) {
-                chips.push(`${topCount} of your ${clickedMetrics.length} metrics are in the <strong>top 10% most-tracked</strong>`);
+                chips.push(`${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`);
             }
         }
     }
@@ -167,7 +169,7 @@ function renderInsights() {
     const knownGoals = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
     const goalLabels = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Org Effectiveness' };
     const goalCounts = {};
-    clickedMetrics.forEach(m => {
+    allSelected.forEach(m => {
         const g = m.outcome_goals;
         if (g && knownGoals.includes(g)) goalCounts[g] = (goalCounts[g] || 0) + 1;
     });
@@ -186,7 +188,7 @@ function renderInsights() {
 
     // 3. Data type mix
     const typeCounts = { qualitative: 0, quantitative: 0, both: 0 };
-    clickedMetrics.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
+    allSelected.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
     const hasQuant = typeCounts.quantitative + typeCounts.both > 0;
     const hasQual  = typeCounts.qualitative  + typeCounts.both > 0;
     if (hasQuant && hasQual) {
@@ -213,7 +215,7 @@ function renderInsights() {
         originalData.forEach(m => { if (m.parent) parentOf[m.id] = m.parent; });
 
         const selectedTopCategories = new Set();
-        clickedMetrics.forEach(m => {
+        allSelected.forEach(m => {
             let id = m.id;
             while (id) {
                 if (categoryIds.has(id)) { selectedTopCategories.add(id); break; }
@@ -238,7 +240,7 @@ function renderInsights() {
     // 5. Framework alignment
     const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
     const frameworkCounts = {};
-    clickedMetrics.forEach(m => {
+    allSelected.forEach(m => {
         if (!Array.isArray(m.research)) return;
         const seen = new Set();
         m.research.forEach(r => {
@@ -250,7 +252,7 @@ function renderInsights() {
     });
     const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => b[1] - a[1]);
     if (frameworkEntries.length > 0) {
-        const total = clickedMetrics.length;
+        const total = allSelected.length;
         const [topName, topCount] = frameworkEntries[0];
         if (topCount === total && frameworkEntries.length === 1) {
             chips.push(`All metrics align with <strong>${topName}</strong> — consider drawing from other frameworks`);

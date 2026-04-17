@@ -302,7 +302,7 @@ function getPrintStyles() {
 
         /* ── Section 2: Metric cards ── */
         .pdf-card {
-            border: 0.5pt solid #1B1AFF;
+            border: 0.5pt solid #ccc;
             border-radius: 4pt;
             padding: 10pt 12pt;
             margin-bottom: 8pt;
@@ -373,17 +373,6 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
     const fileDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
     const totalCount = capturing.length + planned.length;
 
-    const capturingSection = capturing.length === 0
-        ? '<p style="color:#888;font-size:9pt;margin-top:6pt;">No metrics in this category.</p>'
-        : `<ul class="pdf-tracking-list">
-            ${capturing.map(m => `
-                <li>
-                    <span class="pdf-tracking-name">${escapeHtml(m.name)}</span>
-                    ${m.type ? `<span class="pdf-tracking-type">${escapeHtml(typeLabel(m.type))}</span>` : ''}
-                    ${m.description ? `<span class="pdf-tracking-desc">${escapeHtml(m.description)}</span>` : ''}
-                </li>`).join('')}
-           </ul>`;
-
     const insightsBlock = chips.length > 0
         ? `<div class="pdf-insights">
                <div class="pdf-insights-title">Selection Insights</div>
@@ -391,9 +380,26 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
            </div>`
         : '';
 
-    const plannedSection = planned.length === 0
-        ? '<p style="color:#888;font-size:9pt;margin-top:6pt;">No metrics in this category.</p>'
-        : planned.map(m => buildPdfCard(m)).join('');
+    const capturingSection = capturing.length === 0 ? '' : `
+    <section>
+        <h2>Already Tracking (${capturing.length})</h2>
+        <ul class="pdf-tracking-list">
+            ${capturing.map(m => `
+                <li>
+                    <span class="pdf-tracking-name">${escapeHtml(m.name)}</span>
+                    ${m.type ? `<span class="pdf-tracking-type">${escapeHtml(typeLabel(m.type))}</span>` : ''}
+                    ${m.description ? `<span class="pdf-tracking-desc">${escapeHtml(m.description)}</span>` : ''}
+                </li>`).join('')}
+        </ul>
+    </section>`;
+
+    const plannedSection = `
+    <section>
+        <h2>Plan to Track (${planned.length})</h2>
+        ${planned.length === 0
+            ? `<p style="color:#555;font-size:9pt;margin-top:6pt;">No metrics selected yet. Consider identifying additional metrics that fit your context using the <a href="https://devex-metrics-compass.hasel.dev/">Developer Experience Metrics Compass</a>.</p>`
+            : planned.map(m => buildPdfCard(m)).join('')}
+    </section>`;
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -422,16 +428,11 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
         <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</p>
     </div>
 
-    <section>
-        <h2>Already Tracking (${capturing.length})</h2>
-        ${capturingSection}
-    </section>
+    ${insightsBlock}
 
-    <section>
-        <h2>Plan to Track (${planned.length})</h2>
-        ${insightsBlock}
-        ${plannedSection}
-    </section>
+    ${capturingSection}
+
+    ${plannedSection}
 
     <section class="pdf-authors page-break-before">
         <div class="pdf-authors-logos">

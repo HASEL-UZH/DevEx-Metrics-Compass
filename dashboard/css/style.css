@@ -79,7 +79,7 @@ body {
 
 .overlay-content {
     background-color: white;
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     max-height: 90%;
     overflow-y: auto; 
@@ -124,7 +124,7 @@ body {
 .overlay-screen p {
     margin-bottom: 20px;
     line-height: 1.5;
-    max-width: 80%; 
+    max-width: 90%;
 }
 
 .overlay-screen ul {
@@ -1107,6 +1107,131 @@ a {
     text-align: center;
 }
 
+/* Welcome screen 3-step strip */
+.welcome-steps-strip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 20px 0 20px;
+    justify-content: center;
+    width: 90%;
+    max-width: 90%;
+}
+
+.welcome-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 16px 24px 18px;
+    flex: 1;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.welcome-step-item:hover {
+    box-shadow: 0 6px 20px rgba(27, 26, 255, 0.12);
+    transform: translateY(-2px);
+    border-color: #1B1AFF;
+}
+
+.welcome-step-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px 3px 4px;
+    border: 2px solid #d0d2f8;
+    border-radius: 40px;
+    background: #f4f5ff;
+    margin-bottom: 10px;
+}
+
+.welcome-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(27, 26, 255, 0.12);
+    font-size: 11px;
+    font-weight: 700;
+    color: #1B1AFF;
+    flex-shrink: 0;
+}
+
+.welcome-step-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1B1AFF;
+}
+
+.welcome-step-item .welcome-step-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+    text-align: left;
+    width: 100%;
+    max-width: none;
+}
+
+.welcome-step-arrow {
+    font-size: 1.4rem;
+    color: #ccc;
+    flex-shrink: 0;
+    padding-top: 22px;
+}
+
+/* Welcome CTA button */
+.welcome-cta-btn {
+    display: block;
+    margin: 16px auto 20px;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #1B1AFF;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+.welcome-cta-btn:hover {
+    background-color: #0f0ecc;
+}
+
+/* Inline explore-start view (Step 1 left panel) */
+.explore-start-view {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 32px 24px;
+}
+
+.explore-start-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #999;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.explore-start-cards {
+    max-width: 860px;
+}
+
 /* Welcome screen cards */
 .welcome-cards {
     display: grid;
@@ -1285,22 +1410,18 @@ a {
 
 /* No metrics can be shown */
 .centered-message {
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    text-align: center; 
-    width: 40%; 
-    padding: 50px; 
-    box-sizing: border-box; 
-    z-index: 5; 
-    background-color: #1B1AFF;
-    color: white;
-    border-radius: 40px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-    font-size: 24px;
-    line-height: 1.5;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 50%;
+    padding: 24px;
+    box-sizing: border-box;
+    z-index: 5;
+    color: #999;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
 /* ─── Compare panel (right side, Step 2) ────────────────────────────────── */
@@ -1755,10 +1876,14 @@ a {
 }
 
 .nextsteps-empty-msg {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #999;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
-    padding: 40px 24px;
+    padding: 24px;
 }
 
 .nextsteps-columns {
@@ -2138,13 +2263,7 @@ a {
     color: #fff;
 }
 
-/* no special styling for has-content — dimmed/undimmed is sufficient */
-
-.step-btn--dimmed {
-    opacity: 0.4;
-    cursor: default;
-    pointer-events: none;
-}
+/* no special styling for has-content — active state is sufficient */
 
 .step-btn-num {
     display: inline-flex;
