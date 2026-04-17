@@ -1421,6 +1421,7 @@ a {
     z-index: 5;
     color: #999;
     font-size: 16px;
+    font-weight: 600;
     line-height: 1.6;
 }
 
@@ -1882,6 +1883,7 @@ a {
     justify-content: center;
     color: #999;
     font-size: 16px;
+    font-weight: 600;
     text-align: center;
     padding: 24px;
 }
