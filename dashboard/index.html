@@ -17,12 +17,43 @@
 
 <body>
 
-    <div class="main-container">
-        
+    <!-- 3-step progress bar -->
+    <div id="step-bar" class="step-bar">
+        <div class="step-bar-top">
+            <span class="step-bar-title">DevEx Metrics Compass</span>
+            <div class="step-bar-steps">
+            <button class="step-btn step-btn--active" id="step-btn-explore" data-step="explore">
+                <span class="step-btn-num">1</span>
+                <span class="step-btn-label">Explore Metrics</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-btn" id="step-btn-compare" data-step="compare">
+                <span class="step-btn-num">2</span>
+                <span class="step-btn-label">Compare Metrics</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-btn" id="step-btn-nextsteps" data-step="nextsteps">
+                <span class="step-btn-num">3</span>
+                <span class="step-btn-label">Review &amp; Implement Metrics</span>
+            </button>
+            </div><!-- /.step-bar-steps -->
+        </div><!-- /.step-bar-top -->
+        <div class="step-bar-meta">
+            <span id="step-hint" class="step-meta-action"></span>
+            <span class="step-meta-sep" id="step-sep-count">·</span>
+            <span id="step-metric-count" class="step-meta-count"></span>
+            <span class="step-meta-sep" id="step-sep-shortlist" style="display:none">·</span>
+            <span id="step-shortlist-summary" class="step-meta-shortlist"></span>
+        </div>
+    </div>
+
+    <div class="main-container step-explore" id="main-container">
+
         <!-- Container containing the visualization where the metrics are displayed -->
         <div class="left-container">
+            <!-- Step 1: Sunburst chart -->
             <div id="container"></div>
-<button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
+            <button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
 
             <div id="no-metrics-message" class="centered-message" style="display: none;">
                 No metrics match the current filters. Adapt or clear the filters.<br><br>
@@ -32,28 +63,93 @@
                 Apply a filter to start discovering metrics.<br><br>
             </div>
 
+            <!-- Step 1: Inline mode picker (shown before first mode selection or after restart) -->
+            <div id="explore-start-view" class="explore-start-view" style="display:none">
+                <h3 class="explore-start-title">How would you like to explore metrics?</h3>
+                <div class="welcome-cards explore-start-cards">
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
+                        <div class="welcome-card-title">Guided selection</div>
+                        <div class="welcome-card-description">Answer a few questions to get tailored recommendations based on your context.</div>
+                        <button class="overlay-action-button" id="start-assessment-inline-btn">Start guided selection</button>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--browse">&#8801;</div>
+                        <div class="welcome-card-title">Browse all metrics</div>
+                        <div class="welcome-card-description">See all metrics at once and narrow them down using filters.</div>
+                        <button class="overlay-action-button" id="start-scratch-inline-btn">Show all metrics</button>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="welcome-card-icon welcome-card-icon--additive">+</div>
+                        <div class="welcome-card-title">Explore by filtering</div>
+                        <div class="welcome-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
+                        <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Diff view (shown in Compare mode) -->
+            <div id="diff-view" class="diff-view" style="display:none"></div>
+
+            <!-- Step 3: Next Steps two-column view -->
+            <div id="nextsteps-view" class="nextsteps-view" style="display:none">
+                <div class="nextsteps-empty-msg" id="nextsteps-empty-msg" style="display:none">
+                    Explore metrics first and mark ones that interest you — they'll appear here.
+                </div>
+                <div class="nextsteps-columns" id="nextsteps-columns">
+                    <div class="nextsteps-col nextsteps-col--capturing">
+                        <div class="nextsteps-col-header">
+                            <span class="nextsteps-col-badge nextsteps-col-badge--capturing">✓</span>
+                            Already tracking <span class="nextsteps-col-count" id="ns-capturing-count"></span>
+                        </div>
+                        <div class="nextsteps-col-list" id="ns-capturing-list"></div>
+                    </div>
+                    <div class="nextsteps-col nextsteps-col--planned">
+                        <div class="nextsteps-col-header">
+                            <span class="nextsteps-col-badge nextsteps-col-badge--planned">+</span>
+                            Plan to track <span class="nextsteps-col-count" id="ns-planned-count"></span>
+                        </div>
+                        <div class="nextsteps-col-list" id="ns-planned-list"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Container containing the filters -->
+        <!-- Container containing the filters / step-specific controls -->
         <div class="right-container">
-            <div class="controls-title">
-                Exploring <span id="metrics-count"></span> DevEx metrics
+
+            <!-- Step 1: Explore filters panel -->
+            <div id="explore-right-panel">
+            <div class="controls-title" id="explore-panel-title">
+                Explore DevEx metrics <span id="metrics-count" style="display:none"></span>
             </div>
-            <!-- <div class="filter-metrics-title">Apply filters on metrics</div> -->
-            <!-- <div class="filter-description">Use the filters below to narrow down.</div> -->
-            
-            <!-- Clear filters and start maturity assessment buttons -->
+
+            <!-- Clear filters and restart wizard buttons -->
             <div>
-                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Switch exploration mode</button>
+                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Restart wizard</button>
                 <button class="clear-filters-button" id="clear-filters" style="display: none;">Clear all filters</button>
-            </div>                            
+            </div>
 
             <!-- <div class="line"></div> -->
 
-            <!-- Keyword search field -->
+            <!-- Color by dimension -->
             <div class="filter-group">
+                <label for="color-by-select">Chart coloring</label>
+                <select id="color-by-select" class="color-by-select">
+                    <option value="categorization">Category (default)</option>
+                    <option value="type">Data collection type</option>
+                    <option value="popularity">Popularity</option>
+                    <option value="is_research">Research vs industry</option>
+                    <option value="outcome_goals">Outcome goals</option>
+                    <option value="ease_of_collection">Collection maturity</option>
+                </select>
+                <div id="color-legend" class="color-legend" style="display:none"></div>
+            </div>
+
+            <!-- Keyword search field -->
+            <div class="filter-group" style="margin-top: 16px;">
                 <label>
-                    Keyword search
+                    Metrics search
                 </label>
                 <input type="text" id="keyword-search" placeholder="Enter keyword..." class="filter-btn"
                     style="text-align: left;">
@@ -88,7 +184,7 @@
 
             <!-- Filter for research vs. non-research. Research frameworks dropdown -->
             <div class="filter-group">
-                <label>Metrics Source</label>
+                <label>Metrics source</label>
                 <div class="filter-description">
                     Filter by research <strong>framework</strong>:
                 </div>
@@ -112,19 +208,6 @@
                 </select>
             </div>
 
-            <!-- Filter by company size -->
-            <div class="filter-group">
-                <label>Company size</label>
-                <div class="filter-description">Filter by the size of companies that disclosed using the metric:</div>
-                <div class="segmented-control">
-                    <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
-                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
-                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large company: 501–5000 developers">🏬 Large</button>
-                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size company: 51–500 developers">🏠 Mid-size</button>
-                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers">🏡 Small</button>
-                </div>
-            </div>
-            
             <!-- Filter for AI metrics -->
             <div class="filter-group">
                 <label>AI impact metrics</label>
@@ -163,9 +246,22 @@
                 </div>
             </div>
 
-            <!-- Shortlist for metrics, exportable as CSV file -->
-            <div class="line"></div>
-            <div class="clicked-metrics">
+            <!-- Filter by company size -->
+            <div class="filter-group">
+                <label>Company size</label>
+                <div class="filter-description">Filter by the size of companies that disclosed using the metric:</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
+                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
+                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large company: 501–5000 developers">🏬 Large</button>
+                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size company: 51–500 developers">🏠 Mid-size</button>
+                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers">🏡 Small</button>
+                </div>
+            </div>
+
+            <!-- Shortlist for metrics, exportable as CSV file (hidden in Explore — lives in Step 3) -->
+            <div class="line explore-shortlist-divider"></div>
+            <div class="clicked-metrics explore-shortlist-section">
                 <div class="controls-title collapsible-title" onclick="toggleShortlist(this)">
                     <span>Collect and export metrics <span id="metrics-count-badge" class="metrics-count-badge" style="display:none;"></span></span>
                     <span class="collapse-chevron">&#9660;</span>
@@ -183,6 +279,72 @@
                     </div>
                 </div>
             </div>
+            </div><!-- /#explore-right-panel -->
+
+            <!-- Step 2: Compare controls panel -->
+            <div id="compare-panel" class="compare-panel" style="display:none">
+                <div class="controls-title">Compare two sets of DevEx metrics</div>
+                <div class="filter-description">Mix any dimensions — frameworks, companies, maturity levels, or outcome goals. Data is based on publicly reported sources and may be incomplete.<br /><a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror" class="compare-report-link">Report missing metric</a></div>
+
+                <div class="filter-group-label compare-section-title">Quick comparisons</div>
+                <div class="compare-presets">
+                    <button class="compare-preset-btn" data-left-type="company" data-left-value="Google" data-right-type="company" data-right-value="Microsoft">Google vs Microsoft</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="framework" data-right-value="DORA Framework">SPACE vs DORA</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="framework" data-right-value="DX Core 4 Framework">SPACE vs DX Core 4</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="DORA Framework" data-right-type="framework" data-right-value="DX Core 4 Framework">DORA vs DX Core 4</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="company" data-right-value="Google">SPACE vs Google</button>
+                </div>
+
+                <div class="filter-group">
+                    <label>Manual comparison</label>
+                    <div class="compare-row-dropdowns">
+                        <span class="compare-side-label">Left</span>
+                        <select id="compare-left-type" class="company-dropdown">
+                            <option value="company">Company</option>
+                            <option value="framework">Framework</option>
+                            <option value="maturity">Maturity</option>
+                            <option value="outcome">Outcome goals</option>
+                        </select>
+                        <select id="compare-left-value" class="company-dropdown">
+                            <option value="all">Select...</option>
+                        </select>
+                    </div>
+                    <div class="compare-row-dropdowns">
+                        <span class="compare-side-label">Right</span>
+                        <select id="compare-right-type" class="company-dropdown">
+                            <option value="company">Company</option>
+                            <option value="framework">Framework</option>
+                            <option value="maturity">Maturity</option>
+                            <option value="outcome">Outcome goals</option>
+                        </select>
+                        <select id="compare-right-value" class="company-dropdown">
+                            <option value="all">Select...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="compare-summary" class="compare-summary"></div>
+
+                <div class="filter-group" id="compare-sort-group-wrapper" style="display:none;">
+                    <label>Sort metrics by</label>
+                    <div id="compare-sort-charts" class="compare-sort-charts"></div>
+                </div>
+            </div><!-- /#compare-panel -->
+
+            <!-- Step 3: Next Steps right panel (export) -->
+            <div id="nextsteps-panel" class="nextsteps-panel" style="display:none">
+                <div class="controls-title">Review metrics selection</div>
+                <div class="filter-description" id="nextsteps-hint-text">Here is a summary of your selection. Click any metric to edit its status.</div>
+                <div id="ns-insights" class="ns-insights" style="display:none"></div>
+                <div class="ns-download-section">
+                    <div class="controls-title controls-title--download">Export metrics &amp; implement your plan</div>
+                    <div class="filter-description">Export your selection when you're ready.</div>
+                    <div id="nextsteps-actions" class="nextsteps-actions nextsteps-actions--row">
+                        <button class="download-csv-button ns-btn-export" id="download-pdf-nextsteps">Export PDF</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="clear-all-metrics-nextsteps">Clear selection</button>
+                    </div>
+                </div>
+            </div><!-- /#nextsteps-panel -->
 
         </div>
     </div>
@@ -245,27 +407,33 @@
                     &mdash; spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
                     and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
                 </p>
-                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
-                <div class="welcome-cards">
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
-                        <div class="welcome-card-title">Guided metrics selection</div>
-                        <div class="welcome-card-description">Answer a few questions about metrics that interest you to get tailored recommendations.</div>
-                        <button class="overlay-action-button" id="start-assessment-btn">Start guided selection</button>
-                    </div>
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--browse">&#8801;</div>
-                        <div class="welcome-card-title">Browse all metrics</div>
-                        <div class="welcome-card-description">See all metrics at once and narrow them down using filters.</div>
-                        <button class="overlay-action-button" id="start-scratch-btn">Show all metrics</button>
-                    </div>
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--additive">+</div>
-                        <div class="welcome-card-title">Explore by filtering</div>
-                        <div class="welcome-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
-                        <button class="overlay-action-button" id="start-additive-btn">Start exploring</button>
-                    </div>
+                <div class="welcome-steps-strip">
+                    <button class="welcome-step-item" data-step="explore">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">1</span>
+                            <span class="welcome-step-name">Explore Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Filter 120+ metrics by company, framework, maturity, data collection type or outcome goal. Build a shortlist of what you already track and what you plan to add.</p>
+                    </button>
+                    <span class="welcome-step-arrow">→</span>
+                    <button class="welcome-step-item" data-step="compare">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">2</span>
+                            <span class="welcome-step-name">Compare Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Compare two profiles side by side — frameworks like SPACE vs. DX Core 4, or companies like Microsoft vs. Google. Spot what overlaps and what differs.</p>
+                    </button>
+                    <span class="welcome-step-arrow">→</span>
+                    <button class="welcome-step-item" data-step="nextsteps">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">3</span>
+                            <span class="welcome-step-name">Review & Implement Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Review your shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
+                    </button>
                 </div>
+                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
+                <button class="welcome-cta-btn" id="start-exploring-btn">Start exploring metrics</button>
                 <div class="welcome-provenance-group">
                     <div class="welcome-provenance-tabs">
                         <span class="welcome-provenance-tab" data-tab="created">How was the Compass created?</span>
@@ -296,7 +464,7 @@
 
             <!-- Guided wizard: Question 1 -->
             <div id="question1-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 1 of 5</p>
+                <p class="wizard-step-label">Guided metrics selection &bull; Question 1 of 4</p>
                 <h2>What is your team's or organization's measurement maturity?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy" data-next="question2-screen">
@@ -323,7 +491,7 @@
 
             <!-- Guided wizard: Question 2 -->
             <div id="question2-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 2 of 5</p>
+                <p class="wizard-step-label">Guided metrics selection &bull; Question 2 of 4</p>
                 <h2>What kinds of DevEx-related data do you have access to?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative" data-next="question3-screen">
@@ -344,13 +512,13 @@
 
             <!-- Guided wizard: Question 3 -->
             <div id="question3-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 3 of 5</p>
+                <p class="wizard-step-label">Guided metrics selection &bull; Question 3 of 4</p>
                 <h2>What type of evidence do you prefer to rely on?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only" data-next="question5-screen">
                         <span class="option-num">🔬</span><span class="option-content"><strong>Research-validated</strong>: Metrics that appear in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx).</span><span class="wizard-option-count"></span>
                     </button>
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only" data-next="question4-screen">
+                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only" data-next="question5-screen">
                         <span class="option-num">🏭</span><span class="option-content"><strong>Used in practice</strong>: Metrics adopted by companies in the industry, regardless of formal research backing.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all" data-next="question5-screen">
@@ -364,32 +532,8 @@
             </div>
 
             <!-- Guided wizard: Question 4 -->
-            <div id="question4-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 4 of 5</p>
-                <h2>Which company size do you want to see metrics from?</h2>
-                <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="Enterprise" data-next="question5-screen">
-                        <span class="option-num">🏢</span><span>Enterprise (5000+ developers)</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="Large" data-next="question5-screen">
-                        <span class="option-num">🏬</span><span>Large (501–5000 developers)</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="Mid-size" data-next="question5-screen">
-                        <span class="option-num">🏠</span><span>Mid-size (51–500 developers)</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="companySize" data-filter-value="all" data-next="question5-screen">
-                        <span>No specific company size, show all metrics.</span><span class="wizard-option-count"></span>
-                    </button>
-                </div>
-                <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question3-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="question5-screen">Skip →</button>
-                </div>
-            </div>
-
-            <!-- Guided wizard: Question 5 -->
             <div id="question5-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 5 of 5</p>
+                <p class="wizard-step-label">Guided metrics selection &bull; Question 4 of 4</p>
                 <h2>Do you have a key outcome goal?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" data-next="wizard-summary-screen" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
@@ -406,7 +550,7 @@
                     </button>
                 </div>
                 <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question4-screen">← Go back</button>
+                    <button class="wizard-back-btn go-back-btn" data-target-screen="question3-screen">← Go back</button>
                     <button class="skip-wizard-btn" data-next="wizard-summary-screen">Skip →</button>
                 </div>
             </div>
@@ -438,9 +582,9 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">April 2026</div>
                     <ul>
-                        <li>Added ability to select and export existing and upcoming metrics</li>
-                        <li>Changed filter for number of mentions from slider to percentile buttons</li>
-                        <li>Refined filters and showing number of metrics per sub-category</li>
+                        <li>Added three-step workflow for metrics identification: select metrics, compare with a benchmark or peer, and export results</li>
+                        <li>Added PDF export of selected metrics that are already tracked or the user plans to track</li>
+                        <li>Refined coloring, filtering dimensions, and guided metrics selection wizard</li>
                     </ul>
                 </div>
 
@@ -489,6 +633,10 @@
     <script src="js/chart.js"></script>
     <script src="js/metrics-selection.js"></script>
     <script src="js/overlay.js"></script>
+    <script src="js/titlebar.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/nextsteps.js"></script>
     <script src="js/init.js"></script>
 
 </body>
