@@ -1,0 +1,490 @@
+// ─── PDF Export ───────────────────────────────────────────────────────────────
+
+async function fetchAsBase64(url) {
+    const res  = await fetch(url);
+    const blob = await res.blob();
+    return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function typeLabel(type) {
+    if (type === 'quantitative') return 'Automated';
+    if (type === 'qualitative')  return 'Self-reported';
+    if (type === 'both')         return 'Self-reported & Automated';
+    return '';
+}
+
+// ─── Pure version of renderInsights() ────────────────────────────────────────
+
+function buildInsightsChips(allSelected) {
+    if (!allSelected || allSelected.length === 0) return [];
+    const chips = [];
+
+    // 1. Top 10% by value
+    if (Array.isArray(originalData) && originalData.length > 0) {
+        const leafMetrics = originalData.filter(m => m.value != null);
+        if (leafMetrics.length > 0) {
+            const sorted    = [...leafMetrics].sort((a, b) => b.value - a.value);
+            const threshold = Math.ceil(sorted.length * 0.1);
+            const top10Set  = new Set(sorted.slice(0, threshold).map(m => m.id));
+            const topCount  = allSelected.filter(m => top10Set.has(m.id)).length;
+            if (topCount > 0)
+                chips.push(`${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`);
+        }
+    }
+
+    // 2. Outcome goal coverage
+    const knownGoals  = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
+    const goalLabels  = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Org Effectiveness' };
+    const goalCounts  = {};
+    allSelected.forEach(m => {
+        const g = m.outcome_goals;
+        if (g && knownGoals.includes(g)) goalCounts[g] = (goalCounts[g] || 0) + 1;
+    });
+    const coveredGoals = knownGoals.filter(g => goalCounts[g] > 0);
+    const missingGoals = knownGoals.filter(g => !goalCounts[g]);
+    if (coveredGoals.length > 0) {
+        if (missingGoals.length === 0) {
+            chips.push(`Covers all 3 <strong>outcome goals</strong> — good balance`);
+        } else if (missingGoals.length === 1) {
+            chips.push(`No metrics for <strong>${goalLabels[missingGoals[0]]}</strong> yet — consider adding some`);
+        } else {
+            const dominant = Object.entries(goalCounts).sort((a, b) => b[1] - a[1])[0];
+            chips.push(`Heavy on <strong>${goalLabels[dominant[0]]}</strong> — consider adding metrics for ${missingGoals.map(g => goalLabels[g]).join(' and ')}`);
+        }
+    }
+
+    // 3. Data type mix
+    const typeCounts = { qualitative: 0, quantitative: 0, both: 0 };
+    allSelected.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
+    const hasQuant = typeCounts.quantitative + typeCounts.both > 0;
+    const hasQual  = typeCounts.qualitative  + typeCounts.both > 0;
+    if (hasQuant && hasQual) {
+        const parts = [];
+        if (typeCounts.quantitative > 0) parts.push(`${typeCounts.quantitative} automated`);
+        if (typeCounts.qualitative  > 0) parts.push(`${typeCounts.qualitative} self-reported`);
+        if (typeCounts.both         > 0) parts.push(`${typeCounts.both} mixed`);
+        chips.push(`Good mix of <strong>collection types</strong>: ${parts.join(', ')}`);
+    } else if (hasQual && !hasQuant) {
+        chips.push(`All <strong>self-reported</strong> — consider adding automated metrics for objective signals`);
+    } else if (hasQuant && !hasQual) {
+        chips.push(`All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`);
+    }
+
+    // 4. Category (parent) coverage
+    if (Array.isArray(originalData) && originalData.length > 0) {
+        const rootIds        = new Set(originalData.filter(m => !m.parent || m.parent === 0).map(m => m.id));
+        const categoryIds    = new Set(originalData.filter(m => m.parent && rootIds.has(m.parent)).map(m => m.id));
+        const totalTopCats   = categoryIds.size;
+        const parentOf       = {};
+        originalData.forEach(m => { if (m.parent) parentOf[m.id] = m.parent; });
+        const selectedTopCats = new Set();
+        allSelected.forEach(m => {
+            let id = m.id;
+            while (id) {
+                if (categoryIds.has(id)) { selectedTopCats.add(id); break; }
+                id = parentOf[id];
+            }
+        });
+        const n = selectedTopCats.size;
+        if (n > 0 && totalTopCats > 0) {
+            const ratio    = n / totalTopCats;
+            const catLabel = n === totalTopCats ? `all ${totalTopCats}` : `${n} of ${totalTopCats}`;
+            if (ratio < 0.3) {
+                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — consider different perspectives`);
+            } else if (ratio >= 0.6) {
+                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — great breadth`);
+            } else {
+                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — good spread`);
+            }
+        }
+    }
+
+    // 5. Framework alignment
+    const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
+    const frameworkCounts = {};
+    allSelected.forEach(m => {
+        if (!Array.isArray(m.research)) return;
+        const seen = new Set();
+        m.research.forEach(r => {
+            if (knownFrameworks.includes(r.name) && !seen.has(r.name)) {
+                seen.add(r.name);
+                frameworkCounts[r.name] = (frameworkCounts[r.name] || 0) + 1;
+            }
+        });
+    });
+    const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => b[1] - a[1]);
+    if (frameworkEntries.length > 0) {
+        const total = allSelected.length;
+        const [topName, topCount] = frameworkEntries[0];
+        if (topCount === total && frameworkEntries.length === 1) {
+            chips.push(`All metrics align with <strong>${topName}</strong> — consider drawing from other frameworks`);
+        } else if (topCount / total > 0.5) {
+            chips.push(`${topCount} of ${total} metrics align with the <strong>${topName}</strong>`);
+        } else {
+            const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
+            const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';
+            chips.push(`Drawing from <strong>${frameworkEntries.length} frameworks</strong>: ${list}${more}`);
+        }
+    }
+
+    return chips;
+}
+
+// ─── PDF metric card ──────────────────────────────────────────────────────────
+
+function buildPdfCard(metric) {
+    const easeKey   = (metric.ease_of_collection || '').toLowerCase();
+    const easeBadge = metric.ease_of_collection
+        ? `<span class="pdf-card-ease pdf-card-ease--${easeKey}">${escapeHtml(metric.ease_of_collection)} to collect</span>`
+        : '';
+
+    const aka = metric.alsoknownas && metric.alsoknownas !== '-'
+        ? `<div class="pdf-card-aka"><span class="pdf-card-sources-label">Also known as: </span>${escapeHtml(metric.alsoknownas)}</div>`
+        : '';
+
+    const tags = (() => {
+        const pills = [];
+        if (metric.type)          pills.push(`<span class="pdf-tag">${escapeHtml(typeLabel(metric.type))}</span>`);
+        if (metric.outcome_goals) pills.push(`<span class="pdf-tag">${escapeHtml(metric.outcome_goals)}</span>`);
+        if (metric.ai_specific_category) pills.push(`<span class="pdf-tag">AI: ${escapeHtml(metric.ai_specific_category)}</span>`);
+        return pills.length > 0 ? `<div class="pdf-card-tags">${pills.join('')}</div>` : '';
+    })();
+
+    const companyHtml = (() => {
+        if (!Array.isArray(metric.company) || metric.company.length === 0) return '';
+        const links = [...metric.company]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(s => s.url
+                ? `<a href="${escapeHtml(s.url)}">${escapeHtml(s.name)}</a>`
+                : escapeHtml(s.name))
+            .join('<span class="pdf-card-sep"> · </span>');
+        return `<div class="pdf-card-sources"><span class="pdf-card-sources-label">Companies tracking it: </span>${links}</div>`;
+    })();
+
+    const researchHtml = (() => {
+        if (!Array.isArray(metric.research) || metric.research.length === 0) return '';
+        const links = [...metric.research]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(s => s.url
+                ? `<a href="${escapeHtml(s.url)}">${escapeHtml(s.name)}</a>`
+                : escapeHtml(s.name))
+            .join('<span class="pdf-card-sep"> · </span>');
+        return `<div class="pdf-card-sources"><span class="pdf-card-sources-label">Research recommending it: </span>${links}</div>`;
+    })();
+
+    return `
+        <div class="pdf-card">
+            <div class="pdf-card-header">
+                <span class="pdf-card-name">${escapeHtml(metric.name)}</span>
+                ${easeBadge}
+            </div>
+            ${metric.description ? `<div class="pdf-card-desc">${escapeHtml(metric.description)}</div>` : ''}
+            ${aka}
+            ${companyHtml}
+            ${researchHtml}
+            ${tags}
+        </div>`;
+}
+
+// ─── Print styles ─────────────────────────────────────────────────────────────
+
+function getPrintStyles() {
+    return `
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 10pt;
+            color: #1a1a1a;
+            background: #fff;
+            line-height: 1.55;
+            padding-bottom: 30pt; /* room for fixed footer */
+        }
+
+        @page {
+            size: A4;
+            margin: 18mm 18mm 26mm 18mm;
+        }
+
+        /* ── Running footer (position:fixed repeats on every printed page) ── */
+        .pdf-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 5pt 0 4pt;
+            border-top: 0.5pt solid #ccc;
+            font-size: 7.5pt;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            background: #fff;
+        }
+
+        /* ── Typography ── */
+        h1 { font-size: 20pt; color: #1B1AFF; margin-bottom: 10pt; font-weight: 700; display: flex; align-items: center; gap: 8pt; }
+        .pdf-compass-logo { height: 22pt; width: auto; flex-shrink: 0; }
+        h2 {
+            font-size: 13pt;
+            color: #1B1AFF;
+            margin-top: 28pt;
+            margin-bottom: 10pt;
+            padding-bottom: 5pt;
+            border-bottom: 1pt solid #1B1AFF;
+        }
+        a { color: #1B1AFF; text-decoration: none; }
+        strong { font-weight: 600; }
+
+        /* ── Header ── */
+        .pdf-header { margin-bottom: 8pt; }
+        .pdf-header p { font-size: 10pt; color: #333; margin-top: 8pt; max-width: 90%; }
+        .pdf-header .pdf-date { font-size: 8.5pt; color: #888; margin-top: 10pt; }
+
+        /* ── Section 1: Already Tracking list ── */
+        .pdf-tracking-list { list-style: none; columns: 2; column-gap: 20pt; margin-top: 6pt; }
+        .pdf-tracking-list li {
+            padding: 5pt 0 5pt 16pt;
+            position: relative;
+            break-inside: avoid;
+            border-bottom: 0.3pt solid #eee;
+        }
+        .pdf-tracking-list li::before {
+            content: '✓';
+            position: absolute; left: 0;
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 9pt;
+        }
+        .pdf-tracking-list .pdf-tracking-name { font-weight: 600; font-size: 10pt; }
+        .pdf-tracking-list .pdf-tracking-desc { font-size: 8.5pt; color: #666; display: block; margin-top: 2pt; }
+        .pdf-tracking-list .pdf-tracking-type {
+            display: inline-block;
+            font-size: 7.5pt;
+            color: #555;
+            background: #f0f0f0;
+            border-radius: 8pt;
+            padding: 0pt 5pt;
+            margin-top: 2pt;
+        }
+
+        /* ── Section 2: Insights block ── */
+        .pdf-insights {
+            background: #f0f4ff;
+            border-left: 3pt solid #1B1AFF;
+            padding: 10pt 14pt;
+            margin-bottom: 16pt;
+            border-radius: 0 4pt 4pt 0;
+        }
+        .pdf-insights-title { font-size: 8pt; font-weight: 700; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.5pt; margin-bottom: 6pt; }
+        .pdf-insights ul { list-style: none; }
+        .pdf-insights li {
+            font-size: 9pt;
+            color: #444;
+            padding: 2pt 0 2pt 12pt;
+            position: relative;
+        }
+        .pdf-insights li::before { content: '–'; position: absolute; left: 0; color: #aaa; }
+        .pdf-insights li strong { color: #111; }
+
+        /* ── Section 2: Metric cards ── */
+        .pdf-card {
+            border: 0.5pt solid #1B1AFF;
+            border-radius: 4pt;
+            padding: 10pt 12pt;
+            margin-bottom: 8pt;
+            break-inside: avoid;
+            background: #fff;
+        }
+        .pdf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8pt;
+            margin-bottom: 4pt;
+        }
+        .pdf-card-name { font-weight: 700; font-size: 11pt; color: #1B1AFF; }
+        .pdf-card-desc { font-size: 9pt; color: #555; margin-bottom: 5pt; line-height: 1.45; }
+        .pdf-card-aka  { font-size: 8.5pt; color: #666; margin-bottom: 5pt; font-style: italic; }
+        .pdf-card-tags { display: flex; flex-wrap: wrap; gap: 4pt; margin-top: 5pt; }
+        .pdf-tag {
+            display: inline-block;
+            padding: 1pt 6pt;
+            border: 0.5pt solid #aaa;
+            color: #555;
+            border-radius: 8pt;
+            font-size: 7.5pt;
+        }
+        .pdf-card-ease {
+            display: inline-block;
+            padding: 1pt 7pt;
+            border-radius: 10pt;
+            font-size: 8pt;
+            font-weight: 600;
+        }
+        .pdf-card-ease--easy     { background: #dcfce7; color: #15803d; }
+        .pdf-card-ease--moderate { background: #fef9c3; color: #854d0e; }
+        .pdf-card-ease--complex  { background: #fee2e2; color: #b91c1c; }
+        .pdf-card-sources { font-size: 8.5pt; color: #555; margin-top: 4pt; line-height: 1.5; }
+        .pdf-card-sources-label { color: #777; font-weight: 600; }
+        .pdf-card-sep { color: #bbb; }
+
+        /* ── Authors section ── */
+        .pdf-authors {
+            margin-top: 28pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 24pt;
+        }
+        .pdf-authors-logos { display: flex; align-items: center; gap: 16pt; flex-shrink: 0; }
+        .pdf-authors-logos img { height: 36pt; width: auto; }
+        .pdf-authors-text { font-size: 9pt; color: #444; line-height: 1.6; }
+        .pdf-authors-text strong { color: #1e3a5f; }
+        .pdf-authors-text a { color: #1B1AFF; }
+
+        /* ── Page breaks ── */
+        .page-break-before { break-before: page; }
+
+        /* ── Suppress "URL in parentheses" some browsers add after links ── */
+        @media print { a[href]::after { content: none !important; } }
+    `;
+}
+
+// ─── Full HTML document ───────────────────────────────────────────────────────
+
+function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
+    const now      = new Date();
+    const dateStr  = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const fileDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const totalCount = capturing.length + planned.length;
+
+    const capturingSection = capturing.length === 0
+        ? '<p style="color:#888;font-size:9pt;margin-top:6pt;">No metrics in this category.</p>'
+        : `<ul class="pdf-tracking-list">
+            ${capturing.map(m => `
+                <li>
+                    <span class="pdf-tracking-name">${escapeHtml(m.name)}</span>
+                    ${m.type ? `<span class="pdf-tracking-type">${escapeHtml(typeLabel(m.type))}</span>` : ''}
+                    ${m.description ? `<span class="pdf-tracking-desc">${escapeHtml(m.description)}</span>` : ''}
+                </li>`).join('')}
+           </ul>`;
+
+    const insightsBlock = chips.length > 0
+        ? `<div class="pdf-insights">
+               <div class="pdf-insights-title">Selection Insights</div>
+               <ul>${chips.map(c => `<li>${c}</li>`).join('')}</ul>
+           </div>`
+        : '';
+
+    const plannedSection = planned.length === 0
+        ? '<p style="color:#888;font-size:9pt;margin-top:6pt;">No metrics in this category.</p>'
+        : planned.map(m => buildPdfCard(m)).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DevEx Metrics Compass – My Selection ${fileDate}</title>
+    <style>${getPrintStyles()}</style>
+</head>
+<body>
+
+    <div class="pdf-footer">
+        <span>Developer Experience Metrics Compass &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</span>
+        <span>Provided for research and informational purposes only.</span>
+    </div>
+
+    <div class="pdf-header">
+        <h1>${compassUri ? `<img src="${compassUri}" alt="" class="pdf-compass-logo">` : ''}Developer Experience Metrics Compass</h1>
+        <p>
+            The Developer Experience Metrics Compass is a research-based tool that helps engineering
+            teams navigate the landscape of developer experience metrics drawn from both academic
+            research and industry practice. Using a three-step process — exploring the full metric
+            landscape, comparing metrics across frameworks and companies, and selecting those most
+            relevant to your context — this report captures the ${totalCount} metric${totalCount !== 1 ? 's' : ''}
+            you identified as part of your developer experience measurement strategy.
+        </p>
+        <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</p>
+    </div>
+
+    <section>
+        <h2>Already Tracking (${capturing.length})</h2>
+        ${capturingSection}
+    </section>
+
+    <section>
+        <h2>Plan to Track (${planned.length})</h2>
+        ${insightsBlock}
+        ${plannedSection}
+    </section>
+
+    <section class="pdf-authors page-break-before">
+        <div class="pdf-authors-logos">
+            ${uzhUri   ? `<img src="${uzhUri}"   alt="University of Zurich">` : ''}
+            ${haselUri ? `<img src="${haselUri}" alt="HASEL Research Group">` : ''}
+        </div>
+        <div class="pdf-authors-text">
+            <strong>Created by</strong><br>
+            Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy &amp; Prof. Dr. Thomas Fritz<br>
+            University of Zurich (UZH) &nbsp;·&nbsp; <a href="https://hasel.dev">HASEL Research Group</a><br>
+            <a href="https://devex-metrics-compass.hasel.dev/">https://devex-metrics-compass.hasel.dev/</a>
+        </div>
+    </section>
+
+</body>
+</html>`;
+}
+
+// ─── Entry point ──────────────────────────────────────────────────────────────
+
+async function downloadPdf() {
+    if (!clickedMetrics || clickedMetrics.length === 0) return;
+
+    const btn = document.getElementById('download-pdf-nextsteps');
+    if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+
+    try {
+        const capturing = [...clickedMetrics]
+            .filter(m => m.collectionStatus === 'capturing')
+            .sort((a, b) => a.name.localeCompare(b.name));
+        const planned = [...clickedMetrics]
+            .filter(m => m.collectionStatus === 'planning')
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        const [uzhUri, haselUri, compassUri] = await Promise.all([
+            fetchAsBase64('assets/uzh-logo.svg').catch(() => ''),
+            fetchAsBase64('assets/hasel-logo.png').catch(() => ''),
+            fetchAsBase64('assets/favicon.png').catch(() => '')
+        ]);
+
+        const chips = buildInsightsChips([...capturing, ...planned]);
+        const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri);
+
+        const win = window.open('', '_blank');
+        if (!win) {
+            alert('Could not open the print window. Please allow pop-ups for this site and try again.');
+            return;
+        }
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+        setTimeout(() => win.print(), 600);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Export PDF'; }
+    }
+}

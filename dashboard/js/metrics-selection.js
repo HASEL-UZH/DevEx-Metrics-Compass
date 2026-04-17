@@ -10,6 +10,8 @@ function addClickedMetric(metric, status) {
     updateClickedMetricsList();
     saveClickedMetricsToLocalStorage();
     expandShortlist();
+    if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
 }
 
 function expandShortlist() {
@@ -25,12 +27,16 @@ function removeClickedMetric(metricId) {
     clickedMetrics = clickedMetrics.filter(m => m.id !== metricId);
     updateClickedMetricsList();
     saveClickedMetricsToLocalStorage();
+    if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
 }
 
 function clearAllClickedMetrics() {
     clickedMetrics = [];
     updateClickedMetricsList();
     saveClickedMetricsToLocalStorage();
+    if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
 }
 
 function updateClickedMetricsList() {
@@ -68,7 +74,7 @@ function updateClickedMetricsList() {
         const isCapturing = metric.collectionStatus === 'capturing';
         statusBadge.className = `metric-status-badge ${isCapturing ? 'status-capturing' : 'status-planning'}`;
         statusBadge.textContent = isCapturing ? '✓' : '+';
-        statusBadge.title = isCapturing ? 'Already capturing' : 'Plan to capture';
+        statusBadge.title = isCapturing ? 'Already tracking' : 'Plan to track';
 
         const nameElement = document.createElement('span');
         nameElement.className = 'clicked-metric-name';
@@ -141,7 +147,7 @@ function downloadCsv() {
         const escapedFields = [
             escapeCsvField(metric.name),
             escapeCsvField(metric.alsoknownas),
-            escapeCsvField(metric.collectionStatus === 'capturing' ? 'Already capturing' : 'Plan to capture'),
+            escapeCsvField(metric.collectionStatus === 'capturing' ? 'Already tracking' : 'Plan to track'),
             escapeCsvField(metric.description),
             escapeCsvField(typeLabel),
             escapeCsvField(metric.outcome_goals),

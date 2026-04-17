@@ -20,7 +20,8 @@ anychart.onDocumentReady(function() {
         });
 
         filterData();
-        updateHintVisibility();
+        updateStepBar();
+        updateColorLegend('categorization');
     })
     .catch(error => {
         console.error("Error loading JSON data:", error);

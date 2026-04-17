@@ -10,6 +10,7 @@ body {
     margin: 0;
     font-family: Helvetica, sans-serif;
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
     background-color: #f0f0f0;
 }
@@ -17,8 +18,8 @@ body {
 .main-container {
     display: flex;
     width: 100%;
-    height: 100%;
     flex: 1;
+    min-height: 0;
 }
 
 .left-container {
@@ -26,10 +27,11 @@ body {
     justify-content: center;
     align-items: center;
     text-align: left;
-    position: relative; 
-    box-sizing: border-box; 
-    display: flex; 
-    flex-direction: column; 
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
 }
 
 #container {
@@ -48,11 +50,12 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: stretch; 
+    align-items: stretch;
     text-align: left;
     height: 100%;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; 
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 
@@ -296,7 +299,7 @@ body {
 
 .wizard-summary-row-value--any {
     font-weight: normal;
-    color: #aaa;
+    color: #222;
 }
 
 .wizard-summary-count {
@@ -357,12 +360,14 @@ body {
     width: 100%;
 }
 
-.filter-group label {
-    margin-top: 8px;
+.filter-group label,
+.filter-group-label {
+    margin-top: 4px;
     margin-bottom: 8px;
     font-weight: bold;
     font-size: 14px;
     color: #1B1AFF;
+    display: block;
 }
 
 .filter-btn,
@@ -483,6 +488,64 @@ input[type="radio"] {
     font-size: 12px;
     margin-bottom: 8px;
 
+}
+
+.color-by-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.color-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.color-legend-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.color-legend-label {
+    font-size: 11px;
+    color: #555;
+}
+
+.color-legend-gradient {
+    width: 100%;
+}
+
+.color-legend-gradient-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FDBA74, #B45309);
+    border: 1px solid #ddd;
+}
+
+.color-legend-gradient-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #555;
+    margin-top: 3px;
 }
 
 .clear-filters-button {
@@ -817,22 +880,21 @@ a {
 
 /* Tooltip with metrics details */
 .custom-tooltip {
-    position: absolute; 
+    position: fixed;
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1001; 
-    pointer-events: none; 
-    opacity: 0; 
-    transition: opacity 0.2s ease-in-out; 
+    z-index: 1001;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
     width: 20%;
     min-width: 380px;
     max-width: 600px;
     font-size: 14px;
     text-align: left;
-    position: absolute; 
 }
 
 .custom-tooltip.active {
@@ -1236,7 +1298,912 @@ a {
     color: white;
     border-radius: 40px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    
-    font-size: 24px; 
+
+    font-size: 24px;
     line-height: 1.5;
+}
+
+/* ─── Compare panel (right side, Step 2) ────────────────────────────────── */
+
+.compare-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.compare-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.compare-preset-btn {
+    padding: 5px 10px;
+    border-radius: 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #444;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.compare-preset-btn:hover {
+    border-color: #1B1AFF;
+    color: #1B1AFF;
+}
+
+.compare-preset-btn--active {
+    background: #1B1AFF;
+    border-color: #1B1AFF;
+    color: #fff;
+}
+
+.compare-preset-btn--active:hover {
+    background: #4a49cc;
+    border-color: #4a49cc;
+    color: #fff;
+}
+
+/* Consistent spacing between all sections in the compare panel.
+   "Comparing … to …" naturally gets ~29 px of visual gap above it
+   (8 px dropdown margin + 5 px filter-group margin + 16 px summary margin-top).
+   All other titles are tuned to match that. */
+
+/* compare-section-title is a standalone div — give it its own margin so it isn't
+   accidentally zeroed out by a later rule with equal specificity */
+#compare-panel .compare-section-title {
+    margin-top: 20px;
+    margin-bottom: 6px;
+}
+
+#compare-panel .filter-group {
+    margin-top: 20px;
+}
+
+/* compare-presets has no natural bottom margin; add one so the gap
+   before "Manual comparison" matches the dropdown bottom that precedes "Comparing…" */
+#compare-panel .compare-presets {
+    margin-bottom: 8px;
+}
+
+/* Double-ID selector beats #compare-panel .filter-group (1 ID + 1 class),
+   so the sort wrapper reliably keeps its own margin-top */
+#compare-panel #compare-sort-group-wrapper {
+    margin-top: 20px;
+}
+
+/* Labels sit close to their own content below; the container above provides the section gap.
+   Scoped to filter-group children and the dynamic "Comparing…" label only —
+   does NOT touch .compare-section-title so it keeps its margin-top above. */
+#compare-panel .filter-group > label,
+#compare-panel .compare-summary .filter-group-label {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+/* ─── Sort dimension mini charts ─────────────────────────────────────────── */
+
+.compare-sort-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 0;
+    width: 100%;
+    margin-top: 0;
+}
+
+/* Reserved: full-width last card if ever needed — currently disabled */
+
+.compare-sort-chart-card {
+    border: 1px solid #e0e2ea;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 4px;
+    cursor: pointer;
+    background: white;
+    transition: border-color 0.15s, background 0.15s;
+    /* Fixed height so all cards are uniform */
+    min-height: 90px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.compare-sort-chart-card:hover {
+    border-color: #999;
+}
+
+.compare-sort-chart-card--active {
+    border-color: #3366ff;
+    background: #f0f4ff;
+}
+
+.compare-sort-chart-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 7px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.compare-sort-chart-card--active .compare-sort-chart-label {
+    color: #3366ff;
+}
+
+.sort-chart-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+.sort-chart-row {
+    display: grid;
+    grid-template-columns: 62px 1fr 20px;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.sort-chart-row-label {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.sort-chart-bar-track {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e8e8e8;
+}
+
+.sort-chart-row-count {
+    font-size: 10px;
+    color: #888;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.sort-chart-bar-fill {
+    height: 100%;
+    min-width: 2px;
+    transition: width 0.2s;
+}
+
+.sort-chart-bar-fill--left   { background: #7c3aed; }
+.sort-chart-bar-fill--shared { background: #9ca3af; }
+.sort-chart-bar-fill--right  { background: #16a34a; }
+
+.sort-chart-more {
+    font-size: 9px;
+    color: #aaa;
+    text-align: right;
+    margin-top: 2px;
+}
+
+
+.compare-row-dropdowns {
+    display: flex;
+    gap: 6px;
+}
+
+.compare-row-dropdowns {
+    width: 100%;
+}
+
+.compare-side-label {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    align-self: center;
+    min-width: 30px;
+}
+
+.compare-row-dropdowns .company-dropdown {
+    flex: 1;
+    min-width: 0;
+    width: 0; /* forces flex to distribute evenly, not size-to-content */
+}
+
+
+.compare-summary {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.compare-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.compare-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.compare-stat--shared {
+    background: #f0f0f0;
+    color: #444;
+}
+
+.compare-stat--left {
+    background: #f3edf8;
+    color: #7c4daa;
+}
+
+.compare-stat--right {
+    background: #e8f7f0;
+    color: #1a7f5a;
+}
+
+.compare-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.compare-stat-badge--left    { background: #7c4daa; color: #fff; }
+.compare-stat-badge--shared  { background: #d0d0d0; color: #555; }
+.compare-stat-badge--right   { background: #1a7f5a; color: #fff; }
+
+.compare-disclaimer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.5;
+}
+
+.compare-disclaimer p {
+    margin: 0 0 6px;
+}
+
+.compare-report-link {
+    color: #1B1AFF;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+.compare-report-link:hover {
+    text-decoration: underline;
+}
+
+/* ─── Diff view (left panel, Step 2) ────────────────────────────────────── */
+
+.diff-view {
+    flex: 1;
+    width: 60%;
+    max-width: 900px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 0;
+    min-height: 0;
+}
+
+
+.diff-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.diff-badge--left {
+    background: #7c4daa;
+    color: #fff;
+}
+
+.diff-badge--shared {
+    background: #d0d0d0;
+    color: #555;
+}
+
+.diff-badge--right {
+    background: #1a7f5a;
+    color: #fff;
+}
+
+.diff-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.diff-category {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.diff-category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f8f8f8;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.diff-category-header:hover {
+    background: #f0f0f0;
+}
+
+.diff-category-chevron {
+    font-size: 11px;
+    transition: transform 0.2s;
+    color: #aaa;
+}
+
+.diff-category--collapsed .diff-category-chevron {
+    transform: rotate(-90deg);
+}
+
+.diff-category--collapsed .diff-metrics {
+    display: none;
+}
+
+.diff-category-name {
+    flex: 1;
+}
+
+.diff-category-stats {
+    font-size: 11px;
+    color: #aaa;
+    font-weight: normal;
+}
+
+.diff-metrics {
+    display: flex;
+    flex-direction: column;
+}
+
+.diff-metric-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 13px;
+    color: #333;
+}
+
+.diff-metric-row:has(.diff-badge--left) {
+    background: #f3edf8;
+}
+
+.diff-metric-row:has(.diff-badge--shared) {
+    background: #f5f5f5;
+}
+
+.diff-metric-row:has(.diff-badge--right) {
+    background: #e8f7f0;
+}
+
+.diff-metric-row:hover {
+    filter: brightness(0.96);
+}
+
+.diff-metric-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.diff-popularity-badge {
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 5px;
+    background: #f0f0f0;
+    color: #888;
+    flex-shrink: 0;
+}
+
+
+/* ─── Next Steps view (left panel, Step 3) ──────────────────────────────── */
+
+.nextsteps-view {
+    flex: 1;
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px;
+    gap: 12px;
+}
+
+.nextsteps-empty-msg {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 24px;
+}
+
+.nextsteps-columns {
+    display: flex;
+    gap: 16px;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.nextsteps-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.nextsteps-col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #444;
+    background: #f8f8f8;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
+.nextsteps-col-count {
+    font-weight: normal;
+    color: #aaa;
+    font-size: 12px;
+}
+
+.nextsteps-col-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.nextsteps-col-badge--capturing {
+    background: #DCFCE7;
+    color: #16A34A;
+}
+
+.nextsteps-col-badge--planned {
+    background: #DBEAFE;
+    color: #1B1AFF;
+}
+
+.nextsteps-col-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.nextsteps-empty-col {
+    color: #ccc;
+    font-size: 13px;
+    padding: 16px 14px;
+    text-align: center;
+}
+
+.nextsteps-metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+    transition: background-color 0.15s;
+    gap: 8px;
+}
+
+.nextsteps-metric-row:hover {
+    background: #f4f5ff;
+}
+
+.nextsteps-metric-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nextsteps-metric-remove {
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0 2px;
+    transition: color 0.15s;
+}
+
+.nextsteps-metric-remove:hover {
+    color: #e74c3c;
+}
+
+.nextsteps-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.nextsteps-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.nextsteps-actions--row {
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.ns-download-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.controls-title--download {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.ns-btn-export,
+.ns-btn-clear {
+    flex: 1;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 7px 10px;
+    font-size: 13px;
+}
+
+/* ─── Step 3: Column widths ───────────────────────────────────────────────── */
+
+.nextsteps-col--capturing {
+    flex: 0.75;
+}
+
+.nextsteps-col--planned {
+    flex: 1.5;
+}
+
+/* ─── Step 3: Insights panel (right sidebar) ─────────────────────────────── */
+
+.ns-insights {
+    margin-top: 10px;
+}
+
+.ns-insights-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.ns-insights-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ns-insights-list li {
+    font-size: 12px;
+    color: #444;
+    line-height: 1.4;
+    padding-left: 12px;
+    position: relative;
+}
+
+.ns-insights-list li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: #bbb;
+}
+
+.ns-insights-list li strong {
+    color: #111;
+    font-weight: 600;
+}
+
+/* ─── Step 3: Planned metric cards ───────────────────────────────────────── */
+
+.nextsteps-planned-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 9px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.nextsteps-planned-card:hover {
+    background: #f4f5ff;
+}
+
+.ns-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ns-card-desc {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ns-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.ns-card-ease {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ns-card-ease--easy {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.ns-card-ease--moderate {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.ns-card-ease--complex {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+
+.ns-card-sources {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.ns-card-sources-label {
+    color: #888;
+    font-weight: 500;
+}
+
+.ns-card-sources a {
+    color: #1B1AFF;
+    text-decoration: none;
+}
+
+.ns-card-sources a:hover {
+    text-decoration: underline;
+}
+
+.ns-card-sep {
+    margin: 0 4px;
+    color: #ccc;
+}
+
+.ns-card-more {
+    color: #999;
+    font-size: 11px;
+}
+
+/* ─── Step-based layout overrides ────────────────────────────────────────── */
+
+/* Right panel is the same width in all steps */
+
+/* Hide shortlist section in Explore — it lives in Step 3 */
+.explore-shortlist-section,
+.explore-shortlist-divider {
+    display: none;
+}
+
+/* ─── 3-step progress bar ─────────────────────────────────────────────────── */
+
+.step-bar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 24px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.step-bar-top {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.step-bar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1B1AFF;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.step-bar-steps {
+    display: flex;
+    align-items: center;
+}
+
+.step-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border: 2px solid #d0d2f8;
+    border-radius: 40px;
+    background: #f4f5ff;
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.step-btn:hover {
+    border-color: #1B1AFF;
+    color: #1B1AFF;
+    background: #eceeff;
+}
+
+.step-btn--active {
+    background: #1B1AFF;
+    border-color: #1B1AFF;
+    color: #fff;
+}
+
+.step-btn--active:hover {
+    background: #0f0ecc;
+    border-color: #0f0ecc;
+    color: #fff;
+}
+
+/* no special styling for has-content — dimmed/undimmed is sufficient */
+
+.step-btn--dimmed {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+.step-btn-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-btn--active .step-btn-num {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.step-connector {
+    flex-shrink: 0;
+    width: 32px;
+    height: 2px;
+    background: #ddd;
+    margin: 0 6px;
+}
+
+.step-bar-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #777;
+    padding-left: 2px;
+    min-height: 16px;
+}
+
+.step-meta-action {
+    color: #1B1AFF;
+    font-weight: 700;
+}
+
+.step-meta-count {
+    color: #999;
+    font-weight: 400;
+}
+
+.step-meta-sep {
+    color: #ccc;
+    user-select: none;
+}
+
+.step-meta-shortlist {
+    color: #999;
+    font-weight: 400;
+}
+
+@media (max-width: 1100px) {
+    .diff-view,
+    .nextsteps-view {
+        width: 90%;
+    }
 }
