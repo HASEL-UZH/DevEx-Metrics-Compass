@@ -318,6 +318,11 @@ function updateMetricsCount(data) {
 // Wrapper called by all user-triggered filter interactions.
 // Clears the blank-canvas state so the user's action reveals metrics.
 function onUserFilterChange() {
+    if (!modeChosen) {
+        modeChosen = true;
+        currentMode = MODE.BROWSE;
+        hideExploreStartView();
+    }
     additiveBlankCanvas = false;
     filterData();
 }
