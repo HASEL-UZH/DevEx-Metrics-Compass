@@ -360,6 +360,12 @@ body {
     width: 100%;
 }
 
+.filter-group label .label-hint {
+    font-weight: normal;
+    font-size: 12px;
+    color: #888;
+}
+
 .filter-group label,
 .filter-group-label {
     margin-top: 4px;
