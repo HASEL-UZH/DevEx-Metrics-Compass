@@ -9,6 +9,7 @@ function addClickedMetric(metric, status) {
     }
     saveClickedMetricsToLocalStorage();
     if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof currentStep !== 'undefined' && currentStep === STEP.COMPARE   && typeof renderDiffView       === 'function') renderDiffView();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
 }
 
@@ -16,6 +17,7 @@ function removeClickedMetric(metricId) {
     clickedMetrics = clickedMetrics.filter(m => m.id !== metricId);
     saveClickedMetricsToLocalStorage();
     if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof currentStep !== 'undefined' && currentStep === STEP.COMPARE   && typeof renderDiffView       === 'function') renderDiffView();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
 }
 

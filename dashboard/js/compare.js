@@ -202,13 +202,13 @@ function renderDiffView() {
 
                 const shortlisted = clickedMetrics.find(m => m.id === metric.id);
                 const statusBadge = shortlisted
-                    ? `<span class="metric-status-badge ${shortlisted.collectionStatus === 'capturing' ? 'status-capturing' : 'status-planning'}">${shortlisted.collectionStatus === 'capturing' ? '✓' : '+'}</span>`
+                    ? `<span class="metric-status-badge ${shortlisted.collectionStatus === 'capturing' ? 'status-capturing' : 'status-planning'}">${shortlisted.collectionStatus === 'capturing' ? '✓ Tracking' : '+ Planned'}</span>`
                     : '';
 
                 const score = popularityScore(metric);
                 const popLabel = score >= pop1 ? 'top 1%' : score >= pop5 ? 'top 5%' : score >= pop10 ? 'top 10%' : null;
                 const popularityBadge = popLabel
-                    ? `<span class="diff-popularity-badge" title="Used by ${score} companies/frameworks">${popLabel}</span>`
+                    ? `<span class="diff-popularity-badge" title="Used by ${score} companies/frameworks">&#9733; ${popLabel}</span>`
                     : '';
 
                 html += `<div class="diff-metric-row" data-metric-id="${metric.id}" role="button" tabindex="0">

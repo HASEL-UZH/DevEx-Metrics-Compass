@@ -1729,8 +1729,8 @@ a {
 
 .diff-category-stats {
     font-size: 11px;
-    color: #aaa;
-    font-weight: normal;
+    color: #888;
+    font-weight: 600;
 }
 
 .diff-metrics {
@@ -1775,15 +1775,34 @@ a {
 }
 
 .diff-popularity-badge {
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     border-radius: 10px;
-    padding: 1px 5px;
-    background: #f0f0f0;
-    color: #888;
+    padding: 2px 7px;
+    background: #FEF3C7;
+    color: #B45309;
     flex-shrink: 0;
 }
 
+
+.metric-status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.status-capturing {
+    background-color: #DCFCE7;
+    color: #16A34A;
+}
+
+.status-planning {
+    background-color: #DBEAFE;
+    color: #1B1AFF;
+}
 
 /* ─── Next Steps view (left panel, Step 3) ──────────────────────────────── */
 
