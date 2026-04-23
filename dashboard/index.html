@@ -350,7 +350,7 @@
     </div>
 
     <footer>
-        <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
+        <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a>  &bull; <a href="#" id="openFeedbackFooter">Give feedback</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
         <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a literature review and does not claim to be exhaustive.</div>
     </footer>
 
@@ -628,6 +628,22 @@
     <!-- Tooltyp containing metric details, opened when clicked -->
     <div id="custom-tooltip" class="custom-tooltip"></div>
 
+    <!-- Feedback widget: fixed top-right, always visible -->
+    <div id="feedback-widget" class="feedback-widget">
+        <div class="feedback-widget-top">
+            <span class="feedback-widget-label">Is this useful?</span>
+            <div class="feedback-widget-btns">
+                <button class="feedback-thumb-btn" data-rating="up" title="Helpful">&#x1F44D;</button>
+                <button class="feedback-thumb-btn" data-rating="down" title="Not helpful">&#x1F44E;</button>
+            </div>
+        </div>
+        <div id="feedback-expand" class="feedback-expand hidden">
+            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)"></textarea>
+            <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
+            <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
+        </div>
+    </div>
+
     <script src="js/state.js"></script>
     <script src="js/filtering.js"></script>
     <script src="js/chart.js"></script>
@@ -638,6 +654,7 @@
     <script src="js/pdf-export.js"></script>
     <script src="js/nextsteps.js"></script>
     <script src="js/init.js"></script>
+    <script src="js/feedback.js"></script>
 
 </body>
 

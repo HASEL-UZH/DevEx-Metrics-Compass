@@ -34,7 +34,7 @@ Work almost exclusively happens in `dashboard/`.
 
 ## Conventions
 
-- No emoji in code or UI text (existing emoji in filter labels are intentional; do not add new ones)
+- No emoji in code (existing emoji in filter labels are intentional; do not add new ones)
 
 ## Branch Strategy
 
