@@ -392,7 +392,7 @@
     {
         "ref_number": "506",
         "ref_name": "McKinsey Framework",
-        "ref_link": "https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/yes-you-can-measure-software-developer-productivity#/",
+        "ref_link": "https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/yes-you-can-measure-software-developer-productivity",
         "company_size": "N/A"
     },
     {
@@ -814,5 +814,47 @@
         "ref_name": "DX Core 4 Framework",
         "ref_link": "https://getdx.com/research/measuring-developer-productivity-with-the-dx-core-4/",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "515a",
+        "ref_name": "Mockus (2025)",
+        "ref_link": "https://dl.acm.org/doi/pdf/10.1145/3722216",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "515b",
+        "ref_name": "Meta",
+        "ref_link": "https://engineering.fb.com/2025/08/06/developer-tools/diff-risk-score-drs-ai-risk-aware-software-development-meta/",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "516a",
+        "ref_name": "Meyer (2021)",
+        "ref_link": "https://ieeexplore.ieee.org/document/8666786",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "516b",
+        "ref_name": "Meta",
+        "ref_link": "https://linearb.io/blog/how-meta-measures-coding-time",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "516c",
+        "ref_name": "Lloyds",
+        "ref_link": "https://dpe.org/sessions/hilary-lanham-tom-kelk/measuring-engineering-productivity-from-a-standing-start-a-330-year-old-banks-journey/",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "516d",
+        "ref_name": "Google",
+        "ref_link": "https://getdx.com/blog/how-google-measures-developer-productivity/",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "516e",
+        "ref_name": "Microsoft",
+        "ref_link": "https://devops.com/how-to-get-developer-productivity-engineering-right/",
+        "company_size": "Enterprise"
     }
 ]
