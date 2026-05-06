@@ -1,5 +1,123 @@
 // ─── AnyChart sunburst & custom tooltip ──────────────────────────────────────
 
+const COLOR_BY_CONFIG = {
+    type: {
+        label: 'Data collection type',
+        map: { qualitative: '#0e7490', quantitative: '#15803d', both: '#1d4ed8' },
+        legend: [
+            { color: '#0e7490', label: 'Self-reported' },
+            { color: '#15803d', label: 'Automated' },
+            { color: '#1d4ed8', label: 'Both' },
+        ],
+        getValue: d => d.type,
+    },
+    is_research: {
+        label: 'Research vs industry',
+        map: { 1: '#16a34a', 2: '#1d4ed8', 3: '#d97706' },
+        legend: [
+            { color: '#16a34a', label: 'Proposed by research only' },
+            { color: '#1d4ed8', label: 'Applied in industry only' },
+            { color: '#d97706', label: 'Applied by both' },
+        ],
+        getValue: d => d.is_research,
+    },
+    outcome_goals: {
+        label: 'Outcome goals',
+        map: {
+            'Developer Experience': '#1B1AFF',
+            'Product Excellence': '#15803d',
+            'Organizational Effectiveness': '#c2410c',
+        },
+        legend: [
+            { color: '#1B1AFF', label: 'Developer Experience' },
+            { color: '#15803d', label: 'Product Excellence' },
+            { color: '#c2410c', label: 'Organizational Effectiveness' },
+        ],
+        getValue: d => d.outcome_goals,
+    },
+    ease_of_collection: {
+        label: 'Collection maturity',
+        map: { Easy: '#22c55e', Moderate: '#eab308', Complex: '#ef4444' },
+        legend: [
+            { color: '#22c55e', label: 'Easy (Getting started)' },
+            { color: '#eab308', label: 'Moderate (Established)' },
+            { color: '#ef4444', label: 'Complex (Advanced)' },
+        ],
+        getValue: d => d.ease_of_collection,
+    },
+    popularity: {
+        label: 'Popularity',
+        legend: 'gradient',
+        getValue: d => d.value,
+    },
+};
+
+function lerpColor(hex1, hex2, t) {
+    const parse = h => [
+        parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)
+    ];
+    const [r1, g1, b1] = parse(hex1), [r2, g2, b2] = parse(hex2);
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+// Maps metric id → fill color for the current colorBy dimension.
+// Populated by computeColors(); read by the chart.fill() callback via this.iterator.get('id').
+const _colorLookup = new Map();
+
+function computeColors(data, colorBy) {
+    _colorLookup.clear();
+    if (colorBy === 'categorization') return;
+
+    if (colorBy === 'popularity') {
+        const vals = data.filter(d => d.type).map(d => d.value || 0);
+        const min = Math.min(...vals), max = Math.max(...vals);
+        data.filter(d => d.type).forEach(d => {
+            const t = max > min ? (d.value - min) / (max - min) : 0.5;
+            _colorLookup.set(d.id, lerpColor('#FDBA74', '#B45309', t));
+        });
+        return;
+    }
+
+    const config = COLOR_BY_CONFIG[colorBy];
+    if (!config) return;
+    data.filter(d => d.type).forEach(d => {
+        const val = config.getValue(d);
+        _colorLookup.set(d.id, (val != null && config.map[val]) ? config.map[val] : '#9e9e9e');
+    });
+}
+
+function updateColorLegend(colorBy) {
+    const el = document.getElementById('color-legend');
+    if (!el) return;
+    if (colorBy === 'categorization') {
+        el.innerHTML = '';
+        el.style.display = 'none';
+        return;
+    }
+    el.style.display = 'flex';
+    if (colorBy === 'popularity') {
+        el.innerHTML = `
+            <div class="color-legend-gradient">
+                <div class="color-legend-gradient-bar"></div>
+                <div class="color-legend-gradient-labels">
+                    <span>Fewer mentions</span><span>More mentions</span>
+                </div>
+            </div>`;
+        return;
+    }
+    const config = COLOR_BY_CONFIG[colorBy];
+    if (!config) return;
+    el.innerHTML = config.legend.map(e =>
+        `<span class="color-legend-item">
+            <span class="color-legend-swatch" style="background:${e.color}"></span>
+            <span class="color-legend-label">${e.label}</span>
+        </span>`
+    ).join('');
+}
+
 function addMetricCounts(data) {
     const childrenMap = {};
     for (const node of data) {
@@ -22,8 +140,17 @@ function addMetricCounts(data) {
 function createChart(data) {
     if (chart) { chart.dispose(); }
 
+    computeColors(data, currentColorBy);
     addMetricCounts(data);
-    const dataTree = anychart.data.tree(data, 'as-table');
+
+    // Category/subcategory nodes have `normal.fill` baked into data.json, which
+    // overrides chart.fill() callbacks. Strip it for non-default coloring so the
+    // fill callback can make them gray.
+    const chartData = currentColorBy === 'categorization'
+        ? data
+        : data.map(d => d.type ? d : { ...d, normal: undefined });
+
+    const dataTree = anychart.data.tree(chartData, 'as-table');
     chart = anychart.sunburst(dataTree);
 
     chart.tooltip().format(function() {
@@ -40,13 +167,33 @@ function createChart(data) {
     chart.tooltip().separator(false);
     chart.contextMenu().enabled(false);
     chart.calculationMode('parent-independent');
-    chart.labels().format("{%name}");
+    chart.labels().useHtml(true);
+    chart.labels().format(function() {
+        const name = this.getData('name');
+        // In non-categorization mode, parent/subcategory nodes get a gray fill —
+        // use dark text so labels are readable against the light background.
+        if (currentColorBy !== 'categorization' && !this.getData('type')) {
+            return `<span style="color:#333333;">${name}</span>`;
+        }
+        return name;
+    });
     chart.labels().position("radial");
 
     chart.fill(function() {
-        if (this.parent)
-            return anychart.color.lighten(this.parentColor, 0.15);
-        return this.mainColor;
+        if (currentColorBy === 'categorization') {
+            if (this.parent)
+                return anychart.color.lighten(this.parentColor, 0.15);
+            return this.mainColor;
+        }
+        // Only leaf nodes (those with a 'type' field) get dimension colors.
+        const isLeaf = this.iterator && this.iterator.get('type');
+        if (isLeaf) {
+            const id = this.iterator.get('id');
+            const color = (id != null) ? _colorLookup.get(id) : null;
+            return color || '#9e9e9e';
+        }
+        // Root, category, and subcategory nodes: neutral gray
+        return '#e8e8e8';
     });
 
     chart.listen('pointClick', function(e) {
@@ -187,8 +334,8 @@ function showCustomTooltip(metricData, event) {
         <div class="metric-detail"><strong>Your collection status</strong></div>
         <div class="segmented-control tooltip-status-control">
             <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">No status</button>
-            <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already capturing</button>
-            <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to capture</button>
+            <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already tracking</button>
+            <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to track</button>
         </div>`;
         })()}
     `;

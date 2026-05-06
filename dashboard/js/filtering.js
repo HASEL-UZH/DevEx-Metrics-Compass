@@ -291,6 +291,8 @@ function filterData() {
     }
 
     updateClearFiltersVisibility(actualMatchingMetrics.length);
+    if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof refreshCompareValueDropdowns === 'function') refreshCompareValueDropdowns();
 }
 
 // Show/hide "Clear all filters" buttons based on whether the full list is shown
@@ -305,15 +307,22 @@ function updateClearFiltersVisibility(shownCount) {
 function updateMetricsCount(data) {
     const metricsWithType = data.filter(item => item.type);
     const totalMetrics = originalData.filter(item => item.type).length;
-    const countDisplay = metricsWithType.length === totalMetrics
-        ? `${metricsWithType.length}`
-        : `${metricsWithType.length} of ${totalMetrics}`;
-    document.getElementById('metrics-count').textContent = countDisplay;
+    const titleEl = document.getElementById('explore-panel-title');
+    if (titleEl) {
+        titleEl.textContent = metricsWithType.length === totalMetrics
+            ? `Explore all ${totalMetrics} DevEx metrics`
+            : `Explore ${metricsWithType.length} of ${totalMetrics} DevEx metrics`;
+    }
 }
 
 // Wrapper called by all user-triggered filter interactions.
 // Clears the blank-canvas state so the user's action reveals metrics.
 function onUserFilterChange() {
+    if (!modeChosen) {
+        modeChosen = true;
+        currentMode = MODE.BROWSE;
+        hideExploreStartView();
+    }
     additiveBlankCanvas = false;
     filterData();
 }
@@ -427,3 +436,9 @@ document.getElementById('clear-filters').addEventListener('click', function() {
 });
 
 document.getElementById('keyword-search').addEventListener('input', onUserFilterChange);
+
+document.getElementById('color-by-select').addEventListener('change', function() {
+    currentColorBy = this.value;
+    createChart(filteredData);
+    updateColorLegend(currentColorBy);
+});

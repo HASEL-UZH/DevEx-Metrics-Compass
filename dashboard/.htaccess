@@ -1,0 +1,5 @@
+# Block direct browser access to the feedback log file
+<Files "feedback.log">
+    Order allow,deny
+    Deny from all
+</Files>

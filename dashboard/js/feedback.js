@@ -1,0 +1,113 @@
+// Feedback widget: thumbs up/down + optional comment, posted to feedback.php
+// On localhost, logs to console instead of posting (PHP not available locally).
+
+(function () {
+    const widget   = document.getElementById('feedback-widget');
+    const expand   = document.getElementById('feedback-expand');
+    const thumbBtns = document.querySelectorAll('.feedback-thumb-btn');
+    const textarea  = document.getElementById('feedback-comment');
+    const submitBtn = document.getElementById('feedback-submit');
+    const thanks    = document.getElementById('feedback-thanks');
+    const footerLink = document.getElementById('openFeedbackFooter');
+
+    let selectedRating = null;
+
+    function resetWidget() {
+        selectedRating = null;
+        thumbBtns.forEach(b => b.classList.remove('active'));
+        expand.classList.add('hidden');
+        textarea.value = '';
+        thanks.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+        textarea.classList.remove('hidden');
+    }
+
+    function selectRating(rating) {
+        selectedRating = rating;
+        thumbBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.rating === rating);
+        });
+        expand.classList.remove('hidden');
+        textarea.focus();
+    }
+
+    function showThanks() {
+        textarea.classList.add('hidden');
+        submitBtn.classList.add('hidden');
+        thanks.classList.remove('hidden');
+        setTimeout(resetWidget, 3000);
+    }
+
+    function getContext() {
+        const step = typeof currentStep !== 'undefined' ? currentStep : null;
+        const ctx  = { step, shortlistCount: typeof clickedMetrics !== 'undefined' ? clickedMetrics.length : null };
+
+        if (step === 'compare') {
+            // Log which two groups are being compared and the current group-by dimension
+            if (typeof compareState !== 'undefined') ctx.comparison = compareState;
+            if (typeof compareSort  !== 'undefined') ctx.groupBy    = compareSort;
+        } else {
+            // Log only the filters that differ from the default ('all')
+            const filters = {};
+            if (typeof activeFilters !== 'undefined') {
+                Object.entries(activeFilters).forEach(([key, val]) => {
+                    if (val !== 'all') filters[key] = val;
+                });
+            }
+            ctx.activeFilters = filters;
+        }
+
+        return ctx;
+    }
+
+    function submitFeedback() {
+        if (!selectedRating) return;
+
+        const payload = {
+            rating:  selectedRating,
+            comment: textarea.value.trim(),
+            context: getContext(),
+        };
+
+        const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+        if (isLocal) {
+            console.log('[feedback]', payload);
+            showThanks();
+            return;
+        }
+
+        fetch('feedback.php', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) showThanks();
+            })
+            .catch(() => {
+                // Still show thanks — don't penalise the user for a network error
+                showThanks();
+            });
+    }
+
+    thumbBtns.forEach(btn => {
+        btn.addEventListener('click', () => selectRating(btn.dataset.rating));
+    });
+
+    submitBtn.addEventListener('click', submitFeedback);
+
+    textarea.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitFeedback();
+    });
+
+    if (footerLink) {
+        footerLink.addEventListener('click', e => {
+            e.preventDefault();
+            widget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // If a rating is already selected keep expanded state; otherwise just draw attention
+            widget.classList.add('feedback-widget--highlight');
+            setTimeout(() => widget.classList.remove('feedback-widget--highlight'), 1200);
+        });
+    }
+}());

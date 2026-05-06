@@ -102,33 +102,84 @@ passwordInput.addEventListener('keydown', (e) => {
 
 // Initial state: show password screen or skip if already unlocked
 if (localStorage.getItem(PASSWORD_KEY) === 'true') {
-    showOverlayScreen(initialChoiceScreen);
+    showOverlayScreen(initialChoiceScreen); // sets up currentOverlayScreen
+    const saved = localStorage.getItem('clickedMetrics');
+    const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
+    if (hasShortlist) {
+        myOverlay.style.display = 'none'; // returning user with a shortlist — skip welcome
+    }
 } else {
     myOverlay.classList.add('password-locked');
     showOverlayScreen(passwordScreen);
 }
 
-// ─── Mode selection buttons ───────────────────────────────────────────────────
+// ─── Inline mode picker helpers ──────────────────────────────────────────────
 
-document.getElementById('start-additive-btn').addEventListener('click', () => {
+let modeChosen = false;
+
+function showExploreStartView() {
+    const v  = document.getElementById('explore-start-view');
+    const c  = document.getElementById('container');
+    const cf = document.getElementById('clear-filters-chart');
+    if (v)  v.style.display  = '';
+    if (c)  c.style.display  = 'none';
+    if (cf) cf.style.display = 'none';
+    ['no-metrics-message', 'additive-mode-message'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+}
+
+function hideExploreStartView() {
+    const v = document.getElementById('explore-start-view');
+    const c = document.getElementById('container');
+    if (v) v.style.display = 'none';
+    if (c) c.style.display = '';
+}
+
+// ─── CTA button: "Start exploring metrics" ───────────────────────────────────
+
+document.getElementById('start-exploring-btn').addEventListener('click', () => {
     myOverlay.style.display = 'none';
-    currentMode = MODE.ADDITIVE;
-    clearAllFilters();
-
+    if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
+    showExploreStartView();
 });
 
-document.getElementById('start-scratch-btn').addEventListener('click', () => {
-    myOverlay.style.display = 'none';
-    currentMode = MODE.BROWSE;
-    clearAllFilters();
+// ─── Welcome step strip: click to jump to a step ─────────────────────────────
 
+document.querySelectorAll('.welcome-step-item[data-step]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const step = btn.dataset.step;
+        myOverlay.style.display = 'none';
+        if (step === STEP.EXPLORE) {
+            if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
+            if (!modeChosen) showExploreStartView();
+        } else {
+            switchToStep(step);
+        }
+    });
 });
 
-document.getElementById('start-assessment-btn').addEventListener('click', () => {
+// ─── Inline mode selection buttons (in left panel) ───────────────────────────
+
+document.getElementById('start-assessment-inline-btn').addEventListener('click', () => {
     resetWizardAnswers();
     myOverlay.style.display = 'flex';
     showOverlayScreen(question1Screen);
+});
 
+document.getElementById('start-scratch-inline-btn').addEventListener('click', () => {
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+});
+
+document.getElementById('start-additive-inline-btn').addEventListener('click', () => {
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.ADDITIVE;
+    clearAllFilters();
 });
 
 // ─── Changelog ────────────────────────────────────────────────────────────────
@@ -154,29 +205,34 @@ changelogOverlay.addEventListener('click', (e) => {
     if (e.target === changelogOverlay) closeChangelog();
 });
 
-// ─── "Switch exploration mode" button ────────────────────────────────────────
+// ─── "Restart wizard" button (Step 1 right panel) ────────────────────────────
 
 openMaturityAssessmentBtn.addEventListener('click', () => {
-    myOverlay.style.display = 'flex';
-    showOverlayScreen(initialChoiceScreen);
-
+    modeChosen = false;
+    if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
+    showExploreStartView();
 });
 
 // ─── Close overlay ────────────────────────────────────────────────────────────
 
-closeOverlayBtn.addEventListener('click', () => {
-    if (currentOverlayScreen === passwordScreen) return;
+function dismissOverlay() {
     myOverlay.style.display = 'none';
     showOverlayScreen(initialChoiceScreen);
+    if (!modeChosen) {
+        if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
+        showExploreStartView();
+    }
+}
 
+closeOverlayBtn.addEventListener('click', () => {
+    if (currentOverlayScreen === passwordScreen) return;
+    dismissOverlay();
 });
 
 myOverlay.addEventListener('click', (event) => {
     if (event.target === myOverlay) {
         if (currentOverlayScreen === passwordScreen) return;
-        myOverlay.style.display = 'none';
-        showOverlayScreen(initialChoiceScreen);
-
+        dismissOverlay();
     }
 });
 
@@ -196,7 +252,9 @@ function resetWizardAnswers() {
 resetWizardAnswers();
 
 function applyWizardFilters() {
+    modeChosen = true;
     myOverlay.style.display = 'none';
+    hideExploreStartView();
     currentMode = MODE.GUIDED;
     clearAllFilters();
     if (wizardAnswers.dataType !== 'all')         applySpecificFilter('dataType',         wizardAnswers.dataType,         'dataType');
@@ -239,7 +297,6 @@ const WIZARD_QUESTION_LABELS = {
     easeOfCollection: 'Maturity',
     dataType:         'Data access',
     focus:            'Evidence',
-    companySize:      'Company size',
     outcomeGoals:     'Outcome goal'
 };
 
@@ -276,11 +333,7 @@ document.getElementById('wizard-see-metrics-btn').addEventListener('click', appl
 
 document.querySelectorAll('.go-back-btn').forEach(button => {
     button.addEventListener('click', function() {
-        let targetId = this.dataset.targetScreen;
-        // (special case) Skip Q4 on the way back unless "used in practice" was chosen in Q3 (only that path includes Q4)
-        if (targetId === 'question4-screen' && wizardAnswers.focus !== 'industry-only') {
-            targetId = 'question3-screen';
-        }
+        const targetId = this.dataset.targetScreen;
         const targetScreen = document.getElementById(targetId);
         if (targetScreen) { showOverlayScreen(targetScreen); }
     });

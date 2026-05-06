@@ -33,9 +33,19 @@ let activeFilters = {
     minMentions: 'all'
 };
 
+// Current "color by" dimension for the sunburst chart
+let currentColorBy = 'categorization';
+
 // Named mode constants for clarity and logging
-const MODE = { BROWSE: 'browse', ADDITIVE: 'additive', GUIDED: 'guided' };
+const MODE = { BROWSE: 'browse', ADDITIVE: 'additive', GUIDED: 'guided', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
 let currentMode = MODE.BROWSE;
+
+// Step constants for the 3-step progress bar
+const STEP = { EXPLORE: 'explore', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
+let currentStep = STEP.EXPLORE;
+
+// State for Compare step (Step 2)
+let compareState = { leftType: 'company', leftValue: 'all', rightType: 'company', rightValue: 'all' };
 
 // In additive mode, tracks whether the canvas should be blank.
 // true  = blank canvas (entry state or after "Clear all filters").
