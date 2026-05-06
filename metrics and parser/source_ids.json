@@ -841,7 +841,7 @@
     },
     {
         "ref_number": "516c",
-        "ref_name": "Lloyds",
+        "ref_name": "Lloyds Banking Group",
         "ref_link": "https://dpe.org/sessions/hilary-lanham-tom-kelk/measuring-engineering-productivity-from-a-standing-start-a-330-year-old-banks-journey/",
         "company_size": "Enterprise"
     },
@@ -856,5 +856,17 @@
         "ref_name": "Microsoft",
         "ref_link": "https://devops.com/how-to-get-developer-productivity-engineering-right/",
         "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "517a",
+        "ref_name": "Capital One",
+        "ref_link": "https://www.youtube.com/watch?reload=9&app=desktop&v=GG8JLosF_AI",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "517b",
+        "ref_name": "Kanat-Alexander (2025)",
+        "ref_link": "https://www.codesimplicity.com/post/what-makes-a-great-developer-experience/",
+        "company_size": "N/A"
     }
 ]
