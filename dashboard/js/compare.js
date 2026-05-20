@@ -1,5 +1,13 @@
 // ─── Step 2: Compare view ─────────────────────────────────────────────────────
 
+const SORT_CARD_TOOLTIPS = {
+    category: 'Group metrics by their top-level DevEx category (e.g. Performance, Developer Experience, Process).',
+    outcome:  'Group by intended outcome goal: Developer Experience, Product Excellence, or Organizational Effectiveness.',
+    maturity: 'Group by collection maturity: Getting started (Easy), Established (Moderate), or Advanced (Complex).',
+    datatype: 'Group by data collection method: Self-reported (surveys, pop-ups) or Automated (logs, telemetry).',
+    ai:       'Group by AI-specific focus area: AI Impact, Utilization, or Cost.',
+};
+
 // ─── Value options per dimension type ────────────────────────────────────────
 
 const COMPARE_DIMENSION_OPTIONS = {
@@ -184,10 +192,11 @@ function renderDiffView() {
             const sharedCount = sorted.filter(m => leftIds.has(m.id) && rightIds.has(m.id)).length;
             const overlapPct = sorted.length > 0 ? Math.round(sharedCount / sorted.length * 100) : 0;
 
+            const catTooltip = DIMENSION_TOOLTIPS[cat] ? ` title="${DIMENSION_TOOLTIPS[cat]}"` : '';
             html += `<div class="diff-category">
                 <div class="diff-category-header" onclick="this.parentElement.classList.toggle('diff-category--collapsed')">
                     <span class="diff-category-chevron">▾</span>
-                    <span class="diff-category-name">${cat}</span>
+                    <span class="diff-category-name"${catTooltip}>${cat}</span>
                     <span class="diff-category-stats">${overlapPct}% overlap</span>
                 </div>
                 <div class="diff-metrics">`;
@@ -334,6 +343,7 @@ function renderSortCharts(chartDataArray) {
         const titleEl = document.createElement('div');
         titleEl.className = 'compare-sort-chart-label';
         titleEl.textContent = label;
+        if (SORT_CARD_TOOLTIPS[sort]) titleEl.title = SORT_CARD_TOOLTIPS[sort];
         card.appendChild(titleEl);
 
         const barsEl = document.createElement('div');

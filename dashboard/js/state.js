@@ -1,5 +1,28 @@
 // ─── Global state & DOM references ───────────────────────────────────────────
 
+// Shared tooltip texts for filter dimensions — used in step 1 button titles and step 2 diff/sort views
+const DIMENSION_TOOLTIPS = {
+    // Maturity (ease_of_collection values)
+    'Easy':     'Getting started: Includes metrics available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.',
+    'Moderate': 'Established: Includes Getting started metrics, plus those requiring combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.',
+    'Complex':  'Advanced: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.',
+    // Outcome goals
+    'Developer Experience':         'Developer Experience: metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).',
+    'Product Excellence':           'Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).',
+    'Organizational Effectiveness': 'Organizational Effectiveness: metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).',
+    // AI categories (keys match getGroupKeyForMetric output in compare.js)
+    '🎯 AI Impact':      'AI Impact: metrics that show whether AI tools improve delivery speed, code quality, and developer experience.',
+    '📊 AI Utilization': 'AI Utilization: metrics that reveal how many and what types of developers are adopting AI tooling, and how much work is being touched by AI.',
+    '💰 AI Cost':        'AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.',
+};
+
+// Maps step-1 data-filter values to DIMENSION_TOOLTIPS keys (only where they differ from the key)
+const FILTER_TO_TOOLTIP_KEY = {
+    'ai-impact':      '🎯 AI Impact',
+    'ai-utilization': '📊 AI Utilization',
+    'ai-cost':        '💰 AI Cost',
+};
+
 let SOURCE_URL_MAPPING = {};
 
 // Overlay elements

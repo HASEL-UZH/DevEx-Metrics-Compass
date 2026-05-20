@@ -442,3 +442,9 @@ document.getElementById('color-by-select').addEventListener('change', function()
     createChart(filteredData);
     updateColorLegend(currentColorBy);
 });
+
+// Set button title attributes from DIMENSION_TOOLTIPS (single source of truth shared with step 2)
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    const key = FILTER_TO_TOOLTIP_KEY[btn.dataset.filter] || btn.dataset.filter;
+    if (DIMENSION_TOOLTIPS[key]) btn.title = DIMENSION_TOOLTIPS[key];
+});
