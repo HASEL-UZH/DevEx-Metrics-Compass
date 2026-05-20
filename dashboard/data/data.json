@@ -1687,7 +1687,7 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Service Uptime and Deployment Speed Metrics",
+        "name": "Service Uptime and Deployment Speed",
         "id": 105,
         "parent": 324,
         "alsoknownas": "Deployment Time; Production Downtime",
@@ -1723,10 +1723,10 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Sprint Velocity",
+        "name": "Velocity",
         "id": 108,
         "parent": 327,
-        "alsoknownas": "Developer Velocity; Velocity",
+        "alsoknownas": "Developer Velocity; Sprint Velocity",
         "company": "501k; 131e; 199; 232a",
         "research": "105; 501; 131; 232",
         "type": "quantitative",
