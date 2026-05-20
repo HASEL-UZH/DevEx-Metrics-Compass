@@ -1,5 +1,7 @@
 // ─── Step 2: Compare view ─────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+
 const SORT_CARD_TOOLTIPS = {
     category: 'Group metrics by their top-level DevEx category (e.g. Performance, Developer Experience, Process).',
     outcome:  'Group by intended outcome goal: Developer Experience, Product Excellence, or Organizational Effectiveness.',
@@ -204,10 +206,17 @@ function renderDiffView() {
             sorted.forEach(metric => {
                 const inLeft  = leftIds.has(metric.id);
                 const inRight = rightIds.has(metric.id);
-                let cls, sym;
-                if (inLeft && inRight) { cls = 'diff-badge--shared'; sym = '↔'; }
-                else if (inLeft)       { cls = 'diff-badge--left';   sym = '←'; }
-                else                   { cls = 'diff-badge--right';  sym = '→'; }
+                let cls, badgeContent;
+                if (inLeft && inRight) {
+                    cls = 'diff-badge--shared';
+                    badgeContent = '↔';
+                } else if (inLeft) {
+                    cls = 'diff-badge--left';
+                    badgeContent = getEntityBadgeContent(leftType, leftValue, 14);
+                } else {
+                    cls = 'diff-badge--right';
+                    badgeContent = getEntityBadgeContent(rightType, rightValue, 14);
+                }
 
                 const shortlisted = clickedMetrics.find(m => m.id === metric.id);
                 const statusBadge = shortlisted
@@ -221,7 +230,7 @@ function renderDiffView() {
                     : '';
 
                 html += `<div class="diff-metric-row" data-metric-id="${metric.id}" role="button" tabindex="0">
-                    <span class="diff-badge ${cls}">${sym}</span>
+                    <span class="diff-badge ${cls}">${badgeContent}</span>
                     <span class="diff-metric-name">${metric.name}</span>
                     ${popularityBadge}
                     ${statusBadge}
@@ -263,11 +272,11 @@ function updateCompareSummary(stats) {
             <strong>${shared}</strong> shared
         </div>
         <div class="compare-stat compare-stat--left">
-            <span class="compare-stat-badge compare-stat-badge--left">←</span>
+            <span class="compare-stat-badge compare-stat-badge--left">${getEntityBadgeContent(leftType, leftValue, 12)}</span>
             <strong>${leftOnly}</strong> unique to ${shortLabel(leftValue)}
         </div>
         <div class="compare-stat compare-stat--right">
-            <span class="compare-stat-badge compare-stat-badge--right">→</span>
+            <span class="compare-stat-badge compare-stat-badge--right">${getEntityBadgeContent(rightType, rightValue, 12)}</span>
             <strong>${rightOnly}</strong> unique to ${shortLabel(rightValue)}
         </div>
     </div>`;
@@ -411,6 +420,11 @@ function initCompareControls() {
     const rightType  = document.getElementById('compare-right-type');
     const rightValue = document.getElementById('compare-right-value');
 
+    function updateLogoPreview(side) {
+        const valueEl = document.getElementById(`compare-${side}-value`);
+        if (valueEl) applyLogoBg(valueEl, compareState[side + 'Type'], compareState[side + 'Value'], side);
+    }
+
     function clearPresetHighlight() {
         document.querySelectorAll('.compare-preset-btn').forEach(b => b.classList.remove('compare-preset-btn--active'));
     }
@@ -426,6 +440,7 @@ function initCompareControls() {
         compareState[side + 'Value'] = picked;
         clearPresetHighlight();
         renderDiffView();
+        updateLogoPreview(side);
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -433,6 +448,7 @@ function initCompareControls() {
         compareState[side + 'Value'] = valueEl.value;
         clearPresetHighlight();
         renderDiffView();
+        updateLogoPreview(side);
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -444,6 +460,8 @@ function initCompareControls() {
     // Populate initial value dropdowns
     populateValueDropdown(leftValue,  leftType.value,  compareState.leftValue);
     populateValueDropdown(rightValue, rightType.value, compareState.rightValue);
+    updateLogoPreview('left');
+    updateLogoPreview('right');
 
 }
 
@@ -473,6 +491,10 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
     if (active) active.classList.add('compare-preset-btn--active');
 
     renderDiffView();
+    ['left', 'right'].forEach(side => {
+        const valueEl = document.getElementById(`compare-${side}-value`);
+        if (valueEl) applyLogoBg(valueEl, compareState[side + 'Type'], compareState[side + 'Value'], side);
+    });
     if (typeof updateStepBar === 'function') updateStepBar();
 }
 
@@ -482,6 +504,18 @@ document.addEventListener('DOMContentLoaded', () => {
             applyComparePreset(btn.dataset.leftType, btn.dataset.leftValue, btn.dataset.rightType, btn.dataset.rightValue);
         });
     });
+
+    // Show company favicon as background-image inside the step 1 company filter dropdown
+    const companyDropdown = document.getElementById('company-dropdown');
+
+    function updateCompanyFilterLogo() {
+        if (companyDropdown) applyLogoBg(companyDropdown, 'company', companyDropdown.value);
+    }
+
+    if (companyDropdown) {
+        companyDropdown.addEventListener('change', updateCompanyFilterLogo);
+        updateCompanyFilterLogo();
+    }
 });
 
 // Called once on DOMContentLoaded — wires events but can't populate data-driven dropdowns yet

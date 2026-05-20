@@ -1543,6 +1543,7 @@ a {
 .compare-row-dropdowns {
     display: flex;
     gap: 6px;
+    align-items: center;
 }
 
 .compare-row-dropdowns {
@@ -1560,7 +1561,14 @@ a {
 .compare-row-dropdowns .company-dropdown {
     flex: 1;
     min-width: 0;
-    width: 0; /* forces flex to distribute evenly, not size-to-content */
+    width: 0;
+}
+
+/* Type selects use auto width (sized to their content) so both rows align */
+#compare-left-type,
+#compare-right-type {
+    flex: 0 0 auto;
+    width: auto;
 }
 
 
@@ -1679,6 +1687,36 @@ a {
     background: #1a7f5a;
     color: #fff;
 }
+
+.entity-favicon {
+    display: inline-block;
+    border-radius: 2px;
+    object-fit: contain;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.entity-letter {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+/* Keep logo + name on the same line inside chips */
+.source-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.source-chip a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
 
 .diff-categories {
     display: flex;
@@ -2118,7 +2156,8 @@ a {
     text-decoration: underline;
 }
 
-.ns-card-sep {
+.ns-card-sep,
+.source-sep {
     margin: 0 4px;
     color: #ccc;
 }

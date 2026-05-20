@@ -274,10 +274,14 @@ function showCustomTooltip(metricData, event) {
     let companyUsedByHtml = 'no mentions';
     if (Array.isArray(metricData.company) && metricData.company.length > 0) {
         companyUsedByHtml = [...metricData.company].sort((a, b) => a.name.localeCompare(b.name)).map(source => {
+            const logoHtml = typeof getEntityBadgeContent === 'function'
+                ? getEntityBadgeContent('company', source.name, 12)
+                : '';
+            const inner = `${logoHtml}${source.name}`;
             if (source.url && source.url !== '') {
-                return `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.name}</a>`;
+                return `<span class="source-chip"><a href="${source.url}" target="_blank" rel="noopener noreferrer">${inner}</a></span>`;
             }
-            return source.name;
+            return `<span class="source-chip">${inner}</span>`;
         }).join('; ');
     }
 

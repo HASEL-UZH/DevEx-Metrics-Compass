@@ -97,10 +97,13 @@ function renderPlannedCard(metric) {
         const sorted = [...metric.company].sort((a, b) => a.name.localeCompare(b.name));
         const shown = sorted.slice(0, 5);
         const rest  = sorted.length - shown.length;
-        const links = shown.map(s => s.url
-            ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.name}</a>`
-            : s.name
-        ).join('<span class="ns-card-sep">·</span>');
+        const links = shown.map(s => {
+            const logoHtml = typeof getEntityBadgeContent === 'function'
+                ? getEntityBadgeContent('company', s.name, 12)
+                : '';
+            const inner = `${logoHtml}${s.name}`;
+            return `<span class="source-chip">${s.url ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${inner}</a>` : inner}</span>`;
+        }).join('<span class="ns-card-sep">·</span>');
         const more = rest > 0 ? `<span class="ns-card-more">+${rest} more</span>` : '';
         companyHtml = `<div class="ns-card-sources"><span class="ns-card-sources-label">Companies tracking it:</span> ${links}${more ? '<span class="ns-card-sep">·</span>' + more : ''}</div>`;
     }
