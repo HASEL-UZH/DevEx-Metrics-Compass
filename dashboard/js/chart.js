@@ -45,6 +45,19 @@ const COLOR_BY_CONFIG = {
         ],
         getValue: d => d.ease_of_collection,
     },
+    collection_status: {
+        label: 'Collection status',
+        map: { capturing: '#16a34a', planning: '#3b82f6' },
+        legend: [
+            { color: '#9e9e9e', label: 'No status' },
+            { color: '#16a34a', label: 'Already tracking' },
+            { color: '#3b82f6', label: 'Plan to track' },
+        ],
+        getValue: d => {
+            const found = clickedMetrics.find(m => m.id === d.id);
+            return found ? found.collectionStatus : null;
+        },
+    },
     popularity: {
         label: 'Popularity',
         legend: 'gradient',
@@ -368,6 +381,10 @@ function showCustomTooltip(metricData, event) {
                 removeClickedMetric(metricData.id);
             } else {
                 addClickedMetric(metricData, status);
+            }
+            if (currentColorBy === 'collection_status') {
+                createChart(filteredData);
+                updateColorLegend(currentColorBy);
             }
             // Update active state in-place without closing the tooltip
             customTooltip.querySelectorAll('button[data-metric-id]').forEach(b => b.classList.remove('active'));
