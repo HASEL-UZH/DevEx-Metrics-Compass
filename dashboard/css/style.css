@@ -1237,6 +1237,17 @@ a {
     box-sizing: border-box;
 }
 
+.explore-card-persona {
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 /* Welcome screen cards */
 .welcome-cards {
     display: grid;
