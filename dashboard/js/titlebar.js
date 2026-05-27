@@ -161,3 +161,44 @@ document.querySelectorAll('.step-btn').forEach(btn => {
         switchToStep(btn.dataset.step);
     });
 });
+
+// ─── Shortlist hover popup ────────────────────────────────────────────────────
+
+(function () {
+    const trigger = document.getElementById('step-shortlist-summary');
+    const popup   = document.getElementById('shortlist-hover-popup');
+    if (!trigger || !popup) return;
+
+    function showPopup() {
+        const capturing = clickedMetrics.filter(m => m.collectionStatus === 'capturing');
+        const planned   = clickedMetrics.filter(m => m.collectionStatus === 'planning');
+        if (capturing.length === 0 && planned.length === 0) return;
+
+        let html = '';
+        if (capturing.length > 0) {
+            html += `<div class="shortlist-hover-popup-label tracking"><span class="shortlist-hover-popup-icon shortlist-hover-popup-icon--tracking">✓</span>Already tracking</div>`;
+            capturing.forEach(m => { html += `<div class="shortlist-hover-popup-metric">${m.name}</div>`; });
+        }
+        if (capturing.length > 0 && planned.length > 0) html += '<hr>';
+        if (planned.length > 0) {
+            html += `<div class="shortlist-hover-popup-label planned"><span class="shortlist-hover-popup-icon shortlist-hover-popup-icon--planned">+</span>Planned to track</div>`;
+            planned.forEach(m => { html += `<div class="shortlist-hover-popup-metric">${m.name}</div>`; });
+        }
+        popup.innerHTML = html;
+
+        const rect = trigger.getBoundingClientRect();
+        const popupWidth = 260;
+        let left = rect.left;
+        if (left + popupWidth > window.innerWidth - 8) left = window.innerWidth - popupWidth - 8;
+        popup.style.top  = (rect.bottom + 6) + 'px';
+        popup.style.left = left + 'px';
+        popup.classList.add('visible');
+    }
+
+    function hidePopup() {
+        popup.classList.remove('visible');
+    }
+
+    trigger.addEventListener('mouseenter', showPopup);
+    trigger.addEventListener('mouseleave', hidePopup);
+})();
