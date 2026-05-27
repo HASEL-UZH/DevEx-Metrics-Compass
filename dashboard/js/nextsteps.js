@@ -30,7 +30,11 @@ function renderNextStepsView() {
         if (!hasAny) {
             hintText.textContent = 'Explore metrics first and mark ones that interest you — they\'ll appear here.';
         } else {
-            hintText.textContent = 'Here is a summary of your selection. Click any metric to edit its status.';
+            const total = capturing.length + planned.length;
+            const parts = [];
+            if (capturing.length > 0) parts.push(`${capturing.length} tracking`);
+            if (planned.length > 0) parts.push(`${planned.length} planned`);
+            hintText.textContent = `Summary of your ${total} shortlisted metrics (${parts.join(', ')}). Click any metric to edit its status.`;
         }
     }
 
@@ -152,9 +156,22 @@ function renderInsights() {
         return;
     }
 
-    const chips = [];
+    const capturingInSelected = allSelected.filter(m => m.collectionStatus === 'capturing');
+    const plannedInSelected   = allSelected.filter(m => m.collectionStatus === 'planning');
 
-    // 1. Top 10% by value
+    const chips = []; // { text: string, type: 'positive' | 'action' | 'neutral' }
+
+    // 1. No "planned to track" metrics
+    if (capturingInSelected.length > 0 && plannedInSelected.length === 0) {
+        chips.push({ text: 'All selected metrics are already being tracked — consider planning which ones to add next', type: 'action' });
+    }
+
+    // 2. No "capturing" metrics yet
+    if (plannedInSelected.length > 0 && capturingInSelected.length === 0) {
+        chips.push({ text: 'None of your metrics are being collected yet — pick 1–3 easy ones to start', type: 'action' });
+    }
+
+    // 3. Top 10% by value
     if (Array.isArray(originalData) && originalData.length > 0) {
         const leafMetrics = originalData.filter(m => m.value !== undefined && m.value !== null);
         if (leafMetrics.length > 0) {
@@ -162,15 +179,19 @@ function renderInsights() {
             const threshold = Math.ceil(sorted.length * 0.1);
             const top10Set = new Set(sorted.slice(0, threshold).map(m => m.id));
             const topCount = allSelected.filter(m => top10Set.has(m.id)).length;
-            if (topCount > 0) {
-                chips.push(`${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`);
+            if (topCount === 0) {
+                chips.push({ text: `None of your metrics are among the <strong>top 10% most-tracked</strong>`, type: 'action' });
+            } else if (topCount / allSelected.length >= 0.2) {
+                chips.push({ text: `${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`, type: 'positive' });
+            } else {
+                chips.push({ text: `${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`, type: 'neutral' });
             }
         }
     }
 
     // 2. Outcome goal coverage
     const knownGoals = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
-    const goalLabels = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Org Effectiveness' };
+    const goalLabels = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Organizational Effectiveness' };
     const goalCounts = {};
     allSelected.forEach(m => {
         const g = m.outcome_goals;
@@ -180,12 +201,12 @@ function renderInsights() {
     const missingGoals = knownGoals.filter(g => !goalCounts[g]);
     if (coveredGoals.length > 0) {
         if (missingGoals.length === 0) {
-            chips.push(`Covers all 3 <strong>outcome goals</strong> — good balance`);
+            chips.push({ text: `Covers all 3 <strong>outcome goals</strong> — good balance`, type: 'positive' });
         } else if (missingGoals.length === 1) {
-            chips.push(`No metrics for <strong>${goalLabels[missingGoals[0]]}</strong> yet — consider adding some`);
+            chips.push({ text: `No metrics for <strong>${goalLabels[missingGoals[0]]}</strong> yet — consider adding some`, type: 'action' });
         } else {
             const dominant = Object.entries(goalCounts).sort((a, b) => b[1] - a[1])[0];
-            chips.push(`Heavy on <strong>${goalLabels[dominant[0]]}</strong> — consider adding metrics for ${missingGoals.map(g => goalLabels[g]).join(' and ')}`);
+            chips.push({ text: `Heavy on <strong>${goalLabels[dominant[0]]}</strong> — consider adding metrics for ${missingGoals.map(g => goalLabels[g]).join(' and ')}`, type: 'action' });
         }
     }
 
@@ -199,21 +220,19 @@ function renderInsights() {
         if (typeCounts.quantitative > 0) parts.push(`${typeCounts.quantitative} automated`);
         if (typeCounts.qualitative  > 0) parts.push(`${typeCounts.qualitative} self-reported`);
         if (typeCounts.both         > 0) parts.push(`${typeCounts.both} mixed`);
-        chips.push(`Good mix of <strong>collection types</strong>: ${parts.join(', ')}`);
+        chips.push({ text: `Good mix of <strong>collection types</strong>: ${parts.join(', ')}`, type: 'positive' });
     } else if (hasQual && !hasQuant) {
-        chips.push(`All <strong>self-reported</strong> — consider adding automated metrics for objective signals`);
+        chips.push({ text: `All <strong>self-reported</strong> — consider adding automated metrics for objective signals`, type: 'action' });
     } else if (hasQuant && !hasQual) {
-        chips.push(`All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`);
+        chips.push({ text: `All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`, type: 'action' });
     }
 
     // 4. Category (parent) coverage
     if (Array.isArray(originalData) && originalData.length > 0) {
-        // Root = node with no parent; categories = direct children of root
         const rootIds = new Set(originalData.filter(m => !m.parent || m.parent === 0).map(m => m.id));
         const categoryIds = new Set(originalData.filter(m => m.parent && rootIds.has(m.parent)).map(m => m.id));
         const totalTopCategories = categoryIds.size;
 
-        // Build parent lookup to walk up from any metric to its top category
         const parentOf = {};
         originalData.forEach(m => { if (m.parent) parentOf[m.id] = m.parent; });
 
@@ -231,17 +250,18 @@ function renderInsights() {
             const ratio = n / totalTopCategories;
             const catLabel = n === totalTopCategories ? `all ${totalTopCategories}` : `${n} of ${totalTopCategories}`;
             if (ratio < 0.3) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — consider different perspectives`);
+                chips.push({ text: `Covering ${catLabel} <strong>metric categories</strong> — consider exploring different perspectives`, type: 'action' });
             } else if (ratio >= 0.6) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — great breadth`);
+                chips.push({ text: `Covering ${catLabel} <strong>metric categories</strong> — great breadth`, type: 'positive' });
             } else {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — good spread`);
+                chips.push({ text: `Covering ${catLabel} <strong>metric categories</strong> — room to diversify`, type: 'neutral' });
             }
         }
     }
 
-    // 5. Framework alignment
+    // 5. Framework alignment (SPACE, DORA, DX Core 4 prioritised over lesser-known ones)
     const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
+    const frameworkPriority = new Set(['SPACE Framework', 'DORA Framework', 'DX Core 4 Framework']);
     const frameworkCounts = {};
     allSelected.forEach(m => {
         if (!Array.isArray(m.research)) return;
@@ -253,18 +273,78 @@ function renderInsights() {
             }
         });
     });
-    const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => b[1] - a[1]);
+    const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => {
+        const countDiff = b[1] - a[1];
+        if (countDiff !== 0) return countDiff;
+        return (frameworkPriority.has(b[0]) ? 1 : 0) - (frameworkPriority.has(a[0]) ? 1 : 0);
+    });
+    // Promote a priority framework if it's within 75% of the top count
+    if (frameworkEntries.length > 1 && !frameworkPriority.has(frameworkEntries[0][0])) {
+        const topCount = frameworkEntries[0][1];
+        const priorityIdx = frameworkEntries.findIndex(([n, c]) => frameworkPriority.has(n) && c >= topCount * 0.75);
+        if (priorityIdx > 0) {
+            const [promoted] = frameworkEntries.splice(priorityIdx, 1);
+            frameworkEntries.unshift(promoted);
+        }
+    }
     if (frameworkEntries.length > 0) {
         const total = allSelected.length;
         const [topName, topCount] = frameworkEntries[0];
         if (topCount === total && frameworkEntries.length === 1) {
-            chips.push(`All metrics align with <strong>${frameworkLink(topName)}</strong> — consider drawing from other frameworks`);
+            chips.push({ text: `All metrics align with <strong>${frameworkLink(topName)}</strong> — consider drawing from other frameworks`, type: 'action' });
         } else if (topCount / total > 0.5) {
-            chips.push(`${topCount} of ${total} metrics align with the <strong>${frameworkLink(topName)}</strong>`);
+            chips.push({ text: `${topCount} of ${total} metrics align with the <strong>${frameworkLink(topName)}</strong>`, type: 'neutral' });
         } else {
             const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
             const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';
-            chips.push(`Drawing from <strong>${frameworkEntries.length} frameworks</strong>: ${list}${more}`);
+            const fwLabel = frameworkEntries.length === 1 ? 'framework' : 'frameworks';
+            chips.push({ text: `Drawing from <strong>${frameworkEntries.length} ${fwLabel}</strong>: ${list}${more}`, type: 'positive' });
+        }
+    }
+
+    // 6. SPACE Framework coverage
+    const spaceTotal = originalData.filter(m => m.value !== undefined && Array.isArray(m.research) && m.research.some(r => r.name === 'SPACE Framework')).length;
+    const spaceSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'SPACE Framework')).length;
+    if (spaceTotal > 0) {
+        if (spaceSelected === 0) {
+            chips.push({ text: `<strong>${frameworkLink('SPACE Framework', 'SPACE Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
+        } else if (spaceSelected === spaceTotal) {
+            chips.push({ text: `Covers all ${spaceTotal} <strong>${frameworkLink('SPACE Framework', 'SPACE Framework')} metrics</strong>`, type: 'positive' });
+        } else {
+            chips.push({ text: `<strong>${frameworkLink('SPACE Framework', 'SPACE Framework')}:</strong> ${spaceSelected} of ${spaceTotal} metrics covered`, type: spaceSelected / spaceTotal >= 0.5 ? 'positive' : 'neutral' });
+        }
+    }
+
+    // 7. DORA Framework coverage
+    const doraTotal = originalData.filter(m => m.value !== undefined && Array.isArray(m.research) && m.research.some(r => r.name === 'DORA Framework')).length;
+    const doraSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'DORA Framework')).length;
+    if (doraTotal > 0) {
+        if (doraSelected === 0) {
+            chips.push({ text: `<strong>${frameworkLink('DORA Framework', 'DORA Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
+        } else if (doraSelected === doraTotal) {
+            chips.push({ text: `Covers all ${doraTotal} <strong>${frameworkLink('DORA Framework', 'DORA Framework')} metrics</strong>`, type: 'positive' });
+        } else {
+            chips.push({ text: `<strong>${frameworkLink('DORA Framework', 'DORA Framework')}:</strong> ${doraSelected} of ${doraTotal} metrics covered`, type: doraSelected / doraTotal >= 0.5 ? 'positive' : 'neutral' });
+        }
+    }
+
+    // 10. Collection burden in planned list
+    if (plannedInSelected.length >= 2) {
+        const easyPlanned    = plannedInSelected.filter(m => m.ease_of_collection?.toLowerCase() === 'easy').length;
+        const complexPlanned = plannedInSelected.filter(m => m.ease_of_collection?.toLowerCase() === 'complex').length;
+        if (easyPlanned === 0 && complexPlanned >= 1) {
+            chips.push({ text: `All planned metrics require significant collection effort`, type: 'neutral' });
+        } else if (complexPlanned > 0 && complexPlanned / plannedInSelected.length >= 0.6) {
+            chips.push({ text: `Most planned metrics require significant collection effort`, type: 'neutral' });
+        }
+    }
+
+    // 11. Overload — soft meta-warning, shown last
+    if (allSelected.length > 20) {
+        const easyCapturing = capturingInSelected.filter(m => m.ease_of_collection?.toLowerCase() === 'easy').length;
+        const lowOverhead = easyCapturing >= allSelected.length * 0.8;
+        if (!lowOverhead) {
+            chips.push({ text: `${allSelected.length} metrics is a lot to act on at once — consider narrowing to a more focused set for better traction`, type: 'action' });
         }
     }
 
@@ -274,9 +354,10 @@ function renderInsights() {
         return;
     }
 
+    const iconMap = { positive: '&#10003;', action: '&rarr;', neutral: '&ndash;' };
     el.innerHTML = `
         <ul class="ns-insights-list">
-            ${chips.map(c => `<li>${c}</li>`).join('')}
+            ${chips.map(({ text, type }) => `<li class="ns-insight ns-insight--${type}"><span class="ns-insight-icon">${iconMap[type]}</span>${text}</li>`).join('')}
         </ul>
     `;
     el.style.display = '';

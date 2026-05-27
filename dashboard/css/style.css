@@ -2063,15 +2063,51 @@ a {
     font-size: 12px;
     color: #444;
     line-height: 1.4;
-    padding-left: 12px;
-    position: relative;
 }
 
-.ns-insights-list li::before {
-    content: '–';
-    position: absolute;
-    left: 0;
-    color: #bbb;
+.ns-insight {
+    padding: 5px 8px 5px 10px;
+    border-radius: 4px;
+    border-left: 3px solid transparent;
+}
+
+.ns-insight--positive {
+    background: #f0fdf4;
+    border-left-color: #16A34A;
+}
+
+.ns-insight--positive .ns-insight-icon {
+    color: #16A34A;
+}
+
+.ns-insight--action {
+    background: #eff6ff;
+    border-left-color: #1B1AFF;
+}
+
+.ns-insight--action .ns-insight-icon {
+    color: #1B1AFF;
+}
+
+.ns-insight--neutral {
+    background: #f5f5f5;
+    border-left-color: #d0d0d0;
+}
+
+.ns-insight--neutral .ns-insight-icon {
+    color: #aaa;
+}
+
+.ns-insights-scope {
+    font-size: 11px;
+    color: #aaa;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+}
+
+.ns-insight-icon {
+    font-weight: 600;
+    margin-right: 5px;
 }
 
 .ns-insights-list li strong {
