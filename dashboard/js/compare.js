@@ -371,7 +371,10 @@ function renderSortCharts(chartDataArray) {
             const rowDesc = (sort === 'maturity' && MATURITY_FULL_LABEL[g.key])
                 ? MATURITY_FULL_LABEL[g.key]
                 : (DIMENSION_TOOLTIPS[g.key] || g.key);
-            row.title = `${rowDesc} — ${g.left} left-only / ${g.shared} shared / ${g.right} right-only`;
+            const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
+            const leftLabel  = `${shortLabel(compareState.leftValue)} (${typeLabel(compareState.leftType)})`;
+            const rightLabel = `${shortLabel(compareState.rightValue)} (${typeLabel(compareState.rightType)})`;
+            row.title = `${rowDesc} — ${g.left} unique to ${leftLabel} / ${g.shared} shared / ${g.right} unique to ${rightLabel}`;
 
             const labelEl = document.createElement('div');
             labelEl.className = 'sort-chart-row-label';
