@@ -265,7 +265,8 @@ function updateCompareSummary(stats) {
     if (!stats) { el.innerHTML = ''; return; }
     const { shared, leftOnly, rightOnly, leftValue, rightValue, leftType, rightType } = stats;
     const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
-    const comparingLabel = `Comparing ${shortLabel(leftValue)} (${typeLabel(leftType)}) to ${shortLabel(rightValue)} (${typeLabel(rightType)})`;
+    const labelFor = (type, value) => type === 'framework' ? frameworkLink(value, shortLabel(value)) : shortLabel(value);
+    const comparingLabel = `Comparing ${labelFor(leftType, leftValue)} (${typeLabel(leftType)}) to ${labelFor(rightType, rightValue)} (${typeLabel(rightType)})`;
     el.innerHTML = `<div class="filter-group-label">${comparingLabel}</div><div class="compare-stats">
         <div class="compare-stat compare-stat--shared">
             <span class="compare-stat-badge compare-stat-badge--shared">↔</span>
@@ -273,11 +274,11 @@ function updateCompareSummary(stats) {
         </div>
         <div class="compare-stat compare-stat--left">
             <span class="compare-stat-badge compare-stat-badge--left">${getEntityBadgeContent(leftType, leftValue, 12)}</span>
-            <strong>${leftOnly}</strong> unique to ${shortLabel(leftValue)}
+            <strong>${leftOnly}</strong><span> unique to ${labelFor(leftType, leftValue)}</span>
         </div>
         <div class="compare-stat compare-stat--right">
             <span class="compare-stat-badge compare-stat-badge--right">${getEntityBadgeContent(rightType, rightValue, 12)}</span>
-            <strong>${rightOnly}</strong> unique to ${shortLabel(rightValue)}
+            <strong>${rightOnly}</strong><span> unique to ${labelFor(rightType, rightValue)}</span>
         </div>
     </div>`;
 }

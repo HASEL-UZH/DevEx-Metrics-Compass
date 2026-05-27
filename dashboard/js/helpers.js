@@ -1,6 +1,18 @@
 // ─── Shared company favicon helpers ───────────────────────────────────────────
 // Used across step 1 (filter dropdown), step 2 (compare), and step 3 (next steps).
 
+function getFrameworkUrl(name) {
+    const entry = Object.values(SOURCE_URL_MAPPING).find(s => s.ref_name === name);
+    return entry ? entry.ref_link : null;
+}
+
+function frameworkLink(name, label = name) {
+    const url = getFrameworkUrl(name);
+    return url
+        ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+        : label;
+}
+
 let companyDomainMap = null;
 
 function getCompanyDomainMap() {

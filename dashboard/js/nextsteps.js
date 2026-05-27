@@ -258,9 +258,9 @@ function renderInsights() {
         const total = allSelected.length;
         const [topName, topCount] = frameworkEntries[0];
         if (topCount === total && frameworkEntries.length === 1) {
-            chips.push(`All metrics align with <strong>${topName}</strong> — consider drawing from other frameworks`);
+            chips.push(`All metrics align with <strong>${frameworkLink(topName)}</strong> — consider drawing from other frameworks`);
         } else if (topCount / total > 0.5) {
-            chips.push(`${topCount} of ${total} metrics align with the <strong>${topName}</strong>`);
+            chips.push(`${topCount} of ${total} metrics align with the <strong>${frameworkLink(topName)}</strong>`);
         } else {
             const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
             const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';

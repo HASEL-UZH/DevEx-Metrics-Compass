@@ -1577,6 +1577,16 @@ a {
     margin-bottom: 8px;
 }
 
+.compare-summary a,
+.compare-summary a:visited {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.compare-summary a:hover {
+    text-decoration: none;
+}
+
 .compare-stats {
     display: flex;
     flex-direction: column;
@@ -2067,6 +2077,16 @@ a {
 .ns-insights-list li strong {
     color: #111;
     font-weight: 600;
+}
+
+.ns-insights-list li strong a,
+.ns-insights-list li strong a:visited {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.ns-insights-list li strong a:hover {
+    text-decoration: none;
 }
 
 /* ─── Step 3: Planned metric cards ───────────────────────────────────────── */
