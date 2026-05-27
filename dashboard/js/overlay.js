@@ -54,7 +54,7 @@ function updateWizardOptionCounts(screenEl) {
         const countEl = btn.querySelector('.wizard-option-count');
         if (!countEl) return;
         const count = countMetricsForOption(btn.dataset.filterKey, btn.dataset.filterValue);
-        countEl.textContent = count;
+        countEl.textContent = `${count} metric${count !== 1 ? 's' : ''}`;
     });
 }
 
