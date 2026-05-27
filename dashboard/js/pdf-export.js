@@ -335,9 +335,9 @@ function getPrintStyles() {
             font-size: 8pt;
             font-weight: 600;
         }
-        .pdf-card-ease--easy     { background: #dcfce7; color: #15803d; }
-        .pdf-card-ease--moderate { background: #fef9c3; color: #854d0e; }
-        .pdf-card-ease--complex  { background: #fee2e2; color: #b91c1c; }
+        .pdf-card-ease--easy     { background: #dcfce7; color: #15803d; border: 0.75pt solid #15803d; }
+        .pdf-card-ease--moderate { background: #fef9c3; color: #854d0e; border: 0.75pt solid #854d0e; }
+        .pdf-card-ease--complex  { background: #fee2e2; color: #b91c1c; border: 0.75pt solid #b91c1c; }
         .pdf-card-sources { font-size: 8.5pt; color: #555; margin-top: 4pt; line-height: 1.5; }
         .pdf-card-sources-label { color: #777; font-weight: 600; }
         .pdf-card-sep { color: #bbb; }
