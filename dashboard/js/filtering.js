@@ -358,7 +358,9 @@ function clearAllFilters() {
     });
     document.getElementById('keyword-search').value = '';
     document.getElementById('focus-dropdown').value = 'all';
-    document.getElementById('company-dropdown').value = 'all';
+    const companyDropdown = document.getElementById('company-dropdown');
+    companyDropdown.value = 'all';
+    if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
     document.getElementById('research-dropdown').value = 'all';
     filterData();
 }
@@ -371,7 +373,9 @@ function resetOtherSourceFilters(except) {
     }
     if (except !== 'specificCompany') {
         activeFilters.specificCompany = 'all';
-        document.getElementById('company-dropdown').value = 'all';
+        const companyDropdown = document.getElementById('company-dropdown');
+        companyDropdown.value = 'all';
+        if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
         // Also reset company size when company is reset
         activeFilters.companySize = 'all';
         document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
