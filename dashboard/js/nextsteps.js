@@ -34,7 +34,7 @@ function renderNextStepsView() {
             const parts = [];
             if (capturing.length > 0) parts.push(`${capturing.length} tracking`);
             if (planned.length > 0) parts.push(`${planned.length} planned`);
-            hintText.textContent = `Summary of your ${total} shortlisted metrics (${parts.join(', ')}). Click any metric to edit its status.`;
+            hintText.textContent = `Summary of your ${total} shortlisted metrics (${parts.join(', ')}). Click any metric on the left to edit its status.`;
         }
     }
 
@@ -144,17 +144,8 @@ function renderPlannedCard(metric) {
 
 // ─── Insights panel ───────────────────────────────────────────────────────────
 
-function renderInsights() {
-    const el = document.getElementById('ns-insights');
-    if (!el) return;
-
-    const allSelected = clickedMetrics.filter(m => m.collectionStatus === 'capturing' || m.collectionStatus === 'planning');
-
-    if (allSelected.length === 0) {
-        el.style.display = 'none';
-        el.innerHTML = '';
-        return;
-    }
+function buildInsights(allSelected) {
+    if (!allSelected || allSelected.length === 0) return [];
 
     const capturingInSelected = allSelected.filter(m => m.collectionStatus === 'capturing');
     const plannedInSelected   = allSelected.filter(m => m.collectionStatus === 'planning');
@@ -189,7 +180,7 @@ function renderInsights() {
         }
     }
 
-    // 2. Outcome goal coverage
+    // 4. Outcome goal coverage
     const knownGoals = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
     const goalLabels = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Organizational Effectiveness' };
     const goalCounts = {};
@@ -210,7 +201,7 @@ function renderInsights() {
         }
     }
 
-    // 3. Data type mix
+    // 5. Data type mix
     const typeCounts = { qualitative: 0, quantitative: 0, both: 0 };
     allSelected.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
     const hasQuant = typeCounts.quantitative + typeCounts.both > 0;
@@ -227,7 +218,7 @@ function renderInsights() {
         chips.push({ text: `All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`, type: 'action' });
     }
 
-    // 4. Category (parent) coverage
+    // 6. Category (parent) coverage
     if (Array.isArray(originalData) && originalData.length > 0) {
         const rootIds = new Set(originalData.filter(m => !m.parent || m.parent === 0).map(m => m.id));
         const categoryIds = new Set(originalData.filter(m => m.parent && rootIds.has(m.parent)).map(m => m.id));
@@ -259,7 +250,7 @@ function renderInsights() {
         }
     }
 
-    // 5. Framework alignment (SPACE, DORA, DX Core 4 prioritised over lesser-known ones)
+    // 7. Framework alignment (SPACE, DORA, DX Core 4 prioritised over lesser-known ones)
     const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
     const frameworkPriority = new Set(['SPACE Framework', 'DORA Framework', 'DX Core 4 Framework']);
     const frameworkCounts = {};
@@ -302,7 +293,7 @@ function renderInsights() {
         }
     }
 
-    // 6. SPACE Framework coverage
+    // 8. SPACE Framework coverage
     const spaceTotal = originalData.filter(m => m.value !== undefined && Array.isArray(m.research) && m.research.some(r => r.name === 'SPACE Framework')).length;
     const spaceSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'SPACE Framework')).length;
     if (spaceTotal > 0) {
@@ -315,7 +306,7 @@ function renderInsights() {
         }
     }
 
-    // 7. DORA Framework coverage
+    // 9. DORA Framework coverage
     const doraTotal = originalData.filter(m => m.value !== undefined && Array.isArray(m.research) && m.research.some(r => r.name === 'DORA Framework')).length;
     const doraSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'DORA Framework')).length;
     if (doraTotal > 0) {
@@ -347,6 +338,23 @@ function renderInsights() {
             chips.push({ text: `${allSelected.length} metrics is a lot to act on at once — consider narrowing to a more focused set for better traction`, type: 'action' });
         }
     }
+
+    return chips;
+}
+
+function renderInsights() {
+    const el = document.getElementById('ns-insights');
+    if (!el) return;
+
+    const allSelected = clickedMetrics.filter(m => m.collectionStatus === 'capturing' || m.collectionStatus === 'planning');
+
+    if (allSelected.length === 0) {
+        el.style.display = 'none';
+        el.innerHTML = '';
+        return;
+    }
+
+    const chips = buildInsights(allSelected);
 
     if (chips.length === 0) {
         el.style.display = 'none';

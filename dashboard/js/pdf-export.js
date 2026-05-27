@@ -26,123 +26,6 @@ function typeLabel(type) {
     return '';
 }
 
-// ─── Pure version of renderInsights() ────────────────────────────────────────
-
-function buildInsightsChips(allSelected) {
-    if (!allSelected || allSelected.length === 0) return [];
-    const chips = [];
-
-    // 1. Top 10% by value
-    if (Array.isArray(originalData) && originalData.length > 0) {
-        const leafMetrics = originalData.filter(m => m.value != null);
-        if (leafMetrics.length > 0) {
-            const sorted    = [...leafMetrics].sort((a, b) => b.value - a.value);
-            const threshold = Math.ceil(sorted.length * 0.1);
-            const top10Set  = new Set(sorted.slice(0, threshold).map(m => m.id));
-            const topCount  = allSelected.filter(m => top10Set.has(m.id)).length;
-            if (topCount > 0)
-                chips.push(`${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`);
-        }
-    }
-
-    // 2. Outcome goal coverage
-    const knownGoals  = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
-    const goalLabels  = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Org Effectiveness' };
-    const goalCounts  = {};
-    allSelected.forEach(m => {
-        const g = m.outcome_goals;
-        if (g && knownGoals.includes(g)) goalCounts[g] = (goalCounts[g] || 0) + 1;
-    });
-    const coveredGoals = knownGoals.filter(g => goalCounts[g] > 0);
-    const missingGoals = knownGoals.filter(g => !goalCounts[g]);
-    if (coveredGoals.length > 0) {
-        if (missingGoals.length === 0) {
-            chips.push(`Covers all 3 <strong>outcome goals</strong> — good balance`);
-        } else if (missingGoals.length === 1) {
-            chips.push(`No metrics for <strong>${goalLabels[missingGoals[0]]}</strong> yet — consider adding some`);
-        } else {
-            const dominant = Object.entries(goalCounts).sort((a, b) => b[1] - a[1])[0];
-            chips.push(`Heavy on <strong>${goalLabels[dominant[0]]}</strong> — consider adding metrics for ${missingGoals.map(g => goalLabels[g]).join(' and ')}`);
-        }
-    }
-
-    // 3. Data type mix
-    const typeCounts = { qualitative: 0, quantitative: 0, both: 0 };
-    allSelected.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
-    const hasQuant = typeCounts.quantitative + typeCounts.both > 0;
-    const hasQual  = typeCounts.qualitative  + typeCounts.both > 0;
-    if (hasQuant && hasQual) {
-        const parts = [];
-        if (typeCounts.quantitative > 0) parts.push(`${typeCounts.quantitative} automated`);
-        if (typeCounts.qualitative  > 0) parts.push(`${typeCounts.qualitative} self-reported`);
-        if (typeCounts.both         > 0) parts.push(`${typeCounts.both} mixed`);
-        chips.push(`Good mix of <strong>collection types</strong>: ${parts.join(', ')}`);
-    } else if (hasQual && !hasQuant) {
-        chips.push(`All <strong>self-reported</strong> — consider adding automated metrics for objective signals`);
-    } else if (hasQuant && !hasQual) {
-        chips.push(`All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`);
-    }
-
-    // 4. Category (parent) coverage
-    if (Array.isArray(originalData) && originalData.length > 0) {
-        const rootIds        = new Set(originalData.filter(m => !m.parent || m.parent === 0).map(m => m.id));
-        const categoryIds    = new Set(originalData.filter(m => m.parent && rootIds.has(m.parent)).map(m => m.id));
-        const totalTopCats   = categoryIds.size;
-        const parentOf       = {};
-        originalData.forEach(m => { if (m.parent) parentOf[m.id] = m.parent; });
-        const selectedTopCats = new Set();
-        allSelected.forEach(m => {
-            let id = m.id;
-            while (id) {
-                if (categoryIds.has(id)) { selectedTopCats.add(id); break; }
-                id = parentOf[id];
-            }
-        });
-        const n = selectedTopCats.size;
-        if (n > 0 && totalTopCats > 0) {
-            const ratio    = n / totalTopCats;
-            const catLabel = n === totalTopCats ? `all ${totalTopCats}` : `${n} of ${totalTopCats}`;
-            if (ratio < 0.3) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — consider different perspectives`);
-            } else if (ratio >= 0.6) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — great breadth`);
-            } else {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — good spread`);
-            }
-        }
-    }
-
-    // 5. Framework alignment
-    const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
-    const frameworkCounts = {};
-    allSelected.forEach(m => {
-        if (!Array.isArray(m.research)) return;
-        const seen = new Set();
-        m.research.forEach(r => {
-            if (knownFrameworks.includes(r.name) && !seen.has(r.name)) {
-                seen.add(r.name);
-                frameworkCounts[r.name] = (frameworkCounts[r.name] || 0) + 1;
-            }
-        });
-    });
-    const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => b[1] - a[1]);
-    if (frameworkEntries.length > 0) {
-        const total = allSelected.length;
-        const [topName, topCount] = frameworkEntries[0];
-        if (topCount === total && frameworkEntries.length === 1) {
-            chips.push(`All metrics align with <strong>${topName}</strong> — consider drawing from other frameworks`);
-        } else if (topCount / total > 0.5) {
-            chips.push(`${topCount} of ${total} metrics align with the <strong>${topName}</strong>`);
-        } else {
-            const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
-            const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';
-            chips.push(`Drawing from <strong>${frameworkEntries.length} frameworks</strong>: ${list}${more}`);
-        }
-    }
-
-    return chips;
-}
-
 // ─── PDF metric card ──────────────────────────────────────────────────────────
 
 function buildPdfCard(metric) {
@@ -294,10 +177,13 @@ function getPrintStyles() {
         .pdf-insights li {
             font-size: 9pt;
             color: #444;
-            padding: 2pt 0 2pt 12pt;
+            padding: 2pt 0 2pt 14pt;
             position: relative;
         }
-        .pdf-insights li::before { content: '–'; position: absolute; left: 0; color: #aaa; }
+        .pdf-insight-icon { position: absolute; left: 0; font-style: normal; }
+        .pdf-insight--positive .pdf-insight-icon { color: #16a34a; }
+        .pdf-insight--action   .pdf-insight-icon { color: #1B1AFF; }
+        .pdf-insight--neutral  .pdf-insight-icon { color: #aaa; }
         .pdf-insights li strong { color: #111; }
 
         /* ── Section 2: Metric cards ── */
@@ -373,10 +259,11 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
     const fileDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
     const totalCount = capturing.length + planned.length;
 
+    const iconMap = { positive: '&#10003;', action: '&rarr;', neutral: '&ndash;' };
     const insightsBlock = chips.length > 0
         ? `<div class="pdf-insights">
                <div class="pdf-insights-title">Selection Insights</div>
-               <ul>${chips.map(c => `<li>${c}</li>`).join('')}</ul>
+               <ul>${chips.map(({ text, type }) => `<li class="pdf-insight pdf-insight--${type}"><span class="pdf-insight-icon">${iconMap[type]}</span>${text}</li>`).join('')}</ul>
            </div>`
         : '';
 
@@ -473,7 +360,7 @@ async function downloadPdf() {
             fetchAsBase64('assets/favicon.png').catch(() => '')
         ]);
 
-        const chips = buildInsightsChips([...capturing, ...planned]);
+        const chips = buildInsights([...capturing, ...planned]);
         const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri);
 
         const win = window.open('', '_blank');
