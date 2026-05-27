@@ -39,9 +39,9 @@ const COLOR_BY_CONFIG = {
         label: 'Collection maturity',
         map: { Easy: '#22c55e', Moderate: '#eab308', Complex: '#ef4444' },
         legend: [
-            { color: '#22c55e', label: 'Easy (Getting started)' },
-            { color: '#eab308', label: 'Moderate (Established)' },
-            { color: '#ef4444', label: 'Complex (Advanced)' },
+            { color: '#22c55e', label: 'Getting started (easy)' },
+            { color: '#eab308', label: 'Established (moderate)' },
+            { color: '#ef4444', label: 'Advanced (complex)' },
         ],
         getValue: d => d.ease_of_collection,
     },
@@ -338,7 +338,7 @@ function showCustomTooltip(metricData, event) {
                 ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
                 ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">${s} Company</span>`).join('')}
                 ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${metricOutcomeGoals}</span>` : ''}
-                ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${metricEaseOfCollection} to collect</span>` : ''}
+                ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${MATURITY_FULL_LABEL[metricEaseOfCollection] || metricEaseOfCollection}</span>` : ''}
         </div>
         ${(function() {
             const existing = clickedMetrics.find(m => m.id === metricId);

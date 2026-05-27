@@ -16,6 +16,18 @@ const DIMENSION_TOOLTIPS = {
     '💰 AI Cost':        'AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.',
 };
 
+// Display labels for ease_of_collection values
+const MATURITY_FULL_LABEL = {
+    Easy:     'Getting started (easy)',
+    Moderate: 'Established (moderate)',
+    Complex:  'Advanced (complex)',
+};
+const MATURITY_SHORT_LABEL = {
+    Easy:     'Getting started',
+    Moderate: 'Established',
+    Complex:  'Advanced',
+};
+
 // Maps step-1 data-filter values to DIMENSION_TOOLTIPS keys (only where they differ from the key)
 const FILTER_TO_TOOLTIP_KEY = {
     'ai-impact':      '🎯 AI Impact',

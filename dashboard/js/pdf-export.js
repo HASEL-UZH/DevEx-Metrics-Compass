@@ -148,7 +148,7 @@ function buildInsightsChips(allSelected) {
 function buildPdfCard(metric) {
     const easeKey   = (metric.ease_of_collection || '').toLowerCase();
     const easeBadge = metric.ease_of_collection
-        ? `<span class="pdf-card-ease pdf-card-ease--${easeKey}">${escapeHtml(metric.ease_of_collection)} to collect</span>`
+        ? `<span class="pdf-card-ease pdf-card-ease--${easeKey}">${escapeHtml(MATURITY_FULL_LABEL[metric.ease_of_collection] || metric.ease_of_collection)}</span>`
         : '';
 
     const aka = metric.alsoknownas && metric.alsoknownas !== '-'

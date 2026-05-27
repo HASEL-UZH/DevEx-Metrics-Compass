@@ -5,7 +5,7 @@
 const SORT_CARD_TOOLTIPS = {
     category: 'Group metrics by their top-level DevEx category (e.g. Performance, Developer Experience, Process).',
     outcome:  'Group by intended outcome goal: Developer Experience, Product Excellence, or Organizational Effectiveness.',
-    maturity: 'Group by collection maturity: Getting started (Easy), Established (Moderate), or Advanced (Complex).',
+    maturity: 'Group by collection maturity: Getting started (easy), Established (moderate), or Advanced (complex).',
     datatype: 'Group by data collection method: Self-reported (surveys, pop-ups) or Automated (logs, telemetry).',
     ai:       'Group by AI-specific focus area: AI Impact, Utilization, or Cost.',
 };
@@ -14,9 +14,9 @@ const SORT_CARD_TOOLTIPS = {
 
 const COMPARE_DIMENSION_OPTIONS = {
     maturity: [
-        { value: 'Easy',     label: '🟢 Getting started' },
-        { value: 'Moderate', label: '🟡 Established' },
-        { value: 'Complex',  label: '🔴 Advanced' },
+        { value: 'Easy',     label: '🟢 Getting started (easy)' },
+        { value: 'Moderate', label: '🟡 Established (moderate)' },
+        { value: 'Complex',  label: '🔴 Advanced (complex)' },
     ],
     outcome: [
         { value: 'Developer Experience',       label: '🧑‍💻 Developer Experience' },
@@ -195,10 +195,11 @@ function renderDiffView() {
             const overlapPct = sorted.length > 0 ? Math.round(sharedCount / sorted.length * 100) : 0;
 
             const catTooltip = DIMENSION_TOOLTIPS[cat] ? ` title="${DIMENSION_TOOLTIPS[cat]}"` : '';
+            const catDisplay = (compareSort === 'maturity' && MATURITY_FULL_LABEL[cat]) ? MATURITY_FULL_LABEL[cat] : cat;
             html += `<div class="diff-category">
                 <div class="diff-category-header" onclick="this.parentElement.classList.toggle('diff-category--collapsed')">
                     <span class="diff-category-chevron">▾</span>
-                    <span class="diff-category-name"${catTooltip}>${cat}</span>
+                    <span class="diff-category-name"${catTooltip}>${catDisplay}</span>
                     <span class="diff-category-stats">${overlapPct}% overlap</span>
                 </div>
                 <div class="diff-metrics">`;
@@ -265,7 +266,11 @@ function updateCompareSummary(stats) {
     if (!stats) { el.innerHTML = ''; return; }
     const { shared, leftOnly, rightOnly, leftValue, rightValue, leftType, rightType } = stats;
     const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
-    const labelFor = (type, value) => type === 'framework' ? frameworkLink(value, shortLabel(value)) : shortLabel(value);
+    const labelFor = (type, value) => {
+        if (type === 'framework') return frameworkLink(value, shortLabel(value));
+        if (type === 'maturity')  return MATURITY_FULL_LABEL[value] || value;
+        return shortLabel(value);
+    };
     const comparingLabel = `Comparing ${labelFor(leftType, leftValue)} (${typeLabel(leftType)}) to ${labelFor(rightType, rightValue)} (${typeLabel(rightType)})`;
     el.innerHTML = `<div class="filter-group-label">${comparingLabel}</div><div class="compare-stats">
         <div class="compare-stat compare-stat--shared">
@@ -363,13 +368,16 @@ function renderSortCharts(chartDataArray) {
             const total = g.left + g.shared + g.right;
             const row = document.createElement('div');
             row.className = 'sort-chart-row';
-            row.title = `${g.key}: ${g.left} left-only / ${g.shared} shared / ${g.right} right-only`;
+            const rowDesc = (sort === 'maturity' && MATURITY_FULL_LABEL[g.key])
+                ? MATURITY_FULL_LABEL[g.key]
+                : (DIMENSION_TOOLTIPS[g.key] || g.key);
+            row.title = `${rowDesc} — ${g.left} left-only / ${g.shared} shared / ${g.right} right-only`;
 
             const labelEl = document.createElement('div');
             labelEl.className = 'sort-chart-row-label';
+            const displayKey = (sort === 'maturity' && MATURITY_SHORT_LABEL[g.key]) ? MATURITY_SHORT_LABEL[g.key] : g.key;
             // Strip all leading non-letter chars (emoji, symbols, spaces)
-            labelEl.textContent = g.key.replace(/^[^\p{L}]+/u, '');
-            labelEl.title = g.key;
+            labelEl.textContent = displayKey.replace(/^[^\p{L}]+/u, '');
 
             const track = document.createElement('div');
             track.className = 'sort-chart-bar-track';

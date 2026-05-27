@@ -92,7 +92,7 @@ function renderPlannedCard(metric) {
     let easeBadge = '';
     if (metric.ease_of_collection) {
         const easeKey = metric.ease_of_collection.toLowerCase();
-        easeBadge = `<span class="ns-card-ease ns-card-ease--${easeKey}">${metric.ease_of_collection} to collect</span>`;
+        easeBadge = `<span class="ns-card-ease ns-card-ease--${easeKey}">${MATURITY_FULL_LABEL[metric.ease_of_collection] || metric.ease_of_collection}</span>`;
     }
 
     // Company links (up to 5, then "+N more")
