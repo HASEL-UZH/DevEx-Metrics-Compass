@@ -1154,6 +1154,89 @@ a {
     max-width: 860px;
 }
 
+/* Step 1 right-panel: full height so entry panel can center vertically */
+#explore-right-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Step 1 right-panel entry view (mode picker) */
+#explore-entry-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    flex: 1;
+}
+
+#explore-entry-panel .controls-title {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.explore-entry-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.explore-entry-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: box-shadow 0.2s ease;
+}
+
+.explore-entry-card:hover {
+    box-shadow: 0 4px 14px rgba(27, 26, 255, 0.10);
+}
+
+.explore-entry-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.explore-entry-card-body {
+    flex: 1;
+}
+
+.explore-entry-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.explore-entry-card-description {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.explore-entry-card .overlay-action-button {
+    width: 100%;
+    margin: 0;
+    font-size: 13px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+}
+
 /* Welcome screen cards */
 .welcome-cards {
     display: grid;

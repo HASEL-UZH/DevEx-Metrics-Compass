@@ -63,31 +63,6 @@
                 Apply a filter to start discovering metrics.
             </div>
 
-            <!-- Step 1: Inline mode picker (shown before first mode selection or after restart) -->
-            <div id="explore-start-view" class="explore-start-view" style="display:none">
-                <h3 class="explore-start-title">How would you like to explore metrics?</h3>
-                <div class="welcome-cards explore-start-cards">
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--guided">&#10148;</div>
-                        <div class="welcome-card-title">Guided selection</div>
-                        <div class="welcome-card-description">Answer a few questions to get tailored recommendations based on your context.</div>
-                        <button class="overlay-action-button" id="start-assessment-inline-btn">Start guided selection</button>
-                    </div>
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--browse">&#8801;</div>
-                        <div class="welcome-card-title">Browse all metrics</div>
-                        <div class="welcome-card-description">See all metrics at once and narrow them down using filters.</div>
-                        <button class="overlay-action-button" id="start-scratch-inline-btn">Show all metrics</button>
-                    </div>
-                    <div class="welcome-card">
-                        <div class="welcome-card-icon welcome-card-icon--additive">+</div>
-                        <div class="welcome-card-title">Explore by filtering</div>
-                        <div class="welcome-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
-                        <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Step 2: Diff view (shown in Compare mode) -->
             <div id="diff-view" class="diff-view" style="display:none"></div>
 
@@ -120,6 +95,40 @@
 
             <!-- Step 1: Explore filters panel -->
             <div id="explore-right-panel">
+
+            <!-- Entry view: shown before a mode is chosen -->
+            <div id="explore-entry-panel">
+                <div class="controls-title">Where would you like to start?</div>
+                <div class="explore-entry-cards">
+                    <div class="explore-entry-card">
+                        <div class="explore-entry-card-icon welcome-card-icon--guided">&#10148;</div>
+                        <div class="explore-entry-card-body">
+                            <div class="explore-entry-card-title">Guided selection</div>
+                            <div class="explore-entry-card-description">Answer a few questions to get tailored recommendations based on your context.</div>
+                            <button class="overlay-action-button" id="start-assessment-inline-btn">Start guided selection</button>
+                        </div>
+                    </div>
+                    <div class="explore-entry-card">
+                        <div class="explore-entry-card-icon welcome-card-icon--browse">&#8801;</div>
+                        <div class="explore-entry-card-body">
+                            <div class="explore-entry-card-title">Browse all metrics</div>
+                            <div class="explore-entry-card-description">See all metrics at once and narrow them down using filters.</div>
+                            <button class="overlay-action-button" id="start-scratch-inline-btn">Show all metrics</button>
+                        </div>
+                    </div>
+                    <div class="explore-entry-card">
+                        <div class="explore-entry-card-icon welcome-card-icon--additive">+</div>
+                        <div class="explore-entry-card-body">
+                            <div class="explore-entry-card-title">Explore by filtering</div>
+                            <div class="explore-entry-card-description">Start with a blank canvas. Apply filters to gradually reveal metrics relevant to you.</div>
+                            <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters section: shown after a mode is chosen -->
+            <div id="explore-filters-section" style="display:none">
             <div class="controls-title" id="explore-panel-title">
                 Explore DevEx metrics <span id="metrics-count" style="display:none"></span>
             </div>
@@ -259,6 +268,8 @@
                     <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers">🏡 Small</button>
                 </div>
             </div>
+
+            </div><!-- /#explore-filters-section -->
 
             </div><!-- /#explore-right-panel -->
 
@@ -560,6 +571,16 @@
             <h2>Changelog</h2>
 
             <div class="changelog-entries">
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">June 2026</div>
+                    <ul>
+                        <li>Extended insights to surface more actionable recommendations</li>
+                        <li>Refined getting started view in "Explore Metrics"-step</li>
+                        <li>Added ability to color the sunburst chart by collection status (tracked, planned, not tracked)</li>
+                        <li>Added framework links on metric cards where applicable</li>
+                    </ul>
+                </div>
 
                 <div class="changelog-entry">
                     <div class="changelog-date">May 2026</div>

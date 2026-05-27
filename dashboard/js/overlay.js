@@ -70,6 +70,10 @@ function showOverlayScreen(screenToShow) {
     if (screenToShow.id === 'wizard-summary-screen') populateWizardSummary();
 }
 
+// ─── Inline mode picker state ────────────────────────────────────────────────
+
+let modeChosen = false;
+
 // ─── Password gate (temporary – remove before public launch) ──────────────────
 
 const PASSWORD_KEY = 'dxmetrics_unlocked';
@@ -107,6 +111,8 @@ if (localStorage.getItem(PASSWORD_KEY) === 'true') {
     const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
     if (hasShortlist) {
         myOverlay.style.display = 'none'; // returning user with a shortlist — skip welcome
+        modeChosen = true;
+        hideExploreStartView();
     }
 } else {
     myOverlay.classList.add('password-locked');
@@ -115,26 +121,28 @@ if (localStorage.getItem(PASSWORD_KEY) === 'true') {
 
 // ─── Inline mode picker helpers ──────────────────────────────────────────────
 
-let modeChosen = false;
-
 function showExploreStartView() {
-    const v  = document.getElementById('explore-start-view');
+    const entryPanel    = document.getElementById('explore-entry-panel');
+    const filtersSection = document.getElementById('explore-filters-section');
     const c  = document.getElementById('container');
     const cf = document.getElementById('clear-filters-chart');
-    if (v)  v.style.display  = '';
-    if (c)  c.style.display  = 'none';
+    if (entryPanel)     entryPanel.style.display     = '';
+    if (filtersSection) filtersSection.style.display = 'none';
+    if (c)  c.style.display  = '';
     if (cf) cf.style.display = 'none';
     ['no-metrics-message', 'additive-mode-message'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
 }
 
 function hideExploreStartView() {
-    const v = document.getElementById('explore-start-view');
-    const c = document.getElementById('container');
-    if (v) v.style.display = 'none';
-    if (c) c.style.display = '';
+    const entryPanel    = document.getElementById('explore-entry-panel');
+    const filtersSection = document.getElementById('explore-filters-section');
+    if (entryPanel)     entryPanel.style.display     = 'none';
+    if (filtersSection) filtersSection.style.display = '';
 }
 
 // ─── CTA button: "Start exploring metrics" ───────────────────────────────────
