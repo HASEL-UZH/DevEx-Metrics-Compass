@@ -1216,7 +1216,7 @@ a {
 }
 
 .explore-entry-card-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #222;
     margin-bottom: 4px;
@@ -1238,8 +1238,8 @@ a {
 }
 
 .explore-card-persona {
-    font-size: 10px;
-    color: #999;
+    font-size: 11px;
+    color: #1B1AFF;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 7px;
