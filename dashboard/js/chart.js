@@ -386,6 +386,10 @@ function showCustomTooltip(metricData, event) {
                 createChart(filteredData);
                 updateColorLegend(currentColorBy);
             }
+            if (status !== 'none') {
+                hideCustomTooltip();
+                return;
+            }
             // Update active state in-place without closing the tooltip
             customTooltip.querySelectorAll('button[data-metric-id]').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
