@@ -404,7 +404,7 @@ function showCustomTooltip(metricData, event) {
         });
     }
 
-    document.addEventListener('click', handleDocumentClick);
+    setTimeout(() => document.addEventListener('click', handleDocumentClick), 0);
 }
 
 function hideCustomTooltip() {
@@ -414,8 +414,7 @@ function hideCustomTooltip() {
 
 function handleDocumentClick(event) {
     if (customTooltip.classList.contains('active') &&
-        !customTooltip.contains(event.target) &&
-        !document.getElementById('container').contains(event.target)) {
+        !customTooltip.contains(event.target)) {
         hideCustomTooltip();
     }
 }
