@@ -3,11 +3,11 @@
 const COLOR_BY_CONFIG = {
     type: {
         label: 'Data collection type',
-        map: { qualitative: '#0e7490', quantitative: '#15803d', both: '#1d4ed8' },
+        map: { qualitative: '#4f46e5', quantitative: '#d97706', both: '#0d9488' },
         legend: [
-            { color: '#0e7490', label: 'Self-reported' },
-            { color: '#15803d', label: 'Automated' },
-            { color: '#1d4ed8', label: 'Both' },
+            { color: '#4f46e5', label: 'Self-reported' },
+            { color: '#d97706', label: 'Automated' },
+            { color: '#0d9488', label: 'Both' },
         ],
         getValue: d => d.type,
     },
