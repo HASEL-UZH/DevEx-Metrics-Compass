@@ -1839,22 +1839,22 @@ a {
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    background: #f8f8f8;
+    background: #d8d8ff;
     cursor: pointer;
     user-select: none;
     font-size: 13px;
     font-weight: 600;
-    color: #444;
+    color: #1B1AFF;
 }
 
 .diff-category-header:hover {
-    background: #f0f0f0;
+    background: #ccccff;
 }
 
 .diff-category-chevron {
     font-size: 11px;
     transition: transform 0.2s;
-    color: #aaa;
+    color: #1B1AFF;
 }
 
 .diff-category--collapsed .diff-category-chevron {

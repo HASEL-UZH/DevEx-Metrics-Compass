@@ -184,11 +184,15 @@ function renderDiffView() {
         .sort(([a], [b]) => sortGroupKey(a, b))
         .forEach(([cat, metrics]) => {
             const sorted = [...metrics].sort((a, b) => {
-                // Shared first, then left, then right
-                const aShared = leftIds.has(a.id) && rightIds.has(a.id);
-                const bShared = leftIds.has(b.id) && rightIds.has(b.id);
-                if (aShared !== bShared) return aShared ? -1 : 1;
-                return a.name.localeCompare(b.name);
+                // Shared (gray) first, then left-only (purple), then right-only (green)
+                const uniqueness = m => {
+                    const l = leftIds.has(m.id), r = rightIds.has(m.id);
+                    if (l && r)  return 0;
+                    if (l && !r) return 1;
+                    return 2;
+                };
+                const diff = uniqueness(a) - uniqueness(b);
+                return diff !== 0 ? diff : a.name.localeCompare(b.name);
             });
 
             const sharedCount = sorted.filter(m => leftIds.has(m.id) && rightIds.has(m.id)).length;
