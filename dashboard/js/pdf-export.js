@@ -415,7 +415,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, c
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
 async function downloadPdf() {
-    if (!clickedMetrics || clickedMetrics.length === 0) return;
+    if ((!clickedMetrics || clickedMetrics.length === 0) && (!savedComparisons || savedComparisons.length === 0)) return;
 
     const btn = document.getElementById('download-pdf-nextsteps');
     if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }

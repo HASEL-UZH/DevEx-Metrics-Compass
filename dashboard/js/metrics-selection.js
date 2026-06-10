@@ -11,6 +11,7 @@ function addClickedMetric(metric, status) {
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.COMPARE   && typeof renderDiffView       === 'function') renderDiffView();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
+    if (typeof syncShortlistOptionVisibility === 'function') syncShortlistOptionVisibility();
 }
 
 function removeClickedMetric(metricId) {
@@ -19,6 +20,7 @@ function removeClickedMetric(metricId) {
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.COMPARE   && typeof renderDiffView       === 'function') renderDiffView();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
+    if (typeof syncShortlistOptionVisibility === 'function') syncShortlistOptionVisibility();
 }
 
 function clearAllClickedMetrics() {
@@ -26,6 +28,7 @@ function clearAllClickedMetrics() {
     saveClickedMetricsToLocalStorage();
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
+    if (typeof syncShortlistOptionVisibility === 'function') syncShortlistOptionVisibility();
 }
 
 function saveClickedMetricsToLocalStorage() {

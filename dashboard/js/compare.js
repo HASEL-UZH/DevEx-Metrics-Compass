@@ -154,6 +154,7 @@ function renderDiffView() {
         updateSaveButton();
         return;
     }
+
     if (sortWrapper) sortWrapper.style.display = '';
 
     const leftMetrics  = filterMetricsByDimension(leftType,  leftValue);
@@ -544,10 +545,17 @@ function renderSortCharts(chartDataArray) {
 }
 
 function syncShortlistOptionVisibility() {
+    const shortlistAllowed = clickedMetrics.length > 0;
     const leftOpt  = document.querySelector('#compare-left-type  option[value="shortlist"]');
     const rightOpt = document.querySelector('#compare-right-type option[value="shortlist"]');
-    if (leftOpt)  leftOpt.hidden  = compareState.rightType === 'shortlist';
-    if (rightOpt) rightOpt.hidden = compareState.leftType  === 'shortlist';
+    if (leftOpt)  leftOpt.hidden  = !shortlistAllowed || compareState.rightType === 'shortlist';
+    if (rightOpt) rightOpt.hidden = !shortlistAllowed || compareState.leftType  === 'shortlist';
+
+    document.querySelectorAll('.compare-preset-btn').forEach(btn => {
+        if (btn.dataset.leftType === 'shortlist' || btn.dataset.rightType === 'shortlist') {
+            btn.hidden = !shortlistAllowed;
+        }
+    });
 }
 
 // ─── Compare panel initialization ────────────────────────────────────────────
@@ -685,4 +693,5 @@ function refreshCompareValueDropdowns() {
     if (rightValue.options.length <= 1) {
         populateValueDropdown(rightValue, rightType.value, compareState.rightValue);
     }
+    syncShortlistOptionVisibility();
 }

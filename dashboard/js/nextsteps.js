@@ -44,8 +44,9 @@ function renderNextStepsView() {
     // Update export button state
     const exportBtn = document.getElementById('download-pdf-nextsteps');
     if (exportBtn) {
-        exportBtn.disabled = !hasAny;
-        exportBtn.style.opacity = hasAny ? '' : '0.5';
+        const canExport = hasAny || (savedComparisons && savedComparisons.length > 0);
+        exportBtn.disabled = !canExport;
+        exportBtn.style.opacity = canExport ? '' : '0.5';
     }
 }
 
