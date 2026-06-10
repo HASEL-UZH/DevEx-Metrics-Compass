@@ -26,6 +26,59 @@ function typeLabel(type) {
     return '';
 }
 
+// ─── PDF comparison block ─────────────────────────────────────────────────────
+
+function buildComparisonBlock(comparison) {
+    const left  = escapeHtml(comparison.leftLabel);
+    const right = escapeHtml(comparison.rightLabel);
+    const lCount = comparison.leftOnlyMetrics.length;
+    const sCount = comparison.sharedMetrics.length;
+    const rCount = comparison.rightOnlyMetrics.length;
+    const total  = lCount + sCount + rCount;
+    const lPct   = total > 0 ? (lCount / total * 100) : 0;
+    const sPct   = total > 0 ? (sCount / total * 100) : 0;
+    const rPct   = 100 - lPct - sPct;
+
+    const nameList = metrics => metrics.length === 0
+        ? '<em style="color:#aaa">None</em>'
+        : metrics.map(m => escapeHtml(m.name)).join(', ');
+
+    const tdLabel = 'width:28%;font-weight:700;padding:4pt 8pt 4pt 0;vertical-align:top;white-space:nowrap;';
+    const tdMetrics = 'color:#444;padding:4pt 0;vertical-align:top;line-height:1.5;';
+    const trBorder = 'border-bottom:0.3pt solid #eee;';
+
+    return `
+        <div class="pdf-comparison-block">
+            <div class="pdf-comparison-title">${left} vs. ${right}</div>
+            <table style="width:100%;border-collapse:collapse;table-layout:fixed;margin:5pt 0 3pt;">
+                <tr>
+                    ${lPct > 0 ? `<td style="background:#7c3aed;width:${lPct}%;height:8pt;padding:0;"></td>` : ''}
+                    ${sPct > 0 ? `<td style="background:#9ca3af;width:${sPct}%;height:8pt;padding:0;"></td>` : ''}
+                    ${rPct > 0 ? `<td style="background:#16a34a;width:${rPct}%;height:8pt;padding:0;"></td>` : ''}
+                </tr>
+            </table>
+            <div style="display:flex;gap:14pt;font-size:7.5pt;margin-bottom:6pt;">
+                <span style="color:#7c3aed;font-weight:700">${left} only (${lCount})</span>
+                <span style="color:#888">Shared (${sCount})</span>
+                <span style="color:#16a34a;font-weight:700">${right} only (${rCount})</span>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:9pt;">
+                <tr style="${trBorder}">
+                    <td style="${tdLabel}color:#7c3aed;">${left} only (${lCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.leftOnlyMetrics)}</td>
+                </tr>
+                <tr style="${trBorder}">
+                    <td style="${tdLabel}color:#888;">Shared (${sCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.sharedMetrics)}</td>
+                </tr>
+                <tr>
+                    <td style="${tdLabel}color:#16a34a;">${right} only (${rCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.rightOnlyMetrics)}</td>
+                </tr>
+            </table>
+        </div>`;
+}
+
 // ─── PDF metric card ──────────────────────────────────────────────────────────
 
 function buildPdfCard(metric) {
@@ -86,7 +139,7 @@ function buildPdfCard(metric) {
 
 function getPrintStyles() {
     return `
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -243,6 +296,19 @@ function getPrintStyles() {
         .pdf-authors-text strong { color: #1e3a5f; }
         .pdf-authors-text a { color: #1B1AFF; }
 
+        /* ── Section 3: Saved comparisons ── */
+        .pdf-comparison-block {
+            margin-bottom: 16pt;
+            padding-bottom: 12pt;
+            border-bottom: 0.3pt solid #eee;
+            break-inside: avoid;
+        }
+        .pdf-comparison-title {
+            font-weight: 700;
+            font-size: 11pt;
+            color: #1B1AFF;
+        }
+
         /* ── Page breaks ── */
         .page-break-before { break-before: page; }
 
@@ -253,7 +319,7 @@ function getPrintStyles() {
 
 // ─── Full HTML document ───────────────────────────────────────────────────────
 
-function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
+function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, comparisons) {
     const now      = new Date();
     const dateStr  = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const fileDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -288,6 +354,12 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
             : planned.map(m => buildPdfCard(m)).join('')}
     </section>`;
 
+    const comparisonsSection = comparisons && comparisons.length > 0 ? `
+    <section class="page-break-before">
+        <h2>Saved Comparisons (${comparisons.length})</h2>
+        ${comparisons.map(c => buildComparisonBlock(c)).join('')}
+    </section>` : '';
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -320,6 +392,8 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
     ${capturingSection}
 
     ${plannedSection}
+
+    ${comparisonsSection}
 
     <section class="pdf-authors page-break-before">
         <div class="pdf-authors-logos">
@@ -361,7 +435,9 @@ async function downloadPdf() {
         ]);
 
         const chips = buildInsights([...capturing, ...planned]);
-        const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri);
+        const hasShortlist = c => c.leftType === 'shortlist' || c.rightType === 'shortlist';
+        const orderedComparisons = [...savedComparisons].sort((a, b) => hasShortlist(b) - hasShortlist(a));
+        const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, orderedComparisons);
 
         const win = window.open('', '_blank');
         if (!win) {

@@ -2703,3 +2703,93 @@ a {
     text-align: center;
     margin: 0;
 }
+
+/* ─── Step 2: Save comparison to PDF ─────────────────────────────────────── */
+
+.compare-save-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.compare-save-btn {
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 1px solid #1B1AFF;
+    background: #fff;
+    color: #1B1AFF;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.compare-save-btn:hover:not(:disabled) {
+    background: #1B1AFF;
+    color: #fff;
+}
+
+.compare-save-btn--saved,
+.compare-save-btn:disabled {
+    border-color: #aaa;
+    color: #aaa;
+    cursor: default;
+}
+
+.compare-save-badge {
+    font-size: 11px;
+    color: #aaa;
+    white-space: nowrap;
+}
+
+/* ─── Step 3: Saved comparisons review (right panel) ────────────────────── */
+
+.ns-saved-comparisons {
+    margin-top: 20px;
+}
+
+.ns-saved-comparisons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.ns-saved-comparison-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ns-saved-comparison-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ns-comparison-bar {
+    height: 8px;
+    width: 100%;
+}
+
+.ns-comparison-legend {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.ns-comparison-legend-item--left   { color: #7c3aed; font-weight: 500; }
+.ns-comparison-legend-item--shared { color: #888; }
+.ns-comparison-legend-item--right  { color: #16a34a; font-weight: 500; }
+
+.ns-remove-comparison {
+    background: none;
+    border: none;
+    flex-shrink: 0;
+}

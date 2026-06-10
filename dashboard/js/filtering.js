@@ -293,6 +293,7 @@ function filterData() {
     updateClearFiltersVisibility(actualMatchingMetrics.length);
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof refreshCompareValueDropdowns === 'function') refreshCompareValueDropdowns();
+    if (typeof loadSavedComparisonsFromLocalStorage === 'function') loadSavedComparisonsFromLocalStorage();
 }
 
 // Show/hide "Clear all filters" buttons based on whether the full list is shown

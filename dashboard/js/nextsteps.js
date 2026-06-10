@@ -25,6 +25,9 @@ function renderNextStepsView() {
     // Render insights panel
     renderInsights();
 
+    // Render saved comparisons
+    renderSavedComparisons();
+
     // Update hint text
     if (hintText) {
         if (!hasAny) {
@@ -140,6 +143,70 @@ function renderPlannedCard(metric) {
             ${researchHtml}
         </div>
     `;
+}
+
+// ─── Saved comparisons section ───────────────────────────────────────────────
+
+function renderSavedComparisons() {
+    const el = document.getElementById('ns-saved-comparisons');
+    if (!el) return;
+
+    if (!savedComparisons || savedComparisons.length === 0) {
+        el.style.display = 'none';
+        el.innerHTML = '';
+        return;
+    }
+
+    const hasShortlist = c => c.leftType === 'shortlist' || c.rightType === 'shortlist';
+    const ordered = [...savedComparisons].sort((a, b) => hasShortlist(b) - hasShortlist(a));
+
+    const cards = ordered.map((c) => {
+        const i = savedComparisons.indexOf(c);
+        const left   = c.leftOnlyMetrics.length;
+        const shared = c.sharedMetrics.length;
+        const right  = c.rightOnlyMetrics.length;
+        const total  = left + shared + right;
+
+        const leftPct   = total > 0 ? (left   / total * 100) : 0;
+        const sharedPct = total > 0 ? (shared / total * 100) : 0;
+        const rightPct  = total > 0 ? (right  / total * 100) : 0;
+
+        const barTitle = `${left} unique to ${escapeHtml(c.leftLabel)} · ${shared} shared · ${right} unique to ${escapeHtml(c.rightLabel)}`;
+
+        return `
+            <div class="ns-saved-comparison-card">
+                <div class="ns-saved-comparison-card-header">
+                    <div class="ns-comparison-legend">
+                        <span class="ns-comparison-legend-item ns-comparison-legend-item--left">${left} ${escapeHtml(c.leftLabel)} only</span>
+                        <span class="ns-comparison-legend-item ns-comparison-legend-item--shared">${shared} shared</span>
+                        <span class="ns-comparison-legend-item ns-comparison-legend-item--right">${right} ${escapeHtml(c.rightLabel)} only</span>
+                    </div>
+                    <button class="nextsteps-metric-remove ns-remove-comparison" data-comparison-index="${i}" title="Remove from PDF">&#215;</button>
+                </div>
+                <div class="ns-comparison-bar sort-chart-bar-track" title="${barTitle}">
+                    ${leftPct   > 0 ? `<div class="sort-chart-bar-fill sort-chart-bar-fill--left"   style="width:${leftPct}%"></div>`   : ''}
+                    ${sharedPct > 0 ? `<div class="sort-chart-bar-fill sort-chart-bar-fill--shared" style="width:${sharedPct}%"></div>` : ''}
+                    ${rightPct  > 0 ? `<div class="sort-chart-bar-fill sort-chart-bar-fill--right"  style="width:${rightPct}%"></div>`  : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    el.style.display = '';
+    el.innerHTML = `
+        <div class="controls-title controls-title--download">Saved comparisons</div>
+        <div class="ns-saved-comparisons-list">${cards}</div>
+    `;
+
+    el.querySelectorAll('.ns-remove-comparison').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.comparisonIndex);
+            savedComparisons.splice(idx, 1);
+            if (typeof saveSavedComparisonsToLocalStorage === 'function') saveSavedComparisonsToLocalStorage();
+            if (typeof updateSaveButton === 'function') updateSaveButton();
+            renderSavedComparisons();
+        });
+    });
 }
 
 // ─── Insights panel ───────────────────────────────────────────────────────────

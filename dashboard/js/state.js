@@ -90,6 +90,9 @@ let additiveBlankCanvas = false;
 // Selected metrics shortlist
 let clickedMetrics = [];
 
+// Comparisons saved from Step 2 to include in the PDF export
+let savedComparisons = [];
+
 // Misc DOM refs
 const noMetricsMessage = document.getElementById('no-metrics-message');
 const customTooltip = document.getElementById('custom-tooltip');
