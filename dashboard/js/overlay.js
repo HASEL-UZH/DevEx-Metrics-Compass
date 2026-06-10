@@ -124,10 +124,12 @@ if (localStorage.getItem(PASSWORD_KEY) === 'true') {
 function showExploreStartView() {
     const entryPanel    = document.getElementById('explore-entry-panel');
     const filtersSection = document.getElementById('explore-filters-section');
+    const goCompareBtn  = document.getElementById('btn-go-compare');
     const c  = document.getElementById('container');
     const cf = document.getElementById('clear-filters-chart');
     if (entryPanel)     entryPanel.style.display     = '';
     if (filtersSection) filtersSection.style.display = 'none';
+    if (goCompareBtn)   goCompareBtn.style.display   = 'none';
     if (c)  c.style.display  = '';
     if (cf) cf.style.display = 'none';
     ['no-metrics-message', 'additive-mode-message'].forEach(id => {
@@ -141,8 +143,10 @@ function showExploreStartView() {
 function hideExploreStartView() {
     const entryPanel    = document.getElementById('explore-entry-panel');
     const filtersSection = document.getElementById('explore-filters-section');
+    const goCompareBtn  = document.getElementById('btn-go-compare');
     if (entryPanel)     entryPanel.style.display     = 'none';
     if (filtersSection) filtersSection.style.display = '';
+    if (goCompareBtn)   goCompareBtn.style.display   = '';
 }
 
 // ─── CTA button: "Start exploring metrics" ───────────────────────────────────

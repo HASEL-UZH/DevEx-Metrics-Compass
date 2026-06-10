@@ -2113,8 +2113,6 @@ a {
 
 .ns-download-section {
     margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
 }
 
 .controls-title--download {
@@ -2748,7 +2746,7 @@ a {
 /* ─── Step 3: Saved comparisons review (right panel) ────────────────────── */
 
 .ns-saved-comparisons {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .ns-saved-comparisons-list {
