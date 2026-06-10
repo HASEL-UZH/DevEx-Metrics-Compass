@@ -93,6 +93,8 @@
         <!-- Container containing the filters / step-specific controls -->
         <div class="right-container">
 
+            <div class="right-panel-scroll">
+
             <!-- Step 1: Explore filters panel -->
             <div id="explore-right-panel">
 
@@ -341,6 +343,16 @@
                     </div>
                 </div>
             </div><!-- /#nextsteps-panel -->
+
+            </div><!-- /.right-panel-scroll -->
+
+            <!-- Step navigation bar: shared, always at bottom of right panel -->
+            <div class="next-step-bar">
+                <button id="btn-back-explore" class="next-step-btn next-step-btn--secondary nav-btn--step-compare">&larr; Explore metrics</button>
+                <button id="btn-go-compare" class="next-step-btn next-step-btn--primary nav-btn--step-explore">Compare metrics &rarr;</button>
+                <button id="btn-back-compare" class="next-step-btn next-step-btn--secondary nav-btn--step-nextsteps">&larr; Compare metrics</button>
+                <button id="btn-go-nextsteps" class="next-step-btn next-step-btn--primary nav-btn--step-compare">Review &amp; Export &rarr;</button>
+            </div>
 
         </div>
     </div>

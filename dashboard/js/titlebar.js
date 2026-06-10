@@ -162,6 +162,12 @@ document.querySelectorAll('.step-btn').forEach(btn => {
     });
 });
 
+// Wire next/back panel buttons
+document.getElementById('btn-go-compare')?.addEventListener('click', () => switchToStep(STEP.COMPARE));
+document.getElementById('btn-go-nextsteps')?.addEventListener('click', () => switchToStep(STEP.NEXTSTEPS));
+document.getElementById('btn-back-explore')?.addEventListener('click', () => switchToStep(STEP.EXPLORE));
+document.getElementById('btn-back-compare')?.addEventListener('click', () => switchToStep(STEP.COMPARE));
+
 // ─── Shortlist hover popup ────────────────────────────────────────────────────
 
 (function () {

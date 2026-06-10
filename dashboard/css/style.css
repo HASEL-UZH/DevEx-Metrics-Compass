@@ -53,6 +53,12 @@ body {
     align-items: stretch;
     text-align: left;
     height: 100%;
+    overflow: hidden;
+}
+
+.right-panel-scroll {
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -2414,6 +2420,59 @@ a {
     height: 2px;
     background: #ddd;
     margin: 0 6px;
+}
+
+/* ─── Step navigation bar (next / back buttons in right panel) ──────────── */
+
+.next-step-bar {
+    display: flex;
+    gap: 8px;
+    margin: 0 -20px -20px;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* hide all nav buttons by default; show only those matching the active step */
+.nav-btn--step-explore,
+.nav-btn--step-compare,
+.nav-btn--step-nextsteps {
+    display: none;
+}
+
+.step-explore .nav-btn--step-explore { display: flex; align-items: center; gap: 6px; }
+.step-compare .nav-btn--step-compare { display: flex; align-items: center; gap: 6px; }
+.step-nextsteps .nav-btn--step-nextsteps { display: flex; align-items: center; gap: 6px; }
+
+.next-step-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 40px;
+    cursor: pointer;
+    border: none;
+}
+
+.next-step-btn--primary {
+    background-color: #1B1AFF;
+    color: white;
+}
+
+.next-step-btn--primary:hover {
+    background-color: #85B9F2;
+}
+
+.next-step-btn--secondary {
+    background-color: transparent;
+    color: #555;
+    border: 1.5px solid #ccc;
+}
+
+.next-step-btn--secondary:hover {
+    background-color: #eaeaea;
+    border-color: #bbb;
 }
 
 .step-bar-meta {
