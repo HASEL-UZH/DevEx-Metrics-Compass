@@ -1875,11 +1875,16 @@ a {
     flex: 1;
 }
 
-.diff-category-stats {
-    font-size: 11px;
-    color: #888;
-    font-weight: 600;
+.diff-category-bar {
+    display: flex;
+    width: 80px;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e8e8e8;
+    flex-shrink: 0;
 }
+
 
 .diff-metrics {
     display: flex;

@@ -204,8 +204,13 @@ function renderDiffView() {
                 return diff !== 0 ? diff : a.name.localeCompare(b.name);
             });
 
-            const sharedCount = sorted.filter(m => leftIds.has(m.id) && rightIds.has(m.id)).length;
-            const overlapPct = sorted.length > 0 ? Math.round(sharedCount / sorted.length * 100) : 0;
+            const sharedCount = sorted.filter(m =>  leftIds.has(m.id) &&  rightIds.has(m.id)).length;
+            const leftOnlyCount  = sorted.filter(m =>  leftIds.has(m.id) && !rightIds.has(m.id)).length;
+            const rightOnlyCount = sorted.filter(m => !leftIds.has(m.id) &&  rightIds.has(m.id)).length;
+            const total = sorted.length;
+            const lPct = total > 0 ? Math.round(leftOnlyCount  / total * 100) : 0;
+            const sPct = total > 0 ? Math.round(sharedCount    / total * 100) : 0;
+            const rPct = 100 - lPct - sPct;
 
             const catTooltip = DIMENSION_TOOLTIPS[cat] ? ` title="${DIMENSION_TOOLTIPS[cat]}"` : '';
             const catDisplay = (compareSort === 'maturity' && MATURITY_FULL_LABEL[cat]) ? MATURITY_FULL_LABEL[cat] : cat;
@@ -213,7 +218,7 @@ function renderDiffView() {
                 <div class="diff-category-header" onclick="this.parentElement.classList.toggle('diff-category--collapsed')">
                     <span class="diff-category-chevron">▾</span>
                     <span class="diff-category-name"${catTooltip}>${catDisplay}</span>
-                    <span class="diff-category-stats">${overlapPct}% overlap</span>
+                    <span class="diff-category-bar" title="${leftOnlyCount} unique to ${shortLabel(leftValue)} · ${sharedCount} shared · ${rightOnlyCount} unique to ${shortLabel(rightValue)}">${leftOnlyCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--left" style="width:${leftOnlyCount/total*100}%"></span>` : ''}${sharedCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--shared" style="width:${sharedCount/total*100}%"></span>` : ''}${rightOnlyCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--right" style="width:${rightOnlyCount/total*100}%"></span>` : ''}</span>
                 </div>
                 <div class="diff-metrics">`;
 
