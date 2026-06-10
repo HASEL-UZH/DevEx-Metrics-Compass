@@ -74,6 +74,12 @@ function getOptionsForDimension(type) {
 }
 
 function populateValueDropdown(selectEl, type, currentValue) {
+    if (type === 'shortlist') {
+        selectEl.style.display = 'none';
+        selectEl.value = 'shortlist';
+        return;
+    }
+    selectEl.style.display = '';
     const options = getOptionsForDimension(type);
     selectEl.innerHTML = '<option value="all">Select...</option>';
     options.forEach(opt => {
@@ -89,6 +95,10 @@ function populateValueDropdown(selectEl, type, currentValue) {
 // ─── Metric filtering by dimension ───────────────────────────────────────────
 
 function filterMetricsByDimension(type, value) {
+    if (type === 'shortlist') {
+        const ids = new Set(clickedMetrics.map(m => m.id));
+        return originalData.filter(item => item.type && ids.has(item.id));
+    }
     if (!value || value === 'all') return [];
     return originalData.filter(item => {
         if (!item.type) return false;
@@ -268,8 +278,9 @@ function updateCompareSummary(stats) {
     if (!el) return;
     if (!stats) { el.innerHTML = ''; return; }
     const { shared, leftOnly, rightOnly, leftValue, rightValue, leftType, rightType } = stats;
-    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
+    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', shortlist: 'shortlist' }[t] || t);
     const labelFor = (type, value) => {
+        if (type === 'shortlist') return 'My Shortlist';
         if (type === 'framework') return frameworkLink(value, shortLabel(value));
         if (type === 'maturity')  return MATURITY_FULL_LABEL[value] || value;
         return shortLabel(value);
@@ -427,6 +438,13 @@ function renderSortCharts(chartDataArray) {
     });
 }
 
+function syncShortlistOptionVisibility() {
+    const leftOpt  = document.querySelector('#compare-left-type  option[value="shortlist"]');
+    const rightOpt = document.querySelector('#compare-right-type option[value="shortlist"]');
+    if (leftOpt)  leftOpt.hidden  = compareState.rightType === 'shortlist';
+    if (rightOpt) rightOpt.hidden = compareState.leftType  === 'shortlist';
+}
+
 // ─── Compare panel initialization ────────────────────────────────────────────
 
 function initCompareControls() {
@@ -447,12 +465,17 @@ function initCompareControls() {
     function onTypeChange(typeEl, valueEl, side) {
         compareState[side + 'Type'] = typeEl.value;
         populateValueDropdown(valueEl, typeEl.value, 'all');
-        // Pre-select a random value from the populated options
-        const opts = [...valueEl.options].filter(o => o.value !== 'all');
-        const randomOpt = opts[Math.floor(Math.random() * opts.length)];
-        const picked = randomOpt ? randomOpt.value : 'all';
-        valueEl.value = picked;
-        compareState[side + 'Value'] = picked;
+        if (typeEl.value === 'shortlist') {
+            compareState[side + 'Value'] = 'shortlist';
+        } else {
+            // Pre-select a random value from the populated options
+            const opts = [...valueEl.options].filter(o => o.value !== 'all');
+            const randomOpt = opts[Math.floor(Math.random() * opts.length)];
+            const picked = randomOpt ? randomOpt.value : 'all';
+            valueEl.value = picked;
+            compareState[side + 'Value'] = picked;
+        }
+        syncShortlistOptionVisibility();
         clearPresetHighlight();
         renderDiffView();
         updateLogoPreview(side);
@@ -505,6 +528,7 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
     );
     if (active) active.classList.add('compare-preset-btn--active');
 
+    syncShortlistOptionVisibility();
     renderDiffView();
     ['left', 'right'].forEach(side => {
         const valueEl = document.getElementById(`compare-${side}-value`);
