@@ -99,8 +99,7 @@ function filterMetricsByDimension(type, value) {
             return Array.isArray(item.company) && item.company.some(c => c.name === value);
         }
         if (type === 'maturity') {
-            const tiers = { Easy: ['Easy'], Moderate: ['Easy', 'Moderate'], Complex: ['Easy', 'Moderate', 'Complex'] };
-            return (tiers[value] || []).includes(item.ease_of_collection);
+            return item.ease_of_collection === value;
         }
         if (type === 'outcome') {
             return item.outcome_goals === value;
