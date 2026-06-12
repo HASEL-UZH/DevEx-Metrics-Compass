@@ -10,29 +10,29 @@ const DIMENSION_TOOLTIPS = {
     'Developer Experience':         'Developer Experience: metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).',
     'Product Excellence':           'Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).',
     'Organizational Effectiveness': 'Organizational Effectiveness: metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).',
-    // AI categories (keys match getGroupKeyForMetric output in compare.js)
-    '🎯 AI Impact':      'AI Impact: metrics that show whether AI tools improve delivery speed, code quality, and developer experience.',
-    '📊 AI Utilization': 'AI Utilization: metrics that reveal how many and what types of developers are adopting AI tooling, and how much work is being touched by AI.',
-    '💰 AI Cost':        'AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.',
+    // AI categories
+    'AI Impact':      'AI Impact: metrics that show whether AI tools improve delivery speed, code quality, and developer experience.',
+    'AI Utilization': 'AI Utilization: metrics that reveal how many and what types of developers are adopting AI tooling, and how much work is being touched by AI.',
+    'AI Cost':        'AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.',
 };
 
 // Display labels for ease_of_collection values
 const MATURITY_FULL_LABEL = {
-    Easy:     'Getting started (easy)',
-    Moderate: 'Established (moderate)',
-    Complex:  'Advanced (complex)',
+    Easy:     '🌱 Getting started (easy)',
+    Moderate: '⚙️ Established (moderate)',
+    Complex:  '🔬 Advanced (complex)',
 };
 const MATURITY_SHORT_LABEL = {
-    Easy:     'Getting started',
-    Moderate: 'Established',
-    Complex:  'Advanced',
+    Easy:     '🌱 Getting started',
+    Moderate: '⚙️ Established',
+    Complex:  '🔬 Advanced',
 };
 
 // Maps step-1 data-filter values to DIMENSION_TOOLTIPS keys (only where they differ from the key)
 const FILTER_TO_TOOLTIP_KEY = {
-    'ai-impact':      '🎯 AI Impact',
-    'ai-utilization': '📊 AI Utilization',
-    'ai-cost':        '💰 AI Cost',
+    'ai-impact':      'AI Impact',
+    'ai-utilization': 'AI Utilization',
+    'ai-cost':        'AI Cost',
 };
 
 let SOURCE_URL_MAPPING = {};

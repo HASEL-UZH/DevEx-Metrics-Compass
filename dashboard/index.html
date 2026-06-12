@@ -151,12 +151,12 @@
                 <label for="color-by-select">Chart coloring</label>
                 <select id="color-by-select" class="color-by-select">
                     <option value="categorization">Category (default)</option>
-                    <option value="type">Data collection type</option>
+                    <option value="collection_status">Collection status (my shortlist)</option>
                     <option value="popularity">Popularity</option>
+                    <option value="type">Data collection type</option>
                     <option value="is_research">Research vs industry</option>
                     <option value="outcome_goals">Outcome goals</option>
                     <option value="ease_of_collection">Collection maturity</option>
-                    <option value="collection_status">Collection status</option>
                 </select>
                 <div id="color-legend" class="color-legend" style="display:none"></div>
             </div>
@@ -255,9 +255,9 @@
                 <div class="filter-description">Filter by your team's/organization's current measurement maturity:</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
-                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🟢 Getting started</button>
-                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">🟡 Established</button>
-                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔴 Advanced</button>
+                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🌱 Getting started</button>
+                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">⚙️ Established</button>
+                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔬 Advanced</button>
                 </div>
             </div>
 
@@ -369,8 +369,8 @@
     </div>
 
     <footer>
-        <div>Created by <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass">Dr. André Meyer</a>, Patrick Meyer, Prof. Dr. Gail Murphy &amp; Prof. Dr. Thomas Fritz  &bull; <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a>  &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a>  &bull; <a href="#" id="openFeedbackFooter">Give feedback</a>  &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a></div>
-        <div class="footer-disclaimer">Disclaimer: This dashboard is provided for research and informational purposes only. The content is based on a literature review and does not claim to be exhaustive.</div>
+        <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openFeedbackFooter">Give feedback</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a></div>
+        <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
     </footer>
 
     <!-- Overlay containing the maturity assessment and landing page -->
@@ -381,18 +381,7 @@
             <!-- Password gate (temporary – remove before public launch) -->
             <div id="password-screen" class="overlay-screen">
                 <div class="overlay-compass-icon">
-                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="28" cy="28" r="26" fill="#e8eafd" stroke="#1B1AFF" stroke-width="2"/>
-                        <line x1="28" y1="4" x2="28" y2="10" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="28" y1="46" x2="28" y2="52" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="4" y1="28" x2="10" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="46" y1="28" x2="52" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <g class="compass-needle">
-                            <polygon points="28,10 32,28 28,32 24,28" fill="#1B1AFF"/>
-                            <polygon points="28,46 32,28 28,24 24,28" fill="#1B1AFF" opacity="0.25"/>
-                            <circle cx="28" cy="28" r="3.5" fill="#1B1AFF"/>
-                        </g>
-                    </svg>
+                    <span data-compass-size="56"></span>
                 </div>
                 <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
                 <p>This tool is currently in private preview. Please enter the access password to continue.</p>
@@ -407,18 +396,7 @@
             <!-- Landing page -->
             <div id="initial-choice-screen" class="overlay-screen">
                 <div class="overlay-compass-icon">
-                    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="28" cy="28" r="26" fill="#e8eafd" stroke="#1B1AFF" stroke-width="2"/>
-                        <line x1="28" y1="4" x2="28" y2="10" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="28" y1="46" x2="28" y2="52" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="4" y1="28" x2="10" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="46" y1="28" x2="52" y2="28" stroke="#1B1AFF" stroke-width="2" stroke-linecap="round"/>
-                        <g class="compass-needle">
-                            <polygon points="28,10 32,28 28,32 24,28" fill="#1B1AFF"/>
-                            <polygon points="28,46 32,28 28,24 24,28" fill="#1B1AFF" opacity="0.25"/>
-                            <circle cx="28" cy="28" r="3.5" fill="#1B1AFF"/>
-                        </g>
-                    </svg>
+                    <span data-compass-size="56"></span>
                 </div>
                 <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
                 <p>
@@ -448,7 +426,7 @@
                             <span class="welcome-step-num">3</span>
                             <span class="welcome-step-name">Review & Implement Metrics</span>
                         </div>
-                        <p class="welcome-step-desc">Review your shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
+                        <p class="welcome-step-desc">Review my shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
                     </button>
                 </div>
                 <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
@@ -487,15 +465,15 @@
                 <h2>What is your team's or organization's measurement maturity?</h2>
                 <div class="wizard-options">
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy" data-next="question2-screen">
-                        <span class="option-num">🟢</span>
+                        <span class="option-num">🌱</span>
                         <span class="option-content"><strong>Getting started</strong>: Includes metrics available out-of-the-box from standard tooling (code repo, CI, issue tracker) or a quick survey. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Moderate" data-next="question2-screen">
-                        <span class="option-num">🟡</span>
+                        <span class="option-num">⚙️</span>
                         <span class="option-content"><strong>Established</strong>: Includes Getting started metrics, plus those requiring combining data sources, a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Complex" data-next="question2-screen">
-                        <span class="option-num">🔴</span>
+                        <span class="option-num">🔬</span>
                         <span class="option-content"><strong>Advanced</strong>: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
                     </button>
                     <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="all" data-next="question2-screen">
@@ -594,7 +572,10 @@
     <div class="overlay" id="changelogOverlay" style="display: none;">
         <div class="overlay-content changelog-overlay-content">
             <button class="close-button" id="closeChangelogBtn">&times;</button>
-            <h2>Changelog</h2>
+            <div class="overlay-title-row">
+                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
+                <h2>Changelog</h2>
+            </div>
 
             <div class="changelog-entries">
 
@@ -606,6 +587,8 @@
                         <li>Added ability to color the sunburst chart by collection status (tracked, planned, not tracked)</li>
                         <li>Added framework links on metric cards where applicable</li>
                         <li>Added ability to compare your shortlist against other dimensions (e.g. companies)</li>
+                        <li>New About overlay with information on the Compass, its creators, and methodology</li>
+                        <li>Refreshed chart colors and icons to a colorblind-accessible palette</li>
                     </ul>
                 </div>
 
@@ -661,7 +644,86 @@
             <div class="overlay-footer">
                 Developer Experience Metrics Compass
                 &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
-                <a href="https://hasel.dev" target="_blank">HASEL</a>, University of Zurich &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric / error</a>
+                <a href="https://hasel.dev" target="_blank">HASEL</a>, University of Zurich
+            </div>
+        </div>
+    </div>
+
+    <!-- About overlay -->
+    <div class="overlay" id="aboutOverlay" style="display: none;">
+        <div class="overlay-content about-overlay-content">
+            <button class="close-button" id="closeAboutBtn">&times;</button>
+
+            <div class="overlay-title-row">
+                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
+                <h2>About the Developer Experience Metrics Compass</h2>
+            </div>
+
+            <p>
+                Research and industry practice have collectively surfaced 130+ developer experience metrics,
+                spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
+                and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
+            </p>
+            <div class="welcome-steps-strip about-steps-strip">
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">1</span>
+                        <span class="welcome-step-name">Explore Metrics</span>
+                    </div>
+                    <p class="welcome-step-desc">Filter 130+ metrics by company, framework, maturity, data collection type or outcome goal. Build a shortlist of what you already track and what you plan to add.</p>
+                </div>
+                <span class="welcome-step-arrow">→</span>
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">2</span>
+                        <span class="welcome-step-name">Compare Metrics</span>
+                    </div>
+                    <p class="welcome-step-desc">Compare frameworks like SPACE vs. DX Core 4, or companies like Microsoft vs. Google, side by side. Spot overlaps, differences, and what others track that you don't.</p>
+                </div>
+                <span class="welcome-step-arrow">→</span>
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">3</span>
+                        <span class="welcome-step-name">Review &amp; Implement</span>
+                    </div>
+                    <p class="welcome-step-desc">Review my shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
+                </div>
+            </div>
+            <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
+
+            <div class="changelog-entries">
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Why we created the Compass</div>
+                    <p>With more than 130 developer experience metrics in circulation across research and industry, the challenge for most teams is not a lack of options. It is knowing which metrics are right for their specific context, maturity, and goals. The Compass helps teams at any stage of their measurement journey:</p>
+                    <ul>
+                        <li><strong>New to DevEx measurement.</strong> The guided wizard narrows 130+ metrics down to a manageable first set based on your context, available data, and outcome goals.</li>
+                        <li><strong>Running an existing program.</strong> Map your current metrics to identify dimensional coverage gaps, then benchmark against frameworks like SPACE and DX Core 4 or against what organizations like Google, Microsoft, and Stripe report measuring.</li>
+                        <li><strong>Researchers and dedicated DevEx teams.</strong> The full <a href="https://github.com/HASEL-UZH/DX-Metrics-Compass" target="_blank">open-source dataset</a> lets you filter by source (research vs. industry), compare frameworks, and identify understudied dimensions and metrics that may be worth pursuing.</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Who created the Compass</div>
+                    <p>The Compass was created by Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy, and Prof. Dr. Thomas Fritz as part of research at the <a href="https://hasel.dev" target="_blank">HASEL Lab</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> (UZH) and the University of British Columbia (UBC).</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">How we created the Compass</div>
+                    <p>The Compass is built on a systematic analysis of 130+ metrics drawn from scientific literature and the public practices of more than 50 engineering organizations (including Google, Microsoft, Atlassian, Spotify, Lloyds, and Stripe), covering engineering blogs, conference talks, case studies, and podcasts. Each metric is annotated across multiple dimensions: how data is collected (automated or self-reported), collection maturity (getting started through advanced), the framework or company of origin, AI relevance, and outcome goal (Developer Experience, Product Excellence, or Organizational Effectiveness).</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Missing metric or error?</div>
+                    <p>We'd love to hear from you. Please reach out via <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> to report missing metrics, incorrect data, or suggestions for improvement.</p>
+                </div>
+
+            </div>
+
+            <div class="overlay-footer">
+                Developer Experience Metrics Compass
+                &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
+                <a href="https://hasel.dev" target="_blank">HASEL</a>, University of Zurich &bull; Provided for research &amp; informational use only
             </div>
         </div>
     </div>
@@ -688,6 +750,7 @@
         </div>
     </div>
 
+    <script src="js/compass.js"></script>
     <script src="js/state.js"></script>
     <script src="js/helpers.js"></script>
     <script src="js/filtering.js"></script>

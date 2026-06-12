@@ -1,3 +1,9 @@
+// ─── Text helpers ─────────────────────────────────────────────────────────────
+
+function stripLeadingIcon(str) {
+    return str.replace(/^[^\p{L}]+/u, '');
+}
+
 // ─── Shared company favicon helpers ───────────────────────────────────────────
 // Used across step 1 (filter dropdown), step 2 (compare), and step 3 (next steps).
 

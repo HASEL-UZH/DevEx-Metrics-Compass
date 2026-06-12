@@ -985,8 +985,23 @@ a {
     font-size: 12px;
     font-weight: normal;
     white-space: nowrap;
-    background-color: #e8f5e9;
-    color: #2e7d32; 
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+.metric-ease-tag.ease-easy {
+    background-color: #dbeeff;
+    color: #0369a1;
+}
+
+.metric-ease-tag.ease-moderate {
+    background-color: #fef3c7;
+    color: #854d0e;
+}
+
+.metric-ease-tag.ease-complex {
+    background-color: #fde8d8;
+    color: #9a3412;
 }
 
 /* Welcome screen provenance toggles */
@@ -1326,11 +1341,46 @@ a {
     flex: 1;
 }
 
+/* About overlay */
+.about-overlay-content {
+    max-width: 1000px;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Shared title row: compass icon left of heading */
+.overlay-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    align-self: center;
+}
+
+.overlay-title-row h2 {
+    margin: 0;
+}
+
+/* Steps strip in About overlay: full width, equal-height cards */
+.about-steps-strip {
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch;
+}
+
+/* Step cards in About overlay are display-only */
+.about-step-item {
+    cursor: default;
+    pointer-events: none;
+}
+
 /* Changelog overlay */
 .changelog-overlay-content {
     max-width: 700px;
     text-align: left;
     align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .changelog-overlay-content h2 {
@@ -1353,6 +1403,13 @@ a {
     margin-bottom: 6px;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 4px;
+}
+
+.changelog-entry p {
+    margin: 0;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.7;
 }
 
 .changelog-entry ul {
@@ -2282,18 +2339,18 @@ a {
 }
 
 .ns-card-ease--easy {
-    background: #dcfce7;
-    color: #15803d;
+    background: #dbeeff;
+    color: #0369a1;
 }
 
 .ns-card-ease--moderate {
-    background: #fef9c3;
+    background: #fef3c7;
     color: #854d0e;
 }
 
 .ns-card-ease--complex {
-    background: #fee2e2;
-    color: #b91c1c;
+    background: #fde8d8;
+    color: #9a3412;
 }
 
 

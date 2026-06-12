@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-06-12 — About overlay and visual refresh
+
+- Added About overlay (accessible from footer) with background on the Compass, its creators, and methodology
+- Refreshed chart colors and icons to a colorblind-accessible palette
+
 ## 2026-06-12 — Refined export options and comparison handling
 
 - Refined export options when no metrics are selected but comparisons are present

@@ -99,7 +99,7 @@ function updateStepBar() {
             }
         } else if (currentStep === STEP.NEXTSTEPS) {
             if (hasShortlist) {
-                countEl.textContent = `${capturing + planned} metrics in your shortlist`;
+                countEl.textContent = `${capturing + planned} metrics in my shortlist`;
                 if (sepCount) sepCount.style.display = '';
             } else {
                 countEl.textContent = '';
@@ -116,7 +116,7 @@ function updateStepBar() {
             const parts = [];
             if (capturing > 0) parts.push(`${capturing} already tracking`);
             if (planned > 0)   parts.push(`${planned} planned to track`);
-            shortlistEl.textContent = 'Your shortlist: ' + parts.join(', ');
+            shortlistEl.textContent = 'My shortlist: ' + parts.join(', ');
             if (sepShortlist) sepShortlist.style.display = '';
         } else {
             shortlistEl.textContent = '';
@@ -149,8 +149,8 @@ function getStepHint(hasShortlist) {
         return 'Select two profiles to compare using the controls on the right';
     }
     if (currentStep === STEP.NEXTSTEPS) {
-        if (hasShortlist) return 'Review and export your shortlist';
-        return 'Go back to explore and mark metrics to build your shortlist';
+        if (hasShortlist) return 'Review and export my shortlist';
+        return 'Go back to explore and mark metrics to build my shortlist';
     }
     return '';
 }

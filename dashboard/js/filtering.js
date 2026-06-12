@@ -363,6 +363,12 @@ function clearAllFilters() {
     companyDropdown.value = 'all';
     if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
     document.getElementById('research-dropdown').value = 'all';
+    const colorBySelect = document.getElementById('color-by-select');
+    if (colorBySelect && colorBySelect.value !== 'categorization') {
+        colorBySelect.value = 'categorization';
+        currentColorBy = 'categorization';
+        if (typeof updateColorLegend === 'function') updateColorLegend('categorization');
+    }
     filterData();
 }
 

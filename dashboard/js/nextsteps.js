@@ -37,7 +37,7 @@ function renderNextStepsView() {
             const parts = [];
             if (capturing.length > 0) parts.push(`${capturing.length} tracking`);
             if (planned.length > 0) parts.push(`${planned.length} planned`);
-            hintText.textContent = `Summary of your ${total} shortlisted metrics (${parts.join(', ')}). Click any metric on the left to edit its status.`;
+            hintText.textContent = `Summary of my ${total} shortlisted metrics (${parts.join(', ')}). Click any metric on the left to edit its status.`;
         }
     }
 

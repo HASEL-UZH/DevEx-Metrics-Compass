@@ -14,9 +14,9 @@ const SORT_CARD_TOOLTIPS = {
 
 const COMPARE_DIMENSION_OPTIONS = {
     maturity: [
-        { value: 'Easy',     label: '🟢 Getting started (easy)' },
-        { value: 'Moderate', label: '🟡 Established (moderate)' },
-        { value: 'Complex',  label: '🔴 Advanced (complex)' },
+        { value: 'Easy',     label: '🌱 Getting started (easy)' },
+        { value: 'Moderate', label: '⚙️ Established (moderate)' },
+        { value: 'Complex',  label: '🔬 Advanced (complex)' },
     ],
     outcome: [
         { value: 'Developer Experience',       label: '🧑‍💻 Developer Experience' },
@@ -31,9 +31,9 @@ const GROUP_SORT_ORDER = {
     'Moderate': 1,
     'Complex':  2,
     // outcome
-    'Developer Experience':           0,
-    'Product Excellence':             1,
-    'Organizational Effectiveness':   2,
+    '🧑‍💻 Developer Experience':           0,
+    '⭐ Product Excellence':              1,
+    '📈 Organizational Effectiveness':    2,
     // data type
     '📋 Self-reported': 0,
     '⚙️ Automated':     1,
@@ -214,7 +214,7 @@ function renderDiffView() {
             const sPct = total > 0 ? Math.round(sharedCount    / total * 100) : 0;
             const rPct = 100 - lPct - sPct;
 
-            const catTooltip = DIMENSION_TOOLTIPS[cat] ? ` title="${DIMENSION_TOOLTIPS[cat]}"` : '';
+            const catTooltip = DIMENSION_TOOLTIPS[stripLeadingIcon(cat)] ? ` title="${DIMENSION_TOOLTIPS[stripLeadingIcon(cat)]}"` : '';
             const catDisplay = (compareSort === 'maturity' && MATURITY_FULL_LABEL[cat]) ? MATURITY_FULL_LABEL[cat] : cat;
             html += `<div class="diff-category">
                 <div class="diff-category-header" onclick="this.parentElement.classList.toggle('diff-category--collapsed')">
@@ -413,7 +413,12 @@ function updateCompareSummary(stats) {
 let compareSort = 'category';
 
 function getGroupKeyForMetric(metric, sort) {
-    if (sort === 'outcome')  return metric.outcome_goals || 'Other';
+    if (sort === 'outcome') {
+        if (metric.outcome_goals === 'Developer Experience')         return '🧑‍💻 Developer Experience';
+        if (metric.outcome_goals === 'Product Excellence')           return '⭐ Product Excellence';
+        if (metric.outcome_goals === 'Organizational Effectiveness') return '📈 Organizational Effectiveness';
+        return metric.outcome_goals || 'Other';
+    }
     if (sort === 'maturity') return metric.ease_of_collection || 'Other';
     if (sort === 'alpha')    return metric.name[0].toUpperCase();
     if (sort === 'datatype') {
@@ -488,9 +493,10 @@ function renderSortCharts(chartDataArray) {
             const total = g.left + g.shared + g.right;
             const row = document.createElement('div');
             row.className = 'sort-chart-row';
-            const rowDesc = (sort === 'maturity' && MATURITY_FULL_LABEL[g.key])
+            const rowDesc = stripLeadingIcon((sort === 'maturity' && MATURITY_FULL_LABEL[g.key])
                 ? MATURITY_FULL_LABEL[g.key]
-                : (DIMENSION_TOOLTIPS[g.key] || g.key);
+                : (DIMENSION_TOOLTIPS[stripLeadingIcon(g.key)] || g.key)
+            );
             const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
             const leftLabel  = `${shortLabel(compareState.leftValue)} (${typeLabel(compareState.leftType)})`;
             const rightLabel = `${shortLabel(compareState.rightValue)} (${typeLabel(compareState.rightType)})`;
@@ -500,7 +506,7 @@ function renderSortCharts(chartDataArray) {
             labelEl.className = 'sort-chart-row-label';
             const displayKey = (sort === 'maturity' && MATURITY_SHORT_LABEL[g.key]) ? MATURITY_SHORT_LABEL[g.key] : g.key;
             // Strip all leading non-letter chars (emoji, symbols, spaces)
-            labelEl.textContent = displayKey.replace(/^[^\p{L}]+/u, '');
+            labelEl.textContent = stripLeadingIcon(displayKey);
 
             const track = document.createElement('div');
             track.className = 'sort-chart-bar-track';

@@ -125,11 +125,13 @@ function showExploreStartView() {
     const entryPanel    = document.getElementById('explore-entry-panel');
     const filtersSection = document.getElementById('explore-filters-section');
     const goCompareBtn  = document.getElementById('btn-go-compare');
+    const nextStepBar   = document.querySelector('.next-step-bar');
     const c  = document.getElementById('container');
     const cf = document.getElementById('clear-filters-chart');
     if (entryPanel)     entryPanel.style.display     = '';
     if (filtersSection) filtersSection.style.display = 'none';
     if (goCompareBtn)   goCompareBtn.style.display   = 'none';
+    if (nextStepBar)    nextStepBar.style.display    = 'none';
     if (c)  c.style.display  = '';
     if (cf) cf.style.display = 'none';
     ['no-metrics-message', 'additive-mode-message'].forEach(id => {
@@ -144,9 +146,11 @@ function hideExploreStartView() {
     const entryPanel    = document.getElementById('explore-entry-panel');
     const filtersSection = document.getElementById('explore-filters-section');
     const goCompareBtn  = document.getElementById('btn-go-compare');
+    const nextStepBar   = document.querySelector('.next-step-bar');
     if (entryPanel)     entryPanel.style.display     = 'none';
     if (filtersSection) filtersSection.style.display = '';
     if (goCompareBtn)   goCompareBtn.style.display   = '';
+    if (nextStepBar)    nextStepBar.style.display    = '';
 }
 
 // ─── CTA button: "Start exploring metrics" ───────────────────────────────────
@@ -192,6 +196,29 @@ document.getElementById('start-additive-inline-btn').addEventListener('click', (
     hideExploreStartView();
     currentMode = MODE.ADDITIVE;
     clearAllFilters();
+});
+
+// ─── About overlay ────────────────────────────────────────────────────────────
+
+const aboutOverlay = document.getElementById('aboutOverlay');
+
+function openAbout() {
+    aboutOverlay.style.display = 'flex';
+}
+
+function closeAbout() {
+    aboutOverlay.style.display = 'none';
+}
+
+document.getElementById('openAboutBtnFooter').addEventListener('click', (e) => {
+    e.preventDefault();
+    openAbout();
+});
+
+document.getElementById('closeAboutBtn').addEventListener('click', closeAbout);
+
+aboutOverlay.addEventListener('click', (e) => {
+    if (e.target === aboutOverlay) closeAbout();
 });
 
 // ─── Changelog ────────────────────────────────────────────────────────────────

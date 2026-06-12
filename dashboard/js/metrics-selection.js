@@ -26,6 +26,11 @@ function removeClickedMetric(metricId) {
 function clearAllClickedMetrics() {
     clickedMetrics = [];
     saveClickedMetricsToLocalStorage();
+    if (typeof savedComparisons !== 'undefined') {
+        savedComparisons.length = 0;
+        if (typeof saveSavedComparisonsToLocalStorage === 'function') saveSavedComparisonsToLocalStorage();
+        if (typeof updateSaveButton === 'function') updateSaveButton();
+    }
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof currentStep !== 'undefined' && currentStep === STEP.NEXTSTEPS && typeof renderNextStepsView === 'function') renderNextStepsView();
     if (typeof syncShortlistOptionVisibility === 'function') syncShortlistOptionVisibility();
