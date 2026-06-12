@@ -32,6 +32,20 @@ Work almost exclusively happens in `dashboard/`.
 - Metric data: `dashboard/data/data.json`
 - Source URL mapping: `dashboard/data/source_ids.json`
 
+## Changelog
+
+After completing a task, decide whether it warrants a changelog entry:
+- **Skip**: minor tweaks (CSS polish, wording, refactors, internal-only changes)
+- **Combine**: several small related changes in one session → one entry
+- **Add entry**: meaningful user-visible change (new feature, notable UI change, bug fix users would notice)
+
+When an entry is warranted:
+
+1. Update `CHANGELOG.md` at the repo root automatically — prepend a new entry (newest first).
+2. For `dashboard/index.html` (`#changelogOverlay`) — **propose** the entry text to the user and wait for explicit approval before editing the file. The in-app changelog is end-user-facing and needs the user's sign-off.
+
+Use today's date from the `currentDate` context variable. Match the existing entry format in each file. If `CHANGELOG.md` does not exist yet, create it with a `# Changelog` heading first.
+
 ## Conventions
 
 - No emoji in code (existing emoji in filter labels are intentional; do not add new ones)
