@@ -417,6 +417,15 @@ body {
     border-color: #85B9F2;
 }
 
+.filter-btn:disabled,
+.filter-btn:disabled:hover {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: #ffffff;
+    border-color: #dddddd;
+    color: inherit;
+}
+
 /* Segmented control: buttons merged into one connected unit */
 .segmented-control {
     display: flex;
