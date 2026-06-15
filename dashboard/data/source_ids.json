@@ -295,9 +295,9 @@
     },
     {
         "ref_number": "232",
-        "ref_name": "inorigin (2025)",
+        "ref_name": "Uber",
         "ref_link": "https://www.inorigin.eu/how-uber-is-measuring-engineering-productivity-2/",
-        "company_size": "N/A"
+        "company_size": "Enterprise"
     },
     {
         "ref_number": "233",
@@ -333,12 +333,6 @@
         "ref_number": "238",
         "ref_name": "Murphy-Hill and Wagner (2019)",
         "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_7",
-        "company_size": "N/A"
-    },
-    {
-        "ref_number": "240",
-        "ref_name": "Storey and Treude (2019)",
-        "ref_link": "https://doi.org/10.1007/978-1-4842-4221-6_16",
         "company_size": "N/A"
     },
     {
@@ -874,5 +868,29 @@
         "ref_name": "Atlassian",
         "ref_link": "https://getdx.com/podcast/atlassian-journey-with-developer-experience/",
         "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "520",
+        "ref_name": "APEX framework",
+        "ref_link": "https://linearb.io/resources/apex-framework",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "520a",
+        "ref_name": "LinearB",
+        "ref_link": "https://linearb.helpdocs.io/article/v2ikos8lvw-pickup-time-metric",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "520b",
+        "ref_name": "LinearB",
+        "ref_link": "https://linearb.io/resources/quickstart-guide-planning-accuracy",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "520c",
+        "ref_name": "LinearB",
+        "ref_link": "https://linearb.io/blog/how-to-accurately-forecast-project-delivery",
+        "company_size": "N/A"
     }
 ]
