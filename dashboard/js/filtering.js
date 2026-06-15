@@ -156,7 +156,7 @@ function populateFrameworkDropdown(frameworks, selectedFramework) {
     frameworks.forEach(framework => {
         const option = document.createElement('option');
         option.value = framework;
-        option.textContent = framework === 'all' ? 'No research framework selected' : framework;
+        option.textContent = framework === 'all' ? 'No research framework selected' : framework.replace(/\s*Framework\s*$/i, '');
         dropdown.appendChild(option);
     });
 
@@ -215,7 +215,6 @@ function filterData() {
             const eocTiers = { 'Easy': ['Easy'], 'Moderate': ['Easy', 'Moderate'], 'Complex': ['Easy', 'Moderate', 'Complex'] };
             if (!eocTiers[activeFilters.easeOfCollection]?.includes(item.ease_of_collection)) { matches = false; }
         }
-
         if (specificCompany !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.name === specificCompany))) { matches = false; }
         if (specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(source => source.name === specificFramework))) { matches = false; }
 

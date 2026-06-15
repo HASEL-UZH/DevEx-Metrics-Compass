@@ -70,7 +70,7 @@ function getOptionsForDimension(type) {
             });
         }
     });
-    return [...names].sort().map(n => ({ value: n, label: n }));
+    return [...names].sort().map(n => ({ value: n, label: type === 'framework' ? shortLabel(n) : n }));
 }
 
 function populateValueDropdown(selectEl, type, currentValue) {
