@@ -481,7 +481,7 @@
     },
     {
         "ref_number": "131k",
-        "ref_name": "Amazon (AWS)",
+        "ref_name": "Amazon",
         "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
         "company_size": "Enterprise"
     },
@@ -508,12 +508,6 @@
         "ref_name": "Uber",
         "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
         "company_size": "Enterprise"
-    },
-    {
-        "ref_number": "131p",
-        "ref_name": "used widely",
-        "ref_link": "https://www.gitpod.io/blog/20-most-popular-developer-productivity-metrics",
-        "company_size": "N/A"
     },
     {
         "ref_number": "131q",
@@ -553,7 +547,7 @@
     },
     {
         "ref_number": "183a",
-        "ref_name": "Amazon (AWS)",
+        "ref_name": "Amazon",
         "ref_link": "https://gun.io/news/2025/01/how-to-measure-developer-productivity/",
         "company_size": "Enterprise"
     },
@@ -868,5 +862,17 @@
         "ref_name": "Kanat-Alexander (2025)",
         "ref_link": "https://www.codesimplicity.com/post/what-makes-a-great-developer-experience/",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "518",
+        "ref_name": "Spotify",
+        "ref_link": "https://backstage.io/blog/2020/03/16/announcing-backstage/",
+        "company_size": "Enterprise"
+    },
+    {
+        "ref_number": "519",
+        "ref_name": "Atlassian",
+        "ref_link": "https://getdx.com/podcast/atlassian-journey-with-developer-experience/",
+        "company_size": "Enterprise"
     }
 ]
