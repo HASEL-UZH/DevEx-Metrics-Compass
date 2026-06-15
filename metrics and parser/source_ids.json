@@ -892,5 +892,11 @@
         "ref_name": "LinearB",
         "ref_link": "https://linearb.io/blog/how-to-accurately-forecast-project-delivery",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "521",
+        "ref_name": "LinkedIn DPH Framework",
+        "ref_link": "https://linkedin.github.io/dph-framework/",
+        "company_size": "N/A"
     }
 ]
