@@ -247,7 +247,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Branch Creation to Master Merge Time",
+        "name": "Branch Lifetime",
         "id": 9,
         "parent": 306,
         "alsoknownas": "-",
@@ -257,10 +257,10 @@
         "value": 4,
         "company_mentions": 2,
         "research_mentions": 2,
-        "description": "The time elapsed between branch creation until master merge.",
+        "description": "The time elapsed between branch creation until merge to main/production.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-",
+        "related_metrics": "87",
         "outcome_goals": "Organizational Effectiveness",
         "ease_of_collection": "Easy"
     },
@@ -1165,7 +1165,7 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Onboarding Time for New Members",
+        "name": "Time for Onboarding New Hires",
         "id": 72,
         "parent": 329,
         "alsoknownas": "-",
@@ -1309,24 +1309,6 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Percentage of PRs under 250 lines",
-        "id": 81,
-        "parent": 319,
-        "alsoknownas": "-",
-        "company": "202a",
-        "research": "202",
-        "type": "quantitative",
-        "value": 2,
-        "company_mentions": 1,
-        "research_mentions": 1,
-        "description": "The percentage of PRs under 250 lines. A higher percentage indicates that most PRs are relatively small, which is generally considered beneficial because smaller PRs are easier to review, less likely to introduce defects, and can be merged more quickly.",
-        "is_research": 3,
-        "ai_specific_category": "",
-        "related_metrics": "-",
-        "outcome_goals": "Organizational Effectiveness",
-        "ease_of_collection": "Easy"
-    },
-    {
         "name": "Percentage of Regrettable Attrition",
         "id": 82,
         "parent": 329,
@@ -1409,10 +1391,10 @@
         "value": 4,
         "company_mentions": 2,
         "research_mentions": 2,
-        "description": "Measures the total time a pull request spends in all stages of the development pipeline, from the first commit to when the pull request is merged into the codebase. It provides insights into the efficiency of the code review and merging process, helping teams identify bottlenecks and improve workflows.",
+        "description": "Measures the total time a pull request spends in all stages of the development pipeline, from the first commit to when the pull request is merged into the codebase (e.g. to the main/production branch). It provides insights into the efficiency of the code review and merging process, helping teams identify bottlenecks and improve workflows.",
         "is_research": 3,
         "ai_specific_category": "",
-        "related_metrics": "-",
+        "related_metrics": "9",
         "outcome_goals": "Organizational Effectiveness",
         "ease_of_collection": "Easy"
     },
@@ -1439,15 +1421,15 @@
         "id": 89,
         "parent": 319,
         "alsoknownas": "-",
-        "company": "501m; 131l; 516c",
-        "research": "501; 131",
+        "company": "501m; 131l; 516c; 202a",
+        "research": "501; 131; 202",
         "type": "quantitative",
-        "value": 5,
-        "company_mentions": 3,
-        "research_mentions": 2,
-        "description": "An indicator of overall efficiency. Small PRs mean faster pickup time, reviews, and cycles–translating to faster time to value.",
+        "value": 7,
+        "company_mentions": 4,
+        "research_mentions": 3,
+        "description": "An indicator of overall code review efficiency. Small PRs mean faster pickup time, reviews, and cycles–translating to faster time to value. Larger PRs often result in fewer meaningful comments.",
         "is_research": 3,
-        "ai_specific_category": "",
+        "ai_specific_category": "AI Impact",
         "related_metrics": "-",
         "outcome_goals": "Organizational Effectiveness",
         "ease_of_collection": "Easy"
@@ -1975,7 +1957,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Weekly Number of Design DOCs Generated per Developer",
+        "name": "Number of Design DOCs Generated per Developer",
         "id": 128,
         "parent": 312,
         "alsoknownas": "-",
