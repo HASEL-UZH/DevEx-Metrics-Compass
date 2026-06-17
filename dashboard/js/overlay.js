@@ -74,49 +74,14 @@ function showOverlayScreen(screenToShow) {
 
 let modeChosen = false;
 
-// ─── Password gate (temporary – remove before public launch) ──────────────────
-
-const PASSWORD_KEY = 'dxmetrics_unlocked';
-const CORRECT_PASSWORD = 'dxmetrics';
-
-const passwordScreen = document.getElementById('password-screen');
-const passwordInput = document.getElementById('password-input');
-const passwordError = document.getElementById('password-error');
-
-function unlockAndProceed() {
-    localStorage.setItem(PASSWORD_KEY, 'true');
-    myOverlay.classList.remove('password-locked');
-    passwordError.style.display = 'none';
-    showOverlayScreen(initialChoiceScreen);
-}
-
-document.getElementById('password-submit-btn').addEventListener('click', () => {
-    if (passwordInput.value === CORRECT_PASSWORD) {
-        unlockAndProceed();
-    } else {
-        passwordError.style.display = 'block';
-        passwordInput.value = '';
-        passwordInput.focus();
-    }
-});
-
-passwordInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.getElementById('password-submit-btn').click();
-});
-
-// Initial state: show password screen or skip if already unlocked
-if (localStorage.getItem(PASSWORD_KEY) === 'true') {
-    showOverlayScreen(initialChoiceScreen); // sets up currentOverlayScreen
-    const saved = localStorage.getItem('clickedMetrics');
-    const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
-    if (hasShortlist) {
-        myOverlay.style.display = 'none'; // returning user with a shortlist — skip welcome
-        modeChosen = true;
-        hideExploreStartView();
-    }
-} else {
-    myOverlay.classList.add('password-locked');
-    showOverlayScreen(passwordScreen);
+// Initial state: show welcome or skip if returning user with a shortlist
+showOverlayScreen(initialChoiceScreen);
+const saved = localStorage.getItem('clickedMetrics');
+const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
+if (hasShortlist) {
+    myOverlay.style.display = 'none';
+    modeChosen = true;
+    hideExploreStartView();
 }
 
 // ─── Inline mode picker helpers ──────────────────────────────────────────────
@@ -264,13 +229,11 @@ function dismissOverlay() {
 }
 
 closeOverlayBtn.addEventListener('click', () => {
-    if (currentOverlayScreen === passwordScreen) return;
     dismissOverlay();
 });
 
 myOverlay.addEventListener('click', (event) => {
     if (event.target === myOverlay) {
-        if (currentOverlayScreen === passwordScreen) return;
         dismissOverlay();
     }
 });

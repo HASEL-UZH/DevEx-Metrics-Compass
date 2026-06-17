@@ -81,9 +81,6 @@ body {
     z-index: 1000;
 }
 
-.overlay.password-locked {
-    background-color: rgba(0, 0, 0, 1);
-}
 
 .overlay-content {
     background-color: white;
@@ -636,8 +633,13 @@ input[type="radio"] {
     
 }
 
-.clear-all-metrics:hover {
+.clear-all-metrics:not(:disabled):hover {
     background-color: #ffffff;
+}
+
+.clear-all-metrics:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .download-csv-button {
@@ -662,8 +664,12 @@ input[type="radio"] {
     
 }
 
-.download-csv-button:hover {
+.download-csv-button:not(:disabled):hover {
     background-color: #85B9F2;
+}
+
+.download-csv-button:disabled {
+    cursor: not-allowed;
 }
 
 /* Start maturity assessment in filters container */
@@ -1171,7 +1177,8 @@ a {
 }
 
 .explore-card-persona {
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 600;
     color: #1B1AFF;
     text-transform: uppercase;
     letter-spacing: 0.06em;

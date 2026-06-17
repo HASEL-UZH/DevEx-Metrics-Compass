@@ -105,7 +105,7 @@
                     <div class="explore-entry-card">
                         <div class="explore-entry-card-icon welcome-card-icon--guided">&#10148;</div>
                         <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">Best for newcomers to DevEx metrics</div>
+                            <div class="explore-card-persona">For newcomers to DevEx metrics</div>
                             <div class="explore-entry-card-title">Guided selection</div>
                             <div class="explore-entry-card-description">Answer a few questions to get tailored recommendations based on your context.</div>
                             <button class="overlay-action-button" id="start-assessment-inline-btn">Start guided selection</button>
@@ -114,7 +114,7 @@
                     <div class="explore-entry-card">
                         <div class="explore-entry-card-icon welcome-card-icon--browse">&#8801;</div>
                         <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">Best for experienced practitioners</div>
+                            <div class="explore-card-persona">For experienced practitioners</div>
                             <div class="explore-entry-card-title">Browse all metrics</div>
                             <div class="explore-entry-card-description">See the full metric catalogue and narrow it down using filters.</div>
                             <button class="overlay-action-button" id="start-scratch-inline-btn">Show all metrics</button>
@@ -123,7 +123,7 @@
                     <div class="explore-entry-card">
                         <div class="explore-entry-card-icon welcome-card-icon--additive">+</div>
                         <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">Best for researchers &amp; systematic explorers</div>
+                            <div class="explore-card-persona">For researchers &amp; systematic explorers</div>
                             <div class="explore-entry-card-title">Explore by filtering</div>
                             <div class="explore-entry-card-description">Start with a blank canvas and progressively add metrics that fit your constraints.</div>
                             <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
@@ -377,21 +377,6 @@
     <div class="overlay" id="myOverlay">
         <div class="overlay-content">
             <button class="close-button" id="closeOverlayBtn">&times;</button>
-
-            <!-- Password gate (temporary – remove before public launch) -->
-            <div id="password-screen" class="overlay-screen">
-                <div class="overlay-compass-icon">
-                    <span data-compass-size="56"></span>
-                </div>
-                <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
-                <p>This tool is currently in private preview. Please enter the access password to continue.</p>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:16px;">
-                    <input type="password" id="password-input" placeholder="Enter password"
-                           style="padding:10px 16px; font-size:1rem; border:1.5px solid #1B1AFF; border-radius:6px; width:240px; outline:none;" />
-                    <button class="overlay-action-button" id="password-submit-btn">Continue</button>
-                    <p id="password-error" style="color:#c0392b; font-size:0.9rem; display:none; width:240px; text-align:center; margin:0;">Incorrect password. Please try again.</p>
-                </div>
-            </div>
 
             <!-- Landing page -->
             <div id="initial-choice-screen" class="overlay-screen">

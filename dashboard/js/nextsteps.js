@@ -48,6 +48,12 @@ function renderNextStepsView() {
         exportBtn.disabled = !canExport;
         exportBtn.style.opacity = canExport ? '' : '0.5';
     }
+
+    // Update clear button state
+    const clearBtn = document.getElementById('clear-all-metrics-nextsteps');
+    if (clearBtn) {
+        clearBtn.disabled = clickedMetrics.length === 0;
+    }
 }
 
 function renderNextStepsList(containerId, metrics, isPlanned) {
