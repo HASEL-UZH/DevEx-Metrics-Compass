@@ -220,6 +220,14 @@ function createChart(data) {
         return anychart.color.lighten(this.sourceColor, 0.3);
     });
 
+    chart.listen('pointMouseMove', function(e) {
+        const isLeaf = e.point && e.point.node && e.point.node.meta('isLeaf');
+        document.getElementById('container').style.cursor = isLeaf ? 'pointer' : 'auto';
+    });
+    chart.listen('pointMouseOut', function() {
+        document.getElementById('container').style.cursor = 'auto';
+    });
+
     chart.listen('pointClick', function(e) {
         const point = e.point;
         if (point && point.get('type')) {
@@ -429,3 +437,4 @@ function handleDocumentClick(event) {
         hideCustomTooltip();
     }
 }
+
