@@ -491,7 +491,7 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Contribution Volume per Developer",
+        "name": "Contribution Volume",
         "id": 23,
         "parent": 316,
         "alsoknownas": "Number of Modifications / Modules / WorkItems / Requirements",
@@ -527,10 +527,10 @@
         "ease_of_collection": "Complex"
     },
     {
-        "name": "Customer Satisfaction Score (CSAT)",
+        "name": "Customer Satisfaction Score",
         "id": 25,
         "parent": 317,
-        "alsoknownas": "Customer Experience; Customer Satisfaction; Customer Satisfaction Scores; NPS; User/customer satisfaction",
+        "alsoknownas": "CSAT; Customer Experience; Customer Satisfaction; Customer Satisfaction Scores; NPS; User/customer satisfaction",
         "company": "-",
         "research": "506; 508; 183",
         "type": "qualitative",
@@ -689,7 +689,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Developer Velocity Index Benchmark",
+        "name": "Velocity Index Benchmark",
         "id": 37,
         "parent": 302,
         "alsoknownas": "-",
@@ -1139,10 +1139,10 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Service Operational Readiness Score",
+        "name": "Service Readiness Score",
         "id": 75,
         "parent": 319,
-        "alsoknownas": "-",
+        "alsoknownas": "Service Operational Readiness Score",
         "company": "183a",
         "research": "183",
         "type": "quantitative",
@@ -1211,10 +1211,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Percentage of Regrettable Attrition",
+        "name": "Regrettable Attrition Rate",
         "id": 82,
         "parent": 329,
-        "alsoknownas": "-",
+        "alsoknownas": "Percentage of Regrettable Attrition",
         "company": "-",
         "research": "514",
         "type": "quantitative",
@@ -1769,10 +1769,10 @@
         "ease_of_collection": "Moderate"
     },
     {
-        "name": "Number of Deployments per Developer",
+        "name": "Deployments per Developer",
         "id": 126,
         "parent": 312,
-        "alsoknownas": "-",
+        "alsoknownas": "Number of Deployments per Developer",
         "company": "501k",
         "research": "501",
         "type": "quantitative",
@@ -1787,7 +1787,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Number of Code Reviews per Developer",
+        "name": "Code Reviews per Developer",
         "id": 127,
         "parent": 312,
         "alsoknownas": "Number of Comments; PR Review Comments and Requests for Changes",
@@ -1805,10 +1805,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Number of Design DOCs Generated per Developer",
+        "name": "Design Docs per Developer",
         "id": 128,
         "parent": 312,
-        "alsoknownas": "-",
+        "alsoknownas": "Number of Design Docs Generated per Developer",
         "company": "501n",
         "research": "501",
         "type": "quantitative",
@@ -1985,10 +1985,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Percentage of PRs assisted by AI",
+        "name": "AI-Assisted PR Rate",
         "id": 141,
         "parent": 333,
-        "alsoknownas": "-",
+        "alsoknownas": "Percentage of PRs assisted by AI",
         "company": "511e; 511g",
         "research": "512; 520",
         "type": "quantitative",
@@ -2003,10 +2003,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Percentage of Code written by AI",
+        "name": "AI-Written Code Share",
         "id": 142,
         "parent": 333,
-        "alsoknownas": "-",
+        "alsoknownas": "Percentage of Code written by AI",
         "company": "511b",
         "research": "512; 520",
         "type": "quantitative",
@@ -2021,10 +2021,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Acceptance rate of AI suggestions",
+        "name": "AI Suggestion Acceptance Rate",
         "id": 143,
         "parent": 333,
-        "alsoknownas": "-",
+        "alsoknownas": "Acceptance rate of AI Suggestions",
         "company": "511b; 511e; 511h; 511o; 511p",
         "research": "-",
         "type": "quantitative",
@@ -2039,7 +2039,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "AI Power users",
+        "name": "AI Power Users",
         "id": 144,
         "parent": 327,
         "alsoknownas": "-",
@@ -2057,7 +2057,7 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Number of Unused AI licenses",
+        "name": "Number of Unused AI Licenses",
         "id": 145,
         "parent": 302,
         "alsoknownas": "Percentage of Inactive AI Licenses",
@@ -2093,10 +2093,10 @@
         "ease_of_collection": "Easy"
     },
     {
-        "name": "Percentage of AI Adoption in Products",
+        "name": "AI Product Adoption Rate",
         "id": 147,
         "parent": 327,
-        "alsoknownas": "Percentage of Product Features Incoroporating AI",
+        "alsoknownas": "Percentage of AI Adoption in Products; Percentage of Product Features Incorporating AI",
         "company": "511q",
         "research": "-",
         "type": "quantitative",
