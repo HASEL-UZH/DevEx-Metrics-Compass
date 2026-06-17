@@ -43,7 +43,7 @@ function getCompanyDomainMap() {
 
 // Returns the inner HTML for a favicon badge (company) or letter avatar (non-company).
 function getEntityBadgeContent(type, value, size = 14) {
-    const letter = value ? value[0].toUpperCase() : '?';
+    const letter = value ? value.slice(0, 2).toUpperCase() : '?';
     if (type === 'company') {
         const domain = getCompanyDomainMap()[value];
         if (domain) {
@@ -58,25 +58,31 @@ function getEntityBadgeContent(type, value, size = 14) {
 // side: 'left' | 'right' | null — controls the badge color for non-company types.
 function applyLogoBg(el, type, value, side = null) {
     if (value && value !== 'all') {
-        const letter = value[0].toUpperCase();
-        let bgSrc;
+        const letter = value.slice(0, 2).toUpperCase();
+        let bgSrc, bgSize, padLeft;
         if (type === 'company') {
             const domain = getCompanyDomainMap()[value];
             if (domain) {
-                bgSrc = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+                bgSrc   = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+                bgSize  = '14px 14px';
+                padLeft = '26px';
             } else {
-                bgSrc = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect width='14' height='14' rx='2' fill='%23e0e0e0'/%3E%3Ctext x='7' y='11' text-anchor='middle' font-size='10' font-weight='700' fill='%23666' font-family='sans-serif'%3E${letter}%3C/text%3E%3C/svg%3E`;
+                bgSrc   = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='14'%3E%3Crect width='18' height='14' rx='2' fill='%23e0e0e0'/%3E%3Ctext x='9' y='11' text-anchor='middle' font-size='8' font-weight='700' fill='%23666' font-family='sans-serif'%3E${letter}%3C/text%3E%3C/svg%3E`;
+                bgSize  = '18px 14px';
+                padLeft = '30px';
             }
         } else {
             const fill     = side === 'left' ? '%237c4daa' : side === 'right' ? '%231a7f5a' : '%23e0e0e0';
             const textFill = (side === 'left' || side === 'right') ? '%23fff' : '%23666';
-            bgSrc = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect width='14' height='14' rx='2' fill='${fill}'/%3E%3Ctext x='7' y='11' text-anchor='middle' font-size='10' font-weight='700' fill='${textFill}' font-family='sans-serif'%3E${letter}%3C/text%3E%3C/svg%3E`;
+            bgSrc   = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='14'%3E%3Crect width='18' height='14' rx='2' fill='${fill}'/%3E%3Ctext x='9' y='11' text-anchor='middle' font-size='8' font-weight='700' fill='${textFill}' font-family='sans-serif'%3E${letter}%3C/text%3E%3C/svg%3E`;
+            bgSize  = '18px 14px';
+            padLeft = '30px';
         }
         el.style.backgroundImage = `url("${bgSrc}")`;
         el.style.backgroundRepeat = 'no-repeat';
         el.style.backgroundPosition = '6px center';
-        el.style.backgroundSize = '14px 14px';
-        el.style.paddingLeft = '26px';
+        el.style.backgroundSize = bgSize;
+        el.style.paddingLeft = padLeft;
     } else {
         el.style.backgroundImage = '';
         el.style.backgroundRepeat = '';
