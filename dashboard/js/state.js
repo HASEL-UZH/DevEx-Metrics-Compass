@@ -96,6 +96,7 @@ let savedComparisons = [];
 // Misc DOM refs
 const noMetricsMessage = document.getElementById('no-metrics-message');
 const customTooltip = document.getElementById('custom-tooltip');
+const customTooltip2 = document.getElementById('custom-tooltip-2');
 
 // Overlay navigation: tracks the currently visible screen
 let currentOverlayScreen = initialChoiceScreen;

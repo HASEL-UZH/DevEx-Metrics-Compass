@@ -1839,6 +1839,16 @@ a {
     gap: 4px;
 }
 
+.related-metric-link {
+    cursor: pointer;
+    color: #1B1AFF;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.related-metric-link:hover {
+    opacity: 0.7;
+}
+
 
 .diff-categories {
     display: flex;

@@ -19,6 +19,17 @@ anychart.onDocumentReady(function() {
             return item;
         });
 
+        originalData.forEach(m => {
+            if (m.related_metrics && m.related_metrics !== '-') {
+                m.resolvedRelated = m.related_metrics.split(';')
+                    .map(s => parseInt(s.trim(), 10))
+                    .map(id => originalData.find(r => r.id === id && r.description !== undefined))
+                    .filter(Boolean);
+            } else {
+                m.resolvedRelated = [];
+            }
+        });
+
         filterData();
         updateStepBar();
         updateColorLegend('categorization');

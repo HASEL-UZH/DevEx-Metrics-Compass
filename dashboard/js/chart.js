@@ -254,9 +254,7 @@ function createChart(data) {
     chart.draw();
 }
 
-function showCustomTooltip(metricData, event) {
-    hideCustomTooltip();
-
+function buildTooltipContent(metricData, excludeId = null) {
     const metricName = metricData.name;
     const metricAlsoKnownAs = metricData.alsoknownas;
     const metricType = metricData.type;
@@ -333,6 +331,11 @@ function showCustomTooltip(metricData, event) {
             .sort((a, b) => companySizeOrder.indexOf(a) - companySizeOrder.indexOf(b))
         : [];
 
+    const srcMetric = originalData.find(m => m.id === metricId);
+    const resolvedRelated = srcMetric
+        ? (srcMetric.resolvedRelated || []).filter(m => m.id !== excludeId)
+        : [];
+
     let content = `
         <span class="close-tooltip-button">&times;</span>
         <br>
@@ -358,7 +361,17 @@ function showCustomTooltip(metricData, event) {
                 ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">${{ Enterprise: '🏢', Large: '🏬', 'Mid-size': '🏠', Small: '🏡' }[s] || ''} ${s} Company</span>`).join('')}
                 ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${{ 'Developer Experience': '🧑‍💻 Developer Experience', 'Product Excellence': '⭐ Product Excellence', 'Organizational Effectiveness': '📈 Organizational Effectiveness' }[metricOutcomeGoals] || metricOutcomeGoals}</span>` : ''}
                 ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${MATURITY_FULL_LABEL[metricEaseOfCollection] || metricEaseOfCollection}</span>` : ''}
-        </div>
+        </div>`;
+
+    if (resolvedRelated.length > 0) {
+        content += `
+        <hr>
+        <div class="metric-detail"><strong>Related metrics:</strong> ${resolvedRelated.map(m =>
+            `<span class="related-metric-link" data-related-id="${m.id}">${m.name}</span>`
+        ).join('; ')}</div>`;
+    }
+
+    content += `
         ${(function() {
             const existing = clickedMetrics.find(m => m.id === metricId);
             const status = existing ? existing.collectionStatus : null;
@@ -376,7 +389,46 @@ function showCustomTooltip(metricData, event) {
         })()}
     `;
 
-    customTooltip.innerHTML = content;
+    return content;
+}
+
+function wireTooltipListeners(tooltipEl, metricData, onClose) {
+    tooltipEl.querySelectorAll('button[data-metric-id]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const status = this.getAttribute('data-status');
+            if (status === 'none') {
+                removeClickedMetric(metricData.id);
+            } else {
+                addClickedMetric(metricData, status);
+            }
+            if (currentColorBy === 'collection_status') {
+                createChart(filteredData);
+                updateColorLegend(currentColorBy);
+            }
+            if (status !== 'none') {
+                onClose();
+                return;
+            }
+            // Update active state in-place without closing the tooltip
+            tooltipEl.querySelectorAll('button[data-metric-id]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    const closeButton = tooltipEl.querySelector('.close-tooltip-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            onClose();
+        });
+    }
+}
+
+function showCustomTooltip(metricData, event) {
+    hideCustomTooltip();
+
+    customTooltip.innerHTML = buildTooltipContent(metricData);
     customTooltip.classList.add('active');
 
     const x = event.clientX + 15;
@@ -392,48 +444,64 @@ function showCustomTooltip(metricData, event) {
         ? `${event.clientY - tooltipRect.height - 15}px`
         : `${y}px`;
 
-    customTooltip.querySelectorAll('button[data-metric-id]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+    wireTooltipListeners(customTooltip, metricData, hideCustomTooltip);
+
+    customTooltip.querySelectorAll('.related-metric-link').forEach(chip => {
+        chip.addEventListener('click', function(e) {
             e.stopPropagation();
-            const status = this.getAttribute('data-status');
-            if (status === 'none') {
-                removeClickedMetric(metricData.id);
-            } else {
-                addClickedMetric(metricData, status);
-            }
-            if (currentColorBy === 'collection_status') {
-                createChart(filteredData);
-                updateColorLegend(currentColorBy);
-            }
-            if (status !== 'none') {
-                hideCustomTooltip();
-                return;
-            }
-            // Update active state in-place without closing the tooltip
-            customTooltip.querySelectorAll('button[data-metric-id]').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+            const id = parseInt(this.getAttribute('data-related-id'), 10);
+            const related = originalData.find(m => m.id === id);
+            if (related) showSecondaryTooltip(related, metricData.id);
         });
     });
-
-    const closeButton = customTooltip.querySelector('.close-tooltip-button');
-    if (closeButton) {
-        closeButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            hideCustomTooltip();
-        });
-    }
 
     setTimeout(() => document.addEventListener('click', handleDocumentClick), 0);
 }
 
+function showSecondaryTooltip(metricData, excludeId = null) {
+    customTooltip2.innerHTML = buildTooltipContent(metricData, excludeId);
+    customTooltip2.classList.add('active');
+
+    const rect1 = customTooltip.getBoundingClientRect();
+    const rect2 = customTooltip2.getBoundingClientRect();
+    const gap = 12;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let left = rect1.right + gap;
+    if (left + rect2.width > viewportWidth - 20) {
+        left = rect1.left - rect2.width - gap;
+    }
+    customTooltip2.style.left = `${Math.max(10, left)}px`;
+
+    let top = rect1.top;
+    if (top + rect2.height > viewportHeight - 20) {
+        top = viewportHeight - rect2.height - 20;
+    }
+    customTooltip2.style.top = `${Math.max(10, top)}px`;
+
+    wireTooltipListeners(customTooltip2, metricData, () => customTooltip2.classList.remove('active'));
+
+    customTooltip2.querySelectorAll('.related-metric-link').forEach(chip => {
+        chip.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const id = parseInt(this.getAttribute('data-related-id'), 10);
+            const related = originalData.find(m => m.id === id);
+            if (related) showSecondaryTooltip(related, excludeId);
+        });
+    });
+}
+
 function hideCustomTooltip() {
     customTooltip.classList.remove('active');
+    customTooltip2.classList.remove('active');
     document.removeEventListener('click', handleDocumentClick);
 }
 
 function handleDocumentClick(event) {
     if (customTooltip.classList.contains('active') &&
-        !customTooltip.contains(event.target)) {
+        !customTooltip.contains(event.target) &&
+        !customTooltip2.contains(event.target)) {
         hideCustomTooltip();
     }
 }

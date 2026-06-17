@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-17 — Related metrics in popup
+
+- Metric detail popup now shows related metrics as inline links; clicking one opens it side-by-side in a second panel
+
 ## 2026-06-17 — Predefined list wizard option and JSON export
 
 - Added "Start with a predefined list" as a fourth way to begin: load metrics tracked by a company in the dataset (pre-selects the company filter and sets up a comparison against SPACE Framework), or import a previously saved DevEx Compass export (JSON)
