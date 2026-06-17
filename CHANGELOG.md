@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-17 — Dataset refinement
+
+- Unified similar metrics and added new ones to improve coverage and reduce redundancy
+
 ## 2026-06-12 — About overlay and visual refresh
 
 - Added About overlay (accessible from footer) with background on the Compass, its creators, and methodology
