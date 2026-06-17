@@ -1391,6 +1391,37 @@ a {
     color: #1B1AFF;
 }
 
+.about-overlay-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.about-logo-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
+
+.about-logo-link {
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+}
+
+.about-logo-link:hover {
+    opacity: 1;
+}
+
+.about-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+}
+
 /* Lead-in line above the mode selection cards on the welcome screen */
 .welcome-lead-in {
     font-weight: 600;
