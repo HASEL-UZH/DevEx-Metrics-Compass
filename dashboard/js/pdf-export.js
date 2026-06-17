@@ -350,7 +350,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, c
     <section>
         <h2>Plan to Track (${planned.length})</h2>
         ${planned.length === 0
-            ? `<p style="color:#555;font-size:9pt;margin-top:6pt;">No metrics selected yet. Consider identifying additional metrics that fit your context using the <a href="https://devex-metrics-compass.hasel.dev/">Developer Experience Metrics Compass</a>.</p>`
+            ? `<p style="color:#555;font-size:9pt;margin-top:6pt;">No metrics selected yet. Consider identifying additional metrics that fit your context using the <a href="https://devexcompass.com">Developer Experience Metrics Compass</a>.</p>`
             : planned.map(m => buildPdfCard(m)).join('')}
     </section>`;
 
@@ -370,7 +370,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, c
 <body>
 
     <div class="pdf-footer">
-        <span>Developer Experience Metrics Compass &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</span>
+        <span>Developer Experience Metrics Compass &nbsp;·&nbsp; https://devexcompass.com</span>
         <span>Provided for research and informational purposes only.</span>
     </div>
 
@@ -384,7 +384,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, c
             relevant to your context — this report captures the ${totalCount} metric${totalCount !== 1 ? 's' : ''}
             you identified as part of your developer experience measurement strategy.
         </p>
-        <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</p>
+        <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devexcompass.com</p>
     </div>
 
     ${insightsBlock}
@@ -404,7 +404,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, c
             <strong>Created by</strong><br>
             Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy &amp; Prof. Dr. Thomas Fritz<br>
             University of Zurich (UZH) &nbsp;·&nbsp; <a href="https://hasel.dev">HASEL Research Group</a><br>
-            <a href="https://devex-metrics-compass.hasel.dev/">https://devex-metrics-compass.hasel.dev/</a>
+            <a href="https://devexcompass.com">https://devexcompass.com</a>
         </div>
     </section>
 

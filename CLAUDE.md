@@ -49,6 +49,7 @@ Use today's date from the `currentDate` context variable. Match the existing ent
 ## Conventions
 
 - No emoji in code (existing emoji in filter labels are intentional; do not add new ones)
+- JSON export schema (`dashboard/js/nextsteps.js` `exportJson()`): bump `schema_version` and update the import check in `dashboard/js/overlay.js` whenever the export format changes
 
 ## Branch Strategy
 

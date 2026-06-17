@@ -1243,6 +1243,11 @@ a {
     color: #2e7d32;
 }
 
+.welcome-card-icon--predefined {
+    background-color: #ede7f6;
+    color: #6a1b9a;
+}
+
 .welcome-card-title {
     font-size: 16px;
     font-weight: bold;
@@ -2797,4 +2802,96 @@ a {
     background: none;
     border: none;
     flex-shrink: 0;
+}
+
+/* ─── Predefined list overlay ─────────────────────────────────────────────── */
+
+.predefined-overlay-content {
+    max-width: 620px;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.predefined-section {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.predefined-section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 6px 0;
+}
+
+.predefined-section-desc {
+    font-size: 13px;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.predefined-section select {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.predefined-info-text {
+    font-size: 12px;
+    color: #555;
+    min-height: 18px;
+    margin-bottom: 10px;
+}
+
+.predefined-or-divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 16px 0;
+    gap: 10px;
+}
+
+.predefined-or-divider::before,
+.predefined-or-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+}
+
+.predefined-or-label {
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.predefined-file-label {
+    display: inline-block;
+    padding: 7px 14px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.predefined-file-label:hover {
+    background: #e8e8e8;
+}
+
+.predefined-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.predefined-section .overlay-action-button {
+    width: 100%;
+    margin: 0;
+    font-size: 13px;
+    padding: 8px 16px;
 }

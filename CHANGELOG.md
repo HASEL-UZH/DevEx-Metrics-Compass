@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-06-17 — Predefined list wizard option and JSON export
+
+- Added "Start with a predefined list" as a fourth way to begin: load metrics tracked by a company in the dataset (pre-selects the company filter and sets up a comparison against SPACE Framework), or import a previously saved DevEx Compass export (JSON)
+- Added JSON export in Step 3 — exports the shortlist as a versioned, re-importable JSON file
+
 ## 2026-06-17 — Dataset refinement
 
 - Unified similar metrics and added new ones to improve coverage and reduce redundancy

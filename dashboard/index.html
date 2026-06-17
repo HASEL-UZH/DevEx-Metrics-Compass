@@ -129,6 +129,15 @@
                             <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
                         </div>
                     </div>
+                    <div class="explore-entry-card">
+                        <div class="explore-entry-card-icon welcome-card-icon--predefined">&#8645;</div>
+                        <div class="explore-entry-card-body">
+                            <div class="explore-card-persona">For teams aligning with industry peers</div>
+                            <div class="explore-entry-card-title">Start with a predefined list</div>
+                            <div class="explore-entry-card-description">Choose a company from the metrics dataset or resume from a saved export.</div>
+                            <button class="overlay-action-button" id="start-predefined-inline-btn">Use predefined list</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -350,8 +359,10 @@
                     <div class="filter-description">Export your selection when you're ready.</div>
                     <div id="nextsteps-actions" class="nextsteps-actions nextsteps-actions--row">
                         <button class="download-csv-button ns-btn-export" id="download-pdf-nextsteps">Export PDF</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="download-json-nextsteps" title="Save your selection as a JSON file — can be re-imported later via &quot;Start with a predefined list&quot;">Export JSON</button>
                         <button class="clear-all-metrics ns-btn-clear" id="clear-all-metrics-nextsteps">Clear selection</button>
                     </div>
+                    <a id="json-download-anchor" style="display:none"></a>
                 </div>
             </div><!-- /#nextsteps-panel -->
 
@@ -567,6 +578,7 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">June 2026</div>
                     <ul>
+                        <li>Added a fourth starting option: load a company&rsquo;s metrics directly or import a saved DevEx Compass export (JSON)</li>
                         <li>Refined the metrics dataset: unified similar metrics and added new ones</li>
                         <li>Extended insights to surface more actionable recommendations</li>
                         <li>Refined getting started view in "Explore Metrics"-step</li>
@@ -721,6 +733,35 @@
                 <div>Developer Experience Metrics Compass
                 &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
                 Provided for research &amp; informational use only</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Predefined list overlay -->
+    <div class="overlay" id="predefinedOverlay" style="display:none">
+        <div class="overlay-content predefined-overlay-content">
+            <button class="close-button" id="closePredefinedBtn">&times;</button>
+            <h2>Start with a predefined list</h2>
+
+            <div class="predefined-section">
+                <div class="predefined-section-title">Load a company&rsquo;s metrics</div>
+                <p class="predefined-section-desc">Pre-fill your shortlist with metrics publicly tracked by a specific company.</p>
+                <select id="predefined-company-select" class="color-by-select">
+                    <option value="">Select a company&hellip;</option>
+                </select>
+                <div id="predefined-company-info" class="predefined-info-text"></div>
+                <button id="predefined-company-load-btn" class="overlay-action-button" disabled>Add as already tracking</button>
+            </div>
+
+            <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
+
+            <div class="predefined-section">
+                <div class="predefined-section-title">Import a previous export</div>
+                <p class="predefined-section-desc">Re-load a selection you previously exported as JSON from this tool.</p>
+                <label class="predefined-file-label" for="predefined-import-file">Choose JSON file&hellip;</label>
+                <input type="file" id="predefined-import-file" accept=".json" class="predefined-file-input">
+                <div id="predefined-import-info" class="predefined-info-text"></div>
+                <button id="predefined-import-btn" class="overlay-action-button" disabled>Import selection</button>
             </div>
         </div>
     </div>

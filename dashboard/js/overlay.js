@@ -340,3 +340,133 @@ document.querySelectorAll('.go-back-btn').forEach(button => {
         if (targetScreen) { showOverlayScreen(targetScreen); }
     });
 });
+
+// ─── Predefined list overlay ──────────────────────────────────────────────────
+
+const predefinedOverlay = document.getElementById('predefinedOverlay');
+
+function openPredefinedOverlay() {
+    const select = document.getElementById('predefined-company-select');
+    select.innerHTML = '<option value="">Select a company…</option>';
+    const companies = new Set();
+    originalData.forEach(item => {
+        if (!Array.isArray(item.company)) return;
+        item.company.forEach(c => { if (c.name) companies.add(c.name.trim()); });
+    });
+    [...companies].sort((a, b) => a.localeCompare(b)).forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+    });
+    document.getElementById('predefined-company-info').textContent = '';
+    document.getElementById('predefined-company-load-btn').disabled = true;
+    document.getElementById('predefined-import-info').textContent = '';
+    document.getElementById('predefined-import-btn').disabled = true;
+    document.getElementById('predefined-import-file').value = '';
+    predefinedOverlay.style.display = 'flex';
+}
+
+function closePredefinedOverlay() {
+    predefinedOverlay.style.display = 'none';
+}
+
+document.getElementById('closePredefinedBtn').addEventListener('click', closePredefinedOverlay);
+predefinedOverlay.addEventListener('click', e => { if (e.target === predefinedOverlay) closePredefinedOverlay(); });
+
+document.getElementById('start-predefined-inline-btn').addEventListener('click', () => {
+    openPredefinedOverlay();
+});
+
+document.getElementById('predefined-company-select').addEventListener('change', function () {
+    const name = this.value;
+    const infoEl  = document.getElementById('predefined-company-info');
+    const loadBtn = document.getElementById('predefined-company-load-btn');
+    if (!name) { infoEl.textContent = ''; loadBtn.disabled = true; return; }
+    const metrics = originalData.filter(m =>
+        Array.isArray(m.company) && m.company.some(c => c.name === name)
+    );
+    infoEl.textContent = `${metrics.length} metric${metrics.length !== 1 ? 's' : ''} tracked by ${name}`;
+    loadBtn.disabled = metrics.length === 0;
+});
+
+document.getElementById('predefined-company-load-btn').addEventListener('click', () => {
+    const name = document.getElementById('predefined-company-select').value;
+    if (!name) return;
+    originalData
+        .filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name))
+        .forEach(m => addClickedMetric(m, 'capturing'));
+    closePredefinedOverlay();
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+
+    // Pre-select the company in the Step 1 filter (mirrors the company-dropdown change handler)
+    const companyDd = document.getElementById('company-dropdown');
+    if (companyDd) {
+        companyDd.value = name;
+        applySpecificFilter('specificCompany', name);
+        resetOtherSourceFilters('specificCompany');
+        const size = typeof getCompanySizeForCompany === 'function' ? getCompanySizeForCompany(name) : null;
+        if (size) applySpecificFilter('companySize', size, 'companySize');
+        if (typeof applyLogoBg === 'function') applyLogoBg(companyDd, 'company', name);
+        filterData();
+    }
+
+    // Pre-configure Step 2: selected company (left) vs SPACE Framework (right)
+    if (typeof applyComparePreset === 'function') {
+        applyComparePreset('company', name, 'framework', 'SPACE Framework');
+    }
+});
+
+let _predefinedImportCandidates = [];
+
+document.getElementById('predefined-import-file').addEventListener('change', function () {
+    const infoEl    = document.getElementById('predefined-import-info');
+    const importBtn = document.getElementById('predefined-import-btn');
+    _predefinedImportCandidates = [];
+    importBtn.disabled = true;
+    const file = this.files[0];
+    if (!file) { infoEl.textContent = ''; return; }
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        let parsed;
+        try { parsed = JSON.parse(e.target.result); }
+        catch (_) { infoEl.textContent = 'Invalid JSON file.'; return; }
+        if (parsed.schema_version !== 1 || !Array.isArray(parsed.metrics)) {
+            infoEl.textContent = 'Unrecognised format (expected a version 1 DevEx Compass export).';
+            return;
+        }
+        let skipped = 0;
+        const candidates = [];
+        parsed.metrics.forEach(entry => {
+            const full = originalData.find(m => m.id === entry.id);
+            if (!full) { skipped++; return; }
+            const status = (entry.collectionStatus === 'capturing' || entry.collectionStatus === 'planning')
+                ? entry.collectionStatus : 'planning';
+            candidates.push({ metric: full, status });
+        });
+        if (candidates.length === 0) {
+            infoEl.textContent = skipped > 0
+                ? `No importable metrics found (${skipped} not in current dataset).`
+                : 'No metrics found in file.';
+            return;
+        }
+        _predefinedImportCandidates = candidates;
+        const note = skipped > 0 ? ` (${skipped} not found in current dataset)` : '';
+        infoEl.textContent = `Ready to import ${candidates.length} metric${candidates.length !== 1 ? 's' : ''}${note}.`;
+        importBtn.disabled = false;
+    };
+    reader.readAsText(file);
+});
+
+document.getElementById('predefined-import-btn').addEventListener('click', () => {
+    if (_predefinedImportCandidates.length === 0) return;
+    _predefinedImportCandidates.forEach(({ metric, status }) => addClickedMetric(metric, status));
+    closePredefinedOverlay();
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+});

@@ -49,6 +49,13 @@ function renderNextStepsView() {
         exportBtn.style.opacity = canExport ? '' : '0.5';
     }
 
+    const jsonExportBtn = document.getElementById('download-json-nextsteps');
+    if (jsonExportBtn) {
+        const canExport = hasAny || (savedComparisons && savedComparisons.length > 0);
+        jsonExportBtn.disabled = !canExport;
+        jsonExportBtn.style.opacity = canExport ? '' : '0.5';
+    }
+
     // Update clear button state
     const clearBtn = document.getElementById('clear-all-metrics-nextsteps');
     if (clearBtn) {
@@ -445,6 +452,31 @@ function renderInsights() {
     el.style.display = '';
 }
 
+// ─── JSON Export ──────────────────────────────────────────────────────────────
+
+function exportJson() {
+    const now = new Date();
+    const ts  = now.toISOString().replace('T', '-').replace(/:/g, '').replace(/\.\d+Z$/, '');
+    const payload = {
+        schema_version: 1,
+        exported: now.toISOString(),
+        tool: 'DevEx Metrics Compass',
+        url: 'https://devexcompass.com',
+        metrics: clickedMetrics.map(m => ({
+            id: m.id,
+            name: m.name,
+            collectionStatus: m.collectionStatus
+        }))
+    };
+    const blob   = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const blobUrl = URL.createObjectURL(blob);
+    const anchor = document.getElementById('json-download-anchor');
+    anchor.href     = blobUrl;
+    anchor.download = `devex-compass-${ts}.json`;
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+}
+
 // ─── Button wiring ────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -453,6 +485,11 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadPdfBtn.addEventListener('click', () => {
             if (typeof downloadPdf === 'function') downloadPdf();
         });
+    }
+
+    const downloadJsonBtn = document.getElementById('download-json-nextsteps');
+    if (downloadJsonBtn) {
+        downloadJsonBtn.addEventListener('click', () => exportJson());
     }
 
     const clearBtn = document.getElementById('clear-all-metrics-nextsteps');
