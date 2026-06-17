@@ -892,5 +892,11 @@
         "ref_name": "LinkedIn DPH Framework",
         "ref_link": "https://linkedin.github.io/dph-framework/",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "522",
+        "ref_name": "Microsoft EngThrive Framework",
+        "ref_link": "https://arxiv.org/pdf/2605.04259",
+        "company_size": "N/A"
     }
 ]
