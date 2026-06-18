@@ -176,8 +176,9 @@ document.getElementById('btn-back-compare')?.addEventListener('click', () => swi
     if (!trigger || !popup) return;
 
     function showPopup() {
-        const capturing = clickedMetrics.filter(m => m.collectionStatus === 'capturing');
-        const planned   = clickedMetrics.filter(m => m.collectionStatus === 'planning');
+        const byName = (a, b) => a.name.localeCompare(b.name);
+        const capturing = clickedMetrics.filter(m => m.collectionStatus === 'capturing').sort(byName);
+        const planned   = clickedMetrics.filter(m => m.collectionStatus === 'planning').sort(byName);
         if (capturing.length === 0 && planned.length === 0) return;
 
         let html = '';

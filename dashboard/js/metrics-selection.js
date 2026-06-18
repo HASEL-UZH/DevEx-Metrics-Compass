@@ -37,7 +37,8 @@ function clearAllClickedMetrics() {
 }
 
 function saveClickedMetricsToLocalStorage() {
-    localStorage.setItem('clickedMetrics', JSON.stringify(clickedMetrics));
+    const serializable = clickedMetrics.map(({ resolvedRelated, ...rest }) => rest);
+    localStorage.setItem('clickedMetrics', JSON.stringify(serializable));
 }
 
 function loadClickedMetricsFromLocalStorage() {
