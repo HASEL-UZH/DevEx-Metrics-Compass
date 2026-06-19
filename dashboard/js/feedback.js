@@ -74,8 +74,17 @@
         };
 
         const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+
+        const telemetryPayload = {
+            rating:         payload.rating,
+            hasComment:     payload.comment.length > 0,
+            step:           typeof currentStep !== 'undefined' ? currentStep : null,
+            shortlistCount: typeof clickedMetrics !== 'undefined' ? clickedMetrics.length : null,
+        };
+
         if (isLocal) {
             console.log('[feedback]', payload);
+            logEvent(TELEMETRY.FEEDBACK_SUBMITTED, telemetryPayload);
             showThanks();
             return;
         }
@@ -88,7 +97,10 @@
             .then(r => r.json())
             .then(data => {
                 // Show thanks on success or rate limit — user already submitted before
-                if (data.success || data.error === 'Too many requests') showThanks();
+                if (data.success || data.error === 'Too many requests') {
+                    logEvent(TELEMETRY.FEEDBACK_SUBMITTED, telemetryPayload);
+                    showThanks();
+                }
             })
             .catch(() => {
                 showThanks();

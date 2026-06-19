@@ -269,7 +269,10 @@ function renderDiffView() {
         row.addEventListener('click', (e) => {
             e.stopPropagation();
             const metric = originalData.find(m => m.id === parseInt(row.dataset.metricId));
-            if (metric && typeof showCustomTooltip === 'function') showCustomTooltip(metric, e);
+            if (metric) {
+                logEvent(TELEMETRY.METRIC_OPENED, { metricId: metric.id, metricName: metric.name, currentStep });
+                if (typeof showCustomTooltip === 'function') showCustomTooltip(metric, e);
+            }
         });
     });
 
@@ -349,6 +352,7 @@ function saveCurrentComparison() {
     });
 
     saveSavedComparisonsToLocalStorage();
+    logEvent(TELEMETRY.COMPARISON_ADDED_TO_PDF, { leftValue, rightValue, shortlistCount: clickedMetrics.length });
     updateSaveButton();
 }
 
@@ -545,6 +549,7 @@ function renderSortCharts(chartDataArray) {
         card.addEventListener('click', () => {
             compareSort = sort;
             renderDiffView();
+            logEvent(TELEMETRY.COMPARE_SORTED, { sortDimension: sort });
         });
         container.appendChild(card);
     });
@@ -598,6 +603,7 @@ function initCompareControls() {
         clearPresetHighlight();
         renderDiffView();
         updateLogoPreview(side);
+        logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, newType: typeEl.value, newValue: compareState[side + 'Value'] });
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -606,6 +612,7 @@ function initCompareControls() {
         clearPresetHighlight();
         renderDiffView();
         updateLogoPreview(side);
+        logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, type: compareState[side + 'Type'], newValue: valueEl.value });
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -656,6 +663,7 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
         const valueEl = document.getElementById(`compare-${side}-value`);
         if (valueEl) applyLogoBg(valueEl, compareState[side + 'Type'], compareState[side + 'Value'], side);
     });
+    logEvent(TELEMETRY.COMPARE_PRESET_APPLIED, { leftType, leftValue, rightType, rightValue });
     if (typeof updateStepBar === 'function') updateStepBar();
 }
 

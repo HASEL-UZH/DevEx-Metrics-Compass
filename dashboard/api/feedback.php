@@ -27,7 +27,7 @@ if (!in_array($rating, ['up', 'down'], true)) {
 }
 
 $logDir = __DIR__ . '/logs';
-enforce_rate_limit($logDir, 'ratelimit_', 20);
+enforce_rate_limit($logDir, 'ratelimit_feedback_', 5);
 
 $entry = json_encode([
     'timestamp' => gmdate('c'),
@@ -37,7 +37,7 @@ $entry = json_encode([
     'context'   => $context,
 ]) . "\n";
 
-$ok = file_put_contents($logDir . '/feedback.log', $entry, FILE_APPEND | LOCK_EX);
+$ok = file_put_contents($logDir . '/feedback-' . gmdate('Y-m') . '.log', $entry, FILE_APPEND | LOCK_EX);
 
 if ($ok === false) {
     http_response_code(500);

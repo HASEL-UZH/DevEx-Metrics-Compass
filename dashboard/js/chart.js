@@ -243,6 +243,7 @@ function createChart(data) {
     chart.listen('pointClick', function(e) {
         const point = e.point;
         if (point && point.get('type')) {
+            logEvent(TELEMETRY.METRIC_OPENED, { metricId: point.get('id'), metricName: point.get('name'), currentStep: typeof currentStep !== 'undefined' ? currentStep : null });
             const metricData = {
                 id: point.get('id'),
                 name: point.get('name'),

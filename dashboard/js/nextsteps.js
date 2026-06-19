@@ -215,6 +215,8 @@ function renderSavedComparisons() {
     el.querySelectorAll('.ns-remove-comparison').forEach(btn => {
         btn.addEventListener('click', () => {
             const idx = parseInt(btn.dataset.comparisonIndex);
+            const removed = savedComparisons[idx];
+            if (removed) logEvent(TELEMETRY.COMPARISON_REMOVED_FROM_PDF, { leftValue: removed.leftValue, rightValue: removed.rightValue });
             savedComparisons.splice(idx, 1);
             if (typeof saveSavedComparisonsToLocalStorage === 'function') saveSavedComparisonsToLocalStorage();
             if (typeof updateSaveButton === 'function') updateSaveButton();
@@ -455,6 +457,9 @@ function renderInsights() {
 // ─── JSON Export ──────────────────────────────────────────────────────────────
 
 function exportJson() {
+    const capturingCount = clickedMetrics.filter(m => m.collectionStatus === 'capturing').length;
+    const plannedCount   = clickedMetrics.filter(m => m.collectionStatus === 'planning').length;
+    logEvent(TELEMETRY.EXPORT_JSON, { shortlistCount: clickedMetrics.length, capturingCount, plannedCount, metrics: clickedMetrics.map(m => ({ id: m.id, status: m.collectionStatus })) });
     const now = new Date();
     const ts  = now.toISOString().replace('T', '-').replace(/:/g, '').replace(/\.\d+Z$/, '');
     const payload = {
@@ -483,6 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadPdfBtn = document.getElementById('download-pdf-nextsteps');
     if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', () => {
+            const capturingCount = clickedMetrics.filter(m => m.collectionStatus === 'capturing').length;
+            const plannedCount   = clickedMetrics.filter(m => m.collectionStatus === 'planning').length;
+            logEvent(TELEMETRY.EXPORT_PDF, { shortlistCount: clickedMetrics.length, capturingCount, plannedCount, metrics: clickedMetrics.map(m => ({ id: m.id, status: m.collectionStatus })) });
             if (typeof downloadPdf === 'function') downloadPdf();
         });
     }

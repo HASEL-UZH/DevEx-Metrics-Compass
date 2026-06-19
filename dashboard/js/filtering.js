@@ -349,6 +349,7 @@ function onUserFilterChange() {
     }
     additiveBlankCanvas = false;
     filterData();
+    logEvent(TELEMETRY.FILTER_CHANGED, { activeFilters: Object.assign({}, activeFilters), resultCount: filteredData.filter(m => m.type).length });
 }
 
 // Set active button style
@@ -395,6 +396,7 @@ function clearAllFilters() {
         if (typeof updateColorLegend === 'function') updateColorLegend('categorization');
     }
     filterData();
+    logEvent(TELEMETRY.FILTERS_CLEARED, { shortlistCount: clickedMetrics.length });
 }
 
 // Reset the other source filter (company/framework are mutually exclusive; focus is independent)
@@ -486,7 +488,19 @@ document.getElementById('color-by-select').addEventListener('change', function()
     currentColorBy = this.value;
     createChart(filteredData);
     updateColorLegend(currentColorBy);
+    logEvent(TELEMETRY.COLORBY_CHANGED, { value: this.value });
 });
+
+(function () {
+    let kwTimer = null;
+    document.getElementById('keyword-search').addEventListener('input', function () {
+        clearTimeout(kwTimer);
+        kwTimer = setTimeout(function () {
+            const kw = document.getElementById('keyword-search').value.trim();
+            if (kw.length > 0) logEvent(TELEMETRY.KEYWORD_SEARCH, { query: kw, length: kw.length, resultCount: filteredData.filter(m => m.type).length });
+        }, 600);
+    });
+}());
 
 // Set button title attributes from DIMENSION_TOOLTIPS (single source of truth shared with step 2)
 document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {

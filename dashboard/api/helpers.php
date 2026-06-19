@@ -49,8 +49,9 @@ function check_origin(): void {
  * @param int    $window   Sliding window in seconds (default 3600 = 1 hour).
  */
 function enforce_rate_limit(string $logDir, string $prefix, int $maxReqs, int $window = 3600): void {
-    $ip   = $_SERVER['REMOTE_ADDR'] ?? '';
-    $file = $logDir . '/' . $prefix . md5($ip) . '.json';
+    $ip        = $_SERVER['REMOTE_ADDR'] ?? '';
+    $rlDir = $logDir . '/ratelimits';
+    $file  = $rlDir . '/' . $prefix . md5($ip) . '.json';
     $now  = time();
 
     $times = [];
@@ -80,7 +81,7 @@ function enforce_rate_limit(string $logDir, string $prefix, int $maxReqs, int $w
 
     // Probabilistic cleanup (~5% of requests): delete fully-expired ratelimit files
     if (rand(1, 20) === 1) {
-        foreach (glob($logDir . '/ratelimit_*.json') as $f) {
+        foreach (glob($rlDir . '/ratelimit_*.json') as $f) {
             $raw  = file_get_contents($f);
             $data = ($raw !== false) ? (json_decode($raw, true) ?? []) : [];
             $live = array_filter($data, function ($t) use ($now, $window) {

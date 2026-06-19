@@ -1,6 +1,6 @@
 <?php
 // Accepts POST { mode, metricName, source, description, email }
-// Appends one JSON line per submission to logs/report-metric-log.json
+// Appends one JSON line per submission to logs/reported-metrics-YYYY-MM.log
 // logs/ is blocked from direct browser access via logs/.htaccess
 
 require_once __DIR__ . '/helpers.php';
@@ -31,7 +31,7 @@ if (!in_array($mode, ['missing', 'wrong'], true)) {
 }
 
 $logDir = __DIR__ . '/logs';
-enforce_rate_limit($logDir, 'ratelimit_', 20);
+enforce_rate_limit($logDir, 'ratelimit_report_', 20);
 
 $entry = [
     'timestamp'   => gmdate('c'),
@@ -44,7 +44,7 @@ $entry = [
 ];
 
 $line = json_encode($entry, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
-$ok   = file_put_contents($logDir . '/report-metric-log.json', $line, FILE_APPEND | LOCK_EX);
+$ok   = file_put_contents($logDir . '/reported-metrics-' . gmdate('Y-m') . '.log', $line, FILE_APPEND | LOCK_EX);
 
 if ($ok === false) {
     http_response_code(500);

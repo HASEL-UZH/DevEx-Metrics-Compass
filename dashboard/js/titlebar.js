@@ -1,7 +1,9 @@
 // ─── 3-step progress bar ───────────────────────────────────────────────────────
 
 function switchToStep(step) {
+    const prevStep = currentStep;
     currentStep = step;
+    logEvent(TELEMETRY.STEP_CHANGE, { from: prevStep, to: step, shortlistCount: clickedMetrics.length });
 
     // Update active state on step buttons
     document.querySelectorAll('.step-btn').forEach(btn => {

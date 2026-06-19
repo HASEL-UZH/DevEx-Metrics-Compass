@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-19 — Anonymized telemetry logging
+
+- Added server-side telemetry logger (`api/telemetry.php`) that records anonymized events (IP last octet zeroed, no cookies, ephemeral session ID)
+- Logs 28 event types: page load, step navigation, filter changes, keyword search, metric opens/adds/removes, wizard flow, predefined list usage, compare interactions, PDF/JSON exports, feedback and metric reports
+- Browser family and referrer domain detected once on page load; all events fire-and-forget with no effect on UI
+- `metric_added` events include a `source` field distinguishing manual selection from company preset and JSON import
+- Rate limits: telemetry 2000/hr, feedback 5/hr, metric reports 20/hr (each in separate buckets)
+
 ## 2026-06-19 — Improved metrics search and title case
 
 - Search now supports multi-word queries regardless of word order and spacing ("deploy speed" matches "Deployment Speed")

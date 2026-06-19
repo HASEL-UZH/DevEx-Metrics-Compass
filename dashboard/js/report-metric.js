@@ -145,6 +145,7 @@
         const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
         if (isLocal) {
             console.log('[report-metric]', payload);
+            logEvent(TELEMETRY.METRIC_REPORTED, { mode: currentMode, metricName: payload.metricName, andAnother: !!andAnother });
             showThanks(andAnother);
             return;
         }
@@ -163,6 +164,7 @@
             })
             .then(({ status, data }) => {
                 if (data.success) {
+                    logEvent(TELEMETRY.METRIC_REPORTED, { mode: currentMode, metricName: payload.metricName, andAnother: !!andAnother });
                     showThanks(andAnother);
                 } else {
                     errorEl.textContent = status === 429

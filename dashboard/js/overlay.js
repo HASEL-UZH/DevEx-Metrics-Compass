@@ -144,12 +144,14 @@ document.querySelectorAll('.welcome-step-item[data-step]').forEach(btn => {
 // ─── Inline mode selection buttons (in left panel) ───────────────────────────
 
 document.getElementById('start-assessment-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'guided' });
     resetWizardAnswers();
     myOverlay.style.display = 'flex';
     showOverlayScreen(question1Screen);
 });
 
 document.getElementById('start-scratch-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'browse' });
     modeChosen = true;
     hideExploreStartView();
     currentMode = MODE.BROWSE;
@@ -157,6 +159,7 @@ document.getElementById('start-scratch-inline-btn').addEventListener('click', ()
 });
 
 document.getElementById('start-additive-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'additive' });
     modeChosen = true;
     hideExploreStartView();
     currentMode = MODE.ADDITIVE;
@@ -212,6 +215,7 @@ changelogOverlay.addEventListener('click', (e) => {
 // ─── "Restart wizard" button (Step 1 right panel) ────────────────────────────
 
 openMaturityAssessmentBtn.addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_RESTARTED, { shortlistCount: clickedMetrics.length, currentStep });
     modeChosen = false;
     if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
     showExploreStartView();
@@ -220,6 +224,9 @@ openMaturityAssessmentBtn.addEventListener('click', () => {
 // ─── Close overlay ────────────────────────────────────────────────────────────
 
 function dismissOverlay() {
+    if (currentOverlayScreen && currentOverlayScreen !== initialChoiceScreen) {
+        logEvent(TELEMETRY.WIZARD_ABANDONED, { atScreen: currentOverlayScreen.id });
+    }
     myOverlay.style.display = 'none';
     showOverlayScreen(initialChoiceScreen);
     if (!modeChosen) {
@@ -254,6 +261,7 @@ function resetWizardAnswers() {
 resetWizardAnswers();
 
 function applyWizardFilters() {
+    logEvent(TELEMETRY.WIZARD_COMPLETED, { answers: Object.assign({}, wizardAnswers) });
     modeChosen = true;
     myOverlay.style.display = 'none';
     hideExploreStartView();
@@ -273,6 +281,7 @@ document.querySelectorAll('.wizard-option-btn').forEach(btn => {
         const key = this.dataset.filterKey;
         const value = this.dataset.filterValue;
         const nextScreen = this.dataset.next;
+        logEvent(TELEMETRY.WIZARD_STEP, { screen: currentOverlayScreen ? currentOverlayScreen.id : null, answer: value });
         if (key) wizardAnswers[key] = value;
         if (nextScreen) {
             showOverlayScreen(document.getElementById(nextScreen));
@@ -285,6 +294,7 @@ document.querySelectorAll('.wizard-option-btn').forEach(btn => {
 document.querySelectorAll('.skip-wizard-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const nextScreen = this.dataset.next;
+        logEvent(TELEMETRY.WIZARD_SKIPPED, { skippedScreen: currentOverlayScreen ? currentOverlayScreen.id : null });
         if (nextScreen) {
             showOverlayScreen(document.getElementById(nextScreen));
         } else {
@@ -375,6 +385,7 @@ document.getElementById('closePredefinedBtn').addEventListener('click', closePre
 predefinedOverlay.addEventListener('click', e => { if (e.target === predefinedOverlay) closePredefinedOverlay(); });
 
 document.getElementById('start-predefined-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'predefined' });
     openPredefinedOverlay();
 });
 
@@ -393,9 +404,9 @@ document.getElementById('predefined-company-select').addEventListener('change', 
 document.getElementById('predefined-company-load-btn').addEventListener('click', () => {
     const name = document.getElementById('predefined-company-select').value;
     if (!name) return;
-    originalData
-        .filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name))
-        .forEach(m => addClickedMetric(m, 'capturing'));
+    const companyMetrics = originalData.filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name));
+    logEvent(TELEMETRY.PREDEFINED_COMPANY_LOADED, { company: name, metricCount: companyMetrics.length });
+    companyMetrics.forEach(m => addClickedMetric(m, 'capturing', 'company'));
     closePredefinedOverlay();
     modeChosen = true;
     hideExploreStartView();
@@ -463,7 +474,8 @@ document.getElementById('predefined-import-file').addEventListener('change', fun
 
 document.getElementById('predefined-import-btn').addEventListener('click', () => {
     if (_predefinedImportCandidates.length === 0) return;
-    _predefinedImportCandidates.forEach(({ metric, status }) => addClickedMetric(metric, status));
+    logEvent(TELEMETRY.IMPORT_JSON, { importedCount: _predefinedImportCandidates.length });
+    _predefinedImportCandidates.forEach(({ metric, status }) => addClickedMetric(metric, status, 'import'));
     closePredefinedOverlay();
     modeChosen = true;
     hideExploreStartView();

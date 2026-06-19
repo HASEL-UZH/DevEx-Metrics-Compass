@@ -34,6 +34,7 @@ anychart.onDocumentReady(function() {
         filterData();
         updateStepBar();
         updateColorLegend('categorization');
+        logEvent(TELEMETRY.PAGE_LOAD, { totalMetrics: originalData.filter(m => m.type).length, shortlistCount: clickedMetrics.length, hasShortlist: clickedMetrics.length > 0, viewport: window.innerWidth < 768 ? 'mobile' : 'desktop' });
     })
     .catch(error => {
         console.error("Error loading JSON data:", error);
