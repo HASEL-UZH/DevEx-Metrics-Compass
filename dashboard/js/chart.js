@@ -1,5 +1,16 @@
 // ─── AnyChart sunburst & custom tooltip ──────────────────────────────────────
 
+const DIMENSION_COLORS = {
+    'Process':              '#0EA5E9',
+    'System':               '#F97316',
+    'Developer Enablement': '#22C55E',
+    'Business':             '#EF4444',
+    'Quality':              '#8B5CF6',
+    'Team':                 '#F59E0B',
+    'Output':               '#EC4899',
+    'Customer':             '#14B8A6',
+};
+
 const COLOR_BY_CONFIG = {
     type: {
         label: 'Data collection type',
@@ -199,9 +210,10 @@ function createChart(data) {
 
     function normalFill() {
         if (currentColorBy === 'categorization') {
-            if (this.parent)
-                return anychart.color.lighten(this.parentColor, 0.15);
-            return this.mainColor;
+            if (!this.parent) return '#1B1AFF';
+            const name = this.iterator && this.iterator.get('name');
+            if (name && DIMENSION_COLORS[name]) return DIMENSION_COLORS[name];
+            return anychart.color.lighten(this.parentColor, 0.15);
         }
         const isLeaf = this.iterator && this.iterator.get('type');
         if (isLeaf) {
@@ -338,7 +350,6 @@ function buildTooltipContent(metricData, excludeId = null) {
 
     let content = `
         <span class="close-tooltip-button">&times;</span>
-        <br>
         <div class="metric-name-title">${metricName}</div> `;
 
     content += `${metricDescription || 'No description available'}</div>`;
@@ -389,6 +400,10 @@ function buildTooltipContent(metricData, excludeId = null) {
         })()}
     `;
 
+    content += `<div class="metric-detail report-metric-row">
+        <button class="report-metric-btn" data-report-metric-id="${metricId}" data-report-metric-name="${metricName.replace(/"/g, '&quot;')}">Report an issue with this metric</button>
+    </div>`;
+
     return content;
 }
 
@@ -415,6 +430,20 @@ function wireTooltipListeners(tooltipEl, metricData, onClose) {
             this.classList.add('active');
         });
     });
+
+    const reportBtn = tooltipEl.querySelector('.report-metric-btn');
+    if (reportBtn) {
+        reportBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            onClose();
+            if (typeof window.openReportMetricOverlay === 'function') {
+                window.openReportMetricOverlay('wrong', {
+                    id:   parseInt(this.getAttribute('data-report-metric-id'), 10),
+                    name: this.getAttribute('data-report-metric-name'),
+                });
+            }
+        });
+    }
 
     const closeButton = tooltipEl.querySelector('.close-tooltip-button');
     if (closeButton) {

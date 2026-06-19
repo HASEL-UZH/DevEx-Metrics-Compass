@@ -447,7 +447,7 @@ function buildSortChartData(leftMetrics, rightMetrics) {
         { sort: 'category', label: 'Category' },
         { sort: 'outcome',  label: 'Outcome goals' },
         { sort: 'maturity', label: 'Maturity' },
-        { sort: 'datatype', label: 'Data type' },
+        { sort: 'datatype', label: 'Data collection type' },
         { sort: 'ai',       label: 'AI impact' },
     ];
 

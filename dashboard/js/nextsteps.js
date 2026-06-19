@@ -498,6 +498,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clickedMetrics.length === 0) return;
             if (confirm('Clear all selected metrics?')) {
                 if (typeof clearAllClickedMetrics === 'function') clearAllClickedMetrics();
+                modeChosen = false;
+                const entryPanel    = document.getElementById('explore-entry-panel');
+                const filtersSection = document.getElementById('explore-filters-section');
+                if (entryPanel)      entryPanel.style.display      = '';
+                if (filtersSection)  filtersSection.style.display  = 'none';
             }
         });
     }

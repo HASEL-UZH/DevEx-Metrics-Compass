@@ -380,7 +380,7 @@
     </div>
 
     <footer>
-        <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openFeedbackFooter">Give feedback</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="mailto:ameyer@ifi.uzh.ch?subject=DevEx%20Metrics%20Compass%3A%20Report%20missing%20metric%2Ferror">Report missing metric or error</a></div>
+        <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openFeedbackFooter">Give feedback</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report a missing metric</a></div>
         <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
     </footer>
 
@@ -432,8 +432,6 @@
                         <span class="welcome-provenance-tab" data-tab="created">How was the Compass created?</span>
                         <span class="welcome-provenance-sep">&bull;</span>
                         <span class="welcome-provenance-tab" data-tab="who">Who created the compass?</span>
-                        <span class="welcome-provenance-sep">&bull;</span>
-                        <span class="welcome-provenance-tab" data-tab="report">Missing metric or error?</span>
                     </div>
                     <div class="welcome-provenance-body hidden" data-tab="created">
                         The Compass curates metrics from scientific literature and public company resources
@@ -446,11 +444,6 @@
                         The Compass was created by Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy,
                         and Prof. Dr. Thomas Fritz as part of research at the University of Zurich (UZH) and
                         the University of British Columbia (UBC).
-                    </div>
-                    <div class="welcome-provenance-body hidden" data-tab="report">
-                        We'd love to hear from you. Please reach out via
-                        <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> to report missing metrics,
-                        incorrect data, or suggestions for improvement.
                     </div>
                 </div>
             </div>
@@ -578,6 +571,7 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">June 2026</div>
                     <ul>
+                        <li>Added a form to report missing or incorrect metrics &mdash; accessible from the footer and each metric&rsquo;s detail popup</li>
                         <li>Added related metrics links in the metric popup &mdash; clicking a related metric opens its details side-by-side</li>
                         <li>Added a fourth starting option: load a company&rsquo;s metrics directly or import a saved DevEx Compass export (JSON)</li>
                         <li>Refined the metrics dataset: unified similar metrics and added new ones</li>
@@ -784,9 +778,50 @@
             </div>
         </div>
         <div id="feedback-expand" class="feedback-expand hidden">
-            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)"></textarea>
+            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" maxlength="500"></textarea>
             <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
             <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
+            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report a missing metric</a>
+        </div>
+    </div>
+
+    <!-- Report-metric overlay -->
+    <div class="overlay" id="reportMetricOverlay" style="display: none;">
+        <div class="overlay-content report-metric-overlay-content">
+            <button class="close-button" id="closeReportMetricOverlayBtn">&times;</button>
+            <h2 id="reportMetricOverlayTitle">Report a metric issue</h2>
+            <p id="reportMetricIntro" class="report-metric-intro"></p>
+
+            <div class="report-metric-form">
+                <div class="report-metric-form-row">
+                    <label for="reportMetricName">Metric name</label>
+                    <input type="text" id="reportMetricName" class="report-metric-input" placeholder="Name of the metric" maxlength="200" autocomplete="off">
+                </div>
+
+                <div class="report-metric-form-row hidden" id="reportMetricSourceRow">
+                    <label for="reportMetricSource">Reference to details on metric</label>
+                    <input type="text" id="reportMetricSource" class="report-metric-input" placeholder="Publication, company blog/report, or other source" maxlength="500" autocomplete="off">
+                </div>
+
+                <div class="report-metric-form-row">
+                    <label for="reportMetricDesc" id="reportMetricDescLabel">Definition</label>
+                    <textarea id="reportMetricDesc" class="report-metric-input report-metric-textarea" rows="4" placeholder="How is this metric defined? What does it measure?" maxlength="500"></textarea>
+                </div>
+
+                <div class="report-metric-form-row">
+                    <label for="reportMetricEmail">Your email<span class="report-metric-field-hint">for follow-up questions</span></label>
+                    <input type="email" id="reportMetricEmail" class="report-metric-input" placeholder="your@email.com" maxlength="200" autocomplete="email">
+                </div>
+            </div>
+
+            <p id="reportMetricError" class="report-metric-error-msg hidden"></p>
+
+            <div class="report-metric-actions">
+                <button id="reportMetricSubmitBtn" class="report-metric-submit-btn">Submit report</button>
+                <button id="reportMetricSaveAnotherBtn" class="report-metric-another-btn hidden">Submit and report another</button>
+            </div>
+
+            <p id="reportMetricThanks" class="report-metric-thanks hidden">Thank you! Your report has been submitted.</p>
         </div>
     </div>
 
@@ -803,6 +838,7 @@
     <script src="js/nextsteps.js"></script>
     <script src="js/init.js"></script>
     <script src="js/feedback.js"></script>
+    <script src="js/report-metric.js"></script>
 
 </body>
 

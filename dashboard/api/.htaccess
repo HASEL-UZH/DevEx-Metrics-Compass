@@ -1,0 +1,5 @@
+# Block direct browser access to data files in this directory
+<FilesMatch "\.(log|json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

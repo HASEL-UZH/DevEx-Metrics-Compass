@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-18 — Report missing or incorrect metrics
+
+- Added a form to report missing or incorrect metrics, accessible from the footer and from each metric's detail popup
+- "Report a missing metric" pre-fills nothing and requires a verifiable URL reference; "Report an issue" pre-fills the metric name
+- Submissions are stored server-side; includes email validation and URL validation for the reference field
+- Added "Report a missing metric" shortcut link in the thumbs-down feedback widget
+
 ## 2026-06-17 — Related metrics in popup
 
 - Metric detail popup now shows related metrics as inline links; clicking one opens it side-by-side in a second panel
