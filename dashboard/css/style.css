@@ -423,6 +423,36 @@ body {
     color: inherit;
 }
 
+/* Search input with inline clear button */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+.search-input-wrapper #keyword-search {
+    width: 100%;
+    padding-right: 28px;
+    margin-bottom: 0;
+}
+.keyword-clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #999;
+    padding: 0;
+    line-height: 1;
+}
+.keyword-clear-btn:hover {
+    color: #333;
+}
+
 /* Segmented control: buttons merged into one connected unit */
 .segmented-control {
     display: flex;

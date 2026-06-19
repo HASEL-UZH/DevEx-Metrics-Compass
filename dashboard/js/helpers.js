@@ -4,6 +4,13 @@ function stripLeadingIcon(str) {
     return str.replace(/^[^\p{L}]+/u, '');
 }
 
+// Capitalise the first letter of each word without lowercasing the rest,
+// so ALL-CAPS acronyms (MTTR, NPS, API) are preserved.
+function toTitleCase(str) {
+    if (!str) return str;
+    return str.replace(/\b([a-z])/g, ch => ch.toUpperCase());
+}
+
 // ─── Shared company favicon helpers ───────────────────────────────────────────
 // Used across step 1 (filter dropdown), step 2 (compare), and step 3 (next steps).
 

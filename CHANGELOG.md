@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-19 — Improved metrics search and title case
+
+- Search now supports multi-word queries regardless of word order and spacing ("deploy speed" matches "Deployment Speed")
+- Added synonym/abbreviation expansion: "pr" finds pull request, merge request, diff, and code review; "docs" → documentation; "bug" also matches defect, error, fault, failure; "ship" and "release" match deployment; "debt" → technical debt; "oncall" → on-call and incident
+- Added a clear (×) button on the search field to reset it in one click
+- Metric names are now consistently displayed in title case throughout the app
+
 ## 2026-06-18 — Report missing or incorrect metrics
 
 - Added a form to report missing or incorrect metrics, accessible from the footer and from each metric's detail popup

@@ -172,11 +172,12 @@
 
             <!-- Keyword search field -->
             <div class="filter-group" style="margin-top: 16px;">
-                <label>
-                    Metrics search
-                </label>
-                <input type="text" id="keyword-search" placeholder="Enter keyword..." class="filter-btn"
-                    style="text-align: left;">
+                <label>Metrics search</label>
+                <div class="search-input-wrapper">
+                    <input type="text" id="keyword-search" placeholder="Enter keyword..." class="filter-btn"
+                        style="text-align: left;">
+                    <button id="keyword-clear" class="keyword-clear-btn" style="display:none" aria-label="Clear search">&times;</button>
+                </div>
             </div>
 
             <!-- Popularity filter (percentile buttons) -->
@@ -571,6 +572,7 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">June 2026</div>
                     <ul>
+                        <li>Improved metrics search: queries now match regardless of word order, and common abbreviations expand automatically (e.g. &ldquo;pr&rdquo;, &ldquo;docs&rdquo;, &ldquo;debt&rdquo;)</li>
                         <li>Added a form to report missing or incorrect metrics &mdash; accessible from the footer and each metric&rsquo;s detail popup</li>
                         <li>Added related metrics links in the metric popup &mdash; clicking a related metric opens its details side-by-side</li>
                         <li>Added a fourth starting option: load a company&rsquo;s metrics directly or import a saved DevEx Compass export (JSON)</li>

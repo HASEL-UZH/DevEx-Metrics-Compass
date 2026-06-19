@@ -22,6 +22,7 @@
         reportLink.classList.add('hidden');
         submitBtn.classList.remove('hidden');
         textarea.classList.remove('hidden');
+        widget.classList.remove('feedback-widget--highlight');
     }
 
     function selectRating(rating) {
@@ -115,10 +116,10 @@
     if (footerLink) {
         footerLink.addEventListener('click', e => {
             e.preventDefault();
-            widget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            // If a rating is already selected keep expanded state; otherwise just draw attention
+            expand.classList.remove('hidden');
+            reportLink.classList.add('hidden');
             widget.classList.add('feedback-widget--highlight');
-            setTimeout(() => widget.classList.remove('feedback-widget--highlight'), 1200);
+            textarea.focus();
         });
     }
 }());

@@ -14,6 +14,7 @@ anychart.onDocumentReady(function() {
         }, {});
 
         originalData = data.map(item => {
+            if (item.name) item.name = toTitleCase(item.name);
             if (item.company) { item.company = transformSources(item.company, 'company'); }
             if (item.research) { item.research = transformSources(item.research, 'research'); }
             return item;
