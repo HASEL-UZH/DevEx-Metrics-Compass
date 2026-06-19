@@ -1,74 +1,47 @@
 [
     {
         "name": "Developer Experience Metrics",
-        "id": 9999,
-        "normal": {
-            "fill": "#1B1AFF"
-        }
+        "id": 9999
     },
     {
         "name": "Process",
         "id": 204,
-        "parent": 9999,
-        "normal": {
-            "fill": "#1f77b4"
-        }
+        "parent": 9999
     },
     {
         "name": "System",
         "id": 202,
-        "parent": 9999,
-        "normal": {
-            "fill": "#ff7f0e"
-        }
+        "parent": 9999
     },
     {
         "name": "Developer Enablement",
         "id": 203,
-        "parent": 9999,
-        "normal": {
-            "fill": "#2ca02c"
-        }
+        "parent": 9999
     },
     {
         "name": "Business",
         "id": 201,
-        "parent": 9999,
-        "normal": {
-            "fill": "#d62728"
-        }
+        "parent": 9999
     },
     {
         "name": "Quality",
         "id": 205,
-        "parent": 9999,
-        "normal": {
-            "fill": "#9467bd"
-        }
+        "parent": 9999
     },
     {
         "name": "Team",
         "id": 206,
-        "parent": 9999,
-        "normal": {
-            "fill": "#8c564b"
-        }
+        "parent": 9999
     },
     {
         "name": "Output",
         "id": 207,
-        "parent": 9999,
-        "normal": {
-            "fill": "#e377c2"
-        }
+        "parent": 9999
     },
     {
         "name": "Customer",
         "id": 208,
-        "parent": 9999,
-        "normal": {
-            "fill": "#7f7f7f"
-        }
+        "parent": 9999
     },
     {
         "name": "Efficiency",
@@ -111,12 +84,12 @@
         "parent": 205
     },
     {
-        "name": "Process",
+        "name": "Review Process",
         "id": 311,
         "parent": 206
     },
     {
-        "name": "Output",
+        "name": "Produced Output",
         "id": 312,
         "parent": 207
     },
@@ -131,7 +104,7 @@
         "parent": 206
     },
     {
-        "name": "Quality",
+        "name": "Product Quality",
         "id": 317,
         "parent": 208
     },
@@ -351,11 +324,11 @@
         "id": 14,
         "parent": 308,
         "alsoknownas": "-",
-        "company": "501g; 521; 510",
+        "company": "501g; 510",
         "research": "501; 521",
         "type": "quantitative",
-        "value": 5,
-        "company_mentions": 3,
+        "value": 4,
+        "company_mentions": 2,
         "research_mentions": 2,
         "description": "Measures the percentage of builds or automated workflows in a continuous integration (CI) system that fail due to errors (e.g., compilation issues, test failures, dependency conflicts). ",
         "is_research": 3,
@@ -545,6 +518,24 @@
         "ease_of_collection": "Moderate"
     },
     {
+        "name": "Number of Customer-Reported Defects",
+        "id": 26,
+        "parent": 317,
+        "alsoknownas": "-",
+        "company": "131m; 131n",
+        "research": "131",
+        "type": "quantitative",
+        "value": 3,
+        "company_mentions": 2,
+        "research_mentions": 1,
+        "description": "Bugs reported by customers in production.",
+        "is_research": 3,
+        "ai_specific_category": "",
+        "related_metrics": "80; 29; 42; 133",
+        "outcome_goals": "Product Excellence",
+        "ease_of_collection": "Easy"
+    },
+    {
         "name": "Cycle Time",
         "id": 27,
         "parent": 306,
@@ -658,11 +649,11 @@
         "parent": 303,
         "alsoknownas": " Application/Package Build Duration; Build Time; Build Time Efficiency; Developer Build Time",
         "company": "170; 131c; 131o; 201",
-        "research": "50; 234; 131; 146; 521",
+        "research": "503; 501",
         "type": "quantitative",
-        "value": 9,
+        "value": 6,
         "company_mentions": 4,
-        "research_mentions": 5,
+        "research_mentions": 2,
         "description": "Measures the time, in seconds, developers spend waiting for their builds to finish locally during development. Impacts developer flow and productivity. Considered e.g. as median (P50) or P90.",
         "is_research": 3,
         "ai_specific_category": "",
