@@ -30,6 +30,16 @@ function switchToStep(step) {
     const exploreStartView = document.getElementById('explore-start-view');
     if (exploreStartView && step !== STEP.EXPLORE) exploreStartView.style.display = 'none';
 
+    // Blur only applies on step 1 when no mode has been chosen
+    const leftContainer = document.querySelector('.left-container');
+    if (leftContainer) {
+        if (step !== STEP.EXPLORE) {
+            leftContainer.classList.remove('chart-blurred');
+        } else if (typeof modeChosen !== 'undefined' && !modeChosen) {
+            leftContainer.classList.add('chart-blurred');
+        }
+    }
+
     // Hide/show explore messages (only in Explore step)
     const msgs = ['no-metrics-message', 'additive-mode-message', 'clear-filters-chart'];
     msgs.forEach(id => {
