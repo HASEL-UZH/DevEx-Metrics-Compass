@@ -1695,18 +1695,7 @@ a {
     display: flex;
     gap: 6px;
     align-items: center;
-}
-
-.compare-row-dropdowns {
     width: 100%;
-}
-
-.compare-side-label {
-    font-size: 11px;
-    color: #666;
-    white-space: nowrap;
-    align-self: center;
-    min-width: 30px;
 }
 
 .compare-row-dropdowns .company-dropdown {
@@ -1724,7 +1713,7 @@ a {
 
 
 .compare-summary {
-    margin-top: 16px;
+    margin-top: 12px;
     margin-bottom: 8px;
 }
 

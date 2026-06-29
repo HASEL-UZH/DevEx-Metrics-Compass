@@ -388,15 +388,13 @@ function updateCompareSummary(stats) {
     if (!el) return;
     if (!stats) { el.innerHTML = ''; return; }
     const { shared, leftOnly, rightOnly, leftValue, rightValue, leftType, rightType } = stats;
-    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', shortlist: 'shortlist' }[t] || t);
     const labelFor = (type, value) => {
         if (type === 'shortlist') return 'My Shortlist';
         if (type === 'framework') return frameworkLink(value, shortLabel(value));
         if (type === 'maturity')  return MATURITY_FULL_LABEL[value] || value;
         return shortLabel(value);
     };
-    const comparingLabel = `Comparing ${labelFor(leftType, leftValue)} (${typeLabel(leftType)}) to ${labelFor(rightType, rightValue)} (${typeLabel(rightType)})`;
-    el.innerHTML = `<div class="filter-group-label">${comparingLabel}</div><div class="compare-stats">
+    el.innerHTML = `<div class="compare-stats">
         <div class="compare-stat compare-stat--left">
             <span class="compare-stat-badge compare-stat-badge--left">${getEntityBadgeContent(leftType, leftValue, 12)}</span>
             <strong>${leftOnly}</strong><span> unique to ${labelFor(leftType, leftValue)}</span>
