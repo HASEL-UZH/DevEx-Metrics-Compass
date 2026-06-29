@@ -174,6 +174,8 @@ function renderSavedComparisons() {
     const hasShortlist = c => c.leftType === 'shortlist' || c.rightType === 'shortlist';
     const ordered = [...savedComparisons].sort((a, b) => hasShortlist(b) - hasShortlist(a));
 
+    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', shortlist: 'shortlist' }[t] || t);
+
     const cards = ordered.map((c) => {
         const i = savedComparisons.indexOf(c);
         const left   = c.leftOnlyMetrics.length;
@@ -186,15 +188,12 @@ function renderSavedComparisons() {
         const rightPct  = total > 0 ? (right  / total * 100) : 0;
 
         const barTitle = `${left} unique to ${escapeHtml(c.leftLabel)} · ${shared} shared · ${right} unique to ${escapeHtml(c.rightLabel)}`;
+        const cardTitle = `<span class="ns-comparison-title--left">${escapeHtml(c.leftLabel)} (${typeLabel(c.leftType)})</span> <span class="ns-comparison-title--vs">VS</span> <span class="ns-comparison-title--right">${escapeHtml(c.rightLabel)} (${typeLabel(c.rightType)})</span>`;
 
         return `
             <div class="ns-saved-comparison-card">
                 <div class="ns-saved-comparison-card-header">
-                    <div class="ns-comparison-legend">
-                        <span class="ns-comparison-legend-item ns-comparison-legend-item--left">${left} ${escapeHtml(c.leftLabel)} only</span>
-                        <span class="ns-comparison-legend-item ns-comparison-legend-item--shared">${shared} shared</span>
-                        <span class="ns-comparison-legend-item ns-comparison-legend-item--right">${right} ${escapeHtml(c.rightLabel)} only</span>
-                    </div>
+                    <span class="ns-comparison-title">${cardTitle}</span>
                     <button class="nextsteps-metric-remove ns-remove-comparison" data-comparison-index="${i}" title="Remove from PDF">&#215;</button>
                 </div>
                 <div class="ns-comparison-bar sort-chart-bar-track" title="${barTitle}">
