@@ -93,12 +93,14 @@ function showExploreStartView() {
     const nextStepBar   = document.querySelector('.next-step-bar');
     const c  = document.getElementById('container');
     const cf = document.getElementById('clear-filters-chart');
+    const leftContainer = document.querySelector('.left-container');
     if (entryPanel)     entryPanel.style.display     = '';
     if (filtersSection) filtersSection.style.display = 'none';
     if (goCompareBtn)   goCompareBtn.style.display   = 'none';
     if (nextStepBar)    nextStepBar.style.display    = 'none';
     if (c)  c.style.display  = '';
     if (cf) cf.style.display = 'none';
+    if (leftContainer)  leftContainer.classList.add('chart-blurred');
     ['no-metrics-message', 'additive-mode-message'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
@@ -112,10 +114,12 @@ function hideExploreStartView() {
     const filtersSection = document.getElementById('explore-filters-section');
     const goCompareBtn  = document.getElementById('btn-go-compare');
     const nextStepBar   = document.querySelector('.next-step-bar');
+    const leftContainer = document.querySelector('.left-container');
     if (entryPanel)     entryPanel.style.display     = 'none';
     if (filtersSection) filtersSection.style.display = '';
     if (goCompareBtn)   goCompareBtn.style.display   = '';
     if (nextStepBar)    nextStepBar.style.display    = '';
+    if (leftContainer)  leftContainer.classList.remove('chart-blurred');
 }
 
 // ─── CTA button: "Start exploring metrics" ───────────────────────────────────
