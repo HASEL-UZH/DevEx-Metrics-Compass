@@ -316,7 +316,7 @@ function buildTooltipContent(metricData, excludeId = null) {
 
     let companyUsedByHtml = 'no mentions';
     if (Array.isArray(metricData.company) && metricData.company.length > 0) {
-        companyUsedByHtml = [...metricData.company].sort((a, b) => a.name.localeCompare(b.name)).map(source => {
+        companyUsedByHtml = [...metricData.company].filter(s => s.url).sort((a, b) => a.name.localeCompare(b.name)).map(source => {
             const logoHtml = typeof getEntityBadgeContent === 'function'
                 ? getEntityBadgeContent('company', source.name, 12)
                 : '';
@@ -330,7 +330,7 @@ function buildTooltipContent(metricData, excludeId = null) {
 
     let researchUsedByHtml = 'no mentions';
     if (Array.isArray(metricData.research) && metricData.research.length > 0) {
-        researchUsedByHtml = [...metricData.research].sort((a, b) => a.name.localeCompare(b.name)).map(source => {
+        researchUsedByHtml = [...metricData.research].filter(s => s.url).sort((a, b) => a.name.localeCompare(b.name)).map(source => {
             if (source.url && source.url !== '') {
                 return `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.name}</a>`;
             }

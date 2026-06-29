@@ -115,7 +115,7 @@ function renderPlannedCard(metric) {
     // Company links (up to 5, then "+N more")
     let companyHtml = '';
     if (Array.isArray(metric.company) && metric.company.length > 0) {
-        const sorted = [...metric.company].sort((a, b) => a.name.localeCompare(b.name));
+        const sorted = [...metric.company].filter(s => s.url).sort((a, b) => a.name.localeCompare(b.name));
         const shown = sorted.slice(0, 5);
         const rest  = sorted.length - shown.length;
         const links = shown.map(s => {
@@ -132,7 +132,7 @@ function renderPlannedCard(metric) {
     // Research links (up to 3)
     let researchHtml = '';
     if (Array.isArray(metric.research) && metric.research.length > 0) {
-        const sorted = [...metric.research].sort((a, b) => a.name.localeCompare(b.name));
+        const sorted = [...metric.research].filter(s => s.url).sort((a, b) => a.name.localeCompare(b.name));
         const shown = sorted.slice(0, 3);
         const rest  = sorted.length - shown.length;
         const links = shown.map(s => s.url
