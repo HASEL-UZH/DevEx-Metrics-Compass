@@ -1,12 +1,22 @@
 // ─── Step 2: Compare view ─────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SORT_CARD_TOOLTIPS = {
+    category: 'Group metrics by their top-level DevEx category (e.g. Performance, Developer Experience, Process).',
+    outcome:  'Group by intended outcome goal: Developer Experience, Product Excellence, or Organizational Effectiveness.',
+    maturity: 'Group by collection maturity: Getting started (easy), Established (moderate), or Advanced (complex).',
+    datatype: 'Group by data collection method: Self-reported (surveys, pop-ups) or Automated (logs, telemetry).',
+    ai:       'Group by AI-specific focus area: AI Impact, Utilization, or Cost.',
+};
+
 // ─── Value options per dimension type ────────────────────────────────────────
 
 const COMPARE_DIMENSION_OPTIONS = {
     maturity: [
-        { value: 'Easy',     label: '🟢 Getting started' },
-        { value: 'Moderate', label: '🟡 Established' },
-        { value: 'Complex',  label: '🔴 Advanced' },
+        { value: 'Easy',     label: '🌱 Getting started (easy)' },
+        { value: 'Moderate', label: '⚙️ Established (moderate)' },
+        { value: 'Complex',  label: '🔬 Advanced (complex)' },
     ],
     outcome: [
         { value: 'Developer Experience',       label: '🧑‍💻 Developer Experience' },
@@ -21,9 +31,9 @@ const GROUP_SORT_ORDER = {
     'Moderate': 1,
     'Complex':  2,
     // outcome
-    'Developer Experience':           0,
-    'Product Excellence':             1,
-    'Organizational Effectiveness':   2,
+    '🧑‍💻 Developer Experience':           0,
+    '⭐ Product Excellence':              1,
+    '📈 Organizational Effectiveness':    2,
     // data type
     '📋 Self-reported': 0,
     '⚙️ Automated':     1,
@@ -60,10 +70,16 @@ function getOptionsForDimension(type) {
             });
         }
     });
-    return [...names].sort().map(n => ({ value: n, label: n }));
+    return [...names].sort().map(n => ({ value: n, label: type === 'framework' ? shortLabel(n) : n }));
 }
 
 function populateValueDropdown(selectEl, type, currentValue) {
+    if (type === 'shortlist') {
+        selectEl.style.display = 'none';
+        selectEl.value = 'shortlist';
+        return;
+    }
+    selectEl.style.display = '';
     const options = getOptionsForDimension(type);
     selectEl.innerHTML = '<option value="all">Select...</option>';
     options.forEach(opt => {
@@ -79,6 +95,10 @@ function populateValueDropdown(selectEl, type, currentValue) {
 // ─── Metric filtering by dimension ───────────────────────────────────────────
 
 function filterMetricsByDimension(type, value) {
+    if (type === 'shortlist') {
+        const ids = new Set(clickedMetrics.map(m => m.id));
+        return originalData.filter(item => item.type && ids.has(item.id));
+    }
     if (!value || value === 'all') return [];
     return originalData.filter(item => {
         if (!item.type) return false;
@@ -89,8 +109,7 @@ function filterMetricsByDimension(type, value) {
             return Array.isArray(item.company) && item.company.some(c => c.name === value);
         }
         if (type === 'maturity') {
-            const tiers = { Easy: ['Easy'], Moderate: ['Easy', 'Moderate'], Complex: ['Easy', 'Moderate', 'Complex'] };
-            return (tiers[value] || []).includes(item.ease_of_collection);
+            return item.ease_of_collection === value;
         }
         if (type === 'outcome') {
             return item.outcome_goals === value;
@@ -132,8 +151,10 @@ function renderDiffView() {
         diffView.innerHTML = '<div class="centered-message">Choose what you want to compare →</div>';
         updateCompareSummary(null);
         if (sortWrapper) sortWrapper.style.display = 'none';
+        updateSaveButton();
         return;
     }
+
     if (sortWrapper) sortWrapper.style.display = '';
 
     const leftMetrics  = filterMetricsByDimension(leftType,  leftValue);
@@ -174,31 +195,49 @@ function renderDiffView() {
         .sort(([a], [b]) => sortGroupKey(a, b))
         .forEach(([cat, metrics]) => {
             const sorted = [...metrics].sort((a, b) => {
-                // Shared first, then left, then right
-                const aShared = leftIds.has(a.id) && rightIds.has(a.id);
-                const bShared = leftIds.has(b.id) && rightIds.has(b.id);
-                if (aShared !== bShared) return aShared ? -1 : 1;
-                return a.name.localeCompare(b.name);
+                // Left-only (purple) → shared (gray) → right-only (green), matching bar chart order
+                const order = m => {
+                    const l = leftIds.has(m.id), r = rightIds.has(m.id);
+                    if (l && !r) return 0;
+                    if (l && r)  return 1;
+                    return 2;
+                };
+                const diff = order(a) - order(b);
+                return diff !== 0 ? diff : a.name.localeCompare(b.name);
             });
 
-            const sharedCount = sorted.filter(m => leftIds.has(m.id) && rightIds.has(m.id)).length;
-            const overlapPct = sorted.length > 0 ? Math.round(sharedCount / sorted.length * 100) : 0;
+            const sharedCount = sorted.filter(m =>  leftIds.has(m.id) &&  rightIds.has(m.id)).length;
+            const leftOnlyCount  = sorted.filter(m =>  leftIds.has(m.id) && !rightIds.has(m.id)).length;
+            const rightOnlyCount = sorted.filter(m => !leftIds.has(m.id) &&  rightIds.has(m.id)).length;
+            const total = sorted.length;
+            const lPct = total > 0 ? Math.round(leftOnlyCount  / total * 100) : 0;
+            const sPct = total > 0 ? Math.round(sharedCount    / total * 100) : 0;
+            const rPct = 100 - lPct - sPct;
 
+            const catTooltip = DIMENSION_TOOLTIPS[stripLeadingIcon(cat)] ? ` title="${DIMENSION_TOOLTIPS[stripLeadingIcon(cat)]}"` : '';
+            const catDisplay = (compareSort === 'maturity' && MATURITY_FULL_LABEL[cat]) ? MATURITY_FULL_LABEL[cat] : cat;
             html += `<div class="diff-category">
                 <div class="diff-category-header" onclick="this.parentElement.classList.toggle('diff-category--collapsed')">
                     <span class="diff-category-chevron">▾</span>
-                    <span class="diff-category-name">${cat}</span>
-                    <span class="diff-category-stats">${overlapPct}% overlap</span>
+                    <span class="diff-category-name"${catTooltip}>${catDisplay}</span>
+                    <span class="diff-category-bar" title="${leftOnlyCount} unique to ${shortLabel(leftValue)} · ${sharedCount} shared · ${rightOnlyCount} unique to ${shortLabel(rightValue)}">${leftOnlyCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--left" style="width:${leftOnlyCount/total*100}%"></span>` : ''}${sharedCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--shared" style="width:${sharedCount/total*100}%"></span>` : ''}${rightOnlyCount > 0 ? `<span class="sort-chart-bar-fill sort-chart-bar-fill--right" style="width:${rightOnlyCount/total*100}%"></span>` : ''}</span>
                 </div>
                 <div class="diff-metrics">`;
 
             sorted.forEach(metric => {
                 const inLeft  = leftIds.has(metric.id);
                 const inRight = rightIds.has(metric.id);
-                let cls, sym;
-                if (inLeft && inRight) { cls = 'diff-badge--shared'; sym = '↔'; }
-                else if (inLeft)       { cls = 'diff-badge--left';   sym = '←'; }
-                else                   { cls = 'diff-badge--right';  sym = '→'; }
+                let cls, badgeContent;
+                if (inLeft && inRight) {
+                    cls = 'diff-badge--shared';
+                    badgeContent = '↔';
+                } else if (inLeft) {
+                    cls = 'diff-badge--left';
+                    badgeContent = getEntityBadgeContent(leftType, leftValue, 14);
+                } else {
+                    cls = 'diff-badge--right';
+                    badgeContent = getEntityBadgeContent(rightType, rightValue, 14);
+                }
 
                 const shortlisted = clickedMetrics.find(m => m.id === metric.id);
                 const statusBadge = shortlisted
@@ -212,7 +251,7 @@ function renderDiffView() {
                     : '';
 
                 html += `<div class="diff-metric-row" data-metric-id="${metric.id}" role="button" tabindex="0">
-                    <span class="diff-badge ${cls}">${sym}</span>
+                    <span class="diff-badge ${cls}">${badgeContent}</span>
                     <span class="diff-metric-name">${metric.name}</span>
                     ${popularityBadge}
                     ${statusBadge}
@@ -230,15 +269,118 @@ function renderDiffView() {
         row.addEventListener('click', (e) => {
             e.stopPropagation();
             const metric = originalData.find(m => m.id === parseInt(row.dataset.metricId));
-            if (metric && typeof showCustomTooltip === 'function') showCustomTooltip(metric, e);
+            if (metric) {
+                logEvent(TELEMETRY.METRIC_OPENED, { metricId: metric.id, metricName: metric.name, currentStep });
+                if (typeof showCustomTooltip === 'function') showCustomTooltip(metric, e);
+            }
         });
     });
 
     renderSortCharts(buildSortChartData(leftMetrics, rightMetrics));
+    updateSaveButton();
 }
 
 function shortLabel(value) {
     return value.replace(/ Framework$/i, '');
+}
+
+function getLabelForSide(type, value) {
+    if (type === 'shortlist') return 'My Shortlist';
+    if (type === 'maturity')  return MATURITY_FULL_LABEL[value] || value;
+    return shortLabel(value);
+}
+
+const SAVED_COMPARISONS_KEY = 'savedComparisonParams';
+let savedComparisonsLoaded = false;
+
+function saveSavedComparisonsToLocalStorage() {
+    const params = savedComparisons.map(({ leftType, leftValue, rightType, rightValue, savedAt }) =>
+        ({ leftType, leftValue, rightType, rightValue, savedAt })
+    );
+    localStorage.setItem(SAVED_COMPARISONS_KEY, JSON.stringify(params));
+}
+
+function loadSavedComparisonsFromLocalStorage() {
+    if (savedComparisonsLoaded) return;
+    savedComparisonsLoaded = true;
+    let params;
+    try { params = JSON.parse(localStorage.getItem(SAVED_COMPARISONS_KEY) || '[]'); } catch { return; }
+    params.forEach(({ leftType, leftValue, rightType, rightValue, savedAt }) => {
+        if (!leftType || !leftValue || !rightType || !rightValue) return;
+        const leftMetrics  = filterMetricsByDimension(leftType,  leftValue);
+        const rightMetrics = filterMetricsByDimension(rightType, rightValue);
+        const leftIds      = new Set(leftMetrics.map(m => m.id));
+        const rightIds     = new Set(rightMetrics.map(m => m.id));
+        const allMetrics   = [...new Map([...leftMetrics, ...rightMetrics].map(m => [m.id, m])).values()];
+        savedComparisons.push({
+            leftType, leftValue, rightType, rightValue,
+            leftLabel:        getLabelForSide(leftType,  leftValue),
+            rightLabel:       getLabelForSide(rightType, rightValue),
+            sharedMetrics:    allMetrics.filter(m =>  leftIds.has(m.id) &&  rightIds.has(m.id)),
+            leftOnlyMetrics:  leftMetrics.filter(m => !rightIds.has(m.id)),
+            rightOnlyMetrics: rightMetrics.filter(m => !leftIds.has(m.id)),
+            savedAt: savedAt || new Date().toISOString(),
+        });
+    });
+    updateSaveButton();
+}
+
+function saveCurrentComparison() {
+    const { leftType, leftValue, rightType, rightValue } = compareState;
+    if (leftValue === 'all' || rightValue === 'all') return;
+
+    const key = `${leftType}:${leftValue}|${rightType}:${rightValue}`;
+    if (savedComparisons.some(c => `${c.leftType}:${c.leftValue}|${c.rightType}:${c.rightValue}` === key)) {
+        return;
+    }
+
+    const leftMetrics  = filterMetricsByDimension(leftType,  leftValue);
+    const rightMetrics = filterMetricsByDimension(rightType, rightValue);
+    const leftIds      = new Set(leftMetrics.map(m => m.id));
+    const rightIds     = new Set(rightMetrics.map(m => m.id));
+    const allMetrics   = [...new Map([...leftMetrics, ...rightMetrics].map(m => [m.id, m])).values()];
+
+    savedComparisons.push({
+        leftType,  leftValue,
+        rightType, rightValue,
+        leftLabel:       getLabelForSide(leftType,  leftValue),
+        rightLabel:      getLabelForSide(rightType, rightValue),
+        sharedMetrics:   allMetrics.filter(m =>  leftIds.has(m.id) &&  rightIds.has(m.id)),
+        leftOnlyMetrics: leftMetrics.filter(m => !rightIds.has(m.id)),
+        rightOnlyMetrics: rightMetrics.filter(m => !leftIds.has(m.id)),
+        savedAt: new Date().toISOString(),
+    });
+
+    saveSavedComparisonsToLocalStorage();
+    logEvent(TELEMETRY.COMPARISON_ADDED_TO_PDF, { leftValue, rightValue, shortlistCount: clickedMetrics.length });
+    updateSaveButton();
+}
+
+function updateSaveButton() {
+    const section = document.getElementById('compare-save-section');
+    const btn     = document.getElementById('btn-save-comparison');
+    const badge   = document.getElementById('compare-save-badge');
+    if (!section || !btn || !badge) return;
+
+    const { leftValue, rightValue, leftType, rightType } = compareState;
+    const bothSelected = leftValue !== 'all' && rightValue !== 'all';
+
+    section.style.display = bothSelected ? '' : 'none';
+    if (!bothSelected) return;
+
+    const key = `${leftType}:${leftValue}|${rightType}:${rightValue}`;
+    const alreadySaved = savedComparisons.some(c => `${c.leftType}:${c.leftValue}|${c.rightType}:${c.rightValue}` === key);
+
+    btn.textContent = alreadySaved ? 'Saved to PDF' : 'Save comparison to PDF';
+    btn.disabled = alreadySaved;
+    btn.classList.toggle('compare-save-btn--saved', alreadySaved);
+
+    if (savedComparisons.length > 0) {
+        badge.style.display = '';
+        badge.textContent = `(${savedComparisons.length} saved)`;
+    } else {
+        badge.style.display = 'none';
+    }
 }
 
 function updateCompareSummary(stats) {
@@ -246,20 +388,24 @@ function updateCompareSummary(stats) {
     if (!el) return;
     if (!stats) { el.innerHTML = ''; return; }
     const { shared, leftOnly, rightOnly, leftValue, rightValue, leftType, rightType } = stats;
-    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
-    const comparingLabel = `Comparing ${shortLabel(leftValue)} (${typeLabel(leftType)}) to ${shortLabel(rightValue)} (${typeLabel(rightType)})`;
-    el.innerHTML = `<div class="filter-group-label">${comparingLabel}</div><div class="compare-stats">
+    const labelFor = (type, value) => {
+        if (type === 'shortlist') return 'My Shortlist';
+        if (type === 'framework') return frameworkLink(value, shortLabel(value));
+        if (type === 'maturity')  return MATURITY_FULL_LABEL[value] || value;
+        return shortLabel(value);
+    };
+    el.innerHTML = `<div class="compare-stats">
+        <div class="compare-stat compare-stat--left">
+            <span class="compare-stat-badge compare-stat-badge--left">${getEntityBadgeContent(leftType, leftValue, 12)}</span>
+            <strong>${leftOnly}</strong><span> unique to ${labelFor(leftType, leftValue)}</span>
+        </div>
         <div class="compare-stat compare-stat--shared">
             <span class="compare-stat-badge compare-stat-badge--shared">↔</span>
             <strong>${shared}</strong> shared
         </div>
-        <div class="compare-stat compare-stat--left">
-            <span class="compare-stat-badge compare-stat-badge--left">←</span>
-            <strong>${leftOnly}</strong> unique to ${shortLabel(leftValue)}
-        </div>
         <div class="compare-stat compare-stat--right">
-            <span class="compare-stat-badge compare-stat-badge--right">→</span>
-            <strong>${rightOnly}</strong> unique to ${shortLabel(rightValue)}
+            <span class="compare-stat-badge compare-stat-badge--right">${getEntityBadgeContent(rightType, rightValue, 12)}</span>
+            <strong>${rightOnly}</strong><span> unique to ${labelFor(rightType, rightValue)}</span>
         </div>
     </div>`;
 }
@@ -269,7 +415,12 @@ function updateCompareSummary(stats) {
 let compareSort = 'category';
 
 function getGroupKeyForMetric(metric, sort) {
-    if (sort === 'outcome')  return metric.outcome_goals || 'Other';
+    if (sort === 'outcome') {
+        if (metric.outcome_goals === 'Developer Experience')         return '🧑‍💻 Developer Experience';
+        if (metric.outcome_goals === 'Product Excellence')           return '⭐ Product Excellence';
+        if (metric.outcome_goals === 'Organizational Effectiveness') return '📈 Organizational Effectiveness';
+        return metric.outcome_goals || 'Other';
+    }
     if (sort === 'maturity') return metric.ease_of_collection || 'Other';
     if (sort === 'alpha')    return metric.name[0].toUpperCase();
     if (sort === 'datatype') {
@@ -298,7 +449,7 @@ function buildSortChartData(leftMetrics, rightMetrics) {
         { sort: 'category', label: 'Category' },
         { sort: 'outcome',  label: 'Outcome goals' },
         { sort: 'maturity', label: 'Maturity' },
-        { sort: 'datatype', label: 'Data type' },
+        { sort: 'datatype', label: 'Data collection type' },
         { sort: 'ai',       label: 'AI impact' },
     ];
 
@@ -334,6 +485,7 @@ function renderSortCharts(chartDataArray) {
         const titleEl = document.createElement('div');
         titleEl.className = 'compare-sort-chart-label';
         titleEl.textContent = label;
+        if (SORT_CARD_TOOLTIPS[sort]) titleEl.title = SORT_CARD_TOOLTIPS[sort];
         card.appendChild(titleEl);
 
         const barsEl = document.createElement('div');
@@ -343,13 +495,20 @@ function renderSortCharts(chartDataArray) {
             const total = g.left + g.shared + g.right;
             const row = document.createElement('div');
             row.className = 'sort-chart-row';
-            row.title = `${g.key}: ${g.left} left-only / ${g.shared} shared / ${g.right} right-only`;
+            const rowDesc = stripLeadingIcon((sort === 'maturity' && MATURITY_FULL_LABEL[g.key])
+                ? MATURITY_FULL_LABEL[g.key]
+                : (DIMENSION_TOOLTIPS[stripLeadingIcon(g.key)] || g.key)
+            );
+            const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
+            const leftLabel  = `${shortLabel(compareState.leftValue)} (${typeLabel(compareState.leftType)})`;
+            const rightLabel = `${shortLabel(compareState.rightValue)} (${typeLabel(compareState.rightType)})`;
+            row.title = `${rowDesc} — ${g.left} unique to ${leftLabel} / ${g.shared} shared / ${g.right} unique to ${rightLabel}`;
 
             const labelEl = document.createElement('div');
             labelEl.className = 'sort-chart-row-label';
+            const displayKey = (sort === 'maturity' && MATURITY_SHORT_LABEL[g.key]) ? MATURITY_SHORT_LABEL[g.key] : g.key;
             // Strip all leading non-letter chars (emoji, symbols, spaces)
-            labelEl.textContent = g.key.replace(/^[^\p{L}]+/u, '');
-            labelEl.title = g.key;
+            labelEl.textContent = stripLeadingIcon(displayKey);
 
             const track = document.createElement('div');
             track.className = 'sort-chart-bar-track';
@@ -388,8 +547,23 @@ function renderSortCharts(chartDataArray) {
         card.addEventListener('click', () => {
             compareSort = sort;
             renderDiffView();
+            logEvent(TELEMETRY.COMPARE_SORTED, { sortDimension: sort });
         });
         container.appendChild(card);
+    });
+}
+
+function syncShortlistOptionVisibility() {
+    const shortlistAllowed = clickedMetrics.length > 0;
+    const leftOpt  = document.querySelector('#compare-left-type  option[value="shortlist"]');
+    const rightOpt = document.querySelector('#compare-right-type option[value="shortlist"]');
+    if (leftOpt)  leftOpt.hidden  = !shortlistAllowed || compareState.rightType === 'shortlist';
+    if (rightOpt) rightOpt.hidden = !shortlistAllowed || compareState.leftType  === 'shortlist';
+
+    document.querySelectorAll('.compare-preset-btn').forEach(btn => {
+        if (btn.dataset.leftType === 'shortlist' || btn.dataset.rightType === 'shortlist') {
+            btn.hidden = !shortlistAllowed;
+        }
     });
 }
 
@@ -401,6 +575,11 @@ function initCompareControls() {
     const rightType  = document.getElementById('compare-right-type');
     const rightValue = document.getElementById('compare-right-value');
 
+    function updateLogoPreview(side) {
+        const valueEl = document.getElementById(`compare-${side}-value`);
+        if (valueEl) applyLogoBg(valueEl, compareState[side + 'Type'], compareState[side + 'Value'], side);
+    }
+
     function clearPresetHighlight() {
         document.querySelectorAll('.compare-preset-btn').forEach(b => b.classList.remove('compare-preset-btn--active'));
     }
@@ -408,14 +587,21 @@ function initCompareControls() {
     function onTypeChange(typeEl, valueEl, side) {
         compareState[side + 'Type'] = typeEl.value;
         populateValueDropdown(valueEl, typeEl.value, 'all');
-        // Pre-select a random value from the populated options
-        const opts = [...valueEl.options].filter(o => o.value !== 'all');
-        const randomOpt = opts[Math.floor(Math.random() * opts.length)];
-        const picked = randomOpt ? randomOpt.value : 'all';
-        valueEl.value = picked;
-        compareState[side + 'Value'] = picked;
+        if (typeEl.value === 'shortlist') {
+            compareState[side + 'Value'] = 'shortlist';
+        } else {
+            // Pre-select a random value from the populated options
+            const opts = [...valueEl.options].filter(o => o.value !== 'all');
+            const randomOpt = opts[Math.floor(Math.random() * opts.length)];
+            const picked = randomOpt ? randomOpt.value : 'all';
+            valueEl.value = picked;
+            compareState[side + 'Value'] = picked;
+        }
+        syncShortlistOptionVisibility();
         clearPresetHighlight();
         renderDiffView();
+        updateLogoPreview(side);
+        logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, newType: typeEl.value, newValue: compareState[side + 'Value'] });
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -423,6 +609,8 @@ function initCompareControls() {
         compareState[side + 'Value'] = valueEl.value;
         clearPresetHighlight();
         renderDiffView();
+        updateLogoPreview(side);
+        logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, type: compareState[side + 'Type'], newValue: valueEl.value });
         if (typeof updateStepBar === 'function') updateStepBar();
     }
 
@@ -431,9 +619,14 @@ function initCompareControls() {
     rightType.addEventListener('change',  () => onTypeChange(rightType, rightValue, 'right'));
     rightValue.addEventListener('change', () => onValueChange(rightValue, 'right'));
 
+    const saveBtn = document.getElementById('btn-save-comparison');
+    if (saveBtn) saveBtn.addEventListener('click', saveCurrentComparison);
+
     // Populate initial value dropdowns
     populateValueDropdown(leftValue,  leftType.value,  compareState.leftValue);
     populateValueDropdown(rightValue, rightType.value, compareState.rightValue);
+    updateLogoPreview('left');
+    updateLogoPreview('right');
 
 }
 
@@ -462,7 +655,13 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
     );
     if (active) active.classList.add('compare-preset-btn--active');
 
+    syncShortlistOptionVisibility();
     renderDiffView();
+    ['left', 'right'].forEach(side => {
+        const valueEl = document.getElementById(`compare-${side}-value`);
+        if (valueEl) applyLogoBg(valueEl, compareState[side + 'Type'], compareState[side + 'Value'], side);
+    });
+    logEvent(TELEMETRY.COMPARE_PRESET_APPLIED, { leftType, leftValue, rightType, rightValue });
     if (typeof updateStepBar === 'function') updateStepBar();
 }
 
@@ -472,6 +671,18 @@ document.addEventListener('DOMContentLoaded', () => {
             applyComparePreset(btn.dataset.leftType, btn.dataset.leftValue, btn.dataset.rightType, btn.dataset.rightValue);
         });
     });
+
+    // Show company favicon as background-image inside the step 1 company filter dropdown
+    const companyDropdown = document.getElementById('company-dropdown');
+
+    function updateCompanyFilterLogo() {
+        if (companyDropdown) applyLogoBg(companyDropdown, 'company', companyDropdown.value);
+    }
+
+    if (companyDropdown) {
+        companyDropdown.addEventListener('change', updateCompanyFilterLogo);
+        updateCompanyFilterLogo();
+    }
 });
 
 // Called once on DOMContentLoaded — wires events but can't populate data-driven dropdowns yet
@@ -494,4 +705,5 @@ function refreshCompareValueDropdowns() {
     if (rightValue.options.length <= 1) {
         populateValueDropdown(rightValue, rightType.value, compareState.rightValue);
     }
+    syncShortlistOptionVisibility();
 }

@@ -1,7 +1,6 @@
 import pandas as pd
 from math import isnan
 import json
-from itertools import cycle
 
 # set names of excel and sheets
 metrics_excel = "DevEx_Metrics.xlsx"
@@ -50,12 +49,7 @@ master_node_id = 9999
 master_list_of_dicts = [{
     "name": master_node_name,
     "id": master_node_id,
-    "normal": {"fill": "#1B1AFF"}
 }]
-
-# provide a list of color codes. Cycles automatically if more groups than colors.
-list_of_colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
-color_cycle = cycle(list_of_colors)
 
 # create the cardsort group entries for the json file.
 cardsort_group_list_of_dicts = []
@@ -64,7 +58,6 @@ for key, value in cardsort_groups.items():
         "name": value,
         "id": key,
         "parent": master_node_id,
-        "normal": {"fill": next(color_cycle)}
     })
 
 # create the cardsort sub group entries for the json file.

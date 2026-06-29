@@ -54,7 +54,7 @@ function updateWizardOptionCounts(screenEl) {
         const countEl = btn.querySelector('.wizard-option-count');
         if (!countEl) return;
         const count = countMetricsForOption(btn.dataset.filterKey, btn.dataset.filterValue);
-        countEl.textContent = count;
+        countEl.textContent = `${count} metric${count !== 1 ? 's' : ''}`;
     });
 }
 
@@ -70,71 +70,56 @@ function showOverlayScreen(screenToShow) {
     if (screenToShow.id === 'wizard-summary-screen') populateWizardSummary();
 }
 
-// ─── Password gate (temporary – remove before public launch) ──────────────────
+// ─── Inline mode picker state ────────────────────────────────────────────────
 
-const PASSWORD_KEY = 'dxmetrics_unlocked';
-const CORRECT_PASSWORD = 'dxmetrics';
+let modeChosen = false;
 
-const passwordScreen = document.getElementById('password-screen');
-const passwordInput = document.getElementById('password-input');
-const passwordError = document.getElementById('password-error');
-
-function unlockAndProceed() {
-    localStorage.setItem(PASSWORD_KEY, 'true');
-    myOverlay.classList.remove('password-locked');
-    passwordError.style.display = 'none';
-    showOverlayScreen(initialChoiceScreen);
-}
-
-document.getElementById('password-submit-btn').addEventListener('click', () => {
-    if (passwordInput.value === CORRECT_PASSWORD) {
-        unlockAndProceed();
-    } else {
-        passwordError.style.display = 'block';
-        passwordInput.value = '';
-        passwordInput.focus();
-    }
-});
-
-passwordInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.getElementById('password-submit-btn').click();
-});
-
-// Initial state: show password screen or skip if already unlocked
-if (localStorage.getItem(PASSWORD_KEY) === 'true') {
-    showOverlayScreen(initialChoiceScreen); // sets up currentOverlayScreen
-    const saved = localStorage.getItem('clickedMetrics');
-    const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
-    if (hasShortlist) {
-        myOverlay.style.display = 'none'; // returning user with a shortlist — skip welcome
-    }
-} else {
-    myOverlay.classList.add('password-locked');
-    showOverlayScreen(passwordScreen);
+// Initial state: show welcome or skip if returning user with a shortlist
+showOverlayScreen(initialChoiceScreen);
+const saved = localStorage.getItem('clickedMetrics');
+const hasShortlist = saved ? JSON.parse(saved).length > 0 : false;
+if (hasShortlist) {
+    myOverlay.style.display = 'none';
+    modeChosen = true;
+    hideExploreStartView();
 }
 
 // ─── Inline mode picker helpers ──────────────────────────────────────────────
 
-let modeChosen = false;
-
 function showExploreStartView() {
-    const v  = document.getElementById('explore-start-view');
+    const entryPanel    = document.getElementById('explore-entry-panel');
+    const filtersSection = document.getElementById('explore-filters-section');
+    const goCompareBtn  = document.getElementById('btn-go-compare');
+    const nextStepBar   = document.querySelector('.next-step-bar');
     const c  = document.getElementById('container');
     const cf = document.getElementById('clear-filters-chart');
-    if (v)  v.style.display  = '';
-    if (c)  c.style.display  = 'none';
+    const leftContainer = document.querySelector('.left-container');
+    if (entryPanel)     entryPanel.style.display     = '';
+    if (filtersSection) filtersSection.style.display = 'none';
+    if (goCompareBtn)   goCompareBtn.style.display   = 'none';
+    if (nextStepBar)    nextStepBar.style.display    = 'none';
+    if (c)  c.style.display  = '';
     if (cf) cf.style.display = 'none';
+    if (leftContainer)  leftContainer.classList.add('chart-blurred');
     ['no-metrics-message', 'additive-mode-message'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
 }
 
 function hideExploreStartView() {
-    const v = document.getElementById('explore-start-view');
-    const c = document.getElementById('container');
-    if (v) v.style.display = 'none';
-    if (c) c.style.display = '';
+    const entryPanel    = document.getElementById('explore-entry-panel');
+    const filtersSection = document.getElementById('explore-filters-section');
+    const goCompareBtn  = document.getElementById('btn-go-compare');
+    const nextStepBar   = document.querySelector('.next-step-bar');
+    const leftContainer = document.querySelector('.left-container');
+    if (entryPanel)     entryPanel.style.display     = 'none';
+    if (filtersSection) filtersSection.style.display = '';
+    if (goCompareBtn)   goCompareBtn.style.display   = '';
+    if (nextStepBar)    nextStepBar.style.display    = '';
+    if (leftContainer)  leftContainer.classList.remove('chart-blurred');
 }
 
 // ─── CTA button: "Start exploring metrics" ───────────────────────────────────
@@ -163,12 +148,14 @@ document.querySelectorAll('.welcome-step-item[data-step]').forEach(btn => {
 // ─── Inline mode selection buttons (in left panel) ───────────────────────────
 
 document.getElementById('start-assessment-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'guided' });
     resetWizardAnswers();
     myOverlay.style.display = 'flex';
     showOverlayScreen(question1Screen);
 });
 
 document.getElementById('start-scratch-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'browse' });
     modeChosen = true;
     hideExploreStartView();
     currentMode = MODE.BROWSE;
@@ -176,10 +163,34 @@ document.getElementById('start-scratch-inline-btn').addEventListener('click', ()
 });
 
 document.getElementById('start-additive-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'additive' });
     modeChosen = true;
     hideExploreStartView();
     currentMode = MODE.ADDITIVE;
     clearAllFilters();
+});
+
+// ─── About overlay ────────────────────────────────────────────────────────────
+
+const aboutOverlay = document.getElementById('aboutOverlay');
+
+function openAbout() {
+    aboutOverlay.style.display = 'flex';
+}
+
+function closeAbout() {
+    aboutOverlay.style.display = 'none';
+}
+
+document.getElementById('openAboutBtnFooter').addEventListener('click', (e) => {
+    e.preventDefault();
+    openAbout();
+});
+
+document.getElementById('closeAboutBtn').addEventListener('click', closeAbout);
+
+aboutOverlay.addEventListener('click', (e) => {
+    if (e.target === aboutOverlay) closeAbout();
 });
 
 // ─── Changelog ────────────────────────────────────────────────────────────────
@@ -208,6 +219,7 @@ changelogOverlay.addEventListener('click', (e) => {
 // ─── "Restart wizard" button (Step 1 right panel) ────────────────────────────
 
 openMaturityAssessmentBtn.addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_RESTARTED, { shortlistCount: clickedMetrics.length, currentStep });
     modeChosen = false;
     if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
     showExploreStartView();
@@ -216,6 +228,9 @@ openMaturityAssessmentBtn.addEventListener('click', () => {
 // ─── Close overlay ────────────────────────────────────────────────────────────
 
 function dismissOverlay() {
+    if (currentOverlayScreen && currentOverlayScreen !== initialChoiceScreen) {
+        logEvent(TELEMETRY.WIZARD_ABANDONED, { atScreen: currentOverlayScreen.id });
+    }
     myOverlay.style.display = 'none';
     showOverlayScreen(initialChoiceScreen);
     if (!modeChosen) {
@@ -225,13 +240,11 @@ function dismissOverlay() {
 }
 
 closeOverlayBtn.addEventListener('click', () => {
-    if (currentOverlayScreen === passwordScreen) return;
     dismissOverlay();
 });
 
 myOverlay.addEventListener('click', (event) => {
     if (event.target === myOverlay) {
-        if (currentOverlayScreen === passwordScreen) return;
         dismissOverlay();
     }
 });
@@ -252,6 +265,7 @@ function resetWizardAnswers() {
 resetWizardAnswers();
 
 function applyWizardFilters() {
+    logEvent(TELEMETRY.WIZARD_COMPLETED, { answers: Object.assign({}, wizardAnswers) });
     modeChosen = true;
     myOverlay.style.display = 'none';
     hideExploreStartView();
@@ -271,6 +285,7 @@ document.querySelectorAll('.wizard-option-btn').forEach(btn => {
         const key = this.dataset.filterKey;
         const value = this.dataset.filterValue;
         const nextScreen = this.dataset.next;
+        logEvent(TELEMETRY.WIZARD_STEP, { screen: currentOverlayScreen ? currentOverlayScreen.id : null, answer: value });
         if (key) wizardAnswers[key] = value;
         if (nextScreen) {
             showOverlayScreen(document.getElementById(nextScreen));
@@ -283,6 +298,7 @@ document.querySelectorAll('.wizard-option-btn').forEach(btn => {
 document.querySelectorAll('.skip-wizard-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const nextScreen = this.dataset.next;
+        logEvent(TELEMETRY.WIZARD_SKIPPED, { skippedScreen: currentOverlayScreen ? currentOverlayScreen.id : null });
         if (nextScreen) {
             showOverlayScreen(document.getElementById(nextScreen));
         } else {
@@ -337,4 +353,136 @@ document.querySelectorAll('.go-back-btn').forEach(button => {
         const targetScreen = document.getElementById(targetId);
         if (targetScreen) { showOverlayScreen(targetScreen); }
     });
+});
+
+// ─── Predefined list overlay ──────────────────────────────────────────────────
+
+const predefinedOverlay = document.getElementById('predefinedOverlay');
+
+function openPredefinedOverlay() {
+    const select = document.getElementById('predefined-company-select');
+    select.innerHTML = '<option value="">Select a company…</option>';
+    const companies = new Set();
+    originalData.forEach(item => {
+        if (!Array.isArray(item.company)) return;
+        item.company.forEach(c => { if (c.name) companies.add(c.name.trim()); });
+    });
+    [...companies].sort((a, b) => a.localeCompare(b)).forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+    });
+    document.getElementById('predefined-company-info').textContent = '';
+    document.getElementById('predefined-company-load-btn').disabled = true;
+    document.getElementById('predefined-import-info').textContent = '';
+    document.getElementById('predefined-import-btn').disabled = true;
+    document.getElementById('predefined-import-file').value = '';
+    predefinedOverlay.style.display = 'flex';
+}
+
+function closePredefinedOverlay() {
+    predefinedOverlay.style.display = 'none';
+}
+
+document.getElementById('closePredefinedBtn').addEventListener('click', closePredefinedOverlay);
+predefinedOverlay.addEventListener('click', e => { if (e.target === predefinedOverlay) closePredefinedOverlay(); });
+
+document.getElementById('start-predefined-inline-btn').addEventListener('click', () => {
+    logEvent(TELEMETRY.WIZARD_STARTED, { mode: 'predefined' });
+    openPredefinedOverlay();
+});
+
+document.getElementById('predefined-company-select').addEventListener('change', function () {
+    const name = this.value;
+    const infoEl  = document.getElementById('predefined-company-info');
+    const loadBtn = document.getElementById('predefined-company-load-btn');
+    if (!name) { infoEl.textContent = ''; loadBtn.disabled = true; return; }
+    const metrics = originalData.filter(m =>
+        Array.isArray(m.company) && m.company.some(c => c.name === name)
+    );
+    infoEl.textContent = `${metrics.length} metric${metrics.length !== 1 ? 's' : ''} tracked by ${name}`;
+    loadBtn.disabled = metrics.length === 0;
+});
+
+document.getElementById('predefined-company-load-btn').addEventListener('click', () => {
+    const name = document.getElementById('predefined-company-select').value;
+    if (!name) return;
+    const companyMetrics = originalData.filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name));
+    logEvent(TELEMETRY.PREDEFINED_COMPANY_LOADED, { company: name, metricCount: companyMetrics.length });
+    companyMetrics.forEach(m => addClickedMetric(m, 'capturing', 'company'));
+    closePredefinedOverlay();
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+
+    // Pre-select the company in the Step 1 filter (mirrors the company-dropdown change handler)
+    const companyDd = document.getElementById('company-dropdown');
+    if (companyDd) {
+        companyDd.value = name;
+        applySpecificFilter('specificCompany', name);
+        resetOtherSourceFilters('specificCompany');
+        const size = typeof getCompanySizeForCompany === 'function' ? getCompanySizeForCompany(name) : null;
+        if (size) applySpecificFilter('companySize', size, 'companySize');
+        if (typeof applyLogoBg === 'function') applyLogoBg(companyDd, 'company', name);
+        filterData();
+    }
+
+    // Pre-configure Step 2: selected company (left) vs SPACE Framework (right)
+    if (typeof applyComparePreset === 'function') {
+        applyComparePreset('company', name, 'framework', 'SPACE Framework');
+    }
+});
+
+let _predefinedImportCandidates = [];
+
+document.getElementById('predefined-import-file').addEventListener('change', function () {
+    const infoEl    = document.getElementById('predefined-import-info');
+    const importBtn = document.getElementById('predefined-import-btn');
+    _predefinedImportCandidates = [];
+    importBtn.disabled = true;
+    const file = this.files[0];
+    if (!file) { infoEl.textContent = ''; return; }
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        let parsed;
+        try { parsed = JSON.parse(e.target.result); }
+        catch (_) { infoEl.textContent = 'Invalid JSON file.'; return; }
+        if (parsed.schema_version !== 1 || !Array.isArray(parsed.metrics)) {
+            infoEl.textContent = 'Unrecognised format (expected a version 1 DevEx Compass export).';
+            return;
+        }
+        let skipped = 0;
+        const candidates = [];
+        parsed.metrics.forEach(entry => {
+            const full = originalData.find(m => m.id === entry.id);
+            if (!full) { skipped++; return; }
+            const status = (entry.collectionStatus === 'capturing' || entry.collectionStatus === 'planning')
+                ? entry.collectionStatus : 'planning';
+            candidates.push({ metric: full, status });
+        });
+        if (candidates.length === 0) {
+            infoEl.textContent = skipped > 0
+                ? `No importable metrics found (${skipped} not in current dataset).`
+                : 'No metrics found in file.';
+            return;
+        }
+        _predefinedImportCandidates = candidates;
+        const note = skipped > 0 ? ` (${skipped} not found in current dataset)` : '';
+        infoEl.textContent = `Ready to import ${candidates.length} metric${candidates.length !== 1 ? 's' : ''}${note}.`;
+        importBtn.disabled = false;
+    };
+    reader.readAsText(file);
+});
+
+document.getElementById('predefined-import-btn').addEventListener('click', () => {
+    if (_predefinedImportCandidates.length === 0) return;
+    logEvent(TELEMETRY.IMPORT_JSON, { importedCount: _predefinedImportCandidates.length });
+    _predefinedImportCandidates.forEach(({ metric, status }) => addClickedMetric(metric, status, 'import'));
+    closePredefinedOverlay();
+    modeChosen = true;
+    hideExploreStartView();
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
 });

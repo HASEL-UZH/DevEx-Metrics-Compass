@@ -26,121 +26,57 @@ function typeLabel(type) {
     return '';
 }
 
-// ─── Pure version of renderInsights() ────────────────────────────────────────
+// ─── PDF comparison block ─────────────────────────────────────────────────────
 
-function buildInsightsChips(allSelected) {
-    if (!allSelected || allSelected.length === 0) return [];
-    const chips = [];
+function buildComparisonBlock(comparison) {
+    const left  = escapeHtml(comparison.leftLabel);
+    const right = escapeHtml(comparison.rightLabel);
+    const lCount = comparison.leftOnlyMetrics.length;
+    const sCount = comparison.sharedMetrics.length;
+    const rCount = comparison.rightOnlyMetrics.length;
+    const total  = lCount + sCount + rCount;
+    const lPct   = total > 0 ? (lCount / total * 100) : 0;
+    const sPct   = total > 0 ? (sCount / total * 100) : 0;
+    const rPct   = 100 - lPct - sPct;
 
-    // 1. Top 10% by value
-    if (Array.isArray(originalData) && originalData.length > 0) {
-        const leafMetrics = originalData.filter(m => m.value != null);
-        if (leafMetrics.length > 0) {
-            const sorted    = [...leafMetrics].sort((a, b) => b.value - a.value);
-            const threshold = Math.ceil(sorted.length * 0.1);
-            const top10Set  = new Set(sorted.slice(0, threshold).map(m => m.id));
-            const topCount  = allSelected.filter(m => top10Set.has(m.id)).length;
-            if (topCount > 0)
-                chips.push(`${topCount} of your ${allSelected.length} metrics are in the <strong>top 10% most-tracked</strong>`);
-        }
-    }
+    const nameList = metrics => metrics.length === 0
+        ? '<em style="color:#aaa">None</em>'
+        : metrics.map(m => escapeHtml(m.name)).join(', ');
 
-    // 2. Outcome goal coverage
-    const knownGoals  = ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'];
-    const goalLabels  = { 'Developer Experience': 'Developer Experience', 'Product Excellence': 'Product Excellence', 'Organizational Effectiveness': 'Org Effectiveness' };
-    const goalCounts  = {};
-    allSelected.forEach(m => {
-        const g = m.outcome_goals;
-        if (g && knownGoals.includes(g)) goalCounts[g] = (goalCounts[g] || 0) + 1;
-    });
-    const coveredGoals = knownGoals.filter(g => goalCounts[g] > 0);
-    const missingGoals = knownGoals.filter(g => !goalCounts[g]);
-    if (coveredGoals.length > 0) {
-        if (missingGoals.length === 0) {
-            chips.push(`Covers all 3 <strong>outcome goals</strong> — good balance`);
-        } else if (missingGoals.length === 1) {
-            chips.push(`No metrics for <strong>${goalLabels[missingGoals[0]]}</strong> yet — consider adding some`);
-        } else {
-            const dominant = Object.entries(goalCounts).sort((a, b) => b[1] - a[1])[0];
-            chips.push(`Heavy on <strong>${goalLabels[dominant[0]]}</strong> — consider adding metrics for ${missingGoals.map(g => goalLabels[g]).join(' and ')}`);
-        }
-    }
+    const tdLabel = 'width:28%;font-weight:700;padding:4pt 8pt 4pt 0;vertical-align:top;white-space:nowrap;';
+    const tdMetrics = 'color:#444;padding:4pt 0;vertical-align:top;line-height:1.5;';
+    const trBorder = 'border-bottom:0.3pt solid #eee;';
 
-    // 3. Data type mix
-    const typeCounts = { qualitative: 0, quantitative: 0, both: 0 };
-    allSelected.forEach(m => { if (m.type in typeCounts) typeCounts[m.type]++; });
-    const hasQuant = typeCounts.quantitative + typeCounts.both > 0;
-    const hasQual  = typeCounts.qualitative  + typeCounts.both > 0;
-    if (hasQuant && hasQual) {
-        const parts = [];
-        if (typeCounts.quantitative > 0) parts.push(`${typeCounts.quantitative} automated`);
-        if (typeCounts.qualitative  > 0) parts.push(`${typeCounts.qualitative} self-reported`);
-        if (typeCounts.both         > 0) parts.push(`${typeCounts.both} mixed`);
-        chips.push(`Good mix of <strong>collection types</strong>: ${parts.join(', ')}`);
-    } else if (hasQual && !hasQuant) {
-        chips.push(`All <strong>self-reported</strong> — consider adding automated metrics for objective signals`);
-    } else if (hasQuant && !hasQual) {
-        chips.push(`All <strong>automated</strong> — consider adding self-reported metrics for developer sentiment`);
-    }
-
-    // 4. Category (parent) coverage
-    if (Array.isArray(originalData) && originalData.length > 0) {
-        const rootIds        = new Set(originalData.filter(m => !m.parent || m.parent === 0).map(m => m.id));
-        const categoryIds    = new Set(originalData.filter(m => m.parent && rootIds.has(m.parent)).map(m => m.id));
-        const totalTopCats   = categoryIds.size;
-        const parentOf       = {};
-        originalData.forEach(m => { if (m.parent) parentOf[m.id] = m.parent; });
-        const selectedTopCats = new Set();
-        allSelected.forEach(m => {
-            let id = m.id;
-            while (id) {
-                if (categoryIds.has(id)) { selectedTopCats.add(id); break; }
-                id = parentOf[id];
-            }
-        });
-        const n = selectedTopCats.size;
-        if (n > 0 && totalTopCats > 0) {
-            const ratio    = n / totalTopCats;
-            const catLabel = n === totalTopCats ? `all ${totalTopCats}` : `${n} of ${totalTopCats}`;
-            if (ratio < 0.3) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — consider different perspectives`);
-            } else if (ratio >= 0.6) {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — great breadth`);
-            } else {
-                chips.push(`Covering ${catLabel} <strong>metric categories</strong> — good spread`);
-            }
-        }
-    }
-
-    // 5. Framework alignment
-    const knownFrameworks = ['SPACE Framework', 'DevEx Framework', 'DORA Framework', 'McKinsey Framework', 'EEBO Framework', 'DX Core 4 Framework'];
-    const frameworkCounts = {};
-    allSelected.forEach(m => {
-        if (!Array.isArray(m.research)) return;
-        const seen = new Set();
-        m.research.forEach(r => {
-            if (knownFrameworks.includes(r.name) && !seen.has(r.name)) {
-                seen.add(r.name);
-                frameworkCounts[r.name] = (frameworkCounts[r.name] || 0) + 1;
-            }
-        });
-    });
-    const frameworkEntries = Object.entries(frameworkCounts).sort((a, b) => b[1] - a[1]);
-    if (frameworkEntries.length > 0) {
-        const total = allSelected.length;
-        const [topName, topCount] = frameworkEntries[0];
-        if (topCount === total && frameworkEntries.length === 1) {
-            chips.push(`All metrics align with <strong>${topName}</strong> — consider drawing from other frameworks`);
-        } else if (topCount / total > 0.5) {
-            chips.push(`${topCount} of ${total} metrics align with the <strong>${topName}</strong>`);
-        } else {
-            const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
-            const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';
-            chips.push(`Drawing from <strong>${frameworkEntries.length} frameworks</strong>: ${list}${more}`);
-        }
-    }
-
-    return chips;
+    return `
+        <div class="pdf-comparison-block">
+            <div class="pdf-comparison-title">${left} vs. ${right}</div>
+            <table style="width:100%;border-collapse:collapse;table-layout:fixed;margin:5pt 0 3pt;">
+                <tr>
+                    ${lPct > 0 ? `<td style="background:#7c3aed;width:${lPct}%;height:8pt;padding:0;"></td>` : ''}
+                    ${sPct > 0 ? `<td style="background:#9ca3af;width:${sPct}%;height:8pt;padding:0;"></td>` : ''}
+                    ${rPct > 0 ? `<td style="background:#16a34a;width:${rPct}%;height:8pt;padding:0;"></td>` : ''}
+                </tr>
+            </table>
+            <div style="display:flex;gap:14pt;font-size:7.5pt;margin-bottom:6pt;">
+                <span style="color:#7c3aed;font-weight:700">${left} only (${lCount})</span>
+                <span style="color:#888">Shared (${sCount})</span>
+                <span style="color:#16a34a;font-weight:700">${right} only (${rCount})</span>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:9pt;">
+                <tr style="${trBorder}">
+                    <td style="${tdLabel}color:#7c3aed;">${left} only (${lCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.leftOnlyMetrics)}</td>
+                </tr>
+                <tr style="${trBorder}">
+                    <td style="${tdLabel}color:#888;">Shared (${sCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.sharedMetrics)}</td>
+                </tr>
+                <tr>
+                    <td style="${tdLabel}color:#16a34a;">${right} only (${rCount})</td>
+                    <td style="${tdMetrics}">${nameList(comparison.rightOnlyMetrics)}</td>
+                </tr>
+            </table>
+        </div>`;
 }
 
 // ─── PDF metric card ──────────────────────────────────────────────────────────
@@ -148,7 +84,7 @@ function buildInsightsChips(allSelected) {
 function buildPdfCard(metric) {
     const easeKey   = (metric.ease_of_collection || '').toLowerCase();
     const easeBadge = metric.ease_of_collection
-        ? `<span class="pdf-card-ease pdf-card-ease--${easeKey}">${escapeHtml(metric.ease_of_collection)} to collect</span>`
+        ? `<span class="pdf-card-ease pdf-card-ease--${easeKey}">${escapeHtml(MATURITY_FULL_LABEL[metric.ease_of_collection] || metric.ease_of_collection)}</span>`
         : '';
 
     const aka = metric.alsoknownas && metric.alsoknownas !== '-'
@@ -203,7 +139,7 @@ function buildPdfCard(metric) {
 
 function getPrintStyles() {
     return `
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -294,10 +230,13 @@ function getPrintStyles() {
         .pdf-insights li {
             font-size: 9pt;
             color: #444;
-            padding: 2pt 0 2pt 12pt;
+            padding: 2pt 0 2pt 14pt;
             position: relative;
         }
-        .pdf-insights li::before { content: '–'; position: absolute; left: 0; color: #aaa; }
+        .pdf-insight-icon { position: absolute; left: 0; font-style: normal; }
+        .pdf-insight--positive .pdf-insight-icon { color: #16a34a; }
+        .pdf-insight--action   .pdf-insight-icon { color: #1B1AFF; }
+        .pdf-insight--neutral  .pdf-insight-icon { color: #aaa; }
         .pdf-insights li strong { color: #111; }
 
         /* ── Section 2: Metric cards ── */
@@ -335,9 +274,9 @@ function getPrintStyles() {
             font-size: 8pt;
             font-weight: 600;
         }
-        .pdf-card-ease--easy     { background: #dcfce7; color: #15803d; }
-        .pdf-card-ease--moderate { background: #fef9c3; color: #854d0e; }
-        .pdf-card-ease--complex  { background: #fee2e2; color: #b91c1c; }
+        .pdf-card-ease--easy     { background: #dcfce7; color: #15803d; border: 0.75pt solid #15803d; }
+        .pdf-card-ease--moderate { background: #fef9c3; color: #854d0e; border: 0.75pt solid #854d0e; }
+        .pdf-card-ease--complex  { background: #fee2e2; color: #b91c1c; border: 0.75pt solid #b91c1c; }
         .pdf-card-sources { font-size: 8.5pt; color: #555; margin-top: 4pt; line-height: 1.5; }
         .pdf-card-sources-label { color: #777; font-weight: 600; }
         .pdf-card-sep { color: #bbb; }
@@ -357,6 +296,19 @@ function getPrintStyles() {
         .pdf-authors-text strong { color: #1e3a5f; }
         .pdf-authors-text a { color: #1B1AFF; }
 
+        /* ── Section 3: Saved comparisons ── */
+        .pdf-comparison-block {
+            margin-bottom: 16pt;
+            padding-bottom: 12pt;
+            border-bottom: 0.3pt solid #eee;
+            break-inside: avoid;
+        }
+        .pdf-comparison-title {
+            font-weight: 700;
+            font-size: 11pt;
+            color: #1B1AFF;
+        }
+
         /* ── Page breaks ── */
         .page-break-before { break-before: page; }
 
@@ -367,16 +319,17 @@ function getPrintStyles() {
 
 // ─── Full HTML document ───────────────────────────────────────────────────────
 
-function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
+function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, comparisons) {
     const now      = new Date();
     const dateStr  = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const fileDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
     const totalCount = capturing.length + planned.length;
 
+    const iconMap = { positive: '&#10003;', action: '&rarr;', neutral: '&ndash;' };
     const insightsBlock = chips.length > 0
         ? `<div class="pdf-insights">
                <div class="pdf-insights-title">Selection Insights</div>
-               <ul>${chips.map(c => `<li>${c}</li>`).join('')}</ul>
+               <ul>${chips.map(({ text, type }) => `<li class="pdf-insight pdf-insight--${type}"><span class="pdf-insight-icon">${iconMap[type]}</span>${text}</li>`).join('')}</ul>
            </div>`
         : '';
 
@@ -397,9 +350,15 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
     <section>
         <h2>Plan to Track (${planned.length})</h2>
         ${planned.length === 0
-            ? `<p style="color:#555;font-size:9pt;margin-top:6pt;">No metrics selected yet. Consider identifying additional metrics that fit your context using the <a href="https://devex-metrics-compass.hasel.dev/">Developer Experience Metrics Compass</a>.</p>`
+            ? `<p style="color:#555;font-size:9pt;margin-top:6pt;">No metrics selected yet. Consider identifying additional metrics that fit your context using the <a href="https://devexcompass.com">Developer Experience Metrics Compass</a>.</p>`
             : planned.map(m => buildPdfCard(m)).join('')}
     </section>`;
+
+    const comparisonsSection = comparisons && comparisons.length > 0 ? `
+    <section class="page-break-before">
+        <h2>Saved Comparisons (${comparisons.length})</h2>
+        ${comparisons.map(c => buildComparisonBlock(c)).join('')}
+    </section>` : '';
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -411,7 +370,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
 <body>
 
     <div class="pdf-footer">
-        <span>Developer Experience Metrics Compass &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</span>
+        <span>Developer Experience Metrics Compass &nbsp;·&nbsp; https://devexcompass.com</span>
         <span>Provided for research and informational purposes only.</span>
     </div>
 
@@ -425,7 +384,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
             relevant to your context — this report captures the ${totalCount} metric${totalCount !== 1 ? 's' : ''}
             you identified as part of your developer experience measurement strategy.
         </p>
-        <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devex-metrics-compass.hasel.dev/</p>
+        <p class="pdf-date">Generated on ${dateStr} &nbsp;·&nbsp; https://devexcompass.com</p>
     </div>
 
     ${insightsBlock}
@@ -433,6 +392,8 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
     ${capturingSection}
 
     ${plannedSection}
+
+    ${comparisonsSection}
 
     <section class="pdf-authors page-break-before">
         <div class="pdf-authors-logos">
@@ -443,7 +404,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
             <strong>Created by</strong><br>
             Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy &amp; Prof. Dr. Thomas Fritz<br>
             University of Zurich (UZH) &nbsp;·&nbsp; <a href="https://hasel.dev">HASEL Research Group</a><br>
-            <a href="https://devex-metrics-compass.hasel.dev/">https://devex-metrics-compass.hasel.dev/</a>
+            <a href="https://devexcompass.com">https://devexcompass.com</a>
         </div>
     </section>
 
@@ -454,7 +415,7 @@ function buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri) {
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
 async function downloadPdf() {
-    if (!clickedMetrics || clickedMetrics.length === 0) return;
+    if ((!clickedMetrics || clickedMetrics.length === 0) && (!savedComparisons || savedComparisons.length === 0)) return;
 
     const btn = document.getElementById('download-pdf-nextsteps');
     if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
@@ -473,8 +434,10 @@ async function downloadPdf() {
             fetchAsBase64('assets/favicon.png').catch(() => '')
         ]);
 
-        const chips = buildInsightsChips([...capturing, ...planned]);
-        const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri);
+        const chips = buildInsights([...capturing, ...planned]);
+        const hasShortlist = c => c.leftType === 'shortlist' || c.rightType === 'shortlist';
+        const orderedComparisons = [...savedComparisons].sort((a, b) => hasShortlist(b) - hasShortlist(a));
+        const html  = buildPdfHtml(capturing, planned, chips, uzhUri, haselUri, compassUri, orderedComparisons);
 
         const win = window.open('', '_blank');
         if (!win) {
@@ -486,6 +449,6 @@ async function downloadPdf() {
         win.document.close();
         setTimeout(() => win.print(), 600);
     } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Export PDF'; }
+        if (btn) { btn.disabled = false; btn.textContent = 'Export PDF report'; }
     }
 }

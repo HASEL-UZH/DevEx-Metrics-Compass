@@ -14,14 +14,27 @@ anychart.onDocumentReady(function() {
         }, {});
 
         originalData = data.map(item => {
+            if (item.name) item.name = toTitleCase(item.name);
             if (item.company) { item.company = transformSources(item.company, 'company'); }
             if (item.research) { item.research = transformSources(item.research, 'research'); }
             return item;
         });
 
+        originalData.forEach(m => {
+            if (m.related_metrics && m.related_metrics !== '-') {
+                m.resolvedRelated = m.related_metrics.split(';')
+                    .map(s => parseInt(s.trim(), 10))
+                    .map(id => originalData.find(r => r.id === id && r.description !== undefined))
+                    .filter(Boolean);
+            } else {
+                m.resolvedRelated = [];
+            }
+        });
+
         filterData();
         updateStepBar();
         updateColorLegend('categorization');
+        logEvent(TELEMETRY.PAGE_LOAD, { totalMetrics: originalData.filter(m => m.type).length, shortlistCount: clickedMetrics.length, hasShortlist: clickedMetrics.length > 0, viewport: window.innerWidth < 768 ? 'mobile' : 'desktop' });
     })
     .catch(error => {
         console.error("Error loading JSON data:", error);

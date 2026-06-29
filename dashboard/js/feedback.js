@@ -2,13 +2,14 @@
 // On localhost, logs to console instead of posting (PHP not available locally).
 
 (function () {
-    const widget   = document.getElementById('feedback-widget');
-    const expand   = document.getElementById('feedback-expand');
-    const thumbBtns = document.querySelectorAll('.feedback-thumb-btn');
-    const textarea  = document.getElementById('feedback-comment');
-    const submitBtn = document.getElementById('feedback-submit');
-    const thanks    = document.getElementById('feedback-thanks');
-    const footerLink = document.getElementById('openFeedbackFooter');
+    const widget      = document.getElementById('feedback-widget');
+    const expand      = document.getElementById('feedback-expand');
+    const thumbBtns   = document.querySelectorAll('.feedback-thumb-btn');
+    const textarea    = document.getElementById('feedback-comment');
+    const submitBtn   = document.getElementById('feedback-submit');
+    const thanks      = document.getElementById('feedback-thanks');
+    const reportLink  = document.getElementById('feedback-report-missing');
+    const footerLink  = document.getElementById('openFeedbackFooter');
 
     let selectedRating = null;
 
@@ -18,8 +19,10 @@
         expand.classList.add('hidden');
         textarea.value = '';
         thanks.classList.add('hidden');
+        reportLink.classList.add('hidden');
         submitBtn.classList.remove('hidden');
         textarea.classList.remove('hidden');
+        widget.classList.remove('feedback-widget--highlight');
     }
 
     function selectRating(rating) {
@@ -28,6 +31,7 @@
             b.classList.toggle('active', b.dataset.rating === rating);
         });
         expand.classList.remove('hidden');
+        reportLink.classList.toggle('hidden', rating !== 'down');
         textarea.focus();
     }
 
@@ -70,23 +74,35 @@
         };
 
         const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+
+        const telemetryPayload = {
+            rating:         payload.rating,
+            hasComment:     payload.comment.length > 0,
+            step:           typeof currentStep !== 'undefined' ? currentStep : null,
+            shortlistCount: typeof clickedMetrics !== 'undefined' ? clickedMetrics.length : null,
+        };
+
         if (isLocal) {
             console.log('[feedback]', payload);
+            logEvent(TELEMETRY.FEEDBACK_SUBMITTED, telemetryPayload);
             showThanks();
             return;
         }
 
-        fetch('feedback.php', {
+        fetch('api/feedback.php', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(payload),
         })
             .then(r => r.json())
             .then(data => {
-                if (data.success) showThanks();
+                // Show thanks on success or rate limit — user already submitted before
+                if (data.success || data.error === 'Too many requests') {
+                    logEvent(TELEMETRY.FEEDBACK_SUBMITTED, telemetryPayload);
+                    showThanks();
+                }
             })
             .catch(() => {
-                // Still show thanks — don't penalise the user for a network error
                 showThanks();
             });
     }
@@ -97,6 +113,14 @@
 
     submitBtn.addEventListener('click', submitFeedback);
 
+    reportLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        resetWidget();
+        if (typeof window.openReportMetricOverlay === 'function') {
+            window.openReportMetricOverlay('missing', null);
+        }
+    });
+
     textarea.addEventListener('keydown', e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitFeedback();
     });
@@ -104,10 +128,10 @@
     if (footerLink) {
         footerLink.addEventListener('click', e => {
             e.preventDefault();
-            widget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            // If a rating is already selected keep expanded state; otherwise just draw attention
+            expand.classList.remove('hidden');
+            reportLink.classList.add('hidden');
             widget.classList.add('feedback-widget--highlight');
-            setTimeout(() => widget.classList.remove('feedback-widget--highlight'), 1200);
+            textarea.focus();
         });
     }
 }());

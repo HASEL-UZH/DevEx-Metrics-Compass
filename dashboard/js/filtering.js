@@ -1,3 +1,45 @@
+// ─── Search helpers ───────────────────────────────────────────────────────────
+
+const SYNONYM_GROUPS = [
+    { terms: ['pull request', 'merge request', 'diff', 'code review'], aliases: ['pr', 'mr'] },
+    { terms: ['percentage', 'percent'], aliases: ['%'] },
+    { terms: ['number'], aliases: ['num'] },
+    { terms: ['continuous integration'], aliases: ['ci'] },
+    { terms: ['continuous delivery'], aliases: ['cd'] },
+    { terms: ['lines of code'], aliases: ['loc'] },
+    { terms: ['time', 'time spent', 'duration'], aliases: ['spent'] },
+    { terms: ['documentation'], aliases: ['docs'] },
+    { terms: ['bug', 'defect', 'error', 'fault', 'failure'], aliases: [] },
+    { terms: ['deployment', 'deploy', 'ship', 'release', 'rollout'], aliases: [] },
+    { terms: ['technical debt', 'tech debt'], aliases: ['debt'] },
+    { terms: ['on-call', 'on call', 'incident', 'pager', 'alert'], aliases: ['oncall'] },
+];
+
+const SYNONYM_MAP = {};
+SYNONYM_GROUPS.forEach(({ terms, aliases }) => {
+    [...terms, ...aliases].forEach(key => { SYNONYM_MAP[key] = terms; });
+});
+
+function fieldContains(item, term) {
+    return (item.name        && item.name.toLowerCase().includes(term)) ||
+           (item.description && item.description.toLowerCase().includes(term)) ||
+           (item.alsoknownas && item.alsoknownas.toLowerCase().includes(term)) ||
+           (Array.isArray(item.company)  && item.company.some(s  => s.name.toLowerCase().includes(term))) ||
+           (Array.isArray(item.research) && item.research.some(s => s.name.toLowerCase().includes(term)));
+}
+
+function metricMatchesTokens(item, tokens) {
+    return tokens.every(token => {
+        const group = SYNONYM_MAP[token];
+        if (group) return group.some(alt => fieldContains(item, alt));
+        return fieldContains(item, token);
+    });
+}
+
+function tokenizeKeyword(raw) {
+    return raw.toLowerCase().trim().split(/\s+/).filter(Boolean);
+}
+
 // ─── Filtering logic ─────────────────────────────────────────────────────────
 
 // Map descriptive focus filter values to is_research integers
@@ -64,14 +106,8 @@ function extractCompanies(data, currentFilters) {
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
-        const keyword = document.getElementById('keyword-search').value.toLowerCase();
-        if (keyword && !(
-            (item.name && item.name.toLowerCase().includes(keyword)) ||
-            (item.description && item.description.toLowerCase().includes(keyword)) ||
-            (item.alsoknownas && item.alsoknownas.toLowerCase().includes(keyword)) ||
-            (Array.isArray(item.company) && item.company.some(source => source.name.toLowerCase().includes(keyword))) ||
-            (Array.isArray(item.research) && item.research.some(source => source.name.toLowerCase().includes(keyword)))
-        )) { matches = false; }
+        const tokens = tokenizeKeyword(document.getElementById('keyword-search').value);
+        if (tokens.length && !metricMatchesTokens(item, tokens)) { matches = false; }
 
         if (matches && Array.isArray(item.company)) {
             item.company.forEach(source => {
@@ -122,14 +158,8 @@ function extractFrameworks(data, currentFilters) {
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
         if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
 
-        const keyword = document.getElementById('keyword-search').value.toLowerCase();
-        if (keyword && !(
-            (item.name && item.name.toLowerCase().includes(keyword)) ||
-            (item.description && item.description.toLowerCase().includes(keyword)) ||
-            (Array.isArray(item.company) && item.company.some(source => source.name.toLowerCase().includes(keyword))) ||
-            (Array.isArray(item.research) && item.research.some(source => source.name.toLowerCase().includes(keyword))) ||
-            (item.alsoknownas && item.alsoknownas.toLowerCase().includes(keyword))
-        )) { matches = false; }
+        const tokens = tokenizeKeyword(document.getElementById('keyword-search').value);
+        if (tokens.length && !metricMatchesTokens(item, tokens)) { matches = false; }
 
         if (matches && Array.isArray(item.research)) {
             item.research.forEach(source => {
@@ -156,7 +186,7 @@ function populateFrameworkDropdown(frameworks, selectedFramework) {
     frameworks.forEach(framework => {
         const option = document.createElement('option');
         option.value = framework;
-        option.textContent = framework === 'all' ? 'No research framework selected' : framework;
+        option.textContent = framework === 'all' ? 'No research framework selected' : framework.replace(/\s*Framework\s*$/i, '');
         dropdown.appendChild(option);
     });
 
@@ -194,7 +224,7 @@ function getMinMentionsThreshold(percentileFilter) {
 
 // Filter data and redraw chart
 function filterData() {
-    const keyword = document.getElementById('keyword-search').value.toLowerCase();
+    const searchTokens = tokenizeKeyword(document.getElementById('keyword-search').value);
     const specificCompany = activeFilters.specificCompany;
     const specificFramework = activeFilters.specificFramework;
     const minMentions = getMinMentionsThreshold(activeFilters.minMentions);
@@ -215,17 +245,10 @@ function filterData() {
             const eocTiers = { 'Easy': ['Easy'], 'Moderate': ['Easy', 'Moderate'], 'Complex': ['Easy', 'Moderate', 'Complex'] };
             if (!eocTiers[activeFilters.easeOfCollection]?.includes(item.ease_of_collection)) { matches = false; }
         }
-
         if (specificCompany !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.name === specificCompany))) { matches = false; }
         if (specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(source => source.name === specificFramework))) { matches = false; }
 
-        if (keyword && !(
-            (item.name && item.name.toLowerCase().includes(keyword)) ||
-            (item.description && item.description.toLowerCase().includes(keyword)) ||
-            (item.alsoknownas && item.alsoknownas.toLowerCase().includes(keyword)) ||
-            (Array.isArray(item.company) && item.company.some(source => source.name.toLowerCase().includes(keyword))) ||
-            (Array.isArray(item.research) && item.research.some(source => source.name.toLowerCase().includes(keyword)))
-        )) { matches = false; }
+        if (searchTokens.length && !metricMatchesTokens(item, searchTokens)) { matches = false; }
 
         if (item.value !== undefined && item.value < minMentions) { matches = false; }
 
@@ -293,6 +316,7 @@ function filterData() {
     updateClearFiltersVisibility(actualMatchingMetrics.length);
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof refreshCompareValueDropdowns === 'function') refreshCompareValueDropdowns();
+    if (typeof loadSavedComparisonsFromLocalStorage === 'function') loadSavedComparisonsFromLocalStorage();
 }
 
 // Show/hide "Clear all filters" buttons based on whether the full list is shown
@@ -325,6 +349,7 @@ function onUserFilterChange() {
     }
     additiveBlankCanvas = false;
     filterData();
+    logEvent(TELEMETRY.FILTER_CHANGED, { activeFilters: Object.assign({}, activeFilters), resultCount: filteredData.filter(m => m.type).length });
 }
 
 // Set active button style
@@ -357,10 +382,21 @@ function clearAllFilters() {
         if (btn.dataset.filter === 'all') { btn.classList.add('active'); }
     });
     document.getElementById('keyword-search').value = '';
+    const clearBtn = document.getElementById('keyword-clear');
+    if (clearBtn) clearBtn.style.display = 'none';
     document.getElementById('focus-dropdown').value = 'all';
-    document.getElementById('company-dropdown').value = 'all';
+    const companyDropdown = document.getElementById('company-dropdown');
+    companyDropdown.value = 'all';
+    if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
     document.getElementById('research-dropdown').value = 'all';
+    const colorBySelect = document.getElementById('color-by-select');
+    if (colorBySelect && colorBySelect.value !== 'categorization') {
+        colorBySelect.value = 'categorization';
+        currentColorBy = 'categorization';
+        if (typeof updateColorLegend === 'function') updateColorLegend('categorization');
+    }
     filterData();
+    logEvent(TELEMETRY.FILTERS_CLEARED, { shortlistCount: clickedMetrics.length });
 }
 
 // Reset the other source filter (company/framework are mutually exclusive; focus is independent)
@@ -371,7 +407,9 @@ function resetOtherSourceFilters(except) {
     }
     if (except !== 'specificCompany') {
         activeFilters.specificCompany = 'all';
-        document.getElementById('company-dropdown').value = 'all';
+        const companyDropdown = document.getElementById('company-dropdown');
+        companyDropdown.value = 'all';
+        if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
         // Also reset company size when company is reset
         activeFilters.companySize = 'all';
         document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
@@ -435,10 +473,37 @@ document.getElementById('clear-filters').addEventListener('click', function() {
     noMetricsMessage.style.display = 'none';
 });
 
-document.getElementById('keyword-search').addEventListener('input', onUserFilterChange);
+document.getElementById('keyword-search').addEventListener('input', function() {
+    const clearBtn = document.getElementById('keyword-clear');
+    if (clearBtn) clearBtn.style.display = this.value ? '' : 'none';
+    onUserFilterChange();
+});
+document.getElementById('keyword-clear').addEventListener('click', function() {
+    document.getElementById('keyword-search').value = '';
+    this.style.display = 'none';
+    onUserFilterChange();
+});
 
 document.getElementById('color-by-select').addEventListener('change', function() {
     currentColorBy = this.value;
     createChart(filteredData);
     updateColorLegend(currentColorBy);
+    logEvent(TELEMETRY.COLORBY_CHANGED, { value: this.value });
+});
+
+(function () {
+    let kwTimer = null;
+    document.getElementById('keyword-search').addEventListener('input', function () {
+        clearTimeout(kwTimer);
+        kwTimer = setTimeout(function () {
+            const kw = document.getElementById('keyword-search').value.trim();
+            if (kw.length > 0) logEvent(TELEMETRY.KEYWORD_SEARCH, { query: kw, length: kw.length, resultCount: filteredData.filter(m => m.type).length });
+        }, 600);
+    });
+}());
+
+// Set button title attributes from DIMENSION_TOOLTIPS (single source of truth shared with step 2)
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    const key = FILTER_TO_TOOLTIP_KEY[btn.dataset.filter] || btn.dataset.filter;
+    if (DIMENSION_TOOLTIPS[key]) btn.title = DIMENSION_TOOLTIPS[key];
 });

@@ -1,7 +1,9 @@
 // ─── 3-step progress bar ───────────────────────────────────────────────────────
 
 function switchToStep(step) {
+    const prevStep = currentStep;
     currentStep = step;
+    logEvent(TELEMETRY.STEP_CHANGE, { from: prevStep, to: step, shortlistCount: clickedMetrics.length });
 
     // Update active state on step buttons
     document.querySelectorAll('.step-btn').forEach(btn => {
@@ -27,6 +29,16 @@ function switchToStep(step) {
     // Hide inline mode picker when leaving Explore step
     const exploreStartView = document.getElementById('explore-start-view');
     if (exploreStartView && step !== STEP.EXPLORE) exploreStartView.style.display = 'none';
+
+    // Blur only applies on step 1 when no mode has been chosen
+    const leftContainer = document.querySelector('.left-container');
+    if (leftContainer) {
+        if (step !== STEP.EXPLORE) {
+            leftContainer.classList.remove('chart-blurred');
+        } else if (typeof modeChosen !== 'undefined' && !modeChosen) {
+            leftContainer.classList.add('chart-blurred');
+        }
+    }
 
     // Hide/show explore messages (only in Explore step)
     const msgs = ['no-metrics-message', 'additive-mode-message', 'clear-filters-chart'];
@@ -99,7 +111,7 @@ function updateStepBar() {
             }
         } else if (currentStep === STEP.NEXTSTEPS) {
             if (hasShortlist) {
-                countEl.textContent = `${capturing + planned} metrics in your shortlist`;
+                countEl.textContent = `${capturing + planned} metrics in my shortlist`;
                 if (sepCount) sepCount.style.display = '';
             } else {
                 countEl.textContent = '';
@@ -116,7 +128,7 @@ function updateStepBar() {
             const parts = [];
             if (capturing > 0) parts.push(`${capturing} already tracking`);
             if (planned > 0)   parts.push(`${planned} planned to track`);
-            shortlistEl.textContent = 'Your shortlist: ' + parts.join(', ');
+            shortlistEl.textContent = 'My shortlist: ' + parts.join(', ');
             if (sepShortlist) sepShortlist.style.display = '';
         } else {
             shortlistEl.textContent = '';
@@ -149,8 +161,8 @@ function getStepHint(hasShortlist) {
         return 'Select two profiles to compare using the controls on the right';
     }
     if (currentStep === STEP.NEXTSTEPS) {
-        if (hasShortlist) return 'Review and export your shortlist';
-        return 'Go back to explore and mark metrics to build your shortlist';
+        if (hasShortlist) return 'Review and export my shortlist';
+        return 'Go back to explore and mark metrics to build my shortlist';
     }
     return '';
 }
@@ -161,3 +173,51 @@ document.querySelectorAll('.step-btn').forEach(btn => {
         switchToStep(btn.dataset.step);
     });
 });
+
+// Wire next/back panel buttons
+document.getElementById('btn-go-compare')?.addEventListener('click', () => switchToStep(STEP.COMPARE));
+document.getElementById('btn-go-nextsteps')?.addEventListener('click', () => switchToStep(STEP.NEXTSTEPS));
+document.getElementById('btn-back-explore')?.addEventListener('click', () => switchToStep(STEP.EXPLORE));
+document.getElementById('btn-back-compare')?.addEventListener('click', () => switchToStep(STEP.COMPARE));
+
+// ─── Shortlist hover popup ────────────────────────────────────────────────────
+
+(function () {
+    const trigger = document.getElementById('step-shortlist-summary');
+    const popup   = document.getElementById('shortlist-hover-popup');
+    if (!trigger || !popup) return;
+
+    function showPopup() {
+        const byName = (a, b) => a.name.localeCompare(b.name);
+        const capturing = clickedMetrics.filter(m => m.collectionStatus === 'capturing').sort(byName);
+        const planned   = clickedMetrics.filter(m => m.collectionStatus === 'planning').sort(byName);
+        if (capturing.length === 0 && planned.length === 0) return;
+
+        let html = '';
+        if (capturing.length > 0) {
+            html += `<div class="shortlist-hover-popup-label tracking"><span class="shortlist-hover-popup-icon shortlist-hover-popup-icon--tracking">✓</span>Already tracking</div>`;
+            capturing.forEach(m => { html += `<div class="shortlist-hover-popup-metric">${m.name}</div>`; });
+        }
+        if (capturing.length > 0 && planned.length > 0) html += '<hr>';
+        if (planned.length > 0) {
+            html += `<div class="shortlist-hover-popup-label planned"><span class="shortlist-hover-popup-icon shortlist-hover-popup-icon--planned">+</span>Planned to track</div>`;
+            planned.forEach(m => { html += `<div class="shortlist-hover-popup-metric">${m.name}</div>`; });
+        }
+        popup.innerHTML = html;
+
+        const rect = trigger.getBoundingClientRect();
+        const popupWidth = 260;
+        let left = rect.left;
+        if (left + popupWidth > window.innerWidth - 8) left = window.innerWidth - popupWidth - 8;
+        popup.style.top  = (rect.bottom + 6) + 'px';
+        popup.style.left = left + 'px';
+        popup.classList.add('visible');
+    }
+
+    function hidePopup() {
+        popup.classList.remove('visible');
+    }
+
+    trigger.addEventListener('mouseenter', showPopup);
+    trigger.addEventListener('mouseleave', hidePopup);
+})();
