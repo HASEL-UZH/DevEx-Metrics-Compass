@@ -28,7 +28,12 @@ function anonymize_ip(string $ip): string {
 function check_origin(): void {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
     $host   = $_SERVER['HTTP_HOST']   ?? '';
-    if ($origin !== '' && strpos($origin, $host) === false) {
+    if ($origin === '') return;
+    $parsed     = parse_url($origin);
+    $originHost = isset($parsed['port'])
+        ? ($parsed['host'] ?? '') . ':' . $parsed['port']
+        : ($parsed['host'] ?? '');
+    if ($originHost !== $host) {
         http_response_code(403);
         echo json_encode(['success' => false, 'error' => 'Forbidden']);
         exit;
