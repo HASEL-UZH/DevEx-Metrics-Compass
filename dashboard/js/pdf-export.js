@@ -449,6 +449,6 @@ async function downloadPdf() {
         win.document.close();
         setTimeout(() => win.print(), 600);
     } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Export PDF'; }
+        if (btn) { btn.disabled = false; btn.textContent = 'Export PDF report'; }
     }
 }

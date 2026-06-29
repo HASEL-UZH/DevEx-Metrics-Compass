@@ -208,6 +208,7 @@ function renderSavedComparisons() {
     el.style.display = '';
     el.innerHTML = `
         <div class="controls-title controls-title--download">Saved comparisons</div>
+        <p class="filter-description">Comparisons you've saved in Step 2 will be added to the PDF report. You may remove them here:</p>
         <div class="ns-saved-comparisons-list">${cards}</div>
     `;
 

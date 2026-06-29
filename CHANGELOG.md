@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-29 — Comparison legend, UI refinements, and security fix
+
+- Comparison sidebar legend now shows "Left (type) VS Right (type)" instead of item counts, using violet/green coloring to match the compare view
+- Blur effect on the chart is now limited to step 1 only (while "How would you like to start?" is shown)
+- Unmapped source references are now hidden in metric popups and next-steps cards
+- Security: replaced substring-based `check_origin()` host check with `parse_url()` exact match to prevent CSRF bypass (e.g. `evil-hasel.dev` no longer passes when the server host is `hasel.dev`)
+
 ## 2026-06-19 — Anonymized telemetry logging
 
 - Added server-side telemetry logger (`api/telemetry.php`) that records anonymized events (IP last octet zeroed, no cookies, ephemeral session ID)
