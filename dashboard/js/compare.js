@@ -371,7 +371,7 @@ function updateSaveButton() {
     const key = `${leftType}:${leftValue}|${rightType}:${rightValue}`;
     const alreadySaved = savedComparisons.some(c => `${c.leftType}:${c.leftValue}|${c.rightType}:${c.rightValue}` === key);
 
-    btn.textContent = alreadySaved ? 'Saved to PDF' : 'Save comparison to PDF';
+    btn.textContent = alreadySaved ? 'Saved to PDF Report' : 'Save comparison to PDF Report';
     btn.disabled = alreadySaved;
     btn.classList.toggle('compare-save-btn--saved', alreadySaved);
 

@@ -2,14 +2,12 @@
 // On localhost, logs to console instead of posting (PHP not available locally).
 
 (function () {
-    const widget      = document.getElementById('feedback-widget');
     const expand      = document.getElementById('feedback-expand');
     const thumbBtns   = document.querySelectorAll('.feedback-thumb-btn');
     const textarea    = document.getElementById('feedback-comment');
     const submitBtn   = document.getElementById('feedback-submit');
     const thanks      = document.getElementById('feedback-thanks');
     const reportLink  = document.getElementById('feedback-report-missing');
-    const footerLink  = document.getElementById('openFeedbackFooter');
 
     let selectedRating = null;
 
@@ -22,7 +20,6 @@
         reportLink.classList.add('hidden');
         submitBtn.classList.remove('hidden');
         textarea.classList.remove('hidden');
-        widget.classList.remove('feedback-widget--highlight');
     }
 
     function selectRating(rating) {
@@ -124,14 +121,4 @@
     textarea.addEventListener('keydown', e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitFeedback();
     });
-
-    if (footerLink) {
-        footerLink.addEventListener('click', e => {
-            e.preventDefault();
-            expand.classList.remove('hidden');
-            reportLink.classList.add('hidden');
-            widget.classList.add('feedback-widget--highlight');
-            textarea.focus();
-        });
-    }
 }());

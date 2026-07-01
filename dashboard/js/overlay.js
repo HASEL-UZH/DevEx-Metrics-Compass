@@ -130,21 +130,6 @@ document.getElementById('start-exploring-btn').addEventListener('click', () => {
     showExploreStartView();
 });
 
-// ─── Welcome step strip: click to jump to a step ─────────────────────────────
-
-document.querySelectorAll('.welcome-step-item[data-step]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const step = btn.dataset.step;
-        myOverlay.style.display = 'none';
-        if (step === STEP.EXPLORE) {
-            if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
-            if (!modeChosen) showExploreStartView();
-        } else {
-            switchToStep(step);
-        }
-    });
-});
-
 // ─── Inline mode selection buttons (in left panel) ───────────────────────────
 
 document.getElementById('start-assessment-inline-btn').addEventListener('click', () => {

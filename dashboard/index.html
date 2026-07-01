@@ -20,7 +20,10 @@
     <!-- 3-step progress bar -->
     <div id="step-bar" class="step-bar">
         <div class="step-bar-top">
-            <span class="step-bar-title">DevEx Metrics Compass</span>
+            <span class="step-bar-brand">
+                <span data-compass-size="22"></span>
+                <span class="step-bar-title">DevEx Metrics Compass</span>
+            </span>
             <div class="step-bar-steps">
             <button class="step-btn step-btn--active" id="step-btn-explore" data-step="explore">
                 <span class="step-btn-num">1</span>
@@ -42,8 +45,6 @@
             <span id="step-hint" class="step-meta-action"></span>
             <span class="step-meta-sep" id="step-sep-count">·</span>
             <span id="step-metric-count" class="step-meta-count"></span>
-            <span class="step-meta-sep" id="step-sep-shortlist" style="display:none">·</span>
-            <span id="step-shortlist-summary" class="step-meta-shortlist"></span>
         </div>
     </div>
 
@@ -379,8 +380,26 @@
     </div>
 
     <footer>
-        <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openFeedbackFooter">Give feedback</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report a missing metric</a></div>
-        <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
+        <div class="footer-content">
+            <div class="footer-left">
+                <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report a missing metric</a></div>
+                <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
+            </div>
+            <span class="footer-divider"></span>
+            <div class="footer-feedback">
+                <span class="feedback-widget-label">Is this useful?</span>
+                <div class="feedback-widget-btns">
+                    <button class="feedback-thumb-btn" data-rating="up" title="Helpful">&#x1F44D;</button>
+                    <button class="feedback-thumb-btn" data-rating="down" title="Not helpful">&#x1F44E;</button>
+                </div>
+            </div>
+        </div>
+        <div id="feedback-expand" class="feedback-expand hidden">
+            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" maxlength="500"></textarea>
+            <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
+            <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
+            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report a missing metric</a>
+        </div>
     </footer>
 
     <!-- Overlay containing the maturity assessment and landing page -->
@@ -399,32 +418,33 @@
                     &mdash; spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
                     and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
                 </p>
+                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
+                <p class="welcome-steps-intro">Through three steps, the Compass guides you from exploring the full landscape to a concrete implementation plan:</p>
                 <div class="welcome-steps-strip">
-                    <button class="welcome-step-item" data-step="explore">
+                    <div class="welcome-step-item">
                         <div class="welcome-step-pill">
                             <span class="welcome-step-num">1</span>
                             <span class="welcome-step-name">Explore Metrics</span>
                         </div>
                         <p class="welcome-step-desc">Filter 120+ metrics by company, framework, maturity, data collection type or outcome goal. Build a shortlist of what you already track and what you plan to add.</p>
-                    </button>
+                    </div>
                     <span class="welcome-step-arrow">→</span>
-                    <button class="welcome-step-item" data-step="compare">
+                    <div class="welcome-step-item">
                         <div class="welcome-step-pill">
                             <span class="welcome-step-num">2</span>
                             <span class="welcome-step-name">Compare Metrics</span>
                         </div>
                         <p class="welcome-step-desc">Compare frameworks like SPACE vs. DX Core 4, or companies like Microsoft vs. Google, side by side. Spot overlaps, differences, and what others track that you don't.</p>
-                    </button>
+                    </div>
                     <span class="welcome-step-arrow">→</span>
-                    <button class="welcome-step-item" data-step="nextsteps">
+                    <div class="welcome-step-item">
                         <div class="welcome-step-pill">
                             <span class="welcome-step-num">3</span>
                             <span class="welcome-step-name">Review & Implement Metrics</span>
                         </div>
                         <p class="welcome-step-desc">Review my shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
-                    </button>
+                    </div>
                 </div>
-                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
                 <button class="welcome-cta-btn" id="start-exploring-btn">Start exploring metrics</button>
                 <div class="welcome-provenance-group">
                     <div class="welcome-provenance-tabs">
@@ -768,24 +788,20 @@
     <div id="custom-tooltip" class="custom-tooltip"></div>
     <div id="custom-tooltip-2" class="custom-tooltip"></div>
 
-    <!-- Hover popup for the shortlist summary in the title bar -->
+    <!-- Hover popup for the shortlist pills in the title bar -->
     <div id="shortlist-hover-popup" class="shortlist-hover-popup"></div>
 
-    <!-- Feedback widget: fixed top-right, always visible -->
-    <div id="feedback-widget" class="feedback-widget">
-        <div class="feedback-widget-top">
-            <span class="feedback-widget-label">Is this useful?</span>
-            <div class="feedback-widget-btns">
-                <button class="feedback-thumb-btn" data-rating="up" title="Helpful">&#x1F44D;</button>
-                <button class="feedback-thumb-btn" data-rating="down" title="Not helpful">&#x1F44E;</button>
-            </div>
-        </div>
-        <div id="feedback-expand" class="feedback-expand hidden">
-            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" maxlength="500"></textarea>
-            <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
-            <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
-            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report a missing metric</a>
-        </div>
+    <!-- Shortlist indicator: fixed top-right, always visible -->
+    <div id="shortlist-pills" class="shortlist-pills" style="display:none">
+        <span class="shortlist-pills-label">My metrics shortlist:</span>
+        <span id="shortlist-pill-tracking" class="shortlist-pill shortlist-pill--tracking" style="display:none">
+            <span class="shortlist-pill-icon">&check;</span>
+            <span id="shortlist-pill-tracking-count">0</span> already tracking
+        </span>
+        <span id="shortlist-pill-planned" class="shortlist-pill shortlist-pill--planned" style="display:none">
+            <span class="shortlist-pill-icon">+</span>
+            <span id="shortlist-pill-planned-count">0</span> planned to track
+        </span>
     </div>
 
     <!-- Report-metric overlay -->

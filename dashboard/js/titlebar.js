@@ -1,5 +1,15 @@
 // ─── 3-step progress bar ───────────────────────────────────────────────────────
 
+// Previous shortlist counts, used to detect changes and trigger the pill-bump animation
+let prevCapturing = null;
+let prevPlanned   = null;
+
+function bumpPill(el) {
+    el.classList.remove('shortlist-pill--bump');
+    void el.offsetWidth; // force reflow so the animation restarts
+    el.classList.add('shortlist-pill--bump');
+}
+
 function switchToStep(step) {
     const prevStep = currentStep;
     currentStep = step;
@@ -120,21 +130,27 @@ function updateStepBar() {
         }
     }
 
-    // 2 — Shortlist breakdown (visible in all steps when shortlist has items)
-    const shortlistEl  = document.getElementById('step-shortlist-summary');
-    const sepShortlist = document.getElementById('step-sep-shortlist');
-    if (shortlistEl) {
-        if (hasShortlist) {
-            const parts = [];
-            if (capturing > 0) parts.push(`${capturing} already tracking`);
-            if (planned > 0)   parts.push(`${planned} planned to track`);
-            shortlistEl.textContent = 'My shortlist: ' + parts.join(', ');
-            if (sepShortlist) sepShortlist.style.display = '';
-        } else {
-            shortlistEl.textContent = '';
-            if (sepShortlist) sepShortlist.style.display = 'none';
+    // 2 — Shortlist pills (top-right indicator, visible whenever the shortlist has items)
+    const pillsWrap     = document.getElementById('shortlist-pills');
+    const trackingPill  = document.getElementById('shortlist-pill-tracking');
+    const plannedPill   = document.getElementById('shortlist-pill-planned');
+    const trackingCount = document.getElementById('shortlist-pill-tracking-count');
+    const plannedCount  = document.getElementById('shortlist-pill-planned-count');
+    if (pillsWrap) {
+        pillsWrap.style.display = hasShortlist ? '' : 'none';
+        if (trackingPill && trackingCount) {
+            trackingPill.style.display = capturing > 0 ? '' : 'none';
+            trackingCount.textContent = capturing;
+            if (capturing > 0 && prevCapturing !== null && capturing !== prevCapturing) bumpPill(trackingPill);
+        }
+        if (plannedPill && plannedCount) {
+            plannedPill.style.display = planned > 0 ? '' : 'none';
+            plannedCount.textContent = planned;
+            if (planned > 0 && prevPlanned !== null && planned !== prevPlanned) bumpPill(plannedPill);
         }
     }
+    prevCapturing = capturing;
+    prevPlanned   = planned;
 
     // Highlight Step 3 button when shortlist has content
     const step3Btn = document.getElementById('step-btn-nextsteps');
@@ -154,7 +170,7 @@ function getStepHint(hasShortlist) {
 
     if (currentStep === STEP.EXPLORE) {
         if (hasShortlist) return 'Keep exploring and marking metrics you already track or plan to track';
-        return 'Filter and mark metrics you already track or plan to track';
+        return 'Filter to your context, then mark what you track or plan to track';
     }
     if (currentStep === STEP.COMPARE) {
         if (isComparing) return 'Compare profiles and mark metrics you already track or plan to track';
@@ -183,8 +199,10 @@ document.getElementById('btn-back-compare')?.addEventListener('click', () => swi
 // ─── Shortlist hover popup ────────────────────────────────────────────────────
 
 (function () {
-    const trigger = document.getElementById('step-shortlist-summary');
-    const popup   = document.getElementById('shortlist-hover-popup');
+    const trigger      = document.getElementById('shortlist-pills');
+    const popup        = document.getElementById('shortlist-hover-popup');
+    const trackingPill = document.getElementById('shortlist-pill-tracking');
+    const plannedPill  = document.getElementById('shortlist-pill-planned');
     if (!trigger || !popup) return;
 
     function showPopup() {
@@ -205,11 +223,19 @@ document.getElementById('btn-back-compare')?.addEventListener('click', () => swi
         }
         popup.innerHTML = html;
 
-        const rect = trigger.getBoundingClientRect();
+        // Center the popup over the pills only (excluding the "My metrics shortlist:" label)
+        const pillRects = [trackingPill, plannedPill]
+            .filter(el => el && el.offsetParent !== null)
+            .map(el => el.getBoundingClientRect());
+        const rects = pillRects.length > 0 ? pillRects : [trigger.getBoundingClientRect()];
+        const spanLeft  = Math.min(...rects.map(r => r.left));
+        const spanRight = Math.max(...rects.map(r => r.right));
+        const spanBottom = Math.max(...rects.map(r => r.bottom));
+
         const popupWidth = 260;
-        let left = rect.left;
-        if (left + popupWidth > window.innerWidth - 8) left = window.innerWidth - popupWidth - 8;
-        popup.style.top  = (rect.bottom + 6) + 'px';
+        let left = spanLeft + (spanRight - spanLeft - popupWidth) / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - popupWidth - 8));
+        popup.style.top  = (spanBottom + 6) + 'px';
         popup.style.left = left + 'px';
         popup.classList.add('visible');
     }

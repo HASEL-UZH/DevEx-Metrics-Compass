@@ -757,6 +757,31 @@ footer a {
     color: #999;
 }
 
+.footer-content {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.footer-divider {
+    width: 1px;
+    background: #ccc;
+}
+
+.footer-feedback {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: center;
+}
+
 footer a:hover {
     color: #1B1AFF;
 }
@@ -1007,12 +1032,16 @@ a {
     text-align: center;
 }
 
+.overlay-screen p.welcome-steps-intro {
+    margin-bottom: 8px;
+}
+
 /* Welcome screen 3-step strip */
 .welcome-steps-strip {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    margin: 20px 0 20px;
+    margin: 8px 0 20px;
     justify-content: center;
     width: 90%;
     max-width: 90%;
@@ -1028,16 +1057,8 @@ a {
     border-radius: 14px;
     padding: 16px 24px 18px;
     flex: 1;
-    cursor: pointer;
-    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s;
     font-family: inherit;
     font-size: inherit;
-}
-
-.welcome-step-item:hover {
-    box-shadow: 0 6px 20px rgba(27, 26, 255, 0.12);
-    transform: translateY(-2px);
-    border-color: #1B1AFF;
 }
 
 .welcome-step-pill {
@@ -2400,6 +2421,13 @@ a {
     gap: 24px;
 }
 
+.step-bar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
 .step-bar-title {
     font-size: 20px;
     font-weight: 700;
@@ -2541,6 +2569,7 @@ a {
 .step-meta-action {
     color: #1B1AFF;
     font-weight: 700;
+    font-size: 13.5px;
 }
 
 .step-meta-count {
@@ -2553,10 +2582,57 @@ a {
     user-select: none;
 }
 
-.step-meta-shortlist {
-    color: #999;
-    font-weight: 400;
+.shortlist-pills {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: help;
+}
+
+.shortlist-pills-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.shortlist-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: transform 0.15s ease;
+}
+
+.shortlist-pill--tracking {
+    background: #DCFCE7;
+    color: #16A34A;
+}
+
+.shortlist-pill--planned {
+    background: #DBEAFE;
+    color: #1B1AFF;
+}
+
+.shortlist-pill-icon {
+    font-weight: 700;
+}
+
+.shortlist-pill--bump {
+    animation: shortlist-pill-bump 0.3s ease;
+}
+
+@keyframes shortlist-pill-bump {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
 .shortlist-hover-popup {
@@ -2644,37 +2720,9 @@ a {
 
 /* ─── Feedback widget ──────────────────────────────────────────────────── */
 
-.feedback-widget {
-    position: fixed;
-    top: 12px;
-    right: 16px;
-    z-index: 900;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 6px 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 5px;
-    transition: box-shadow 0.2s;
-}
-
-.feedback-widget--highlight {
-    box-shadow: 0 0 0 3px #85B9F2;
-}
-
-.feedback-widget-top {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-}
-
 .feedback-widget-label {
-    font-size: 0.75rem;
-    color: #777;
+    font-size: 11px;
+    color: #999;
 }
 
 .feedback-widget-btns {
@@ -2705,10 +2753,19 @@ a {
 }
 
 .feedback-expand {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    width: 100%;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
 .feedback-textarea {
