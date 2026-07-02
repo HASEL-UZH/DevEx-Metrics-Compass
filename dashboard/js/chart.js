@@ -467,12 +467,14 @@ function showCustomTooltip(metricData, event) {
     const viewportHeight = window.innerHeight;
     const tooltipRect = customTooltip.getBoundingClientRect();
 
-    customTooltip.style.left = (x + tooltipRect.width > viewportWidth - 20)
-        ? `${event.clientX - tooltipRect.width - 15}px`
-        : `${x}px`;
-    customTooltip.style.top = (y + tooltipRect.height > viewportHeight - 20)
-        ? `${event.clientY - tooltipRect.height - 15}px`
-        : `${y}px`;
+    const left = (x + tooltipRect.width > viewportWidth - 20)
+        ? event.clientX - tooltipRect.width - 15
+        : x;
+    const top = (y + tooltipRect.height > viewportHeight - 20)
+        ? event.clientY - tooltipRect.height - 15
+        : y;
+    customTooltip.style.left = `${Math.max(10, left)}px`;
+    customTooltip.style.top = `${Math.max(10, top)}px`;
 
     wireTooltipListeners(customTooltip, metricData, hideCustomTooltip);
 
