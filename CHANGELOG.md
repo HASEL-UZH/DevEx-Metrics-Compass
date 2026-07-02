@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-02 — Fixed incorrect "all planned metrics" collection-effort insight
+
+- The "All planned metrics require significant collection effort" insight chip could fire even when only some planned metrics were actually rated "Complex" (as long as none were rated "Easy"). It now only appears when every planned metric is "Complex"; the existing "Most planned metrics..." chip still covers the 60%+ case.
+
+## 2026-07-02 — First-time hint pointing at a clickable metric
+
+- Added a one-time hint (curved arrow + "click for details" note) pointing at the most-mentioned metric in the current view, to teach that individual metrics in the outer ring are clickable
+- Shown only until the user clicks any metric segment for the first time, then never again (persisted via localStorage)
+
 ## 2026-07-02 — Refined the role-based onboarding flow
 
 - Grouped the filter sidepanel into titled boxes (role status, key filters with active-filter pills, advanced filters, chart coloring), tuned per-role filter visibility and quick questions, and reworded several onboarding prompts based on user feedback

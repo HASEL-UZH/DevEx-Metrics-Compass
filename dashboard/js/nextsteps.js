@@ -242,7 +242,7 @@ function buildInsights(allSelected) {
 
     // 2. No "capturing" metrics yet
     if (plannedInSelected.length > 0 && capturingInSelected.length === 0) {
-        chips.push({ text: 'None of your metrics are being collected yet — pick 1–3 easy ones to start', type: 'action' });
+        chips.push({ text: 'None of your metrics are being collected yet — pick 1-3 easy ones to start', type: 'action' });
     }
 
     // 3. Top 10% by value
@@ -406,7 +406,7 @@ function buildInsights(allSelected) {
     if (plannedInSelected.length >= 2) {
         const easyPlanned    = plannedInSelected.filter(m => m.ease_of_collection?.toLowerCase() === 'easy').length;
         const complexPlanned = plannedInSelected.filter(m => m.ease_of_collection?.toLowerCase() === 'complex').length;
-        if (easyPlanned === 0 && complexPlanned >= 1) {
+        if (complexPlanned === plannedInSelected.length) {
             chips.push({ text: `All planned metrics require significant collection effort`, type: 'neutral' });
         } else if (complexPlanned > 0 && complexPlanned / plannedInSelected.length >= 0.6) {
             chips.push({ text: `Most planned metrics require significant collection effort`, type: 'neutral' });
