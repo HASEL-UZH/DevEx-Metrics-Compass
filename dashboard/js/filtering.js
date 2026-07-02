@@ -289,6 +289,7 @@ function filterData() {
 
     if (actualMatchingMetrics.length === 0) {
         if (chart) { chart.dispose(); chart = null; }
+        if (typeof hideMetricClickHint === 'function') hideMetricClickHint();
         noMetricsMessage.style.display = 'block';
         updateMetricsCount(actualMatchingMetrics);
     } else {

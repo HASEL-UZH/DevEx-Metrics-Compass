@@ -57,6 +57,9 @@ function switchToStep(step) {
         if (el && step !== STEP.EXPLORE) el.style.display = 'none';
     });
 
+    // The metric-click hint lives outside #container, so it needs hiding explicitly
+    if (step !== STEP.EXPLORE && typeof hideMetricClickHint === 'function') hideMetricClickHint();
+
     // Right panel: show the right controls
     const explorePanel   = document.getElementById('explore-right-panel');
     const comparePanel   = document.getElementById('compare-panel');

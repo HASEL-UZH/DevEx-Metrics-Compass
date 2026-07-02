@@ -161,6 +161,108 @@ function addMetricCounts(data) {
     }
 }
 
+// ─── First-time hint: points an arrow at a metric to teach that the outer ring is clickable ──
+
+const METRIC_HINT_DISMISSED_KEY = 'metricClickHintDismissed';
+
+function dismissMetricClickHint() {
+    localStorage.setItem(METRIC_HINT_DISMISSED_KEY, '1');
+    hideMetricClickHint();
+}
+
+function hideMetricClickHint() {
+    const bubble = document.getElementById('metric-hint-bubble');
+    const svg = document.getElementById('metric-hint-arrow-svg');
+    if (bubble) bubble.style.display = 'none';
+    if (svg) svg.style.display = 'none';
+}
+
+// Labels are rendered via chart.labels().useHtml(true), i.e. as real HTML text nodes
+// inside #container — find the one showing this metric's name so the hint can point
+// at wherever AnyChart actually laid it out (this varies with filters/data/screen size).
+function findMetricLabelEl(name) {
+    return Array.from(document.querySelectorAll('#container *')).find(el =>
+        el.children.length === 0 && el.textContent.trim() === name && el.getClientRects().length > 0
+    );
+}
+
+function showMetricClickHint(data) {
+    if (localStorage.getItem(METRIC_HINT_DISMISSED_KEY) === '1') return;
+
+    const candidates = data.filter(d => d.type);
+    if (!candidates.length) { hideMetricClickHint(); return; }
+    const target = candidates.reduce((best, d) => (d.value || 0) > (best.value || 0) ? d : best);
+
+    // AnyChart hides labels that don't fit their arc — if the target's label isn't
+    // actually rendered, skip the hint rather than pointing at nothing.
+    const labelEl = findMetricLabelEl(target.name);
+    const leftContainer = document.querySelector('.left-container');
+    const chartEl = document.getElementById('container');
+    const bubble = document.getElementById('metric-hint-bubble');
+    const svg = document.getElementById('metric-hint-arrow-svg');
+    const path = document.getElementById('metric-hint-arrow-path');
+    const textEl = document.getElementById('metric-hint-text');
+    if (!labelEl || !leftContainer || !chartEl || !bubble || !svg || !path || !textEl) { hideMetricClickHint(); return; }
+
+    const containerRect = leftContainer.getBoundingClientRect();
+    const chartRect = chartEl.getBoundingClientRect();
+    const labelRect = labelEl.getBoundingClientRect();
+
+    const labelCenterX = labelRect.left + labelRect.width / 2 - containerRect.left;
+    const labelCenterY = labelRect.top + labelRect.height / 2 - containerRect.top;
+    const centerX = chartRect.left + chartRect.width / 2 - containerRect.left;
+    const centerY = chartRect.top + chartRect.height / 2 - containerRect.top;
+
+    // Direction from the sunburst's center out through the target label — used both
+    // to place the text just outside the ring, and to find where the arrow should
+    // touch the label's box (its outer edge, not the text itself).
+    let dx = labelCenterX - centerX, dy = labelCenterY - centerY;
+    const dist = Math.hypot(dx, dy) || 1;
+    dx /= dist; dy /= dist;
+
+    // Point where a ray from the label's center in direction (dx, dy) exits its
+    // bounding box — i.e. the edge of the metric's box facing the hint text.
+    const halfW = labelRect.width / 2, halfH = labelRect.height / 2;
+    const edgeT = Math.min(Math.abs(dx) > 1e-6 ? halfW / Math.abs(dx) : Infinity, Math.abs(dy) > 1e-6 ? halfH / Math.abs(dy) : Infinity);
+    const tipX = labelCenterX + dx * edgeT;
+    const tipY = labelCenterY + dy * edgeT;
+
+    textEl.textContent = 'click for details';
+    bubble.style.display = 'flex';
+    bubble.style.left = '0px';
+    bubble.style.top = '0px';
+    const bubbleRect = bubble.getBoundingClientRect();
+
+    const offset = 45;
+    let left = tipX + dx * offset - bubbleRect.width / 2;
+    let top = tipY + dy * offset - bubbleRect.height / 2;
+    left = Math.min(Math.max(left, 10), containerRect.width - bubbleRect.width - 10);
+    top = Math.min(Math.max(top, 10), containerRect.height - bubbleRect.height - 10);
+    bubble.style.left = `${left}px`;
+    bubble.style.top = `${top}px`;
+
+    // Arrow starts from whichever edge of the text box faces back toward the metric.
+    const boxCenterX = left + bubbleRect.width / 2;
+    const boxCenterY = top + bubbleRect.height / 2;
+    const anchorX = boxCenterX - dx * (bubbleRect.width / 2 + 4);
+    const anchorY = boxCenterY - dy * (bubbleRect.height / 2 + 4);
+
+    // Curve the arrow via a control point offset perpendicular to the anchor→tip line,
+    // for a hand-drawn feel instead of a straight ruler line.
+    const midX = (anchorX + tipX) / 2;
+    const midY = (anchorY + tipY) / 2;
+    const perpX = -(tipY - anchorY), perpY = (tipX - anchorX);
+    const perpLen = Math.hypot(perpX, perpY) || 1;
+    const curl = 18;
+    const ctrlX = midX + (perpX / perpLen) * curl;
+    const ctrlY = midY + (perpY / perpLen) * curl;
+
+    svg.setAttribute('width', containerRect.width);
+    svg.setAttribute('height', containerRect.height);
+    svg.style.display = 'block';
+    path.setAttribute('d', `M${anchorX},${anchorY} Q${ctrlX},${ctrlY} ${tipX},${tipY}`);
+}
+
 function createChart(data) {
     if (chart) { chart.dispose(); }
 
@@ -240,9 +342,14 @@ function createChart(data) {
         document.getElementById('container').style.cursor = 'auto';
     });
 
+    chart.listen('chartDraw', function() {
+        showMetricClickHint(data);
+    });
+
     chart.listen('pointClick', function(e) {
         const point = e.point;
         if (point && point.get('type')) {
+            dismissMetricClickHint();
             logEvent(TELEMETRY.METRIC_OPENED, { metricId: point.get('id'), metricName: point.get('name'), currentStep: typeof currentStep !== 'undefined' ? currentStep : null });
             const metricData = {
                 id: point.get('id'),

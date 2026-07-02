@@ -54,6 +54,20 @@
         <div class="left-container">
             <!-- Step 1: Sunburst chart -->
             <div id="container"></div>
+
+            <!-- First-time hint pointing at a metric to teach that the outer ring is clickable -->
+            <svg id="metric-hint-arrow-svg" class="metric-hint-arrow-svg" style="display:none;">
+                <defs>
+                    <marker id="metric-hint-arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L6,3 L0,6 Z" fill="#1B1AFF"></path>
+                    </marker>
+                </defs>
+                <path id="metric-hint-arrow-path" d="" marker-end="url(#metric-hint-arrowhead)"></path>
+            </svg>
+            <div id="metric-hint-bubble" class="metric-hint-bubble" style="display:none;">
+                <span id="metric-hint-text"></span>
+            </div>
+
             <button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
 
             <div id="no-metrics-message" class="centered-message" style="display: none;">
