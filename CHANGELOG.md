@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-02 — Collection maturity filter is now multi-select
+
+- The "Collection maturity" filter (Easy / Moderate / Complex) no longer works cumulatively (e.g. "Moderate" used to also include "Easy" results). Each tier is now an independent toggle, so users can combine any subset (e.g. Easy + Complex) and see exact matches only.
+- Selecting all three tiers automatically collapses back to "All"; deselecting the last active tier also reverts to "All" rather than showing zero results.
+
 ## 2026-07-02 — Fixed incorrect "all planned metrics" collection-effort insight
 
 - The "All planned metrics require significant collection effort" insight chip could fire even when only some planned metrics were actually rated "Complex" (as long as none were rated "Easy"). It now only appears when every planned metric is "Complex"; the existing "Most planned metrics..." chip still covers the 60%+ case.

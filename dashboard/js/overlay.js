@@ -40,10 +40,7 @@ function countMetricsForOption(filterKey, filterValue) {
     return originalData.filter(item => {
         if (!item.type) return false;
         if (hypothetical.dataType !== 'all' && item.type !== hypothetical.dataType && item.type !== 'both') return false;
-        if (hypothetical.easeOfCollection !== 'all') {
-            const eocTiers = { 'Easy': ['Easy'], 'Moderate': ['Easy', 'Moderate'], 'Complex': ['Easy', 'Moderate', 'Complex'] };
-            if (!eocTiers[hypothetical.easeOfCollection]?.includes(item.ease_of_collection)) return false;
-        }
+        if (hypothetical.easeOfCollection !== 'all' && item.ease_of_collection !== hypothetical.easeOfCollection) return false;
         if (hypothetical.focus !== 'all' && item.is_research !== focusFilterValue(hypothetical.focus)) return false;
         if (hypothetical.specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(s => s.name === hypothetical.specificFramework))) return false;
         if (hypothetical.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(s => s.company_size === hypothetical.companySize))) return false;

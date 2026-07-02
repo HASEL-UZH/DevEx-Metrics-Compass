@@ -73,7 +73,11 @@ function transformSources(sourceString, type) {
  * @param {string} [htmlGroupId] - Optional HTML group id to update active states.
  */
 function applySpecificFilter(filterGroup, filterValue, htmlGroupId = null) {
-    activeFilters[filterGroup] = filterValue;
+    if (filterGroup === 'easeOfCollection') {
+        activeFilters.easeOfCollection = filterValue === 'all' ? [] : [filterValue];
+    } else {
+        activeFilters[filterGroup] = filterValue;
+    }
 
     if (htmlGroupId) {
         const buttonsInGroup = document.querySelectorAll(`.filter-btn[data-group="${htmlGroupId}"]`);
@@ -202,7 +206,7 @@ function hasAnyActiveFilter() {
         activeFilters.focus !== 'all' ||
         activeFilters.companySize !== 'all' ||
         activeFilters.outcomeGoals !== 'all' ||
-        activeFilters.easeOfCollection !== 'all' ||
+        activeFilters.easeOfCollection.length > 0 ||
         activeFilters.specificCompany !== 'all' ||
         activeFilters.specificFramework !== 'all' ||
         activeFilters.minMentions !== 'all';
@@ -241,10 +245,7 @@ function filterData() {
         if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) { matches = false; }
         if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) { matches = false; }
         if (activeFilters.outcomeGoals !== 'all' && item.outcome_goals !== activeFilters.outcomeGoals) { matches = false; }
-        if (activeFilters.easeOfCollection !== 'all') {
-            const eocTiers = { 'Easy': ['Easy'], 'Moderate': ['Easy', 'Moderate'], 'Complex': ['Easy', 'Moderate', 'Complex'] };
-            if (!eocTiers[activeFilters.easeOfCollection]?.includes(item.ease_of_collection)) { matches = false; }
-        }
+        if (activeFilters.easeOfCollection.length > 0 && !activeFilters.easeOfCollection.includes(item.ease_of_collection)) { matches = false; }
         if (specificCompany !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.name === specificCompany))) { matches = false; }
         if (specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(source => source.name === specificFramework))) { matches = false; }
 
@@ -373,11 +374,11 @@ function buildActiveFilterPills() {
             applySpecificFilter('outcomeGoals', 'all', 'outcomeGoals'); onUserFilterChange();
         } });
     }
-    if (activeFilters.easeOfCollection !== 'all') {
-        pills.push({ dimension: 'Collection maturity', label: getFilterButtonLabel('easeOfCollection', activeFilters.easeOfCollection), clear: () => {
-            applySpecificFilter('easeOfCollection', 'all', 'easeOfCollection'); onUserFilterChange();
+    activeFilters.easeOfCollection.forEach(tier => {
+        pills.push({ dimension: 'Collection maturity', label: getFilterButtonLabel('easeOfCollection', tier), clear: () => {
+            toggleMaturityFilter(tier); onUserFilterChange();
         } });
-    }
+    });
     if (activeFilters.companySize !== 'all') {
         pills.push({ dimension: 'Company size', label: getFilterButtonLabel('companySize', activeFilters.companySize), clear: () => {
             applySpecificFilter('companySize', 'all', 'companySize'); onUserFilterChange();
@@ -454,6 +455,32 @@ function setActiveButton(activeBtn) {
     }
 }
 
+// Toggle a single maturity tier on/off (multi-select, unlike the other
+// exclusive-select filter groups). Selecting every tier collapses back to
+// "all", and clearing the last active tier also reverts to "all" — the
+// filter never lands on a state that matches zero metrics.
+const MATURITY_TIERS = ['Easy', 'Moderate', 'Complex'];
+function toggleMaturityFilter(value) {
+    if (value === 'all') {
+        activeFilters.easeOfCollection = [];
+    } else {
+        const selected = activeFilters.easeOfCollection;
+        const idx = selected.indexOf(value);
+        if (idx === -1) { selected.push(value); } else { selected.splice(idx, 1); }
+        if (selected.length === MATURITY_TIERS.length) { activeFilters.easeOfCollection = []; }
+    }
+    updateMaturityButtonStates();
+}
+
+// Sync the maturity segmented-control buttons' active state with activeFilters.easeOfCollection
+function updateMaturityButtonStates() {
+    const selected = activeFilters.easeOfCollection;
+    document.querySelectorAll('.filter-btn[data-group="easeOfCollection"]').forEach(btn => {
+        const isAllBtn = btn.dataset.filter === 'all';
+        btn.classList.toggle('active', selected.length === 0 ? isAllBtn : !isAllBtn && selected.includes(btn.dataset.filter));
+    });
+}
+
 // Clear all filters (currentMode is intentionally NOT reset here)
 function clearAllFilters() {
     activeFilters = {
@@ -462,7 +489,7 @@ function clearAllFilters() {
         focus: 'all',
         companySize: 'all',
         outcomeGoals: 'all',
-        easeOfCollection: 'all',
+        easeOfCollection: [],
         specificCompany: 'all',
         specificFramework: 'all',
         minMentions: 'all'
@@ -541,7 +568,11 @@ function applyRoleFilterLayout(role) {
 
 document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', function() {
-        applySpecificFilter(this.dataset.group, this.dataset.filter, this.dataset.group);
+        if (this.dataset.group === 'easeOfCollection') {
+            toggleMaturityFilter(this.dataset.filter);
+        } else {
+            applySpecificFilter(this.dataset.group, this.dataset.filter, this.dataset.group);
+        }
         onUserFilterChange();
     });
 });

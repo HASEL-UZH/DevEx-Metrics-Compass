@@ -3,9 +3,9 @@
 // Shared tooltip texts for filter dimensions — used in step 1 button titles and step 2 diff/sort views
 const DIMENSION_TOOLTIPS = {
     // Maturity (ease_of_collection values)
-    'Easy':     'Getting started: Includes metrics available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.',
-    'Moderate': 'Established: Includes Getting started metrics, plus those requiring combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.',
-    'Complex':  'Advanced: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.',
+    'Easy':     'Getting started: Metrics available out-of-the-box from standard tooling (e.g. code repo, CI, issue tracker) or a single survey question. No custom instrumentation required.',
+    'Moderate': 'Established: Metrics requiring combining data sources, adding a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.',
+    'Complex':  'Advanced: Metrics requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.',
     // Outcome goals
     'Developer Experience':         'Developer Experience: metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).',
     'Product Excellence':           'Product Excellence: metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).',
@@ -55,7 +55,7 @@ let activeFilters = {
     focus: 'all',
     companySize: 'all',
     outcomeGoals: 'all',
-    easeOfCollection: 'all',
+    easeOfCollection: [],
     specificCompany: 'all',
     specificFramework: 'all',
     minMentions: 'all'
@@ -92,7 +92,7 @@ const ROLE_CONFIG = {
         collapsedFilters: ['companySize', 'focus']
     },
     [ROLE.RESEARCHER]: {
-        quickSequence: ['dataType', 'specificFramework', 'focus'],
+        quickSequence: ['dataType', 'specificFramework'],
         keyFilters: ['minMentions', 'dataType', 'specificFramework', 'focus'],
         collapsedFilters: ['specificCompany', 'companySize', 'outcomeGoals', 'aiMetric', 'easeOfCollection']
     }
