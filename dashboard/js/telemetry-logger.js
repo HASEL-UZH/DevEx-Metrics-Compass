@@ -20,6 +20,7 @@ window.TELEMETRY = {
     WIZARD_ABANDONED:            'wizard_abandoned',
     WIZARD_RESTARTED:            'wizard_restarted',
     PREDEFINED_COMPANY_LOADED:   'predefined_company_loaded',
+    PREDEFINED_FRAMEWORK_LOADED: 'predefined_framework_loaded',
     IMPORT_JSON:                 'import_json',
     COMPARE_DIMENSION_CHANGED:   'compare_dimension_changed',
     COMPARE_PRESET_APPLIED:      'compare_preset_applied',

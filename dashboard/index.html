@@ -60,10 +60,6 @@
                 No metrics match the current filters. Adapt or clear the filters.
             </div>
 
-            <div id="additive-mode-message" class="centered-message" style="display: none;">
-                Apply a filter to start discovering metrics.
-            </div>
-
             <!-- Step 2: Diff view (shown in Compare mode) -->
             <div id="diff-view" class="diff-view" style="display:none"></div>
 
@@ -101,78 +97,309 @@
 
             <!-- Entry view: shown before a mode is chosen -->
             <div id="explore-entry-panel">
-                <div class="controls-title">How would you like to start?</div>
-                <div class="explore-entry-cards">
-                    <div class="explore-entry-card">
-                        <div class="explore-entry-card-icon welcome-card-icon--guided">&#10148;</div>
-                        <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">For newcomers to DevEx metrics</div>
-                            <div class="explore-entry-card-title">Guided selection</div>
-                            <div class="explore-entry-card-description">Answer a few questions to get tailored recommendations based on your context.</div>
-                            <button class="overlay-action-button" id="start-assessment-inline-btn">Start guided selection</button>
+
+                <!-- Step 0: role selection -->
+                <div id="role-select-step" class="wizard-step">
+                    <div class="controls-title">What&rsquo;s your role in DevEx measurement?</div>
+                    <div class="explore-entry-cards">
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--guided">🌱</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Newcomer</div>
+                                <div class="explore-entry-card-description">I am new to the space and want to explore metrics that fit my context.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="newcomer">Continue as Newcomer</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--browse">⚙️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Practitioner</div>
+                                <div class="explore-entry-card-description">I have DevEx measurement in place, and want to systematically assess its coverage and benchmark it against frameworks and peers.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="practitioner">Continue as practitioner</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--additive">🔍</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Researcher</div>
+                                <div class="explore-entry-card-description">I am studying DevEx measurement and want to get an overview or identify research gaps.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="researcher">Continue as researcher</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="explore-entry-card">
-                        <div class="explore-entry-card-icon welcome-card-icon--browse">&#8801;</div>
-                        <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">For experienced practitioners</div>
-                            <div class="explore-entry-card-title">Browse all metrics</div>
-                            <div class="explore-entry-card-description">See the full metric catalogue and narrow it down using filters.</div>
-                            <button class="overlay-action-button" id="start-scratch-inline-btn">Show all metrics</button>
-                        </div>
-                    </div>
-                    <div class="explore-entry-card">
-                        <div class="explore-entry-card-icon welcome-card-icon--additive">+</div>
-                        <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">For researchers &amp; systematic explorers</div>
-                            <div class="explore-entry-card-title">Explore by filtering</div>
-                            <div class="explore-entry-card-description">Start with a blank canvas and progressively add metrics that fit your constraints.</div>
-                            <button class="overlay-action-button" id="start-additive-inline-btn">Explore from scratch</button>
-                        </div>
-                    </div>
-                    <div class="explore-entry-card">
-                        <div class="explore-entry-card-icon welcome-card-icon--predefined">&#8645;</div>
-                        <div class="explore-entry-card-body">
-                            <div class="explore-card-persona">For teams aligning with industry peers</div>
-                            <div class="explore-entry-card-title">Start with a predefined list</div>
-                            <div class="explore-entry-card-description">Choose a company from the metrics dataset or resume from a saved export.</div>
-                            <button class="overlay-action-button" id="start-predefined-inline-btn">Use predefined list</button>
-                        </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn" id="skip-wizard-link" type="button">Skip wizard</button>
                     </div>
                 </div>
+
+                <!-- Step 1 (Practitioner/Researcher only): how to get started -->
+                <div id="start-choice-step" class="wizard-step hidden">
+                    <div class="controls-title">How would you like to get started?</div>
+                    <p class="filter-description" id="start-choice-context"></p>
+                    <div class="explore-entry-cards">
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--additive">🔽</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Explore by filtering</div>
+                                <div class="explore-entry-card-description">Answer a couple of quick questions, then progressively add metrics that fit your constraints.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="additive">Explore from scratch</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--framework">⚖️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Benchmark against a company or framework</div>
+                                <div class="explore-entry-card-description">See what a specific company or research framework tracks, compared to your shortlist. Doesn't change your shortlist.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="benchmark">Choose what to benchmark against</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--browse">🗺️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Start from scratch</div>
+                                <div class="explore-entry-card-description">See the full metric catalogue and narrow it down using filters.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="browse">Show all metrics</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--import">📥</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Start from an existing selection</div>
+                                <div class="explore-entry-card-description">Already tracking some of these? Load your own company's metrics from the dataset, or import a previous export.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="existingSelection">Choose how to start</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="role-select-step">&larr; Back to role selection</button>
+                    </div>
+                </div>
+
+                <!-- Question: measurement maturity (Practitioner/Researcher "quick questions" only) -->
+                <div id="q-easeOfCollection-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-easeOfCollection-label">Question</p>
+                    <h2>What is your team's or organization's measurement maturity?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy">
+                            <span class="option-num">🌱</span>
+                            <span class="option-content"><strong>Getting started</strong>: Includes metrics available out-of-the-box from standard tooling (code repo, CI, issue tracker) or a quick survey. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Moderate">
+                            <span class="option-num">⚙️</span>
+                            <span class="option-content"><strong>Established</strong>: Includes Getting started metrics, plus those requiring combining data sources, a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Complex">
+                            <span class="option-num">🔬</span>
+                            <span class="option-content"><strong>Advanced</strong>: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="all">
+                            <span>No specific maturity level, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-easeOfCollection-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: AI-assisted development interest (Practitioner "quick questions" only) -->
+                <div id="q-aiMetric-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-aiMetric-label">Question</p>
+                    <h2>Are you interested in tracking AI-assisted development?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-impact">
+                            <span class="option-num">🎯</span><span class="option-content"><strong>AI impact</strong>: whether AI tools improve delivery speed, code quality, and developer experience.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-utilization">
+                            <span class="option-num">📊</span><span class="option-content"><strong>AI utilization</strong>: how many developers are adopting AI tooling, and how much work is touched by AI.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-cost">
+                            <span class="option-num">💰</span><span class="option-content"><strong>AI cost</strong>: AI spend, license usage, and identifying power users.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="all">
+                            <span>Not right now, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-aiMetric-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: data access (Newcomer, Practitioner, and Researcher) -->
+                <div id="q-dataType-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-dataType-label">Question</p>
+                    <h2>What kinds of DevEx-related data do you have access to?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative">
+                            <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="qualitative">
+                            <span>📋 <strong>Self-reported</strong> (surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="all">
+                            <span>Both / not sure yet, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-dataType-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: outcome goal (Newcomer and Practitioner) -->
+                <div id="q-outcomeGoals-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-outcomeGoals-label">Question</p>
+                    <h2>Do you have a key outcome goal?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
+                            <span class="option-num">🧑‍💻</span><span class="option-content"><strong>Developer Experience</strong>: Metrics about developer well-being, satisfaction, flow/focus, and tooling friction.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Product Excellence" title="Metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">
+                            <span class="option-num">⭐</span><span class="option-content"><strong>Product Excellence</strong>: Metrics about software quality, reliability, and user-facing outcomes.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Organizational Effectiveness" title="Metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">
+                            <span class="option-num">📈</span><span class="option-content"><strong>Organizational Effectiveness</strong>: Metrics about delivery throughput, business outcomes, and resource efficiency.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="all">
+                            <span>No specific goal, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-outcomeGoals-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: research framework (Researcher only) -->
+                <div id="q-specificFramework-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-specificFramework-label">Question</p>
+                    <h2>Do you want to focus on a specific research framework?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="SPACE Framework">
+                            <span class="option-content"><strong>SPACE</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="DORA Framework">
+                            <span class="option-content"><strong>DORA</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="DX Core 4 Framework">
+                            <span class="option-content"><strong>DX Core 4</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="all">
+                            <span>No preference, include all frameworks.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-specificFramework-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: research vs. industry focus (Researcher only) -->
+                <div id="q-focus-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-focus-label">Question</p>
+                    <h2>What type of evidence do you prefer to rely on?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only">
+                            <span class="option-num">🔬</span><span class="option-content"><strong>Research-validated</strong>: Metrics that appear in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx).</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only">
+                            <span class="option-num">🏭</span><span class="option-content"><strong>Used in practice</strong>: Metrics adopted by companies in the industry, regardless of formal research backing.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all">
+                            <span>No preference, show both <strong>research and industry metrics</strong>.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-focus-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Benchmark against a company or framework (Practitioner/Researcher only).
+                     View/compare only — does not touch the shortlist. -->
+                <div id="benchmark-step" class="wizard-step hidden">
+                    <div class="controls-title">Benchmark against a company or framework</div>
+                    <p class="filter-description">See what a specific company or research framework tracks, compared to your shortlist. Doesn't change your shortlist.</p>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">See what a company tracks</div>
+                        <p class="predefined-section-desc">Filter to a specific company's metrics and compare it against your shortlist in Step 2. Doesn't change your shortlist.</p>
+                        <select id="benchmark-company-select" class="color-by-select">
+                            <option value="">Select a company&hellip;</option>
+                        </select>
+                        <div id="benchmark-company-info" class="predefined-info-text"></div>
+                        <button id="benchmark-company-btn" class="overlay-action-button" disabled>Benchmark against this company</button>
+                    </div>
+
+                    <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">See what a research framework tracks</div>
+                        <p class="predefined-section-desc">Filter to a specific framework's metrics and compare it against your shortlist in Step 2. Doesn't change your shortlist.</p>
+                        <select id="benchmark-framework-select" class="color-by-select">
+                            <option value="">Select a framework&hellip;</option>
+                        </select>
+                        <div id="benchmark-framework-info" class="predefined-info-text"></div>
+                        <button id="benchmark-framework-btn" class="overlay-action-button" disabled>Benchmark against this framework</button>
+                    </div>
+
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="start-choice-step">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Start from an existing selection (Practitioner/Researcher only).
+                     Pre-fills the shortlist — this is "I already have some of these",
+                     not a benchmark/comparison. -->
+                <div id="existing-selection-step" class="wizard-step hidden">
+                    <div class="controls-title">Start from an existing selection</div>
+                    <p class="filter-description">Already tracking some of these? Load your own company's metrics from the dataset, or import a previous export.</p>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">My company is already in this dataset</div>
+                        <p class="predefined-section-desc">Pre-fill your shortlist with the metrics your company publicly discloses tracking.</p>
+                        <select id="predefined-company-select" class="color-by-select">
+                            <option value="">Select your company&hellip;</option>
+                        </select>
+                        <div id="predefined-company-info" class="predefined-info-text"></div>
+                        <button id="predefined-company-load-btn" class="overlay-action-button" disabled>Add metrics to shortlist as 'already tracking'</button>
+                    </div>
+
+                    <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">Import a previous export</div>
+                        <p class="predefined-section-desc">Re-load a selection you previously exported as JSON from the Compass.</p>
+                        <label class="predefined-file-label" for="predefined-import-file">Choose JSON file&hellip;</label>
+                        <input type="file" id="predefined-import-file" accept=".json" class="predefined-file-input">
+                        <div id="predefined-import-info" class="predefined-info-text"></div>
+                        <button id="predefined-import-btn" class="overlay-action-button" disabled>Import selection</button>
+                    </div>
+
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="start-choice-step">&larr; Go back</button>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Filters section: shown after a mode is chosen -->
             <div id="explore-filters-section" style="display:none">
             <div class="controls-title" id="explore-panel-title">
-                Explore DevEx metrics <span id="metrics-count" style="display:none"></span>
+                Exploring DevEx metrics <span id="metrics-count" style="display:none"></span>
             </div>
 
-            <!-- Clear filters and restart wizard buttons -->
-            <div>
-                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Restart wizard</button>
-                <button class="clear-filters-button" id="clear-filters" style="display: none;">Clear all filters</button>
+            <!-- Role status: its own highlighted pill, no outer box (would double up the border) -->
+            <div id="role-badge" class="role-badge hidden">
+                <span>Exploring as <strong id="role-badge-name"></strong></span>
+                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Change role</button>
             </div>
 
-            <!-- <div class="line"></div> -->
+            <!-- Box 2: active filter pills, clear all, keyword search + role-adaptive filters -->
+            <div id="key-filters-container" class="filters-box">
+            <div class="filters-box-title">Key Filters</div>
 
-            <!-- Color by dimension -->
-            <div class="filter-group">
-                <label for="color-by-select">Chart coloring</label>
-                <select id="color-by-select" class="color-by-select">
-                    <option value="categorization">Category (default)</option>
-                    <option value="collection_status">Collection status (my shortlist)</option>
-                    <option value="popularity">Popularity</option>
-                    <option value="type">Data collection type</option>
-                    <option value="is_research">Research vs industry</option>
-                    <option value="outcome_goals">Outcome goals</option>
-                    <option value="ease_of_collection">Collection maturity</option>
-                </select>
-                <div id="color-legend" class="color-legend" style="display:none"></div>
-            </div>
+            <div id="active-filter-pills" class="active-filter-pills" style="display:none"></div>
+
+            <button class="clear-filters-button clear-filters-button--small" id="clear-filters" style="display: none;">Clear all filters</button>
 
             <!-- Keyword search field -->
-            <div class="filter-group" style="margin-top: 16px;">
+            <div class="filter-group filter-group--spaced">
                 <label>Metrics search</label>
                 <div class="search-input-wrapper">
                     <input type="text" id="keyword-search" placeholder="Enter keyword..." class="filter-btn"
@@ -182,64 +409,45 @@
             </div>
 
             <!-- Popularity filter (percentile buttons) -->
-            <div class="filter-group">
-                <label>Popularity filter</label>
-                <div class="filter-description">
-                    Filter by the popularity of metrics across sources:
-                </div>
+            <div class="filter-group" data-role-filter="minMentions">
+                <div class="filter-heading" title="How often this metric appears across the research papers, company blogs, and talks that make up this dataset.">Popularity</div>
                 <div class="segmented-control">
-                    <button class="filter-btn active" data-filter="all" data-group="minMentions">All</button>
-                    <button class="filter-btn" data-filter="50" data-group="minMentions">Top 50%</button>
-                    <button class="filter-btn" data-filter="25" data-group="minMentions">Top 25%</button>
-                    <button class="filter-btn" data-filter="10" data-group="minMentions">Top 10%</button>
-                </div>
-            </div>
-            
-            <!-- Filter for metrics type, telemetry-based vs. survey-based -->
-            <div class="filter-group">
-                <label>Data collection type</label>
-                <div class="filter-description">
-                    Filter by how data is collected: self-reported (surveys, pop-ups, interviews) or automatically (logs, telemetry):
-                </div>
-                <div class="segmented-control">
-                    <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
-                    <button id="quantitative" class="filter-btn" data-filter="qualitative" data-group="dataType">📋 Self-reported</button>
-                    <button id="qualitative" class="filter-btn" data-filter="quantitative" data-group="dataType">⚙️ Automated</button>
+                    <button class="filter-btn active" data-filter="all" data-group="minMentions" title="Show metrics of any popularity">All</button>
+                    <button class="filter-btn" data-filter="50" data-group="minMentions" title="The 50% most-referenced metrics across sources">Top 50%</button>
+                    <button class="filter-btn" data-filter="25" data-group="minMentions" title="The 25% most-referenced metrics across sources">Top 25%</button>
+                    <button class="filter-btn" data-filter="10" data-group="minMentions" title="The 10% most-referenced metrics across sources">Top 10%</button>
                 </div>
             </div>
 
-            <!-- Filter for research vs. non-research. Research frameworks dropdown -->
-            <div class="filter-group">
-                <label>Metrics source</label>
-                <div class="filter-description">
-                    Filter by research <strong>framework</strong>:
+            <!-- Filter for metrics type, telemetry-based vs. survey-based -->
+            <div class="filter-group" data-role-filter="dataType">
+                <div class="filter-heading">Data collection type</div>
+                <div class="segmented-control">
+                    <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
+                    <button id="quantitative" class="filter-btn" data-filter="qualitative" data-group="dataType" title="Self-reported: surveys, pop-ups, interviews">📋 Self-reported</button>
+                    <button id="qualitative" class="filter-btn" data-filter="quantitative" data-group="dataType" title="Automated: logs, telemetry">⚙️ Automated</button>
                 </div>
-                <select id="research-dropdown" class="company-dropdown">
-                    <option value="all">No research framework selected</option>
-                </select>
-                <div class="filter-description">
-                    Filter by metrics publicly disclosed by a specific <strong>company</strong>:
-                </div>
+            </div>
+
+            <!-- Filter by company -->
+            <div class="filter-group" data-role-filter="specificCompany">
+                <div class="filter-heading">Company</div>
                 <select id="company-dropdown" class="company-dropdown">
                     <option value="all">No company selected</option>
                 </select>
-                <div class="filter-description">
-                    Filter by whether a metric appears in research, industry, or both:
-                </div>
-                <select id="focus-dropdown" class="company-dropdown">
-                    <option value="all">Appears in industry or research</option>
-                    <option value="research-only">Appears only in research</option>
-                    <option value="industry-only">Appears only in industry</option>
-                    <option value="research-and-industry">Appears in industry *and* research</option>
+            </div>
+
+            <!-- Filter by research framework -->
+            <div class="filter-group" data-role-filter="specificFramework">
+                <div class="filter-heading">Research framework</div>
+                <select id="research-dropdown" class="company-dropdown">
+                    <option value="all">No research framework selected</option>
                 </select>
             </div>
 
             <!-- Filter for AI metrics -->
-            <div class="filter-group">
-                <label>AI impact metrics</label>
-                <div class="filter-description">
-                    Filter by how AI impact is measured:
-                </div>
+            <div class="filter-group" data-role-filter="aiMetric">
+                <div class="filter-heading">AI impact metrics</div>
                 <div class="segmented-control">
                     <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
                     <button id="ai-impact" class="filter-btn" data-filter="ai-impact" data-group="aiMetric">🎯 AI impact</button>
@@ -249,9 +457,8 @@
             </div>
 
             <!-- Filter by outcome goals -->
-            <div class="filter-group">
-                <label>Outcome goals</label>
-                <div class="filter-description">Filter by the intended outcome goal of the metric:</div>
+            <div class="filter-group" data-role-filter="outcomeGoals">
+                <div class="filter-heading">Outcome goal</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="outcomeGoals">All</button>
                     <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals">🧑‍💻 Developer Experience</button>
@@ -261,9 +468,8 @@
             </div>
 
             <!-- Filter by collection maturity -->
-            <div class="filter-group">
-                <label>Collection maturity</label>
-                <div class="filter-description">Filter by your team's/organization's current measurement maturity:</div>
+            <div class="filter-group" data-role-filter="easeOfCollection">
+                <div class="filter-heading">Collection maturity</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
                     <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🌱 Getting started</button>
@@ -273,15 +479,52 @@
             </div>
 
             <!-- Filter by company size -->
-            <div class="filter-group">
-                <label>Company size</label>
-                <div class="filter-description">Filter by the size of companies that disclosed using the metric:</div>
+            <div class="filter-group" data-role-filter="companySize">
+                <div class="filter-heading">Company size</div>
                 <div class="segmented-control">
                     <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
                     <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
                     <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large company: 501–5000 developers">🏬 Large</button>
                     <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size company: 51–500 developers">🏠 Mid-size</button>
                     <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers — no data available yet" disabled>🏡 Small</button>
+                </div>
+            </div>
+
+            <!-- Filter by research vs. industry focus (always last — see ROLE_CONFIG ordering) -->
+            <div class="filter-group" data-role-filter="focus">
+                <div class="filter-heading">Appears in research / industry</div>
+                <select id="focus-dropdown" class="company-dropdown">
+                    <option value="all">Appears in industry or research</option>
+                    <option value="research-only">Appears only in research</option>
+                    <option value="industry-only">Appears only in industry</option>
+                    <option value="research-and-industry">Appears in industry *and* research</option>
+                </select>
+            </div>
+
+            </div><!-- /#key-filters-container -->
+
+            <!-- Box 3: collapsible advanced filters -->
+            <details id="more-filters-details" class="filters-box">
+                <summary>Advanced Filters</summary>
+                <div id="more-filters-body"></div>
+            </details>
+
+            <!-- Box 4: display-only options (not filters) -->
+            <div class="filters-box">
+                <div class="filters-box-title">Customize View</div>
+
+                <div class="filter-group">
+                    <label for="color-by-select">Chart coloring</label>
+                    <select id="color-by-select" class="color-by-select">
+                        <option value="categorization">Category (default)</option>
+                        <option value="collection_status">Collection status (my shortlist)</option>
+                        <option value="popularity">Popularity</option>
+                        <option value="type">Data collection type</option>
+                        <option value="is_research">Research vs industry</option>
+                        <option value="outcome_goals">Outcome goals</option>
+                        <option value="ease_of_collection">Collection maturity</option>
+                    </select>
+                    <div id="color-legend" class="color-legend" style="display:none"></div>
                 </div>
             </div>
 
@@ -368,8 +611,11 @@
 
             </div><!-- /.right-panel-scroll -->
 
-            <!-- Step navigation bar: shared, always at bottom of right panel -->
-            <div class="next-step-bar">
+            <!-- Step navigation bar: shared, always at bottom of right panel.
+                 Hidden by default (matches #explore-filters-section) so it can't
+                 flash visible before showExploreStartView() runs on first paint;
+                 hideExploreStartView() reveals it once a mode/role is chosen. -->
+            <div class="next-step-bar" style="display:none">
                 <button id="btn-back-explore" class="next-step-btn next-step-btn--secondary nav-btn--step-compare">&larr; Explore metrics</button>
                 <button id="btn-go-compare" class="next-step-btn next-step-btn--primary nav-btn--step-explore">Compare metrics &rarr;</button>
                 <button id="btn-back-compare" class="next-step-btn next-step-btn--secondary nav-btn--step-nextsteps">&larr; Compare metrics</button>
@@ -467,112 +713,6 @@
                 </div>
             </div>
 
-            <!-- Guided wizard: Question 1 -->
-            <div id="question1-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 1 of 4</p>
-                <h2>What is your team's or organization's measurement maturity?</h2>
-                <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy" data-next="question2-screen">
-                        <span class="option-num">🌱</span>
-                        <span class="option-content"><strong>Getting started</strong>: Includes metrics available out-of-the-box from standard tooling (code repo, CI, issue tracker) or a quick survey. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Moderate" data-next="question2-screen">
-                        <span class="option-num">⚙️</span>
-                        <span class="option-content"><strong>Established</strong>: Includes Getting started metrics, plus those requiring combining data sources, a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Complex" data-next="question2-screen">
-                        <span class="option-num">🔬</span>
-                        <span class="option-content"><strong>Advanced</strong>: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="all" data-next="question2-screen">
-                        <span>No specific maturity level, show all metrics.</span><span class="wizard-option-count"></span>
-                    </button>
-                </div>
-                <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="initial-choice-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="question2-screen">Skip →</button>
-                </div>
-            </div>
-
-            <!-- Guided wizard: Question 2 -->
-            <div id="question2-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 2 of 4</p>
-                <h2>What kinds of DevEx-related data do you have access to?</h2>
-                <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative" data-next="question3-screen">
-                        <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="qualitative" data-next="question3-screen">
-                        <span>📋 <strong>Self-reported</strong> (surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="all" data-next="question3-screen">
-                        <span>Both / not sure yet, show all metrics.</span><span class="wizard-option-count"></span>
-                    </button>
-                </div>
-                <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question1-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="question3-screen">Skip →</button>
-                </div>
-            </div>
-
-            <!-- Guided wizard: Question 3 -->
-            <div id="question3-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 3 of 4</p>
-                <h2>What type of evidence do you prefer to rely on?</h2>
-                <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only" data-next="question5-screen">
-                        <span class="option-num">🔬</span><span class="option-content"><strong>Research-validated</strong>: Metrics that appear in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx).</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only" data-next="question5-screen">
-                        <span class="option-num">🏭</span><span class="option-content"><strong>Used in practice</strong>: Metrics adopted by companies in the industry, regardless of formal research backing.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all" data-next="question5-screen">
-                        <span>No preference, show both <strong>research and industry metrics</strong>.</span><span class="wizard-option-count"></span>
-                    </button>
-                </div>
-                <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question2-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="question5-screen">Skip →</button>
-                </div>
-            </div>
-
-            <!-- Guided wizard: Question 4 -->
-            <div id="question5-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Question 4 of 4</p>
-                <h2>Do you have a key outcome goal?</h2>
-                <div class="wizard-options">
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" data-next="wizard-summary-screen" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
-                        <span class="option-num">🧑‍💻</span><span class="option-content"><strong>Developer Experience</strong>: Metrics about developer well-being, satisfaction, flow/focus, and tooling friction.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Product Excellence" data-next="wizard-summary-screen" title="Metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">
-                        <span class="option-num">⭐</span><span class="option-content"><strong>Product Excellence</strong>: Metrics about software quality, reliability, and user-facing outcomes.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Organizational Effectiveness" data-next="wizard-summary-screen" title="Metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">
-                        <span class="option-num">📈</span><span class="option-content"><strong>Organizational Effectiveness</strong>: Metrics about delivery throughput, business outcomes, and resource efficiency.</span><span class="wizard-option-count"></span>
-                    </button>
-                    <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="all" data-next="wizard-summary-screen">
-                        <span>No specific goal, show all metrics.</span><span class="wizard-option-count"></span>
-                    </button>
-                </div>
-                <div class="wizard-nav">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question3-screen">← Go back</button>
-                    <button class="skip-wizard-btn" data-next="wizard-summary-screen">Skip →</button>
-                </div>
-            </div>
-
-            <!-- Guided wizard: Summary -->
-            <div id="wizard-summary-screen" class="overlay-screen hidden">
-                <p class="wizard-step-label">Guided metrics selection &bull; Your selection</p>
-                <h2>Here's what you selected</h2>
-                <div id="wizard-summary-list" class="wizard-summary-list"></div>
-                <div id="wizard-summary-count" class="wizard-summary-count"></div>
-                <div class="wizard-nav wizard-nav--summary">
-                    <button class="wizard-back-btn go-back-btn" data-target-screen="question5-screen">← Go back</button>
-                    <button id="wizard-see-metrics-btn" class="wizard-see-metrics-btn">See metrics →</button>
-                </div>
-            </div>
-
-
         </div>
     </div>
 
@@ -586,6 +726,13 @@
             </div>
 
             <div class="changelog-entries">
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">July 2026</div>
+                    <ul>
+                        <li>Refined wizard to filter sunburst chart by role</li>
+                    </ul>
+                </div>
 
                 <div class="changelog-entry">
                     <div class="changelog-date">June 2026</div>
@@ -748,38 +895,6 @@
                 <div>Developer Experience Metrics Compass
                 &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
                 Provided for research &amp; informational use only</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Predefined list overlay -->
-    <div class="overlay" id="predefinedOverlay" style="display:none">
-        <div class="overlay-content predefined-overlay-content">
-            <button class="close-button" id="closePredefinedBtn">&times;</button>
-            <div class="overlay-title-row">
-                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
-                <h2>Start with a predefined list</h2>
-            </div>
-
-            <div class="predefined-section">
-                <div class="predefined-section-title">Load a company&rsquo;s metrics</div>
-                <p class="predefined-section-desc">Pre-fill your shortlist with metrics publicly tracked by a specific company.</p>
-                <select id="predefined-company-select" class="color-by-select">
-                    <option value="">Select a company&hellip;</option>
-                </select>
-                <div id="predefined-company-info" class="predefined-info-text"></div>
-                <button id="predefined-company-load-btn" class="overlay-action-button" disabled>Add to shortlist as 'already tracking'</button>
-            </div>
-
-            <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
-
-            <div class="predefined-section">
-                <div class="predefined-section-title">Import a previous export</div>
-                <p class="predefined-section-desc">Re-load a selection you previously exported as JSON from this tool.</p>
-                <label class="predefined-file-label" for="predefined-import-file">Choose JSON file&hellip;</label>
-                <input type="file" id="predefined-import-file" accept=".json" class="predefined-file-input">
-                <div id="predefined-import-info" class="predefined-info-text"></div>
-                <button id="predefined-import-btn" class="overlay-action-button" disabled>Import selection</button>
             </div>
         </div>
     </div>

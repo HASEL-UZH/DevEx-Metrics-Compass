@@ -287,36 +287,128 @@ function filterData() {
         document.getElementById('research-dropdown').value = 'all';
     }
 
-    const additiveModeMessage = document.getElementById('additive-mode-message');
-    const rightContainer = document.querySelector('.right-container');
-
-    if (currentMode === MODE.ADDITIVE && additiveBlankCanvas) {
-        if (chart) { chart.dispose(); chart = null; }
-        noMetricsMessage.style.display = 'none';
-        if (additiveModeMessage) additiveModeMessage.style.display = 'block';
-        updateMetricsCount([]);
-    } else if (actualMatchingMetrics.length === 0) {
+    if (actualMatchingMetrics.length === 0) {
         if (chart) { chart.dispose(); chart = null; }
         noMetricsMessage.style.display = 'block';
-        if (additiveModeMessage) additiveModeMessage.style.display = 'none';
         updateMetricsCount(actualMatchingMetrics);
     } else {
         noMetricsMessage.style.display = 'none';
-        if (additiveModeMessage) additiveModeMessage.style.display = 'none';
         updateMetricsCount(actualMatchingMetrics);
         createChart(filteredData);
     }
 
-    if (currentMode === MODE.ADDITIVE && additiveBlankCanvas) {
-        rightContainer.classList.add('mode-additive-unset');
-    } else {
-        rightContainer.classList.remove('mode-additive-unset');
-    }
-
     updateClearFiltersVisibility(actualMatchingMetrics.length);
+    updateActiveFilterPills();
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof refreshCompareValueDropdowns === 'function') refreshCompareValueDropdowns();
     if (typeof loadSavedComparisonsFromLocalStorage === 'function') loadSavedComparisonsFromLocalStorage();
+}
+
+// Reads a segmented-control filter button's own display text (icon + label)
+// straight from the DOM, so pill labels can never drift out of sync with what
+// the button actually shows — one place defines the text, not two.
+function getFilterButtonLabel(group, value) {
+    const btn = document.querySelector(`.filter-btn[data-group="${group}"][data-filter="${value}"]`);
+    return btn ? btn.textContent.trim() : value;
+}
+
+// Same idea for dropdown-based filters (<select><option>).
+function getSelectOptionLabel(selectId, value) {
+    const select = document.getElementById(selectId);
+    const opt = select ? select.querySelector(`option[value="${CSS.escape(value)}"]`) : null;
+    return opt ? opt.textContent.trim() : value;
+}
+
+// Builds the list of currently active filters as { dimension, label, clear } triples,
+// one per pill. `dimension` is the human-readable filter name, shown together with
+// `label` in the pill's hover tooltip (e.g. "Outcome goal: Product Excellence").
+function buildActiveFilterPills() {
+    const pills = [];
+    const keywordInput = document.getElementById('keyword-search');
+    const keyword = keywordInput.value.trim();
+    if (keyword) {
+        pills.push({ dimension: 'Search', label: `Search: "${keyword}"`, clear: () => {
+            keywordInput.value = '';
+            const clearBtn = document.getElementById('keyword-clear');
+            if (clearBtn) clearBtn.style.display = 'none';
+            onUserFilterChange();
+        } });
+    }
+    if (activeFilters.minMentions !== 'all') {
+        pills.push({ dimension: 'Popularity', label: getFilterButtonLabel('minMentions', activeFilters.minMentions), clear: () => {
+            applySpecificFilter('minMentions', 'all', 'minMentions'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.dataType !== 'all') {
+        pills.push({ dimension: 'Data collection type', label: getFilterButtonLabel('dataType', activeFilters.dataType), clear: () => {
+            applySpecificFilter('dataType', 'all', 'dataType'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.specificCompany !== 'all') {
+        pills.push({ dimension: 'Company', label: activeFilters.specificCompany, clear: () => {
+            applySpecificFilter('specificCompany', 'all', 'company-dropdown');
+            const companyDropdown = document.getElementById('company-dropdown');
+            if (companyDropdown && typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
+            onUserFilterChange();
+        } });
+    }
+    if (activeFilters.specificFramework !== 'all') {
+        pills.push({ dimension: 'Framework', label: getSelectOptionLabel('research-dropdown', activeFilters.specificFramework), clear: () => {
+            applySpecificFilter('specificFramework', 'all', 'research-dropdown'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.focus !== 'all') {
+        pills.push({ dimension: 'Focus', label: getSelectOptionLabel('focus-dropdown', activeFilters.focus), clear: () => {
+            applySpecificFilter('focus', 'all', 'focus-dropdown'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.aiMetric !== 'all') {
+        pills.push({ dimension: 'AI impact metric', label: getFilterButtonLabel('aiMetric', activeFilters.aiMetric), clear: () => {
+            applySpecificFilter('aiMetric', 'all', 'aiMetric'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.outcomeGoals !== 'all') {
+        pills.push({ dimension: 'Outcome goal', label: getFilterButtonLabel('outcomeGoals', activeFilters.outcomeGoals), clear: () => {
+            applySpecificFilter('outcomeGoals', 'all', 'outcomeGoals'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.easeOfCollection !== 'all') {
+        pills.push({ dimension: 'Collection maturity', label: getFilterButtonLabel('easeOfCollection', activeFilters.easeOfCollection), clear: () => {
+            applySpecificFilter('easeOfCollection', 'all', 'easeOfCollection'); onUserFilterChange();
+        } });
+    }
+    if (activeFilters.companySize !== 'all') {
+        pills.push({ dimension: 'Company size', label: getFilterButtonLabel('companySize', activeFilters.companySize), clear: () => {
+            applySpecificFilter('companySize', 'all', 'companySize'); onUserFilterChange();
+        } });
+    }
+    return pills;
+}
+
+// Renders the active-filter pills in Box 1, each removable via its own "x".
+function updateActiveFilterPills() {
+    const container = document.getElementById('active-filter-pills');
+    if (!container) return;
+    const pills = buildActiveFilterPills();
+    container.innerHTML = '';
+    pills.forEach(({ dimension, label, clear }) => {
+        const pill = document.createElement('span');
+        pill.className = 'filter-pill';
+        // The Search pill's label already reads "Search: ...", so don't double it up.
+        pill.title = dimension === 'Search' ? label : `${dimension}: ${label}`;
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = label;
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'filter-pill-remove';
+        removeBtn.setAttribute('aria-label', `Remove filter: ${label}`);
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', clear);
+        pill.appendChild(labelSpan);
+        pill.appendChild(removeBtn);
+        container.appendChild(pill);
+    });
+    container.style.display = pills.length ? '' : 'none';
 }
 
 // Show/hide "Clear all filters" buttons based on whether the full list is shown
@@ -334,20 +426,18 @@ function updateMetricsCount(data) {
     const titleEl = document.getElementById('explore-panel-title');
     if (titleEl) {
         titleEl.textContent = metricsWithType.length === totalMetrics
-            ? `Explore all ${totalMetrics} DevEx metrics`
-            : `Explore ${metricsWithType.length} of ${totalMetrics} DevEx metrics`;
+            ? `Exploring all ${totalMetrics} DevEx metrics`
+            : `Exploring ${metricsWithType.length} of ${totalMetrics} DevEx metrics`;
     }
 }
 
 // Wrapper called by all user-triggered filter interactions.
-// Clears the blank-canvas state so the user's action reveals metrics.
 function onUserFilterChange() {
     if (!modeChosen) {
         modeChosen = true;
         currentMode = MODE.BROWSE;
         hideExploreStartView();
     }
-    additiveBlankCanvas = false;
     filterData();
     logEvent(TELEMETRY.FILTER_CHANGED, { activeFilters: Object.assign({}, activeFilters), resultCount: filteredData.filter(m => m.type).length });
 }
@@ -365,7 +455,6 @@ function setActiveButton(activeBtn) {
 
 // Clear all filters (currentMode is intentionally NOT reset here)
 function clearAllFilters() {
-    if (currentMode === MODE.ADDITIVE) additiveBlankCanvas = true;
     activeFilters = {
         dataType: 'all',
         aiMetric: 'all',
@@ -423,6 +512,28 @@ function resetOtherSourceFilters(except) {
 function getCompanySizeForCompany(companyName) {
     const source = Object.values(SOURCE_URL_MAPPING).find(s => s.ref_name === companyName);
     return (source && source.company_size && source.company_size !== 'N/A') ? source.company_size : null;
+}
+
+// Reorder/collapse the filter panel for the given role. Purely static: a dim is
+// key or collapsed based only on the role's configured keyFilters/collapsedFilters
+// lists — never on what was asked/answered during the wizard this session.
+function applyRoleFilterLayout(role) {
+    const cfg = ROLE_CONFIG[role];
+    if (!cfg) return;
+
+    const keyContainer = document.getElementById('key-filters-container');
+    const moreBody = document.getElementById('more-filters-body');
+
+    cfg.keyFilters.forEach(dim => {
+        const el = document.querySelector(`.filter-group[data-role-filter="${dim}"]`);
+        if (el) keyContainer.appendChild(el);
+    });
+    cfg.collapsedFilters.forEach(dim => {
+        const el = document.querySelector(`.filter-group[data-role-filter="${dim}"]`);
+        if (el) moreBody.appendChild(el);
+    });
+
+    document.getElementById('more-filters-details').style.display = cfg.collapsedFilters.length ? '' : 'none';
 }
 
 // ─── Filter event listeners ───────────────────────────────────────────────────

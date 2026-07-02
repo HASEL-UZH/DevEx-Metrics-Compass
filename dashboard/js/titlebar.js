@@ -51,7 +51,7 @@ function switchToStep(step) {
     }
 
     // Hide/show explore messages (only in Explore step)
-    const msgs = ['no-metrics-message', 'additive-mode-message', 'clear-filters-chart'];
+    const msgs = ['no-metrics-message', 'clear-filters-chart'];
     msgs.forEach(id => {
         const el = document.getElementById(id);
         if (el && step !== STEP.EXPLORE) el.style.display = 'none';

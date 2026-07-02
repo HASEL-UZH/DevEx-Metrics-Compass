@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-07-02 — Refined the role-based onboarding flow
+
+- Grouped the filter sidepanel into titled boxes (role status, key filters with active-filter pills, advanced filters, chart coloring), tuned per-role filter visibility and quick questions, and reworded several onboarding prompts based on user feedback
+
+## 2026-07-01 — Role-based onboarding redesigned into a single sidepanel wizard
+
+- Replaced the flat 4-option "How would you like to start?" screen with a role-first flow: pick Newcomer/Practitioner/Researcher, then answer role-specific questions, embedded directly in the sidepanel instead of a separate modal
+- Chart stays blurred but updates live behind the blur as each question is answered, then unblurs once the flow finishes
+- Newcomer path shortened to 2 questions (data access, outcome goal); measurement maturity is now assumed "Getting started" automatically and hidden from the newcomer's filter panel
+- Practitioner/Researcher get a shared "how would you like to get started?" menu: start from scratch, explore by filtering, answer a couple of quick questions, benchmark against a company, benchmark against a framework, or import a previous export
+- Practitioner's quick questions expanded to include company size and AI-assisted development interest
+- Filter panel now adapts per role: relevant filters shown by default, less relevant ones (and anything already answered via the wizard) collapse into a new "More filters" expander
+- AI impact metrics filter is hidden entirely for Newcomers; the "appears in research/industry/both" filter always sorts last
+- Filter group headers simplified: removed the separate blue title above each "Filter by ...:" description
+- "Restart wizard" replaced by a persistent "Exploring as [Role] · Change role" indicator
+
+## 2026-07-01 — Clearer goal messaging, shortlist indicator, feedback relocation
+
+- Welcome overlay reordered so the problem statement is followed directly by the goal statement and a step-strip intro; step pills are no longer clickable (first-time visitors now always go through "Start exploring metrics")
+- Explore step's cold-start hint reworded to "Filter to your context, then mark what you track or plan to track"; hint text made slightly larger across all steps
+- Added a small brand icon next to the "DevEx Metrics Compass" title
+- Shortlist summary ("My metrics shortlist") moved from the meta row into an animated pill indicator fixed top-right, with a bump animation on add/remove; hover popup preserved and now centered over the pills
+- Feedback widget (thumbs up/down) moved from a fixed top-right position into the footer, appearing as a small popup above the footer bar when expanded
+- Renamed "Save comparison to PDF" button to "Save comparison to PDF Report"
+
 ## 2026-06-29 — Comparison legend, UI refinements, and security fix
 
 - Comparison sidebar legend now shows "Left (type) VS Right (type)" instead of item counts, using violet/green coloring to match the compare view

@@ -187,6 +187,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 2px;
+    text-align: center;
+    width: 100%;
 }
 
 .wizard-options {
@@ -232,8 +234,10 @@ body {
 .wizard-nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 16px;
     margin-top: 4px;
+    width: 100%;
 }
 
 .skip-wizard-btn {
@@ -338,6 +342,164 @@ body {
     border-color: #0f0ecc;
 }
 
+/* Wizard steps embedded in the sidepanel (role select, start-choice, questions) */
+.wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+/* .wizard-step is declared after the generic .hidden rule, so it needs its own
+   higher-specificity override to actually hide (equal-specificity ties go to
+   whichever rule comes later in the stylesheet). */
+.wizard-step.hidden {
+    display: none;
+}
+
+.wizard-step h2 {
+    font-size: 22px;
+    margin: 4px 0 10px;
+    font-weight: bold;
+    color: #1B1AFF;
+    text-align: center;
+    width: 100%;
+}
+
+/* Persistent "Exploring as <role>" indicator — doubles as Box 1's title, and is
+   now Box 1's only content, so it gets its own highlighted background again. */
+.role-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #f4f5ff;
+    border: 1px solid #d0d2f8;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 0 0 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1B1AFF;
+}
+
+.role-badge #openMaturityAssessmentBtn {
+    width: auto;
+    margin-bottom: 0;
+    padding: 4px 10px;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: normal;
+    background: #fff;
+    border: 1px solid #1B1AFF;
+    color: #1B1AFF;
+}
+
+.role-badge #openMaturityAssessmentBtn:hover {
+    background: #1B1AFF;
+    color: #fff;
+}
+
+.role-badge.hidden {
+    display: none;
+}
+
+/* Groups the right sidepanel into 3 visually distinct boxes: role status/pills/
+   chart coloring, always-visible filters, and the collapsible advanced filters. */
+.filters-box {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+}
+
+/* Active filter pills (Box 1) — one removable pill per applied filter */
+.active-filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #eee;
+    color: #555;
+    border-radius: 40px;
+    padding: 3px 6px 3px 10px;
+    font-size: 12px;
+}
+
+.filter-pill-remove {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px 4px;
+}
+
+.filter-pill-remove:hover {
+    color: #333;
+}
+
+.clear-filters-button--small {
+    width: auto;
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+/* Box title: "Overview" / "Key Filters" / "Advanced Filters" — bigger and blue,
+   one step up from the individual filter headings (.filter-heading) below it. */
+.filters-box-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #1B1AFF;
+    margin: 0 0 12px;
+}
+
+/* "Advanced Filters" expander for filters collapsed by applyRoleFilterLayout() */
+#more-filters-details summary {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    color: #1B1AFF;
+    margin: 0 0 16px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#more-filters-details[open] summary {
+    margin-bottom: 16px;
+}
+
+#more-filters-details:not([open]) summary {
+    margin-bottom: 0;
+}
+
+#more-filters-details summary::before {
+    content: '▸';
+    display: inline-block;
+    font-size: 11px;
+    transition: transform 0.2s ease;
+}
+
+#more-filters-details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+#more-filters-details summary::-webkit-details-marker {
+    display: none;
+}
+
 /* Metrics filters */
 .controls-title {
     font-weight: bold;
@@ -372,6 +534,12 @@ body {
     width: 100%;
 }
 
+/* Extra breathing room before the first filter in Box 2, right after
+   the active-filter pills / "Clear all filters" button above it. */
+.filter-group--spaced {
+    margin-top: 10px;
+}
+
 .filter-group label .label-hint {
     font-weight: normal;
     font-size: 12px;
@@ -386,6 +554,25 @@ body {
     font-size: 14px;
     color: #1B1AFF;
     display: block;
+}
+
+/* Simplified filter-group heading: one short title per group, replacing the old
+   blue-label + separate gray-description two-line pattern. Dark gray, one step
+   down from the bigger blue .filters-box-title above each box. */
+.filter-heading {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    font-style: normal;
+    color: #555;
+    display: block;
+}
+
+/* "Chart coloring" / "Metrics search" labels use a plain <label>, not
+   .filter-heading — scoped so this doesn't also recolor Compare's labels. */
+#explore-filters-section .filter-group > label {
+    color: #555;
 }
 
 .filter-btn,
@@ -489,14 +676,10 @@ body {
     border-color: #1B1AFF;
 }
 
-.mode-additive-unset .segmented-control .filter-btn.active {
-    border-color: #dddddd;
-}
-
 .filter-description {
     font-size: 0.8em;
     color: #777;
-    margin-bottom: 10px;
+    margin: 4px 0 16px;
     font-style: italic;
 }
 
@@ -607,10 +790,9 @@ input[type="radio"] {
 
 .clear-filters-button {
     padding: 6px 12px;
-    background-color: #1B1AFF;
-    border: none;
-    color: white;
-    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    color: #555;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
@@ -622,7 +804,7 @@ input[type="radio"] {
 }
 
 .clear-filters-button:hover {
-    background-color: #85B9F2;
+    background-color: #f0f0f0;
 }
 
 .clear-filters-chart-btn {
@@ -1173,13 +1355,20 @@ a {
 #explore-entry-panel .controls-title {
     text-align: center;
     margin-bottom: 0;
+    width: 100%;
+}
+
+#explore-entry-panel .filter-description {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 28px;
 }
 
 .explore-entry-cards {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 12px;
+    margin: 16px 0 20px;
 }
 
 .explore-entry-card {
@@ -1303,9 +1492,14 @@ a {
     color: #2e7d32;
 }
 
-.welcome-card-icon--predefined {
-    background-color: #ede7f6;
-    color: #6a1b9a;
+.welcome-card-icon--framework {
+    background-color: #fff8e1;
+    color: #a56b00;
+}
+
+.welcome-card-icon--import {
+    background-color: #eceff1;
+    color: #455a64;
 }
 
 .welcome-card-title {
@@ -1493,13 +1687,6 @@ a {
     margin-top: 4px;
     margin-bottom: 4px;
     color: #333;
-}
-
-/* Additive mode blank-canvas state: 'All' buttons appear identical to unselected buttons */
-.mode-additive-unset .filter-btn.active {
-    background-color: #ffffff;
-    color: inherit;
-    border-color: #dddddd;
 }
 
 /* No metrics can be shown */
@@ -2920,7 +3107,17 @@ a {
 
 .predefined-section {
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease;
+}
+
+.predefined-section:hover {
+    box-shadow: 0 4px 14px rgba(27, 26, 255, 0.10);
 }
 
 .predefined-section-title {
@@ -2952,7 +3149,11 @@ a {
     display: flex;
     align-items: center;
     width: 100%;
-    margin: 16px 0;
+    /* Flex items don't collapse margins, so the preceding .predefined-section's
+       own 12px margin-bottom already adds to this divider's top margin — use an
+       asymmetric 4px/16px split here so the *total* gap above and below ends up
+       equal (16px each), instead of 28px above vs 16px below. */
+    margin: 4px 0 16px;
     gap: 10px;
 }
 

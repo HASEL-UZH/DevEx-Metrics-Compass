@@ -44,13 +44,6 @@ const closeOverlayBtn = document.getElementById('closeOverlayBtn');
 // Button that opens the mode-selection welcome screen
 const openMaturityAssessmentBtn = document.getElementById('openMaturityAssessmentBtn');
 
-// Overlay screens
-const initialChoiceScreen = document.getElementById('initial-choice-screen');
-const question1Screen = document.getElementById('question1-screen');
-const question2Screen = document.getElementById('question2-screen');
-const question3Screen = document.getElementById('question3-screen');
-const question4Screen = document.getElementById('question4-screen');
-const question5Screen = document.getElementById('question5-screen');
 
 // Data stores
 let originalData = [];
@@ -72,8 +65,38 @@ let activeFilters = {
 let currentColorBy = 'categorization';
 
 // Named mode constants for clarity and logging
-const MODE = { BROWSE: 'browse', ADDITIVE: 'additive', GUIDED: 'guided', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
+const MODE = { BROWSE: 'browse', GUIDED: 'guided', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
 let currentMode = MODE.BROWSE;
+
+// Role picked in Step 0 of the entry wizard; drives which questions get asked
+// and which filters are shown by default afterward (see ROLE_CONFIG below).
+const ROLE = { NEWCOMER: 'newcomer', PRACTITIONER: 'practitioner', RESEARCHER: 'researcher' };
+let currentRole = null;
+
+// Per-role wizard sequence + filter-panel layout.
+// `sequence`      - fixed question order asked right after picking this role (Newcomer only).
+// `quickSequence` - question order asked only if Practitioner/Researcher pick "quick questions".
+// `keyFilters`    - filter dims shown by default. Static — unaffected by which
+//                   wizard questions were actually asked/answered this session.
+// `collapsedFilters` - filter dims tucked under "Advanced Filters". Also static.
+// Nothing is ever fully hidden — every dim lands in keyFilters or collapsedFilters.
+const ROLE_CONFIG = {
+    [ROLE.NEWCOMER]: {
+        sequence: ['dataType', 'outcomeGoals'],
+        keyFilters: ['minMentions', 'outcomeGoals', 'aiMetric', 'dataType'],
+        collapsedFilters: ['specificCompany', 'specificFramework', 'companySize', 'easeOfCollection', 'focus']
+    },
+    [ROLE.PRACTITIONER]: {
+        quickSequence: ['easeOfCollection', 'outcomeGoals', 'aiMetric', 'dataType'],
+        keyFilters: ['minMentions', 'outcomeGoals', 'easeOfCollection', 'aiMetric', 'dataType', 'specificCompany', 'specificFramework'],
+        collapsedFilters: ['companySize', 'focus']
+    },
+    [ROLE.RESEARCHER]: {
+        quickSequence: ['dataType', 'specificFramework', 'focus'],
+        keyFilters: ['minMentions', 'dataType', 'specificFramework', 'focus'],
+        collapsedFilters: ['specificCompany', 'companySize', 'outcomeGoals', 'aiMetric', 'easeOfCollection']
+    }
+};
 
 // Step constants for the 3-step progress bar
 const STEP = { EXPLORE: 'explore', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
@@ -81,11 +104,6 @@ let currentStep = STEP.EXPLORE;
 
 // State for Compare step (Step 2)
 let compareState = { leftType: 'company', leftValue: 'all', rightType: 'company', rightValue: 'all' };
-
-// In additive mode, tracks whether the canvas should be blank.
-// true  = blank canvas (entry state or after "Clear all filters").
-// false = show matching metrics (set whenever the user interacts with any filter).
-let additiveBlankCanvas = false;
 
 // Selected metrics shortlist
 let clickedMetrics = [];
@@ -97,6 +115,3 @@ let savedComparisons = [];
 const noMetricsMessage = document.getElementById('no-metrics-message');
 const customTooltip = document.getElementById('custom-tooltip');
 const customTooltip2 = document.getElementById('custom-tooltip-2');
-
-// Overlay navigation: tracks the currently visible screen
-let currentOverlayScreen = initialChoiceScreen;
