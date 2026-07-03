@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-03 — Company size added as a Step 2 comparison dimension
+
+- The Step 2 "Custom comparison" dropdowns now include "Company size" alongside Company, Framework, Maturity, and Outcome goals, so users can compare e.g. Enterprise-tracked metrics vs Mid-size-tracked metrics.
+
+## 2026-07-03 — AI impact metric, Outcome goal, and Company size filters are now multi-select
+
+- These filters no longer restrict to a single value at a time. Each option is now an independent toggle, so users can combine any subset (e.g. "AI impact" + "AI cost", or "Enterprise" + "Large") and see exact matches only.
+- Selecting every option in a group automatically collapses back to "All"; deselecting the last active option also reverts to "All" rather than showing zero results — same behavior already shipped for the "Collection maturity" filter.
+
 ## 2026-07-02 — Collection maturity filter is now multi-select
 
 - The "Collection maturity" filter (Easy / Moderate / Complex) no longer works cumulatively (e.g. "Moderate" used to also include "Easy" results). Each tier is now an independent toggle, so users can combine any subset (e.g. Easy + Complex) and see exact matches only.

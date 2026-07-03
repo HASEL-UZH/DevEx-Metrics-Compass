@@ -73,8 +73,8 @@ function transformSources(sourceString, type) {
  * @param {string} [htmlGroupId] - Optional HTML group id to update active states.
  */
 function applySpecificFilter(filterGroup, filterValue, htmlGroupId = null) {
-    if (filterGroup === 'easeOfCollection') {
-        activeFilters.easeOfCollection = filterValue === 'all' ? [] : [filterValue];
+    if (MULTI_SELECT_FILTER_GROUPS[filterGroup]) {
+        activeFilters[filterGroup] = filterValue === 'all' ? [] : [filterValue];
     } else {
         activeFilters[filterGroup] = filterValue;
     }
@@ -108,7 +108,7 @@ function extractCompanies(data, currentFilters) {
 
         if (!item.type) { matches = false; }
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
-        if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
+        if (currentFilters.companySize.length > 0 && !(Array.isArray(item.company) && item.company.some(source => currentFilters.companySize.includes(source.company_size)))) { matches = false; }
 
         const tokens = tokenizeKeyword(document.getElementById('keyword-search').value);
         if (tokens.length && !metricMatchesTokens(item, tokens)) { matches = false; }
@@ -160,7 +160,7 @@ function extractFrameworks(data, currentFilters) {
         let matches = true;
 
         if (currentFilters.dataType !== 'all' && item.type !== currentFilters.dataType && item.type !== 'both') { matches = false; }
-        if (currentFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === currentFilters.companySize))) { matches = false; }
+        if (currentFilters.companySize.length > 0 && !(Array.isArray(item.company) && item.company.some(source => currentFilters.companySize.includes(source.company_size)))) { matches = false; }
 
         const tokens = tokenizeKeyword(document.getElementById('keyword-search').value);
         if (tokens.length && !metricMatchesTokens(item, tokens)) { matches = false; }
@@ -202,10 +202,10 @@ function hasAnyActiveFilter() {
     const keyword = document.getElementById('keyword-search').value.trim();
     return keyword !== '' ||
         activeFilters.dataType !== 'all' ||
-        activeFilters.aiMetric !== 'all' ||
+        activeFilters.aiMetric.length > 0 ||
         activeFilters.focus !== 'all' ||
-        activeFilters.companySize !== 'all' ||
-        activeFilters.outcomeGoals !== 'all' ||
+        activeFilters.companySize.length > 0 ||
+        activeFilters.outcomeGoals.length > 0 ||
         activeFilters.easeOfCollection.length > 0 ||
         activeFilters.specificCompany !== 'all' ||
         activeFilters.specificFramework !== 'all' ||
@@ -239,12 +239,10 @@ function filterData() {
         let matches = true;
 
         if (activeFilters.dataType !== 'all' && item.type !== activeFilters.dataType && item.type !== 'both') { matches = false; }
-        if (activeFilters.aiMetric === 'ai-impact' && item.ai_specific_category !== 'Impact') { matches = false; }
-        if (activeFilters.aiMetric === 'ai-utilization' && item.ai_specific_category !== 'Utilization') { matches = false; }
-        if (activeFilters.aiMetric === 'ai-cost' && item.ai_specific_category !== 'Cost') { matches = false; }
+        if (activeFilters.aiMetric.length > 0 && !activeFilters.aiMetric.map(v => AI_METRIC_CATEGORY_MAP[v]).includes(item.ai_specific_category)) { matches = false; }
         if (activeFilters.focus !== 'all' && item.is_research !== focusFilterValue(activeFilters.focus)) { matches = false; }
-        if (activeFilters.companySize !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.company_size === activeFilters.companySize))) { matches = false; }
-        if (activeFilters.outcomeGoals !== 'all' && item.outcome_goals !== activeFilters.outcomeGoals) { matches = false; }
+        if (activeFilters.companySize.length > 0 && !(Array.isArray(item.company) && item.company.some(source => activeFilters.companySize.includes(source.company_size)))) { matches = false; }
+        if (activeFilters.outcomeGoals.length > 0 && !activeFilters.outcomeGoals.includes(item.outcome_goals)) { matches = false; }
         if (activeFilters.easeOfCollection.length > 0 && !activeFilters.easeOfCollection.includes(item.ease_of_collection)) { matches = false; }
         if (specificCompany !== 'all' && !(Array.isArray(item.company) && item.company.some(source => source.name === specificCompany))) { matches = false; }
         if (specificFramework !== 'all' && !(Array.isArray(item.research) && item.research.some(source => source.name === specificFramework))) { matches = false; }
@@ -364,26 +362,26 @@ function buildActiveFilterPills() {
             applySpecificFilter('focus', 'all', 'focus-dropdown'); onUserFilterChange();
         } });
     }
-    if (activeFilters.aiMetric !== 'all') {
-        pills.push({ dimension: 'AI impact metric', label: getFilterButtonLabel('aiMetric', activeFilters.aiMetric), clear: () => {
-            applySpecificFilter('aiMetric', 'all', 'aiMetric'); onUserFilterChange();
-        } });
-    }
-    if (activeFilters.outcomeGoals !== 'all') {
-        pills.push({ dimension: 'Outcome goal', label: getFilterButtonLabel('outcomeGoals', activeFilters.outcomeGoals), clear: () => {
-            applySpecificFilter('outcomeGoals', 'all', 'outcomeGoals'); onUserFilterChange();
-        } });
-    }
-    activeFilters.easeOfCollection.forEach(tier => {
-        pills.push({ dimension: 'Collection maturity', label: getFilterButtonLabel('easeOfCollection', tier), clear: () => {
-            toggleMaturityFilter(tier); onUserFilterChange();
+    activeFilters.aiMetric.forEach(value => {
+        pills.push({ dimension: 'AI impact metric', label: getFilterButtonLabel('aiMetric', value), clear: () => {
+            toggleMultiSelectFilter('aiMetric', value); onUserFilterChange();
         } });
     });
-    if (activeFilters.companySize !== 'all') {
-        pills.push({ dimension: 'Company size', label: getFilterButtonLabel('companySize', activeFilters.companySize), clear: () => {
-            applySpecificFilter('companySize', 'all', 'companySize'); onUserFilterChange();
+    activeFilters.outcomeGoals.forEach(value => {
+        pills.push({ dimension: 'Outcome goal', label: getFilterButtonLabel('outcomeGoals', value), clear: () => {
+            toggleMultiSelectFilter('outcomeGoals', value); onUserFilterChange();
         } });
-    }
+    });
+    activeFilters.easeOfCollection.forEach(tier => {
+        pills.push({ dimension: 'Collection maturity', label: getFilterButtonLabel('easeOfCollection', tier), clear: () => {
+            toggleMultiSelectFilter('easeOfCollection', tier); onUserFilterChange();
+        } });
+    });
+    activeFilters.companySize.forEach(value => {
+        pills.push({ dimension: 'Company size', label: getFilterButtonLabel('companySize', value), clear: () => {
+            toggleMultiSelectFilter('companySize', value); onUserFilterChange();
+        } });
+    });
     return pills;
 }
 
@@ -455,27 +453,27 @@ function setActiveButton(activeBtn) {
     }
 }
 
-// Toggle a single maturity tier on/off (multi-select, unlike the other
-// exclusive-select filter groups). Selecting every tier collapses back to
-// "all", and clearing the last active tier also reverts to "all" — the
-// filter never lands on a state that matches zero metrics.
-const MATURITY_TIERS = ['Easy', 'Moderate', 'Complex'];
-function toggleMaturityFilter(value) {
+// Toggle a single value on/off within a multi-select filter group (see
+// MULTI_SELECT_FILTER_GROUPS in state.js) — unlike the other exclusive-select
+// groups, several buttons can be active at once. Selecting every value in the
+// group collapses back to "all", and clearing the last active value also
+// reverts to "all" — the filter never lands on a state that matches zero metrics.
+function toggleMultiSelectFilter(group, value) {
     if (value === 'all') {
-        activeFilters.easeOfCollection = [];
+        activeFilters[group] = [];
     } else {
-        const selected = activeFilters.easeOfCollection;
+        const selected = activeFilters[group];
         const idx = selected.indexOf(value);
         if (idx === -1) { selected.push(value); } else { selected.splice(idx, 1); }
-        if (selected.length === MATURITY_TIERS.length) { activeFilters.easeOfCollection = []; }
+        if (selected.length === MULTI_SELECT_FILTER_GROUPS[group].length) { activeFilters[group] = []; }
     }
-    updateMaturityButtonStates();
+    updateMultiSelectButtonStates(group);
 }
 
-// Sync the maturity segmented-control buttons' active state with activeFilters.easeOfCollection
-function updateMaturityButtonStates() {
-    const selected = activeFilters.easeOfCollection;
-    document.querySelectorAll('.filter-btn[data-group="easeOfCollection"]').forEach(btn => {
+// Sync a multi-select group's segmented-control buttons with activeFilters[group]
+function updateMultiSelectButtonStates(group) {
+    const selected = activeFilters[group];
+    document.querySelectorAll(`.filter-btn[data-group="${group}"]`).forEach(btn => {
         const isAllBtn = btn.dataset.filter === 'all';
         btn.classList.toggle('active', selected.length === 0 ? isAllBtn : !isAllBtn && selected.includes(btn.dataset.filter));
     });
@@ -485,10 +483,10 @@ function updateMaturityButtonStates() {
 function clearAllFilters() {
     activeFilters = {
         dataType: 'all',
-        aiMetric: 'all',
+        aiMetric: [],
         focus: 'all',
-        companySize: 'all',
-        outcomeGoals: 'all',
+        companySize: [],
+        outcomeGoals: [],
         easeOfCollection: [],
         specificCompany: 'all',
         specificFramework: 'all',
@@ -528,11 +526,8 @@ function resetOtherSourceFilters(except) {
         companyDropdown.value = 'all';
         if (typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
         // Also reset company size when company is reset
-        activeFilters.companySize = 'all';
-        document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.filter === 'all') btn.classList.add('active');
-        });
+        activeFilters.companySize = [];
+        updateMultiSelectButtonStates('companySize');
     }
 }
 
@@ -568,8 +563,8 @@ function applyRoleFilterLayout(role) {
 
 document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', function() {
-        if (this.dataset.group === 'easeOfCollection') {
-            toggleMaturityFilter(this.dataset.filter);
+        if (MULTI_SELECT_FILTER_GROUPS[this.dataset.group]) {
+            toggleMultiSelectFilter(this.dataset.group, this.dataset.filter);
         } else {
             applySpecificFilter(this.dataset.group, this.dataset.filter, this.dataset.group);
         }
@@ -590,11 +585,8 @@ document.getElementById('company-dropdown').addEventListener('change', function(
 document.getElementById('focus-dropdown').addEventListener('change', function() {
     applySpecificFilter('focus', this.value);
     // Reset company size when focus changes
-    activeFilters.companySize = 'all';
-    document.querySelectorAll('.filter-btn[data-group="companySize"]').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.filter === 'all') btn.classList.add('active');
-    });
+    activeFilters.companySize = [];
+    updateMultiSelectButtonStates('companySize');
     onUserFilterChange();
 });
 

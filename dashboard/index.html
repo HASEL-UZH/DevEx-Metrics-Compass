@@ -565,11 +565,12 @@
                     <label>Custom comparison</label>
                     <div class="compare-row-dropdowns">
                         <select id="compare-left-type" class="company-dropdown">
+                            <option value="shortlist">My metrics shortlist</option>
                             <option value="company">Company</option>
                             <option value="framework">Framework</option>
                             <option value="maturity">Maturity</option>
                             <option value="outcome">Outcome goals</option>
-                            <option value="shortlist">My Shortlist</option>
+                            <option value="companySize">Company size</option>
                         </select>
                         <select id="compare-left-value" class="company-dropdown">
                             <option value="all">Select...</option>
@@ -578,10 +579,11 @@
                     <div class="compare-row-dropdowns">
                         <select id="compare-right-type" class="company-dropdown">
                             <option value="company">Company</option>
+                            <option value="shortlist">My metrics shortlist</option>
                             <option value="framework">Framework</option>
                             <option value="maturity">Maturity</option>
                             <option value="outcome">Outcome goals</option>
-                            <option value="shortlist">My Shortlist</option>
+                            <option value="companySize">Company size</option>
                         </select>
                         <select id="compare-right-value" class="company-dropdown">
                             <option value="all">Select...</option>
@@ -744,6 +746,8 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">July 2026</div>
                     <ul>
+                        <li>Filters now support multi-select: combine several options at once (AI impact metric, Outcome goal, Company size, Collection maturity)</li>
+                        <li>Company size can now be used as a Step 2 comparison dimension</li>
                         <li>Refined wizard to filter sunburst chart by role</li>
                     </ul>
                 </div>

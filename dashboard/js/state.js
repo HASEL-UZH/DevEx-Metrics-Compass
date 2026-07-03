@@ -45,16 +45,30 @@ const closeOverlayBtn = document.getElementById('closeOverlayBtn');
 const openMaturityAssessmentBtn = document.getElementById('openMaturityAssessmentBtn');
 
 
+// Filter groups where several segmented-control buttons can be active at once
+// (exact-match on any selected value, not exclusive single-select). Value lists
+// are each group's non-"all" options; selecting all of them collapses back to "all".
+const MULTI_SELECT_FILTER_GROUPS = {
+    easeOfCollection: ['Easy', 'Moderate', 'Complex'],
+    aiMetric: ['ai-impact', 'ai-utilization', 'ai-cost'],
+    outcomeGoals: ['Developer Experience', 'Product Excellence', 'Organizational Effectiveness'],
+    // 'Small' is excluded: its button is permanently disabled (no data yet), so it can never be toggled on.
+    companySize: ['Enterprise', 'Large', 'Mid-size'],
+};
+
+// Maps aiMetric filter button values to the item.ai_specific_category values they match
+const AI_METRIC_CATEGORY_MAP = { 'ai-impact': 'Impact', 'ai-utilization': 'Utilization', 'ai-cost': 'Cost' };
+
 // Data stores
 let originalData = [];
 let filteredData = [];
 let chart = null;
 let activeFilters = {
     dataType: 'all',
-    aiMetric: 'all',
+    aiMetric: [],
     focus: 'all',
-    companySize: 'all',
-    outcomeGoals: 'all',
+    companySize: [],
+    outcomeGoals: [],
     easeOfCollection: [],
     specificCompany: 'all',
     specificFramework: 'all',

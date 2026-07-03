@@ -174,7 +174,7 @@ function renderSavedComparisons() {
     const hasShortlist = c => c.leftType === 'shortlist' || c.rightType === 'shortlist';
     const ordered = [...savedComparisons].sort((a, b) => hasShortlist(b) - hasShortlist(a));
 
-    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', shortlist: 'shortlist' }[t] || t);
+    const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', companySize: 'company size', shortlist: 'shortlist' }[t] || t);
 
     const cards = ordered.map((c) => {
         const i = savedComparisons.indexOf(c);

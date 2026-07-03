@@ -23,6 +23,12 @@ const COMPARE_DIMENSION_OPTIONS = {
         { value: 'Product Excellence',         label: '⭐ Product Excellence' },
         { value: 'Organizational Effectiveness', label: '📈 Organizational Effectiveness' },
     ],
+    // 'Small' excluded: no data available yet (mirrors the Step 1 filter panel).
+    companySize: [
+        { value: 'Enterprise', label: '🏢 Enterprise' },
+        { value: 'Large',      label: '🏬 Large' },
+        { value: 'Mid-size',   label: '🏠 Mid-size' },
+    ],
 };
 
 const GROUP_SORT_ORDER = {
@@ -47,8 +53,9 @@ function sortGroupKey(a, b) {
 }
 
 function getOptionsForDimension(type) {
-    if (type === 'maturity') return COMPARE_DIMENSION_OPTIONS.maturity;
-    if (type === 'outcome')  return COMPARE_DIMENSION_OPTIONS.outcome;
+    if (type === 'maturity')    return COMPARE_DIMENSION_OPTIONS.maturity;
+    if (type === 'outcome')     return COMPARE_DIMENSION_OPTIONS.outcome;
+    if (type === 'companySize') return COMPARE_DIMENSION_OPTIONS.companySize;
 
     // Extract dynamically from data
     const names = new Set();
@@ -113,6 +120,9 @@ function filterMetricsByDimension(type, value) {
         }
         if (type === 'outcome') {
             return item.outcome_goals === value;
+        }
+        if (type === 'companySize') {
+            return Array.isArray(item.company) && item.company.some(c => c.company_size === value);
         }
         return false;
     });
@@ -499,7 +509,7 @@ function renderSortCharts(chartDataArray) {
                 ? MATURITY_FULL_LABEL[g.key]
                 : (DIMENSION_TOOLTIPS[stripLeadingIcon(g.key)] || g.key)
             );
-            const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome' }[t] || t);
+            const typeLabel = t => ({ company: 'company', framework: 'framework', maturity: 'maturity', outcome: 'outcome', companySize: 'company size' }[t] || t);
             const leftLabel  = `${shortLabel(compareState.leftValue)} (${typeLabel(compareState.leftType)})`;
             const rightLabel = `${shortLabel(compareState.rightValue)} (${typeLabel(compareState.rightType)})`;
             row.title = `${rowDesc} — ${g.left} unique to ${leftLabel} / ${g.shared} shared / ${g.right} unique to ${rightLabel}`;
@@ -574,6 +584,15 @@ function initCompareControls() {
     const leftValue = document.getElementById('compare-left-value');
     const rightType  = document.getElementById('compare-right-type');
     const rightValue = document.getElementById('compare-right-value');
+
+    // Sync compareState from whichever option the browser actually defaulted
+    // each <select> to (its first <option>, since none carry "selected") —
+    // otherwise state.js's hardcoded compareState defaults can silently drift
+    // out of sync with the real dropdown selection shown to the user.
+    compareState.leftType  = leftType.value;
+    compareState.rightType = rightType.value;
+    if (compareState.leftType  === 'shortlist') compareState.leftValue  = 'shortlist';
+    if (compareState.rightType === 'shortlist') compareState.rightValue = 'shortlist';
 
     function updateLogoPreview(side) {
         const valueEl = document.getElementById(`compare-${side}-value`);
