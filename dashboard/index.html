@@ -310,13 +310,13 @@
                     <h2>What type of evidence do you prefer to rely on?</h2>
                     <div class="wizard-options">
                         <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only">
-                            <span class="option-num">🔬</span><span class="option-content"><strong>Research-validated</strong>: Metrics that appear in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx).</span><span class="wizard-option-count"></span>
+                            <span class="option-num">🔬</span><span class="option-content"><strong>Research-backed only</strong>: Metrics proposed in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx), but not yet applied in industry.</span><span class="wizard-option-count"></span>
                         </button>
                         <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only">
-                            <span class="option-num">🏭</span><span class="option-content"><strong>Used in practice</strong>: Metrics adopted by companies in the industry, regardless of formal research backing.</span><span class="wizard-option-count"></span>
+                            <span class="option-num">🏭</span><span class="option-content"><strong>Industry-applied only</strong>: Metrics used in practice by companies, without formal research backing.</span><span class="wizard-option-count"></span>
                         </button>
                         <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all">
-                            <span>No preference, show both <strong>research and industry metrics</strong>.</span><span class="wizard-option-count"></span>
+                            <span>No preference, show both <strong>research-backed and industry-applied metrics</strong>.</span><span class="wizard-option-count"></span>
                         </button>
                     </div>
                     <div class="wizard-nav">
@@ -506,12 +506,12 @@
 
             <!-- Filter by research vs. industry focus (always last — see ROLE_CONFIG ordering) -->
             <div class="filter-group" data-role-filter="focus">
-                <div class="filter-heading">Appears in research / industry</div>
+                <div class="filter-heading">Research backing / industry use</div>
                 <select id="focus-dropdown" class="company-dropdown">
-                    <option value="all">Appears in industry or research</option>
-                    <option value="research-only">Appears only in research</option>
-                    <option value="industry-only">Appears only in industry</option>
-                    <option value="research-and-industry">Appears in industry *and* research</option>
+                    <option value="all">Research-backed or industry-applied</option>
+                    <option value="research-only">Research-backed only</option>
+                    <option value="industry-only">Industry-applied only</option>
+                    <option value="research-and-industry">Industry-applied *and* research-backed</option>
                 </select>
             </div>
 
