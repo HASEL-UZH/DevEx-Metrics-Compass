@@ -241,13 +241,13 @@
                 <!-- Question: data access (Newcomer, Practitioner, and Researcher) -->
                 <div id="q-dataType-step" class="wizard-step hidden">
                     <p class="wizard-step-label" id="q-dataType-label">Question</p>
-                    <h2>What kinds of DevEx-related data do you have access to?</h2>
+                    <h2 id="q-dataType-title">How would you like to collect metrics?</h2>
                     <div class="wizard-options">
                         <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative">
-                            <span>⚙️ <strong>Automated</strong> (telemetry/log-based)</span><span class="wizard-option-count"></span>
+                            <span>⚙️ <strong>Automated</strong>, pulled from your tools (e.g., code repo, CI, IDE, telemetry/logs)</span><span class="wizard-option-count"></span>
                         </button>
                         <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="qualitative">
-                            <span>📋 <strong>Self-reported</strong> (surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
+                            <span>📋 <strong>Self-reported</strong>, gathered from people (e.g., surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
                         </button>
                         <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="all">
                             <span>Both / not sure yet, show all metrics.</span><span class="wizard-option-count"></span>
@@ -986,7 +986,7 @@
     <script src="js/filtering.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/metrics-selection.js"></script>
-    <script src="js/overlay.js"></script>
+    <script src="js/wizard.js"></script>
     <script src="js/titlebar.js"></script>
     <script src="js/compare.js"></script>
     <script src="js/pdf-export.js"></script>

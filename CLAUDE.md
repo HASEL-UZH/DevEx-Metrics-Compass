@@ -24,7 +24,7 @@ Work almost exclusively happens in `dashboard/`.
 - Filter logic: [dashboard/js/filtering.js](dashboard/js/filtering.js)
 - Sunburst chart: [dashboard/js/chart.js](dashboard/js/chart.js)
 - Metrics shortlist / click handling: [dashboard/js/metrics-selection.js](dashboard/js/metrics-selection.js)
-- Overlay / wizard: [dashboard/js/overlay.js](dashboard/js/overlay.js)
+- Entry wizard / overlays: [dashboard/js/wizard.js](dashboard/js/wizard.js)
 - Step 2 compare view: [dashboard/js/compare.js](dashboard/js/compare.js)
 - Step 3 next-steps view: [dashboard/js/nextsteps.js](dashboard/js/nextsteps.js)
 - Title bar: [dashboard/js/titlebar.js](dashboard/js/titlebar.js)
@@ -49,7 +49,7 @@ Use today's date from the `currentDate` context variable. Match the existing ent
 ## Conventions
 
 - No emoji in code (existing emoji in filter labels are intentional; do not add new ones)
-- JSON export schema (`dashboard/js/nextsteps.js` `exportJson()`): bump `schema_version` and update the import check in `dashboard/js/overlay.js` whenever the export format changes
+- JSON export schema (`dashboard/js/nextsteps.js` `exportJson()`): bump `schema_version` and update the import check in `dashboard/js/wizard.js` whenever the export format changes
 
 ## Branch Strategy
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-06 — Refined the per-role onboarding questions
+
+- Newcomers are now asked their outcome goal before the data-collection question, so the wizard leads with intent rather than mechanics.
+- The Practitioner "quick questions" path is down to three questions (measurement maturity, outcome goal, AI interest); the data-collection question is no longer asked of practitioners, who already have measurement in place.
+- Reworded the data-collection question ("How would you like to collect metrics?") and its options to read as a collection preference rather than a passive "what do you have access to".
+
 ## 2026-07-03 — Company size added as a Step 2 comparison dimension
 
 - The Step 2 "Custom comparison" dropdowns now include "Company size" alongside Company, Framework, Maturity, and Outcome goals, so users can compare e.g. Enterprise-tracked metrics vs Mid-size-tracked metrics.

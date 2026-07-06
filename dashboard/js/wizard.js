@@ -1,4 +1,4 @@
-// ─── Overlay navigation, hint system, assessment flow, changelog ──────────────
+// ─── Entry wizard (role selection, questions, benchmark/import) + About & changelog overlays ─
 
 // ─── Compass needle mouse tracking ───────────────────────────────────────────
 (function () {
@@ -215,8 +215,20 @@ function updateQuestionStepChrome(key) {
     }
 }
 
+// The dataType step is shared, but its framing differs by role: Newcomers pick a
+// collection approach, whereas Researchers (who don't collect metrics themselves)
+// express which kind of metric they're interested in.
+const DATATYPE_HEADING_DEFAULT = 'How would you like to collect metrics?';
+const DATATYPE_HEADING_BY_ROLE = {
+    [ROLE.RESEARCHER]: 'What kind of metrics are you most interested in?'
+};
+
 function goToWizardQuestion(key) {
     updateQuestionStepChrome(key);
+    if (key === 'dataType') {
+        const title = document.getElementById('q-dataType-title');
+        if (title) title.textContent = DATATYPE_HEADING_BY_ROLE[currentRole] || DATATYPE_HEADING_DEFAULT;
+    }
     showWizardStep(QUESTION_STEP_ID[key]);
 }
 

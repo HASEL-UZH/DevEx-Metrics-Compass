@@ -92,12 +92,12 @@ let currentRole = null;
 // Nothing is ever fully hidden — every dim lands in keyFilters or collapsedFilters.
 const ROLE_CONFIG = {
     [ROLE.NEWCOMER]: {
-        sequence: ['dataType', 'outcomeGoals'],
+        sequence: ['outcomeGoals', 'dataType'],
         keyFilters: ['minMentions', 'outcomeGoals', 'aiMetric', 'dataType'],
         collapsedFilters: ['specificCompany', 'specificFramework', 'companySize', 'easeOfCollection', 'focus']
     },
     [ROLE.PRACTITIONER]: {
-        quickSequence: ['easeOfCollection', 'outcomeGoals', 'aiMetric', 'dataType'],
+        quickSequence: ['easeOfCollection', 'outcomeGoals', 'aiMetric'],
         keyFilters: ['minMentions', 'outcomeGoals', 'easeOfCollection', 'aiMetric', 'dataType', 'specificCompany', 'specificFramework'],
         collapsedFilters: ['companySize', 'focus']
     },
