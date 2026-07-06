@@ -227,6 +227,27 @@ function renderSavedComparisons() {
 
 // ─── Insights panel ───────────────────────────────────────────────────────────
 
+// Renders a framework name as an in-app link that jumps to Step 1 filtered to that
+// framework (instead of linking out to the external source).
+function frameworkExploreLink(name, label = name) {
+    return `<a href="#" class="ns-insight-explore" onclick="event.preventDefault(); exploreFrameworkInStep1('${name}')">${label}</a>`;
+}
+
+// Jump to Step 1 and filter the sunburst to a single research framework's metrics.
+// Non-destructive: does not touch the shortlist. Mirrors the benchmark-framework handler.
+function exploreFrameworkInStep1(name) {
+    if (typeof switchToStep === 'function') switchToStep(STEP.EXPLORE);
+    currentMode = MODE.BROWSE;
+    clearAllFilters();
+    const dd = document.getElementById('research-dropdown');
+    if (dd) {
+        dd.value = name;
+        applySpecificFilter('specificFramework', name);
+        resetOtherSourceFilters('specificFramework');
+    }
+    onUserFilterChange();
+}
+
 function buildInsights(allSelected) {
     if (!allSelected || allSelected.length === 0) return [];
 
@@ -364,10 +385,13 @@ function buildInsights(allSelected) {
     if (frameworkEntries.length > 0) {
         const total = allSelected.length;
         const [topName, topCount] = frameworkEntries[0];
+        // SPACE and DORA get their own dedicated coverage chips below (#8/#9), so don't
+        // repeat them here when they are the single dominant framework.
+        const hasDedicatedChip = topName === 'SPACE Framework' || topName === 'DORA Framework';
         if (topCount === total && frameworkEntries.length === 1) {
-            chips.push({ text: `All metrics align with <strong>${frameworkLink(topName)}</strong> — consider drawing from other frameworks`, type: 'action' });
+            if (!hasDedicatedChip) chips.push({ text: `All metrics align with <strong>${frameworkLink(topName)}</strong> — consider drawing from other frameworks`, type: 'action' });
         } else if (topCount / total > 0.5) {
-            chips.push({ text: `${topCount} of ${total} metrics align with the <strong>${frameworkLink(topName)}</strong>`, type: 'neutral' });
+            if (!hasDedicatedChip) chips.push({ text: `${topCount} of ${total} metrics align with the <strong>${frameworkLink(topName)}</strong>`, type: 'neutral' });
         } else {
             const list = frameworkEntries.slice(0, 3).map(([n, c]) => `${n.replace(' Framework', '')} (${c})`).join(', ');
             const more = frameworkEntries.length > 3 ? `, +${frameworkEntries.length - 3} more` : '';
@@ -381,11 +405,11 @@ function buildInsights(allSelected) {
     const spaceSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'SPACE Framework')).length;
     if (spaceTotal > 0) {
         if (spaceSelected === 0) {
-            chips.push({ text: `<strong>${frameworkLink('SPACE Framework', 'SPACE Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
+            chips.push({ text: `<strong>${frameworkExploreLink('SPACE Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
         } else if (spaceSelected === spaceTotal) {
-            chips.push({ text: `Covers all ${spaceTotal} <strong>${frameworkLink('SPACE Framework', 'SPACE Framework')} metrics</strong>`, type: 'positive' });
+            chips.push({ text: `Covers all ${spaceTotal} <strong>${frameworkExploreLink('SPACE Framework')} metrics</strong>`, type: 'positive' });
         } else {
-            chips.push({ text: `<strong>${frameworkLink('SPACE Framework', 'SPACE Framework')}:</strong> ${spaceSelected} of ${spaceTotal} metrics covered`, type: spaceSelected / spaceTotal >= 0.5 ? 'positive' : 'neutral' });
+            chips.push({ text: `<strong>${frameworkExploreLink('SPACE Framework')}:</strong> ${spaceSelected} of ${spaceTotal} metrics covered`, type: spaceSelected / spaceTotal >= 0.5 ? 'positive' : 'neutral' });
         }
     }
 
@@ -394,11 +418,11 @@ function buildInsights(allSelected) {
     const doraSelected = allSelected.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === 'DORA Framework')).length;
     if (doraTotal > 0) {
         if (doraSelected === 0) {
-            chips.push({ text: `<strong>${frameworkLink('DORA Framework', 'DORA Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
+            chips.push({ text: `<strong>${frameworkExploreLink('DORA Framework')}:</strong> no metrics in your selection yet`, type: 'action' });
         } else if (doraSelected === doraTotal) {
-            chips.push({ text: `Covers all ${doraTotal} <strong>${frameworkLink('DORA Framework', 'DORA Framework')} metrics</strong>`, type: 'positive' });
+            chips.push({ text: `Covers all ${doraTotal} <strong>${frameworkExploreLink('DORA Framework')} metrics</strong>`, type: 'positive' });
         } else {
-            chips.push({ text: `<strong>${frameworkLink('DORA Framework', 'DORA Framework')}:</strong> ${doraSelected} of ${doraTotal} metrics covered`, type: doraSelected / doraTotal >= 0.5 ? 'positive' : 'neutral' });
+            chips.push({ text: `<strong>${frameworkExploreLink('DORA Framework')}:</strong> ${doraSelected} of ${doraTotal} metrics covered`, type: doraSelected / doraTotal >= 0.5 ? 'positive' : 'neutral' });
         }
     }
 

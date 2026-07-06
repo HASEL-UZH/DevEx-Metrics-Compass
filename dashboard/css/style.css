@@ -2484,12 +2484,12 @@ a {
 }
 
 .ns-insight--neutral {
-    background: #f5f5f5;
-    border-left-color: #d0d0d0;
+    background: #eff6ff;
+    border-left-color: #1B1AFF;
 }
 
 .ns-insight--neutral .ns-insight-icon {
-    color: #aaa;
+    color: #1B1AFF;
 }
 
 .ns-insights-scope {
