@@ -238,7 +238,7 @@ resetWizardAnswers();
 
 // Called once the active sequence (Newcomer's full sequence, or the Practitioner/
 // Researcher "quick questions" sequence) is exhausted, or immediately for the
-// Practitioner/Researcher "start from scratch" / "explore by filtering" choices.
+// Practitioner/Researcher "browse the full catalogue" / "answer a few questions" choices.
 function finishWizard() {
     logEvent(TELEMETRY.WIZARD_COMPLETED, { role: currentRole, mode: currentMode, answers: Object.assign({}, wizardAnswers) });
     modeChosen = true;
@@ -305,7 +305,7 @@ document.querySelectorAll('.start-choice-btn').forEach(btn => {
             clearAllFilters();
             finishWizard();
         } else if (action === 'additive') {
-            // "Explore by filtering" leads with a couple of quick questions (each
+            // "Answer a few questions" leads with a couple of quick questions (each
             // answer live-filters, same as any other filter change). Starts from
             // the full catalogue and narrows down as questions are answered —
             // not a blank canvas — matching how the Newcomer wizard already works.
