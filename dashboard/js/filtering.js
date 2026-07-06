@@ -435,7 +435,6 @@ function updateMetricsCount(data) {
 function onUserFilterChange() {
     if (!modeChosen) {
         modeChosen = true;
-        currentMode = MODE.BROWSE;
         hideExploreStartView();
     }
     filterData();
@@ -479,7 +478,7 @@ function updateMultiSelectButtonStates(group) {
     });
 }
 
-// Clear all filters (currentMode is intentionally NOT reset here)
+// Clear all filters
 function clearAllFilters() {
     activeFilters = {
         dataType: 'all',

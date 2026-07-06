@@ -237,7 +237,6 @@ function frameworkExploreLink(name, label = name) {
 // Non-destructive: does not touch the shortlist. Mirrors the benchmark-framework handler.
 function exploreFrameworkInStep1(name) {
     if (typeof switchToStep === 'function') switchToStep(STEP.EXPLORE);
-    currentMode = MODE.BROWSE;
     clearAllFilters();
     const dd = document.getElementById('research-dropdown');
     if (dd) {

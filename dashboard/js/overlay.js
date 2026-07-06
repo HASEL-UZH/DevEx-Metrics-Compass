@@ -130,7 +130,6 @@ function showExploreStartView() {
     if (cf) cf.style.display = 'none';
     if (leftContainer)  leftContainer.classList.add('chart-blurred');
     if (noMetricsMessage) noMetricsMessage.style.display = 'none';
-    currentMode = MODE.BROWSE;
     currentRole = null;
     localStorage.removeItem('currentRole');
     hideRoleBadge();
@@ -240,7 +239,7 @@ resetWizardAnswers();
 // Researcher "quick questions" sequence) is exhausted, or immediately for the
 // Practitioner/Researcher "browse the full catalogue" / "answer a few questions" choices.
 function finishWizard() {
-    logEvent(TELEMETRY.WIZARD_COMPLETED, { role: currentRole, mode: currentMode, answers: Object.assign({}, wizardAnswers) });
+    logEvent(TELEMETRY.WIZARD_COMPLETED, { role: currentRole, answers: Object.assign({}, wizardAnswers) });
     modeChosen = true;
     hideExploreStartView();
     applyRoleFilterLayout(currentRole);
@@ -289,7 +288,6 @@ document.getElementById('skip-wizard-link').addEventListener('click', () => {
     resetWizardAnswers();
     logEvent(TELEMETRY.WIZARD_STARTED, { role: currentRole, action: 'skip' });
     showRoleBadge();
-    currentMode = MODE.BROWSE;
     clearAllFilters();
     finishWizard();
 });
@@ -301,7 +299,6 @@ document.querySelectorAll('.start-choice-btn').forEach(btn => {
         const action = this.dataset.action;
         logEvent(TELEMETRY.WIZARD_STARTED, { role: currentRole, action });
         if (action === 'browse') {
-            currentMode = MODE.BROWSE;
             clearAllFilters();
             finishWizard();
         } else if (action === 'additive') {
@@ -309,7 +306,6 @@ document.querySelectorAll('.start-choice-btn').forEach(btn => {
             // answer live-filters, same as any other filter change). Starts from
             // the full catalogue and narrows down as questions are answered —
             // not a blank canvas — matching how the Newcomer wizard already works.
-            currentMode = MODE.BROWSE;
             clearAllFilters();
             goToWizardQuestion(ROLE_CONFIG[currentRole].quickSequence[0]);
         } else if (action === 'benchmark') {
@@ -445,7 +441,6 @@ document.getElementById('predefined-company-load-btn').addEventListener('click',
     const companyMetrics = originalData.filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name));
     logEvent(TELEMETRY.PREDEFINED_COMPANY_LOADED, { company: name, metricCount: companyMetrics.length, role: currentRole });
     companyMetrics.forEach(m => addClickedMetric(m, 'capturing', 'company'));
-    currentMode = MODE.BROWSE;
     clearAllFilters();
 
     // Pre-select the company in the Step 1 filter (mirrors the company-dropdown change handler)
@@ -502,7 +497,6 @@ document.getElementById('benchmark-company-btn').addEventListener('click', () =>
     if (!name) return;
     const companyMetrics = originalData.filter(m => Array.isArray(m.company) && m.company.some(c => c.name === name));
     logEvent(TELEMETRY.PREDEFINED_COMPANY_LOADED, { company: name, metricCount: companyMetrics.length, role: currentRole, mode: 'benchmark' });
-    currentMode = MODE.BROWSE;
     clearAllFilters();
 
     // Pre-select the company in the Step 1 filter (mirrors the company-dropdown change handler)
@@ -556,7 +550,6 @@ document.getElementById('benchmark-framework-btn').addEventListener('click', () 
     if (!name) return;
     const frameworkMetrics = originalData.filter(m => Array.isArray(m.research) && m.research.some(r => r.name === name));
     logEvent(TELEMETRY.PREDEFINED_FRAMEWORK_LOADED, { framework: name, metricCount: frameworkMetrics.length, role: currentRole });
-    currentMode = MODE.BROWSE;
     clearAllFilters();
 
     // Pre-select the framework in the Step 1 filter (mirrors the research-dropdown change handler)
@@ -621,7 +614,6 @@ document.getElementById('predefined-import-btn').addEventListener('click', () =>
     if (_predefinedImportCandidates.length === 0) return;
     logEvent(TELEMETRY.IMPORT_JSON, { importedCount: _predefinedImportCandidates.length, role: currentRole });
     _predefinedImportCandidates.forEach(({ metric, status }) => addClickedMetric(metric, status, 'import'));
-    currentMode = MODE.BROWSE;
     clearAllFilters();
     finishWizard();
 });

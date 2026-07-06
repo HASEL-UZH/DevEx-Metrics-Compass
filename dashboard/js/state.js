@@ -78,10 +78,6 @@ let activeFilters = {
 // Current "color by" dimension for the sunburst chart
 let currentColorBy = 'categorization';
 
-// Named mode constants for clarity and logging
-const MODE = { BROWSE: 'browse', GUIDED: 'guided', COMPARE: 'compare', NEXTSTEPS: 'nextsteps' };
-let currentMode = MODE.BROWSE;
-
 // Role picked in Step 0 of the entry wizard; drives which questions get asked
 // and which filters are shown by default afterward (see ROLE_CONFIG below).
 const ROLE = { NEWCOMER: 'newcomer', PRACTITIONER: 'practitioner', RESEARCHER: 'researcher' };
