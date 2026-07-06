@@ -462,10 +462,6 @@ function buildTooltipContent(metricData, excludeId = null) {
 
     content += `${metricDescription || 'No description available'}</div>`;
 
-    if (metricAlsoKnownAs && metricAlsoKnownAs !== '-') {
-        content += `<hr><div class="metric-detail"><strong>Also known as:</strong> ${metricAlsoKnownAs}</div>`;
-    }
-
     content += `
         <hr>
         <div class="metric-detail"><strong>Number of mentions:</strong> ${metricValue}</div>
@@ -481,6 +477,10 @@ function buildTooltipContent(metricData, excludeId = null) {
                 ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${{ 'Developer Experience': '🧑‍💻 Developer Experience', 'Product Excellence': '⭐ Product Excellence', 'Organizational Effectiveness': '📈 Organizational Effectiveness' }[metricOutcomeGoals] || metricOutcomeGoals}</span>` : ''}
                 ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${MATURITY_FULL_LABEL[metricEaseOfCollection] || metricEaseOfCollection}</span>` : ''}
         </div>`;
+
+    if (metricAlsoKnownAs && metricAlsoKnownAs !== '-') {
+        content += `<hr><div class="metric-detail"><strong>Also known as:</strong> ${metricAlsoKnownAs}</div>`;
+    }
 
     if (resolvedRelated.length > 0) {
         content += `
