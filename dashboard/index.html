@@ -615,11 +615,12 @@
                 <div id="ns-saved-comparisons" class="ns-saved-comparisons" style="display:none"></div>
                 <div class="ns-download-section">
                     <div class="controls-title controls-title--download">Export metrics &amp; implement your plan</div>
-                    <div class="filter-description">Export your selection when you're ready.</div>
+                    <div class="filter-description">Export or share your selection when you're ready.</div>
                     <div id="nextsteps-actions" class="nextsteps-actions nextsteps-actions--row">
-                        <button class="download-csv-button ns-btn-export" id="download-pdf-nextsteps">Export PDF report</button>
-                        <button class="clear-all-metrics ns-btn-clear" id="download-json-nextsteps" title="Save your selection as a JSON file — can be re-imported later via &quot;Start with a predefined list&quot;">Export JSON</button>
-                        <button class="clear-all-metrics ns-btn-clear" id="clear-all-metrics-nextsteps">Clear selection</button>
+                        <button class="download-csv-button ns-btn-export" id="download-pdf-nextsteps" title="Download an actionable PDF report of your shortlisted metrics and saved comparisons">📄 Export PDF report</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="download-json-nextsteps" title="Save your selection as a JSON file — can be re-imported later via &quot;Start with a predefined list&quot;">📤 Export JSON</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="copy-shortlist-link-nextsteps" title="Copy a link that lets someone else load your shortlist">🔗 Copy shareable link</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="clear-all-metrics-nextsteps" title="Remove every metric from your shortlist">🗑️ Clear shortlist</button>
                     </div>
                     <a id="json-download-anchor" style="display:none"></a>
                 </div>
@@ -746,6 +747,7 @@
                 <div class="changelog-entry">
                     <div class="changelog-date">July 2026</div>
                     <ul>
+                        <li>Added shareable links: share any filtered view, selected metric, or metrics shortlist with your peers</li>
                         <li>Filters now support multi-select: combine several options at once (AI impact metric, Outcome goal, Company size, Collection maturity)</li>
                         <li>Company size can now be used as a Step 2 comparison dimension</li>
                         <li>Refined wizard to filter sunburst chart by role</li>
@@ -984,6 +986,7 @@
     <script src="js/state.js"></script>
     <script src="js/helpers.js"></script>
     <script src="js/filtering.js"></script>
+    <script src="js/url-state.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/metrics-selection.js"></script>
     <script src="js/wizard.js"></script>

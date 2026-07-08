@@ -622,6 +622,7 @@ function initCompareControls() {
         updateLogoPreview(side);
         logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, newType: typeEl.value, newValue: compareState[side + 'Value'] });
         if (typeof updateStepBar === 'function') updateStepBar();
+        if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
     }
 
     function onValueChange(valueEl, side) {
@@ -631,6 +632,7 @@ function initCompareControls() {
         updateLogoPreview(side);
         logEvent(TELEMETRY.COMPARE_DIMENSION_CHANGED, { side, type: compareState[side + 'Type'], newValue: valueEl.value });
         if (typeof updateStepBar === 'function') updateStepBar();
+        if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
     }
 
     leftType.addEventListener('change',  () => onTypeChange(leftType, leftValue, 'left'));
@@ -682,6 +684,7 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
     });
     logEvent(TELEMETRY.COMPARE_PRESET_APPLIED, { leftType, leftValue, rightType, rightValue });
     if (typeof updateStepBar === 'function') updateStepBar();
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

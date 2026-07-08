@@ -118,6 +118,9 @@ let compareState = { leftType: 'company', leftValue: 'all', rightType: 'company'
 // Selected metrics shortlist
 let clickedMetrics = [];
 
+// Id of the metric whose detail popup is currently open (primary tooltip only), else null
+let openMetricId = null;
+
 // Comparisons saved from Step 2 to include in the PDF export
 let savedComparisons = [];
 

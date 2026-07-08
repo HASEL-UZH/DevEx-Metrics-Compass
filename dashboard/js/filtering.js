@@ -302,6 +302,7 @@ function filterData() {
     if (typeof updateStepBar === 'function') updateStepBar();
     if (typeof refreshCompareValueDropdowns === 'function') refreshCompareValueDropdowns();
     if (typeof loadSavedComparisonsFromLocalStorage === 'function') loadSavedComparisonsFromLocalStorage();
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
 }
 
 // Reads a segmented-control filter button's own display text (icon + label)

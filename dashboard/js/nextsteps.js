@@ -61,6 +61,12 @@ function renderNextStepsView() {
     if (clearBtn) {
         clearBtn.disabled = clickedMetrics.length === 0;
     }
+
+    // Update copy-shortlist-link button state — nothing to share with an empty shortlist
+    const copyLinkBtn = document.getElementById('copy-shortlist-link-nextsteps');
+    if (copyLinkBtn) {
+        copyLinkBtn.disabled = clickedMetrics.length === 0;
+    }
 }
 
 function renderNextStepsList(containerId, metrics, isPlanned) {
@@ -523,11 +529,32 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadJsonBtn.addEventListener('click', () => exportJson());
     }
 
+    const copyLinkBtn = document.getElementById('copy-shortlist-link-nextsteps');
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', () => {
+            // Scoped to just the shortlist (+ step, so it opens straight on Step 3) —
+            // not the ambient live-synced URL, which would also carry whatever
+            // filters/role/compare/metric the sender happened to have active.
+            const params = new URLSearchParams();
+            const { current, planned } = typeof shortlistUrlParams === 'function' ? shortlistUrlParams() : { current: '', planned: '' };
+            if (current) params.set('shortlist_current', current);
+            if (planned) params.set('shortlist_planned', planned);
+            params.set('step', STEP.NEXTSTEPS);
+            const qs = typeof readableQueryString === 'function' ? readableQueryString(params) : params.toString();
+            const url = `${window.location.origin}${window.location.pathname}?${qs}`;
+            navigator.clipboard.writeText(url);
+            logEvent(TELEMETRY.SHORTLIST_LINK_COPIED, { shortlistCount: clickedMetrics.length });
+            const original = copyLinkBtn.textContent;
+            copyLinkBtn.textContent = 'Link copied!';
+            setTimeout(() => { copyLinkBtn.textContent = original; }, 1500);
+        });
+    }
+
     const clearBtn = document.getElementById('clear-all-metrics-nextsteps');
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
             if (clickedMetrics.length === 0) return;
-            if (confirm('Clear all selected metrics?')) {
+            if (confirm('Clear your shortlist? This can\'t be undone.')) {
                 if (typeof clearAllClickedMetrics === 'function') clearAllClickedMetrics();
                 modeChosen = false;
                 const entryPanel    = document.getElementById('explore-entry-panel');

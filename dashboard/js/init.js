@@ -31,9 +31,32 @@ anychart.onDocumentReady(function() {
             }
         });
 
+        const restored = restoreStateFromUrl();
+
+        if (restored.hadUrlState) {
+            // First-time visitor arriving via a shared link (no localStorage yet) —
+            // dismiss the welcome wizard so the restored view isn't blocked by it.
+            myOverlay.style.display = 'none';
+            modeChosen = true;
+            hideExploreStartView();
+        }
+
         filterData();
         updateStepBar();
         updateColorLegend('categorization');
+
+        // Run after filterData(), not before: filterData() re-shows the "Clear
+        // all filters" chart button whenever active filters narrow the result
+        // set, which would undo switchToStep()'s own explore-only-chrome hide
+        // if switchToStep ran first — so switchToStep must be the last word on
+        // step-specific visibility.
+        if (restored.step && restored.step !== STEP.EXPLORE) {
+            switchToStep(restored.step);
+        }
+
+        restoreShortlistFromUrl();
+        restoreMetricPopupFromUrl();
+
         logEvent(TELEMETRY.PAGE_LOAD, { totalMetrics: originalData.filter(m => m.type).length, shortlistCount: clickedMetrics.length, hasShortlist: clickedMetrics.length > 0, viewport: window.innerWidth < 768 ? 'mobile' : 'desktop' });
     })
     .catch(error => {

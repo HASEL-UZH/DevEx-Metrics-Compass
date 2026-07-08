@@ -13,6 +13,7 @@ window.TELEMETRY = {
     METRIC_REMOVED:              'metric_removed',
     METRIC_STATUS_CHANGED:       'metric_status_changed',
     SHORTLIST_CLEARED:           'shortlist_cleared',
+    SHORTLIST_LINK_COPIED:       'shortlist_link_copied',
     WIZARD_STARTED:              'wizard_started',
     WIZARD_STEP:                 'wizard_step',
     WIZARD_SKIPPED:              'wizard_skipped',

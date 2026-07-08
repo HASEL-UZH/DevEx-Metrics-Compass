@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-08 — Shareable URL state for filters, role, step, compare, and metrics
+
+- Step 1 filters/role, Step 2 compare selection, the current step, and the open metric popup now live-sync to the URL via `history.replaceState`, so the address bar is always a valid link to the current view.
+- Added "Copy shareable link" (Step 3) to share just the shortlist (split into `shortlist_current`/`shortlist_planned` to preserve tracking status), and "Copy link to this metric" inside the metric detail popup — both scoped to just their own data, not the ambient live state.
+- Opening a shared shortlist link merges into the recipient's existing shortlist (confirm to proceed, cancel to do nothing); loads directly with no prompt if their shortlist is empty.
+- Renamed "Clear selection" to "Clear shortlist" for consistency with existing terminology; reworked the Step 3 export-row button layout and added hover tooltips.
+- Removed dead `MODE`/`currentMode` state (superseded by role-based onboarding and step-based navigation).
+
 ## 2026-07-06 — Refined the per-role onboarding questions
 
 - Newcomers are now asked their outcome goal before the data-collection question, so the wizard leads with intent rather than mechanics.

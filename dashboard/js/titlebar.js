@@ -85,6 +85,7 @@ function switchToStep(step) {
     }
 
     updateStepBar();
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
 }
 
 // Called after any filter or shortlist change to keep the meta line current

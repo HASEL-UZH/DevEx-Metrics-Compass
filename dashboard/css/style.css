@@ -1148,25 +1148,62 @@ a {
     margin-bottom: 5px;
 }
 
+.tooltip-status-panel {
+    margin: 12px 0;
+    padding: 10px 12px;
+    background-color: #F1F5FB;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+}
+
+.tooltip-status-panel .metric-detail {
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.tooltip-status-panel .metric-detail strong {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748B;
+}
+
 .tooltip-status-control {
     margin-top: 6px;
     margin-bottom: 0;
+    background-color: #ffffff;
 }
 
 .tooltip-status-control .filter-btn {
     font-size: 12px;
 }
 
+/* Preview the status color on hover (not grey), with bold text like the menubar pills */
+.tooltip-status-control .filter-btn[data-status="capturing"]:hover {
+    background-color: #DCFCE7;
+    color: #16A34A;
+    font-weight: 600;
+}
+
+.tooltip-status-control .filter-btn[data-status="planning"]:hover {
+    background-color: #DBEAFE;
+    color: #1B1AFF;
+    font-weight: 600;
+}
+
 .tooltip-status-control .filter-btn[data-status="capturing"].active {
     background-color: #DCFCE7;
     color: #16A34A;
     border-color: #16A34A;
+    font-weight: 600;
 }
 
 .tooltip-status-control .filter-btn[data-status="planning"].active {
     background-color: #DBEAFE;
     color: #1B1AFF;
     border-color: #1B1AFF;
+    font-weight: 600;
 }
 
 .custom-tooltip .close-tooltip-button {
@@ -2093,6 +2130,13 @@ a {
     line-height: 1;
 }
 
+/* Emoji badge used for research sources (mirrors the company favicon) */
+.entity-badge {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
+}
+
 
 /* Keep logo + name on the same line inside chips */
 .source-chip {
@@ -2100,6 +2144,7 @@ a {
     align-items: center;
     gap: 4px;
     white-space: nowrap;
+    margin-right: 12px;
 }
 
 .source-chip a {
@@ -2399,6 +2444,7 @@ a {
 
 .nextsteps-actions--row {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: stretch;
 }
 
@@ -2412,11 +2458,19 @@ a {
 
 .ns-btn-export,
 .ns-btn-clear {
-    flex: 1;
     width: auto !important;
     margin: 0 !important;
     padding: 7px 10px;
     font-size: 13px;
+    white-space: nowrap;
+}
+
+.ns-btn-export {
+    flex: 0 0 100%;
+}
+
+.ns-btn-clear {
+    flex: 1 0 auto;
 }
 
 /* ─── Step 3: Column widths ───────────────────────────────────────────────── */
@@ -3409,11 +3463,13 @@ a {
     margin: 12px 0 0;
 }
 
-/* "Report an issue" button inside the metric tooltip */
+/* "Copy link" / "Report an issue" buttons inside the metric tooltip */
 .report-metric-row {
-    margin-top: 10px;
-    margin-bottom: -4px;
-    text-align: right;
+    margin-top: 18px;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .report-metric-btn {

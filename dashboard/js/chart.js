@@ -432,17 +432,18 @@ function buildTooltipContent(metricData, excludeId = null) {
                 return `<span class="source-chip"><a href="${source.url}" target="_blank" rel="noopener noreferrer">${inner}</a></span>`;
             }
             return `<span class="source-chip">${inner}</span>`;
-        }).join('; ');
+        }).join('');
     }
 
     let researchUsedByHtml = 'no mentions';
     if (Array.isArray(metricData.research) && metricData.research.length > 0) {
         researchUsedByHtml = [...metricData.research].filter(s => s.url).sort((a, b) => a.name.localeCompare(b.name)).map(source => {
+            const badge = `<span class="entity-badge" aria-hidden="true">📄</span>`;
             if (source.url && source.url !== '') {
-                return `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.name}</a>`;
+                return `<span class="source-chip">${badge}<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.name}</a></span>`;
             }
-            return source.name;
-        }).join('; ');
+            return `<span class="source-chip">${badge}${source.name}</span>`;
+        }).join('');
     }
 
     const companySizeOrder = ['Enterprise', 'Large', 'Mid-size', 'Small'];
@@ -456,14 +457,32 @@ function buildTooltipContent(metricData, excludeId = null) {
         ? (srcMetric.resolvedRelated || []).filter(m => m.id !== excludeId)
         : [];
 
+    const statusSection = (function() {
+        const existing = clickedMetrics.find(m => m.id === metricId);
+        const status = existing ? existing.collectionStatus : null;
+        const activeNone      = !status      ? 'active' : '';
+        const activeCapturing = status === 'capturing' ? 'active' : '';
+        const activePlanning  = status === 'planning'  ? 'active' : '';
+        return `
+        <div class="tooltip-status-panel">
+            <div class="metric-detail"><strong>Your collection status</strong></div>
+            <div class="segmented-control tooltip-status-control">
+                <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">No status</button>
+                <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already tracking</button>
+                <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to track</button>
+            </div>
+        </div>`;
+    })();
+
     let content = `
         <span class="close-tooltip-button">&times;</span>
         <div class="metric-name-title">${metricName}</div> `;
 
     content += `${metricDescription || 'No description available'}</div>`;
 
+    content += statusSection;
+
     content += `
-        <hr>
         <div class="metric-detail"><strong>Number of mentions:</strong> ${metricValue}</div>
         <div class="metric-detail"><strong>Companies:</strong> ${companyUsedByHtml}</div>
         <div class="metric-detail"><strong>Research:</strong> ${researchUsedByHtml}</div>
@@ -490,25 +509,8 @@ function buildTooltipContent(metricData, excludeId = null) {
         ).join('; ')}</div>`;
     }
 
-    content += `
-        ${(function() {
-            const existing = clickedMetrics.find(m => m.id === metricId);
-            const status = existing ? existing.collectionStatus : null;
-            const activeNone      = !status      ? 'active' : '';
-            const activeCapturing = status === 'capturing' ? 'active' : '';
-            const activePlanning  = status === 'planning'  ? 'active' : '';
-            return `
-        <hr>
-        <div class="metric-detail"><strong>Your collection status</strong></div>
-        <div class="segmented-control tooltip-status-control">
-            <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">No status</button>
-            <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already tracking</button>
-            <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to track</button>
-        </div>`;
-        })()}
-    `;
-
     content += `<div class="metric-detail report-metric-row">
+        <button class="report-metric-btn copy-metric-link-btn" data-copy-metric-id="${metricId}">Copy link to this metric</button>
         <button class="report-metric-btn" data-report-metric-id="${metricId}" data-report-metric-name="${metricName.replace(/"/g, '&quot;')}">Report an issue with this metric</button>
     </div>`;
 
@@ -539,7 +541,22 @@ function wireTooltipListeners(tooltipEl, metricData, onClose) {
         });
     });
 
-    const reportBtn = tooltipEl.querySelector('.report-metric-btn');
+    const copyLinkBtn = tooltipEl.querySelector('.copy-metric-link-btn');
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Scoped to just this metric — not the ambient live-synced URL, which
+            // would also carry whatever filters/role/compare state happen to be
+            // active and have nothing to do with "this metric".
+            const url = `${window.location.origin}${window.location.pathname}?metric=${metricData.id}`;
+            navigator.clipboard.writeText(url);
+            const original = this.textContent;
+            this.textContent = 'Link copied!';
+            setTimeout(() => { this.textContent = original; }, 1500);
+        });
+    }
+
+    const reportBtn = tooltipEl.querySelector('[data-report-metric-id]');
     if (reportBtn) {
         reportBtn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -564,6 +581,7 @@ function wireTooltipListeners(tooltipEl, metricData, onClose) {
 
 function showCustomTooltip(metricData, event) {
     hideCustomTooltip();
+    openMetricId = metricData.id;
 
     customTooltip.innerHTML = buildTooltipContent(metricData);
     customTooltip.classList.add('active');
@@ -595,6 +613,53 @@ function showCustomTooltip(metricData, event) {
     });
 
     setTimeout(() => document.addEventListener('click', handleDocumentClick), 0);
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
+}
+
+// Sibling to showCustomTooltip() for the one case with no real mouse event to
+// position against (opening a metric popup restored from a shared URL on load).
+function showCustomTooltipCentered(metricData) {
+    hideCustomTooltip();
+    openMetricId = metricData.id;
+
+    customTooltip.innerHTML = buildTooltipContent(metricData);
+    customTooltip.classList.add('active');
+
+    const tooltipRect = customTooltip.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const labelEl = typeof findMetricLabelEl === 'function' ? findMetricLabelEl(metricData.name) : null;
+
+    let left, top;
+    if (labelEl) {
+        // Anchor near the metric's actual rendered segment, same as a real click.
+        const rect = labelEl.getBoundingClientRect();
+        const x = rect.left + rect.width / 2 + 15;
+        const y = rect.top + rect.height / 2 + 15;
+        left = (x + tooltipRect.width > viewportWidth - 20) ? x - tooltipRect.width - 30 : x;
+        top  = (y + tooltipRect.height > viewportHeight - 20) ? y - tooltipRect.height - 30 : y;
+    } else {
+        // Label isn't currently rendered (arc too small, or the metric isn't part
+        // of the current filtered view) — fall back to centering on screen.
+        left = (viewportWidth  - tooltipRect.width)  / 2;
+        top  = (viewportHeight - tooltipRect.height) / 2;
+    }
+    customTooltip.style.left = `${Math.max(10, left)}px`;
+    customTooltip.style.top  = `${Math.max(10, top)}px`;
+
+    wireTooltipListeners(customTooltip, metricData, hideCustomTooltip);
+
+    customTooltip.querySelectorAll('.related-metric-link').forEach(chip => {
+        chip.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const id = parseInt(this.getAttribute('data-related-id'), 10);
+            const related = originalData.find(m => m.id === id);
+            if (related) showSecondaryTooltip(related, metricData.id);
+        });
+    });
+
+    setTimeout(() => document.addEventListener('click', handleDocumentClick), 0);
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
 }
 
 function showSecondaryTooltip(metricData, excludeId = null) {
@@ -632,9 +697,11 @@ function showSecondaryTooltip(metricData, excludeId = null) {
 }
 
 function hideCustomTooltip() {
+    openMetricId = null;
     customTooltip.classList.remove('active');
     customTooltip2.classList.remove('active');
     document.removeEventListener('click', handleDocumentClick);
+    if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
 }
 
 function handleDocumentClick(event) {
