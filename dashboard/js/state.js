@@ -126,5 +126,6 @@ let savedComparisons = [];
 
 // Misc DOM refs
 const noMetricsMessage = document.getElementById('no-metrics-message');
+const reportMissingChartBtn = document.getElementById('report-missing-chart-btn');
 const customTooltip = document.getElementById('custom-tooltip');
 const customTooltip2 = document.getElementById('custom-tooltip-2');

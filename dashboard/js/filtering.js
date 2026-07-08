@@ -148,6 +148,12 @@ function populateCompanyDropdown(companies, selectedCompany) {
         dropdown.appendChild(option);
     });
 
+    // Sentinel entry: selecting it opens the report overlay instead of filtering (see listener).
+    const reportOption = document.createElement('option');
+    reportOption.value = '__report__';
+    reportOption.textContent = 'Report a missing company…';
+    dropdown.appendChild(reportOption);
+
     dropdown.value = selectedCompany || 'all';
 }
 
@@ -193,6 +199,12 @@ function populateFrameworkDropdown(frameworks, selectedFramework) {
         option.textContent = framework === 'all' ? 'No research framework selected' : framework.replace(/\s*Framework\s*$/i, '');
         dropdown.appendChild(option);
     });
+
+    // Sentinel entry: selecting it opens the report overlay instead of filtering (see listener).
+    const reportOption = document.createElement('option');
+    reportOption.value = '__report__';
+    reportOption.textContent = 'Report a missing publication / framework…';
+    dropdown.appendChild(reportOption);
 
     dropdown.value = selectedFramework || 'all';
 }
@@ -290,9 +302,11 @@ function filterData() {
         if (chart) { chart.dispose(); chart = null; }
         if (typeof hideMetricClickHint === 'function') hideMetricClickHint();
         noMetricsMessage.style.display = 'block';
+        if (reportMissingChartBtn) reportMissingChartBtn.style.display = 'block';
         updateMetricsCount(actualMatchingMetrics);
     } else {
         noMetricsMessage.style.display = 'none';
+        if (reportMissingChartBtn) reportMissingChartBtn.style.display = 'none';
         updateMetricsCount(actualMatchingMetrics);
         createChart(filteredData);
     }
@@ -573,6 +587,12 @@ document.querySelectorAll('.filter-btn').forEach(button => {
 });
 
 document.getElementById('company-dropdown').addEventListener('change', function() {
+    if (this.value === '__report__') {
+        // Not a real filter — revert to the current selection and open the report overlay.
+        this.value = activeFilters.specificCompany;
+        if (typeof window.openReportMetricOverlay === 'function') window.openReportMetricOverlay('missing_company', null);
+        return;
+    }
     applySpecificFilter('specificCompany', this.value);
     if (this.value !== 'all') {
         resetOtherSourceFilters('specificCompany');
@@ -591,6 +611,12 @@ document.getElementById('focus-dropdown').addEventListener('change', function() 
 });
 
 document.getElementById('research-dropdown').addEventListener('change', function() {
+    if (this.value === '__report__') {
+        // Not a real filter — revert to the current selection and open the report overlay.
+        this.value = activeFilters.specificFramework;
+        if (typeof window.openReportMetricOverlay === 'function') window.openReportMetricOverlay('missing_research', null);
+        return;
+    }
     applySpecificFilter('specificFramework', this.value);
     if (this.value !== 'all') resetOtherSourceFilters('specificFramework');
     onUserFilterChange();
@@ -606,6 +632,7 @@ document.querySelectorAll('input[name="dataType"]').forEach(radio => {
 document.getElementById('clear-filters').addEventListener('click', function() {
     clearAllFilters();
     noMetricsMessage.style.display = 'none';
+    if (reportMissingChartBtn) reportMissingChartBtn.style.display = 'none';
 });
 
 document.getElementById('keyword-search').addEventListener('input', function() {

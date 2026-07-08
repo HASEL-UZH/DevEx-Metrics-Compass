@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-08 — Broadened reporting: metrics, companies, and research/frameworks
+
+- Renamed "Report a missing metric" to "Report something missing" and generalized the report form: a subject picker lets people report a missing metric, a missing company, or a missing research publication/framework, each with tailored wording and reference prompts.
+- Added report entry points where gaps surface: a "Report a missing company" item at the bottom of the company filter dropdown, a "Report a missing publication / framework" item in the research framework dropdown, a link in the Step 1 "no metrics match" empty state, and an in-app link in the About page.
+- Reporting an issue with an existing metric (from the metric detail popup) is unchanged.
+
 ## 2026-07-08 — Shareable URL state for filters, role, step, compare, and metrics
 
 - Step 1 filters/role, Step 2 compare selection, the current step, and the open metric popup now live-sync to the URL via `history.replaceState`, so the address bar is always a valid link to the current view.

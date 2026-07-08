@@ -130,6 +130,7 @@ function showExploreStartView() {
     if (cf) cf.style.display = 'none';
     if (leftContainer)  leftContainer.classList.add('chart-blurred');
     if (noMetricsMessage) noMetricsMessage.style.display = 'none';
+    if (reportMissingChartBtn) reportMissingChartBtn.style.display = 'none';
     currentRole = null;
     localStorage.removeItem('currentRole');
     hideRoleBadge();

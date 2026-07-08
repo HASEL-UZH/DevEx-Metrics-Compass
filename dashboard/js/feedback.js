@@ -114,7 +114,7 @@
         e.preventDefault();
         resetWidget();
         if (typeof window.openReportMetricOverlay === 'function') {
-            window.openReportMetricOverlay('missing', null);
+            window.openReportMetricOverlay('missing_metric', null);
         }
     });
 

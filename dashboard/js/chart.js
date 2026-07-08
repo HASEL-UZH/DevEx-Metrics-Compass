@@ -446,6 +446,11 @@ function buildTooltipContent(metricData, excludeId = null) {
         }).join('');
     }
 
+    // Light-gray "report missing" chips appended to each source list — invite users to
+    // flag a company or publication/framework we don't have for this metric.
+    companyUsedByHtml  += ` <span class="source-chip source-chip--report" data-report-missing="company" role="button" tabindex="0">+ report missing</span>`;
+    researchUsedByHtml += ` <span class="source-chip source-chip--report" data-report-missing="research" role="button" tabindex="0">+ report missing</span>`;
+
     const companySizeOrder = ['Enterprise', 'Large', 'Mid-size', 'Small'];
     const companySizes = Array.isArray(metricData.company)
         ? [...new Set(metricData.company.map(s => s.company_size).filter(s => s && s !== 'N/A'))]
@@ -562,13 +567,22 @@ function wireTooltipListeners(tooltipEl, metricData, onClose) {
             e.stopPropagation();
             onClose();
             if (typeof window.openReportMetricOverlay === 'function') {
-                window.openReportMetricOverlay('wrong', {
+                window.openReportMetricOverlay('wrong_metric', {
                     id:   parseInt(this.getAttribute('data-report-metric-id'), 10),
                     name: this.getAttribute('data-report-metric-name'),
                 });
             }
         });
     }
+
+    tooltipEl.querySelectorAll('[data-report-missing]').forEach(el => {
+        el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            onClose();
+            const mode = this.getAttribute('data-report-missing') === 'company' ? 'missing_company' : 'missing_research';
+            if (typeof window.openReportMetricOverlay === 'function') window.openReportMetricOverlay(mode, null);
+        });
+    });
 
     const closeButton = tooltipEl.querySelector('.close-tooltip-button');
     if (closeButton) {

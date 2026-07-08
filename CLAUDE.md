@@ -42,7 +42,7 @@ After completing a task, decide whether it warrants a changelog entry:
 When an entry is warranted:
 
 1. Update `CHANGELOG.md` at the repo root automatically — prepend a new entry (newest first).
-2. For `dashboard/index.html` (`#changelogOverlay`) — **propose** the entry text to the user and wait for explicit approval before editing the file. The in-app changelog is end-user-facing and needs the user's sign-off.
+2. For `dashboard/index.html` (`#changelogOverlay`) — **propose** the entry text to the user and wait for explicit approval before editing the file. The in-app changelog is end-user-facing and needs the user's sign-off. Add the approved item to the **bottom** of the `<ul>` for its month (append after the existing bullets), not the top.
 
 Use today's date from the `currentDate` context variable. Match the existing entry format in each file. If `CHANGELOG.md` does not exist yet, create it with a `# Changelog` heading first.
 

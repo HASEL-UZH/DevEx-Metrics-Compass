@@ -70,6 +70,8 @@
 
             <button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
 
+            <button id="report-missing-chart-btn" class="report-missing-chart-btn" style="display: none;" onclick="window.openReportMetricOverlay('missing_metric', null)">Report something missing</button>
+
             <div id="no-metrics-message" class="centered-message" style="display: none;">
                 No metrics match the current filters. Adapt or clear the filters.
             </div>
@@ -549,7 +551,7 @@
             <!-- Step 2: Compare controls panel -->
             <div id="compare-panel" class="compare-panel" style="display:none">
                 <div class="controls-title">Compare two sets of DevEx metrics</div>
-                <div class="filter-description">Mix any dimensions — frameworks, companies, maturity levels, or outcome goals. Data is based on publicly reported sources and may be incomplete.<br /><a href="#" class="compare-report-link" onclick="event.preventDefault(); window.openReportMetricOverlay('missing', null)">Report missing metric</a></div>
+                <div class="filter-description">Mix any dimensions — frameworks, companies, maturity levels, or outcome goals. Data is based on publicly reported sources and may be incomplete.<br /><a href="#" class="compare-report-link" onclick="event.preventDefault(); window.openReportMetricOverlay('missing_metric', null)">Report something missing</a></div>
 
                 <div class="filter-group-label compare-section-title">Quick comparisons</div>
                 <div class="compare-presets">
@@ -645,7 +647,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report a missing metric</a></div>
+                <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report something missing</a></div>
                 <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
             </div>
             <span class="footer-divider"></span>
@@ -661,7 +663,7 @@
             <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" maxlength="500"></textarea>
             <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
             <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
-            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report a missing metric</a>
+            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report something missing</a>
         </div>
     </footer>
 
@@ -751,6 +753,7 @@
                         <li>Filters now support multi-select: combine several options at once (AI impact metric, Outcome goal, Company size, Collection maturity)</li>
                         <li>Company size can now be used as a Step 2 comparison dimension</li>
                         <li>Refined wizard to filter sunburst chart by role</li>
+                        <li>Added ability to report missing company and framework/publication, besides missing metric</li>
                     </ul>
                 </div>
 
@@ -894,8 +897,8 @@
                 </div>
 
                 <div class="changelog-entry">
-                    <div class="changelog-date">Missing metric or error?</div>
-                    <p>We'd love to hear from you. Please reach out via <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> to report missing metrics, incorrect data, or suggestions for improvement.</p>
+                    <div class="changelog-date">Something missing or incorrect?</div>
+                    <p>We'd love to hear from you. Use <a href="#" onclick="event.preventDefault(); window.openReportMetricOverlay('missing_metric', null)">Report something missing</a> to tell us about a missing metric, company, or research publication/framework, or reach out via <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> for incorrect data or suggestions for improvement.</p>
                 </div>
 
             </div>
@@ -950,8 +953,17 @@
             <p id="reportMetricIntro" class="report-metric-intro"></p>
 
             <div class="report-metric-form">
+                <div class="report-metric-form-row hidden" id="reportMetricSubjectRow">
+                    <label>What is missing?</label>
+                    <div class="report-metric-subject-picker" id="reportMetricSubjectPicker">
+                        <button type="button" class="report-metric-subject-btn active" data-report-mode="missing_metric">A metric</button>
+                        <button type="button" class="report-metric-subject-btn" data-report-mode="missing_research">A publication / framework</button>
+                        <button type="button" class="report-metric-subject-btn" data-report-mode="missing_company">A company</button>
+                    </div>
+                </div>
+
                 <div class="report-metric-form-row">
-                    <label for="reportMetricName">Metric name</label>
+                    <label for="reportMetricName" id="reportMetricNameLabel">Metric name</label>
                     <input type="text" id="reportMetricName" class="report-metric-input" placeholder="Name of the metric" maxlength="200" autocomplete="off">
                 </div>
 

@@ -827,6 +827,28 @@ input[type="radio"] {
     background-color: #85B9F2;
 }
 
+/* Sits just below the centered "Clear all filters" button in the empty state */
+.report-missing-chart-btn {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, 42px);
+    padding: 6px 14px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 40px;
+    color: #555;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.report-missing-chart-btn:hover {
+    background-color: #f5f5f5;
+}
+
 
 
 /* Metrics shortlist and csv export */
@@ -1130,7 +1152,7 @@ a {
     font-weight: bold;
     color: #1B1AFF;
     margin-top: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .custom-tooltip strong {
@@ -1149,7 +1171,7 @@ a {
 }
 
 .tooltip-status-panel {
-    margin: 12px 0;
+    margin: 16px 0;
     padding: 10px 12px;
     background-color: #F1F5FB;
     border: 1px solid #DBEAFE;
@@ -2151,6 +2173,17 @@ a {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+}
+
+.source-chip--report {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 11px;
+    transition: color 0.15s;
+}
+
+.source-chip--report:hover {
+    color: #1B1AFF;
 }
 
 .related-metric-link {
@@ -3389,6 +3422,35 @@ a {
     min-height: 76px;
 }
 
+.report-metric-subject-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.report-metric-subject-btn {
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #555;
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 0.82rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.report-metric-subject-btn:hover {
+    border-color: #1B1AFF;
+    color: #1B1AFF;
+}
+
+.report-metric-subject-btn.active {
+    background: #1B1AFF;
+    border-color: #1B1AFF;
+    color: #fff;
+}
+
 .report-metric-field-hint {
     display: block;
     font-size: 0.72rem;
@@ -3465,7 +3527,7 @@ a {
 
 /* "Copy link" / "Report an issue" buttons inside the metric tooltip */
 .report-metric-row {
-    margin-top: 18px;
+    margin-top: 16px;
     margin-bottom: 2px;
     display: flex;
     justify-content: space-between;

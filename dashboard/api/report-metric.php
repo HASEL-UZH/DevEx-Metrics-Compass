@@ -24,7 +24,7 @@ if (!$data || empty($data['metricName']) || empty($data['email'])) {
 }
 
 $mode = $data['mode'] ?? '';
-if (!in_array($mode, ['missing', 'wrong'], true)) {
+if (!in_array($mode, ['wrong_metric', 'missing_metric', 'missing_research', 'missing_company'], true)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Invalid mode']);
     exit;
