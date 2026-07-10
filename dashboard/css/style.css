@@ -1851,6 +1851,7 @@ a {
 #compare-panel .compare-section-title {
     margin-top: 20px;
     margin-bottom: 6px;
+    font-size: 16px;
 }
 
 #compare-panel .filter-group {
@@ -1876,6 +1877,7 @@ a {
 #compare-panel .compare-summary .filter-group-label {
     margin-top: 0;
     margin-bottom: 6px;
+    font-size: 16px;
 }
 
 /* ─── Sort dimension mini charts ─────────────────────────────────────────── */
@@ -3139,26 +3141,26 @@ a {
 }
 
 .compare-save-btn {
-    padding: 6px 14px;
-    border-radius: 40px;
-    border: 1px solid #dddddd;
-    background: #fff;
-    color: #555;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #888;
+    font-family: inherit;
     font-size: 12px;
+    font-weight: normal;
     cursor: pointer;
-    transition: background 0.15s;
     white-space: nowrap;
 }
 
 .compare-save-btn:hover:not(:disabled) {
-    background: #f5f5f5;
+    text-decoration: underline;
 }
 
 .compare-save-btn--saved,
 .compare-save-btn:disabled {
-    border-color: #ddd;
     color: #aaa;
     cursor: default;
+    text-decoration: none;
 }
 
 .compare-save-badge {
