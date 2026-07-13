@@ -444,13 +444,16 @@ def header_html():
 
 
 def footer_html():
+    """Mirrors the app's footer, plus the author credit from the About overlay —
+    named authors are also an authorship signal for search engines."""
     return (
         '  <footer class="site-footer">\n'
-        '    <div>Created at <a href="https://hasel.dev" target="_blank" rel="noopener">HASEL</a>, '
-        '<a href="https://uzh.ch" target="_blank" rel="noopener">University of Zurich</a> &bull; '
-        '<a href="../index.html">Open the interactive Compass</a> &bull; '
+        '    <div><a href="../index.html">Open the interactive Compass</a> &bull; '
         '<a href="index.html">All metric collections</a> &bull; '
         '<a href="../index.html?reportMissing=metric">Report something missing</a></div>\n'
+        '    <div>Created at <a href="https://hasel.dev" target="_blank" rel="noopener">HASEL</a>, '
+        '<a href="https://uzh.ch" target="_blank" rel="noopener">University of Zurich</a> by '
+        '<a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz</div>\n'
         '    <div class="footer-disclaimer">Provided for research and informational use only '
         '&bull; Based on a literature review, not exhaustive</div>\n'
         '  </footer>'
@@ -762,11 +765,13 @@ h2 { font-size: 1.3rem; margin-top: 2rem; color: #222; }
 .li-badge { display: inline-flex; }
 .related { margin-top: 2.5rem; border-top: 1px solid #e0e0e0; padding-top: 1rem; }
 .related ul { columns: 2; }
-.site-footer { border-top: 1px solid #e0e0e0; background: #fafafa; padding: 20px 24px;
+.site-footer { border-top: 1px solid #e0e0e0; background: #fafafa; padding: 12px 24px;
                color: #999; font-size: 12px; text-align: center; }
 .site-footer a { color: #999; }
 .site-footer a:hover { color: #1B1AFF; }
-.footer-disclaimer { margin-top: 4px; }
+/* All three footer lines share one line-height — no extra margin on any of them,
+   otherwise the gaps between the lines read as uneven. */
+.site-footer > div { line-height: 1.6; }
 @media (max-width: 640px) { .index-section ul, .related ul { columns: 1; } }
 """
 

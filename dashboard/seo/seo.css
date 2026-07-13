@@ -71,9 +71,11 @@ h2 { font-size: 1.3rem; margin-top: 2rem; color: #222; }
 .li-badge { display: inline-flex; }
 .related { margin-top: 2.5rem; border-top: 1px solid #e0e0e0; padding-top: 1rem; }
 .related ul { columns: 2; }
-.site-footer { border-top: 1px solid #e0e0e0; background: #fafafa; padding: 20px 24px;
+.site-footer { border-top: 1px solid #e0e0e0; background: #fafafa; padding: 12px 24px;
                color: #999; font-size: 12px; text-align: center; }
 .site-footer a { color: #999; }
 .site-footer a:hover { color: #1B1AFF; }
-.footer-disclaimer { margin-top: 4px; }
+/* All three footer lines share one line-height — no extra margin on any of them,
+   otherwise the gaps between the lines read as uneven. */
+.site-footer > div { line-height: 1.6; }
 @media (max-width: 640px) { .index-section ul, .related ul { columns: 1; } }
