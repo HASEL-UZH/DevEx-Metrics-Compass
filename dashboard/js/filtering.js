@@ -155,6 +155,11 @@ function populateCompanyDropdown(companies, selectedCompany) {
     dropdown.appendChild(reportOption);
 
     dropdown.value = selectedCompany || 'all';
+
+    // Setting .value programmatically fires no 'change' event, so the dropdown's
+    // favicon background (wired to 'change' in compare.js) would be missed on a
+    // restored/deep-linked filter. Apply it here — the one place the value is set.
+    if (typeof applyLogoBg === 'function') applyLogoBg(dropdown, 'company', dropdown.value);
 }
 
 // Extract unique research frameworks from the data
@@ -360,7 +365,10 @@ function buildActiveFilterPills() {
         } });
     }
     if (activeFilters.specificCompany !== 'all') {
-        pills.push({ dimension: 'Company', label: activeFilters.specificCompany, clear: () => {
+        const companyBadge = typeof getEntityBadgeContent === 'function'
+            ? getEntityBadgeContent('company', activeFilters.specificCompany, 14)
+            : '';
+        pills.push({ dimension: 'Company', label: activeFilters.specificCompany, badgeHtml: companyBadge, clear: () => {
             applySpecificFilter('specificCompany', 'all', 'company-dropdown');
             const companyDropdown = document.getElementById('company-dropdown');
             if (companyDropdown && typeof applyLogoBg === 'function') applyLogoBg(companyDropdown, 'company', 'all');
@@ -406,11 +414,19 @@ function updateActiveFilterPills() {
     if (!container) return;
     const pills = buildActiveFilterPills();
     container.innerHTML = '';
-    pills.forEach(({ dimension, label, clear }) => {
+    pills.forEach(({ dimension, label, badgeHtml, clear }) => {
         const pill = document.createElement('span');
-        pill.className = 'filter-pill';
+        pill.className = badgeHtml ? 'filter-pill filter-pill--with-badge' : 'filter-pill';
         // The Search pill's label already reads "Search: ...", so don't double it up.
         pill.title = dimension === 'Search' ? label : `${dimension}: ${label}`;
+        // Company pills lead with the company's favicon, same badge used in the
+        // metric popup and the compare dropdowns.
+        if (badgeHtml) {
+            const badgeSpan = document.createElement('span');
+            badgeSpan.className = 'filter-pill-badge';
+            badgeSpan.innerHTML = badgeHtml;
+            pill.appendChild(badgeSpan);
+        }
         const labelSpan = document.createElement('span');
         labelSpan.textContent = label;
         const removeBtn = document.createElement('button');

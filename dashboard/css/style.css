@@ -435,6 +435,17 @@ body {
     font-size: 12px;
 }
 
+/* Company pill leads with a favicon, so it needs less left padding than a text-only pill */
+.filter-pill--with-badge {
+    padding-left: 6px;
+}
+
+.filter-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .filter-pill-remove {
     background: none;
     border: none;

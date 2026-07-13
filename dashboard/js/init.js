@@ -32,6 +32,8 @@ anychart.onDocumentReady(function() {
         });
 
         const restored = restoreStateFromUrl();
+        // Capture before filterData() — it replaceState()s the URL out from under us.
+        const entryInfo = getUrlEntry();
 
         if (restored.hadUrlState) {
             // First-time visitor arriving via a shared link (no localStorage yet) —
@@ -57,7 +59,7 @@ anychart.onDocumentReady(function() {
         restoreShortlistFromUrl();
         restoreMetricPopupFromUrl();
 
-        logEvent(TELEMETRY.PAGE_LOAD, { totalMetrics: originalData.filter(m => m.type).length, shortlistCount: clickedMetrics.length, hasShortlist: clickedMetrics.length > 0, viewport: window.innerWidth < 768 ? 'mobile' : 'desktop' });
+        logEvent(TELEMETRY.PAGE_LOAD, { totalMetrics: originalData.filter(m => m.type).length, shortlistCount: clickedMetrics.length, hasShortlist: clickedMetrics.length > 0, viewport: window.innerWidth < 768 ? 'mobile' : 'desktop', entry: entryInfo.entry, fromSeo: entryInfo.fromSeo, seoPage: entryInfo.seoPage });
     })
     .catch(error => {
         console.error("Error loading JSON data:", error);

@@ -31,6 +31,21 @@
 * **Note:** If you've changed the names of the Excel file or its sheets, remember to update these in the `parser.py` file before running the script.
 
 
-### **3. Transfer the Data to the Server**
+### **3. Regenerate the SEO landing pages**
+* After `parser.py`, run `python "generate_seo_pages.py"` to rebuild the static SEO landing
+  pages from the updated data.
+* This regenerates `dashboard/seo/` (one page per framework and company, one page for each
+  top-10% most-referenced metric, diff-style comparison pages matching the app's Compare
+  presets, and an index) as well as `dashboard/sitemap.xml` and `dashboard/robots.txt`.
+* The script clears the previously generated `*.html` in `dashboard/seo/` on each run, so
+  renamed or removed pages don't linger.
+* These pages hold crawlable metric content for search engines and link into the live app;
+  see the config constants at the top of `generate_seo_pages.py` (`BASE_URL`,
+  `COMPANY_MIN_METRICS`, `COMPARISONS`) to tune what is generated.
+
+
+### **4. Transfer the Data to the Server**
 * Copy the newly generated **`data.json`** and **`source_ids.json`** files.
 * Paste these files into the folder where the dashboard is running. This will update the dashboard with the new metrics.
+* Also upload the regenerated **`seo/`** folder, **`sitemap.xml`**, and **`robots.txt`** so the
+  public landing pages stay in sync.

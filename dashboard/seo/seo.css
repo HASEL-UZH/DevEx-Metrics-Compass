@@ -1,0 +1,79 @@
+/* Static SEO landing pages for the DevEx Metrics Compass. Generated file.
+   Colors and type mirror the app's design language (brand #1B1AFF, bg #f0f0f0). */
+* { box-sizing: border-box; }
+/* Sticky footer: body is a column flex box and main grows, so the footer sits at
+   the bottom of the viewport on short pages and is pushed down on long ones. */
+body { margin: 0; font-family: Helvetica, Arial, sans-serif; color: #333;
+       background-color: #f0f0f0; line-height: 1.55;
+       display: flex; flex-direction: column; min-height: 100vh; }
+a { color: #1B1AFF; }
+.site-header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px; }
+.brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.brand-title { font-size: 20px; font-weight: 700; color: #1B1AFF; }
+main { max-width: 960px; width: 100%; margin: 0 auto; padding: 24px; flex: 1; }
+h1 { font-size: 1.9rem; line-height: 1.3; color: #222; }
+h2 { font-size: 1.3rem; margin-top: 2rem; color: #222; }
+.entity-inline { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;
+                 margin-left: 8px; white-space: nowrap; }
+.cta { margin: 1.5rem 0; }
+.cta-btn { display: inline-block; background: #1B1AFF; color: #fff; text-decoration: none;
+           padding: 12px 28px; border-radius: 40px; font-weight: 600; font-size: 16px; }
+.cta-btn:hover { background: #0f0ecc; }
+.metric-lead { font-size: 1.05rem; color: #444; }
+.metric-detail-block { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px;
+                       padding: 18px; margin-top: 1rem; }
+.metric-detail-block .metric-pills { margin: 0 0 4px; }
+.metric-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+.metric { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px;
+          padding: 16px 18px; margin-bottom: 12px; }
+.metric h3 { margin: 0 0 6px; font-size: 1.1rem; display: flex; align-items: baseline;
+             gap: 10px; flex-wrap: wrap; }
+.metric h3 a { color: #1B1AFF; text-decoration: none; }
+.metric h3 a:hover { text-decoration: underline; }
+.metric-desc { margin: 0 0 10px; color: #555; }
+.metric-meta { font-size: 0.86rem; color: #555; margin: 14px 0 0; display: flex;
+               align-items: center; flex-wrap: wrap; gap: 4px 10px; }
+.meta-label { font-weight: 700; color: #444; }
+.muted { color: #999; }
+.metric-pills { margin: 8px 0 10px; display: flex; align-items: center; flex-wrap: wrap;
+                gap: 6px; }
+.pill { display: inline-flex; align-items: center; height: 22px; padding: 0 10px;
+        background-color: #f0f0f0; border-radius: 40px; font-size: 12px; color: #555;
+        white-space: nowrap; }
+.pill--top { background: #e8eafd; color: #1B1AFF; font-weight: 700; }
+.source-chip { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.source-chip a { display: inline-flex; align-items: center; gap: 4px; color: #1B1AFF;
+                 text-decoration: none; }
+.source-chip a:hover { text-decoration: underline; }
+.entity-favicon { display: inline-block; border-radius: 2px; object-fit: contain;
+                  vertical-align: middle; }
+.entity-badge { display: inline-block; font-size: 11px; line-height: 1; }
+.diff-group { margin-top: 1.5rem; }
+.diff-group h2 { display: flex; align-items: center; gap: 8px; padding-left: 10px;
+                 border-left: 4px solid #ccc; }
+.diff-shared h2 { border-left-color: #1B1AFF; }
+.diff-left h2 { border-left-color: #34a853; }
+.diff-right h2 { border-left-color: #ea8600; }
+.diff-count { font-size: 0.8rem; font-weight: 700; color: #fff; background: #999;
+              border-radius: 999px; padding: 1px 9px; }
+.diff-shared .diff-count { background: #1B1AFF; }
+.diff-left .diff-count { background: #34a853; }
+.diff-right .diff-count { background: #ea8600; }
+.diff-list { list-style: none; padding: 0 0 0 14px; margin: 0.6rem 0; columns: 2; }
+.diff-list li { margin-bottom: 5px; break-inside: avoid; }
+.diff-list li a { color: #1B1AFF; text-decoration: none; }
+.diff-list li a:hover { text-decoration: underline; }
+.index-grid { display: block; }
+.index-section ul { columns: 2; list-style: none; padding: 0; }
+.index-section li { margin-bottom: 6px; break-inside: avoid; }
+.index-section li a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.index-section li a:hover { text-decoration: underline; }
+.li-badge { display: inline-flex; }
+.related { margin-top: 2.5rem; border-top: 1px solid #e0e0e0; padding-top: 1rem; }
+.related ul { columns: 2; }
+.site-footer { border-top: 1px solid #e0e0e0; background: #fafafa; padding: 20px 24px;
+               color: #999; font-size: 12px; text-align: center; }
+.site-footer a { color: #999; }
+.site-footer a:hover { color: #1B1AFF; }
+.footer-disclaimer { margin-top: 4px; }
+@media (max-width: 640px) { .index-section ul, .related ul { columns: 1; } }
