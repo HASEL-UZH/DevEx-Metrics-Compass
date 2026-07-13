@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-13 — Usable on tablets and small laptops; graceful phone message
+
+- Below 768px (phones), the app now shows a short "best viewed on a larger screen" message instead of a broken layout, since the sunburst and side-by-side comparison need a wider screen. All iPads and larger pass through to the full app.
+- On tablets and small laptops (up to 1100px), the layout adapts: the sidebar narrows, the 3-step bar wraps and condenses, the metric detail popup becomes fluid (no more forced horizontal scrolling), and the footer/shortlist pills reflow to avoid overlap.
+- On narrower tablets, the Step 3 "Already tracking" and "Plan to track" columns stack vertically so each list stays readable.
+- The desktop layout (above 1100px) is unchanged.
+
 ## 2026-07-08 — Broadened reporting: metrics, companies, and research/frameworks
 
 - Renamed "Report a missing metric" to "Report something missing" and generalized the report form: a subject picker lets people report a missing metric, a missing company, or a missing research publication/framework, each with tailored wording and reference prompts.

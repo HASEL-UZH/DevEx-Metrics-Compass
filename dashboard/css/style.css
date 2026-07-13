@@ -3550,3 +3550,211 @@ a {
 .report-metric-btn:hover {
     color: #888;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE / SMALL-SCREEN RULES
+   All small-screen adaptations live here so they cleanly override the base
+   (desktop) rules above. Two tiers:
+     1. < 768px  -> phone gate: hide the app, show #mobile-gate message
+     2. <= 1100px -> "make it adequately smaller" for tablets / small laptops
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Mobile gate (hidden by default; only appears below the phone breakpoint) ── */
+.mobile-gate {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    flex-direction: column;
+    padding: 26px 24px 16px;
+    background: #f5f5f5;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* centred message block; the footer sits below it */
+.mobile-gate-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 16px;
+}
+
+.mobile-gate-title {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: #1B1AFF;
+}
+
+.mobile-gate-text {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* set the paper line apart from the message above it */
+.mobile-gate-paper {
+    margin-top: 22px;
+}
+
+.mobile-gate-paper-link {
+    color: #1B1AFF;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.mobile-gate-footer {
+    flex-shrink: 0;
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #999;
+}
+
+.mobile-gate-footer a {
+    color: #999;
+}
+
+/* ── Tier 1: phones (< 768px) — gate the app ─────────────────────────────── */
+@media (max-width: 767px) {
+    #step-bar,
+    .main-container,
+    footer,
+    .shortlist-pills,
+    .navigation-hint {
+        display: none !important;
+    }
+
+    .mobile-gate {
+        display: flex;
+    }
+}
+
+/* ── Tier 2: tablets & small laptops (<= 1100px) — make it adequately smaller ─ */
+@media (min-width: 768px) and (max-width: 1100px) {
+
+    /* Sidebar: give it a fixed basis rather than a flex ratio. At 768px the
+       ratio (1.2 vs the chart's 3) would starve it to ~219px and truncate the
+       filter dropdowns; a max-width cap can only shrink, never widen. */
+    .right-container {
+        flex: 0 0 300px;
+        max-width: none;
+        padding: 12px;
+    }
+
+    .next-step-bar {
+        margin: 0 -12px -12px;
+        padding: 10px 12px;
+    }
+
+    /* Step bar: allow the brand + 3 step buttons to wrap and condense */
+    .step-bar {
+        padding: 8px 14px 6px;
+    }
+
+    .step-bar-top {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        /* keep the wrapped rows clear of the fixed shortlist pills top-right */
+        padding-right: 150px;
+    }
+
+    /* the 3 step buttons must be able to wrap among themselves too, not just
+       as one block, or they overflow the bar at 768px */
+    .step-bar-steps {
+        flex-wrap: wrap;
+        row-gap: 6px;
+    }
+
+    .step-bar-title {
+        font-size: 17px;
+    }
+
+    .step-btn {
+        padding: 5px 11px;
+        font-size: 12px;
+    }
+
+    .step-connector {
+        width: 18px;
+        margin: 0 3px;
+    }
+
+    /* Metric tooltip: fluid so it never forces horizontal scroll */
+    .custom-tooltip {
+        width: auto;
+        min-width: 0;
+        max-width: 90vw;
+    }
+
+    /* Fixed footer: allow content to wrap, lighter padding */
+    .footer-content {
+        flex-wrap: wrap;
+    }
+
+    footer {
+        padding: 5px 10px;
+    }
+
+    /* Shortlist pills: compact, and no longer overlapping the step bar.
+       The "My metrics shortlist:" label is dropped to reclaim the width. */
+    .shortlist-pills {
+        top: 8px;
+        right: 10px;
+        gap: 5px;
+    }
+
+    .shortlist-pills-label {
+        display: none;
+    }
+
+    /* Navigation hint / feedback popup: never exceed the viewport */
+    .navigation-hint {
+        max-width: min(90vw, 400px);
+    }
+
+    .feedback-expand {
+        max-width: min(90vw, 300px);
+    }
+
+    /* Overlays: lighter padding on smaller screens */
+    .overlay-content {
+        padding: 24px;
+    }
+
+    /* Step 2 compare / Step 3 next-steps: use more of the narrower width */
+    .diff-view {
+        width: 92%;
+    }
+
+    .nextsteps-view {
+        width: 94%;
+    }
+}
+
+/* ── Stack the two next-steps columns on the narrower end of the tablet band ─ */
+@media (min-width: 768px) and (max-width: 900px) {
+    .nextsteps-columns {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .nextsteps-col {
+        min-height: 0;
+    }
+
+    .nextsteps-col-list {
+        max-height: 40vh;
+    }
+}
