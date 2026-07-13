@@ -553,7 +553,7 @@ function wireTooltipListeners(tooltipEl, metricData, onClose) {
             // Scoped to just this metric — not the ambient live-synced URL, which
             // would also carry whatever filters/role/compare state happen to be
             // active and have nothing to do with "this metric".
-            const url = `${window.location.origin}${window.location.pathname}?metric=${metricData.id}`;
+            const url = `${window.location.origin}${window.location.pathname}?specificMetric=${metricData.id}`;
             navigator.clipboard.writeText(url);
             const original = this.textContent;
             this.textContent = 'Link copied!';

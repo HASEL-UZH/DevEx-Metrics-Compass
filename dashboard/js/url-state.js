@@ -49,10 +49,11 @@ function serializeStateToParams() {
         params.set('rightValue', compareState.rightValue);
     }
 
-    if (openMetricId) params.set('metric', openMetricId);
+    if (openMetricId) params.set('specificMetric', openMetricId);
 
     return params;
 }
+
 
 // Shortlist status IS carried across (unlike other shared state) — "already
 // tracking vs. plan to track" is the whole point of sharing a shortlist, not
@@ -183,12 +184,60 @@ function restoreStateFromUrl() {
         const valueEl = document.getElementById(`compare-${side}-value`);
         if (typeEl) typeEl.value = type;
         if (valueEl && typeof populateValueDropdown === 'function') populateValueDropdown(valueEl, type, value);
+        // Same as the step 1 company dropdown: setting the value in code fires no
+        // 'change', so the favicon/letter badge has to be applied explicitly.
+        if (valueEl && typeof applyLogoBg === 'function') applyLogoBg(valueEl, type, value, side);
         hadUrlState = true;
     }
     restoreCompareSide('left');
     restoreCompareSide('right');
 
+    // A bare ?specificMetric=<id> link (e.g. an SEO metric landing page or "Copy
+    // link to this metric") should also count as URL state, so init.js dismisses
+    // the welcome overlay and the shared metric popup isn't hidden behind it.
+    const specificMetric = parseInt(params.get('specificMetric'), 10);
+    if (Number.isInteger(specificMetric) &&
+        originalData.some(m => m.id === specificMetric && m.description !== undefined)) {
+        hadUrlState = true;
+    }
+
+    // ?reportMissing=<metric|company|research> (e.g. from an SEO page footer) opens
+    // the report overlay on load — see report-metric.js — so dismiss the welcome
+    // overlay behind it.
+    if (params.get('reportMissing')) {
+        hadUrlState = true;
+    }
+
     return { hadUrlState, step };
+}
+
+// Classifies how the visitor arrived, for PAGE_LOAD telemetry. `entry` is the
+// kind of link they followed (most specific intent wins); `seoPage` names the
+// static landing page that sent them, so we can see which ones actually convert.
+// Must be called before filterData(), since that rewrites the URL via replaceState.
+function getUrlEntry() {
+    const params = new URLSearchParams(window.location.search);
+
+    let entry = 'direct';
+    if (params.get('reportMissing'))                    entry = 'report_missing';
+    else if (params.get('shortlist_current') ||
+             params.get('shortlist_planned'))           entry = 'shared_shortlist';
+    else if (params.get('leftValue') || params.get('rightValue')) entry = 'comparison';
+    else if (params.get('specificCompany'))             entry = 'company';
+    else if (params.get('specificFramework'))           entry = 'framework';
+    else if (params.get('specificMetric'))              entry = 'metric';
+    else if ([...params.keys()].length > 0)             entry = 'shared_view';
+
+    // Same-origin referrer under /seo/ means they came from a landing page.
+    let seoPage = null;
+    try {
+        const ref = new URL(document.referrer);
+        if (ref.origin === window.location.origin && ref.pathname.includes('/seo/')) {
+            seoPage = ref.pathname.split('/').pop() || null;
+        }
+    } catch (e) { /* no referrer, or cross-origin — leave null */ }
+
+    return { entry, fromSeo: !!seoPage, seoPage };
 }
 
 // Opens the shared metric's popup, centered (no click position to anchor to
@@ -196,7 +245,7 @@ function restoreStateFromUrl() {
 // restore sequence, after the chart has drawn.
 function restoreMetricPopupFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get('metric'), 10);
+    const id = parseInt(params.get('specificMetric'), 10);
     if (!Number.isInteger(id)) return;
     const metric = originalData.find(m => m.id === id && m.description !== undefined);
     if (metric && typeof showCustomTooltipCentered === 'function') showCustomTooltipCentered(metric);

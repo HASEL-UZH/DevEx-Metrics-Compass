@@ -7,6 +7,14 @@
 - On narrower tablets, the Step 3 "Already tracking" and "Plan to track" columns stack vertically so each list stays readable.
 - The desktop layout (above 1100px) is unchanged.
 
+## 2026-07-10 — SEO: static landing pages and homepage meta tags
+
+- Added `metrics and parser/generate_seo_pages.py`, a stdlib-only generator that reads the app's `data.json`/`source_ids.json` and emits static, crawlable landing pages into `dashboard/seo/` — one per research framework (SPACE, DORA, DX Core 4, …), one per company above a metric threshold (Microsoft, Google, …), one per top-10% (most-referenced) metric, diff-style comparison pages matching the app's Compare presets (Google vs Microsoft, SPACE vs DORA, …), and an index.
+- Landing pages match the Compass design language (brand color, compass logo, footer) and show the same company favicons and research chips as the app (labelled as the other companies applying / research recommending each metric), plus a trimmed set of detail pills (outcome goal, AI category, and a top-5%/top-10% "most-referenced" badge). Comparison pages are a name-only diff (shared / unique to each side), mirroring the app's Step 2 diff view.
+- Each page carries real metric content plus a CTA that opens the live app pre-filtered via deep-link URL state; metric links include their filter context, and a bare `?metric=<id>` link now dismisses the welcome overlay too, so shared/landing links land on the intended view instead of the blank start screen.
+- Generated `dashboard/sitemap.xml` and `dashboard/robots.txt`.
+- Added meta description, Open Graph/Twitter tags, canonical URL, and `WebApplication` JSON-LD to `dashboard/index.html`; fixed the favicon MIME type. Regenerate the SEO pages after each `parser.py` run and upload the `seo/` folder, `sitemap.xml`, and `robots.txt`.
+
 ## 2026-07-08 — Broadened reporting: metrics, companies, and research/frameworks
 
 - Renamed "Report a missing metric" to "Report something missing" and generalized the report form: a subject picker lets people report a missing metric, a missing company, or a missing research publication/framework, each with tailored wording and reference prompts.

@@ -295,5 +295,18 @@
         });
     }
 
+    // Deep link from the static SEO pages: ?reportMissing=metric|company|research
+    // opens the report overlay on load (welcome overlay is dismissed in url-state.js).
+    // Not a state param — it triggers an action, hence the verb-ish name.
+    const REPORT_MISSING_MODES = {
+        metric: 'missing_metric',
+        company: 'missing_company',
+        research: 'missing_research',
+    };
+    const reportMissing = new URLSearchParams(window.location.search).get('reportMissing');
+    if (reportMissing) {
+        openOverlay(REPORT_MISSING_MODES[reportMissing] || 'missing_metric', null);
+    }
+
     window.openReportMetricOverlay = openOverlay;
 }());
