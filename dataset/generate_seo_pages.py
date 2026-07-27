@@ -17,8 +17,8 @@ server) -- not when the .html files are opened directly from disk (file://),
 because the SPA fetches data.json over HTTP.
 
 Standalone, stdlib-only. Run AFTER parser.py (whenever data.json changes). Never
-modifies the app's own files -- only writes dashboard/seo/ plus sitemap.xml and
-robots.txt at the dashboard root.
+modifies the app's own files -- only writes compass/seo/ plus sitemap.xml and
+robots.txt at the compass root.
 
 Usage:
     python "generate_seo_pages.py"
@@ -48,7 +48,7 @@ COMPANY_MIN_METRICS = 5
 TOP_PAGE_PERCENTILE = 10
 
 # Curated comparison pages -- the same presets the app offers on the Compare
-# step (dashboard/index.html .compare-preset-btn), minus the shortlist preset
+# step (compass/index.html .compare-preset-btn), minus the shortlist preset
 # which is user-specific and can't be static. Each label is the short heading
 # shown on the page; type is one of company | framework, and value must be the
 # exact resolved source name present in the data.
@@ -70,16 +70,16 @@ COMPARISONS = [
      "right": {"type": "company", "value": "Google"}},
 ]
 
-# Paths (this script lives in "metrics and parser/", data lives in dashboard/).
+# Paths (this script lives in "dataset/", data lives in compass/).
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-DASHBOARD_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "dashboard"))
-DATA_DIR = os.path.join(DASHBOARD_DIR, "data")
-SEO_DIR = os.path.join(DASHBOARD_DIR, "seo")
+COMPASS_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "compass"))
+DATA_DIR = os.path.join(COMPASS_DIR, "data")
+SEO_DIR = os.path.join(COMPASS_DIR, "seo")
 
 SITE_NAME = "Developer Experience Metrics Compass"
 
 # Names to exclude from the "company" facet (mirrors extractCompanies() in
-# dashboard/js/filtering.js).
+# compass/js/filtering.js).
 COMPANY_EXCLUDE_SUBSTRINGS = ("framework", "metrics overview", "used widely")
 
 # Detail pills we keep (mirrors chart.js labels). We intentionally drop the
@@ -97,7 +97,7 @@ OUTCOME_PILLS = {
 TOP5_IDS = set()
 TOP10_IDS = set()
 
-# Inline compass logo (mirrors dashboard/js/compass.js SVG_INNER, including the
+# Inline compass logo (mirrors compass/js/compass.js SVG_INNER, including the
 # animated .compass-needle group).
 COMPASS_SVG_INNER = (
     '<circle cx="28" cy="28" r="26" fill="#e8eafd" stroke="#1B1AFF" stroke-width="2"/>'
@@ -118,7 +118,7 @@ def compass_svg(size):
             f'xmlns="http://www.w3.org/2000/svg" aria-hidden="true">{COMPASS_SVG_INNER}</svg>')
 
 
-# ─── Load & join (mirrors dashboard/js/filtering.js) ─────────────────────────
+# ─── Load & join (mirrors compass/js/filtering.js) ───────────────────────────
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as fh:
@@ -788,13 +788,13 @@ def write_sitemap(slugs):
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            + entries + "\n</urlset>\n")
-    with open(os.path.join(DASHBOARD_DIR, "sitemap.xml"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(COMPASS_DIR, "sitemap.xml"), "w", encoding="utf-8") as fh:
         fh.write(xml)
 
 
 def write_robots():
     txt = f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}sitemap.xml\n"
-    with open(os.path.join(DASHBOARD_DIR, "robots.txt"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(COMPASS_DIR, "robots.txt"), "w", encoding="utf-8") as fh:
         fh.write(txt)
 
 
@@ -903,7 +903,7 @@ def main():
     print(f"Generated {len(all_slugs)} landing pages + index into {SEO_DIR}")
     print(f"  top-metric pages: {len(metric_entries)}  frameworks: {len(framework_entries)}  "
           f"companies: {len(company_entries)}  comparisons: {len(comparison_entries)}")
-    print("Wrote sitemap.xml and robots.txt to", DASHBOARD_DIR)
+    print("Wrote sitemap.xml and robots.txt to", COMPASS_DIR)
 
 
 if __name__ == "__main__":

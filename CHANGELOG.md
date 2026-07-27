@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-27 — Repo folders renamed: `compass/` and `dataset/`
+
+- Renamed `dashboard/` to `compass/` and `metrics and parser/` to `dataset/` (no more space in the path). Purely a repo-layout change: the deployed site is unaffected, since `compass/`'s contents are uploaded to the web root as before.
+- Updated `generate_seo_pages.py` (its `COMPASS_DIR` path constant), `.gitignore`, `CLAUDE.md`, and both READMEs to match. Entries below this one refer to the old folder names.
+
 ## 2026-07-13 — Usable on tablets and small laptops; graceful phone message
 
 - Below 768px (phones), the app now shows a short "best viewed on a larger screen" message instead of a broken layout, since the sunburst and side-by-side comparison need a wider screen. All iPads and larger pass through to the full app.

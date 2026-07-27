@@ -23,7 +23,7 @@ function anonymize_ip(string $ip): string {
 
 /**
  * Exits with 403 if the HTTP_ORIGIN header is present and does not match the server host.
- * Requests from the same origin (the dashboard itself) don't send Origin, so they pass through.
+ * Requests from the same origin (the Compass itself) don't send Origin, so they pass through.
  */
 function check_origin(): void {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
