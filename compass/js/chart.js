@@ -57,10 +57,10 @@ const COLOR_BY_CONFIG = {
         getValue: d => d.ease_of_collection,
     },
     collection_status: {
-        label: 'Collection status',
+        label: 'My metrics shortlist',
         map: { capturing: '#16a34a', planning: '#3b82f6' },
         legend: [
-            { color: '#9e9e9e', label: 'No status' },
+            { color: '#9e9e9e', label: 'Not in shortlist' },
             { color: '#16a34a', label: 'Already tracking' },
             { color: '#3b82f6', label: 'Plan to track' },
         ],
@@ -470,9 +470,9 @@ function buildTooltipContent(metricData, excludeId = null) {
         const activePlanning  = status === 'planning'  ? 'active' : '';
         return `
         <div class="tooltip-status-panel">
-            <div class="metric-detail"><strong>Your collection status</strong></div>
+            <div class="metric-detail"><strong>Manage my metrics shortlist</strong></div>
             <div class="segmented-control tooltip-status-control">
-                <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">No status</button>
+                <button class="filter-btn ${activeNone}"      data-metric-id="${metricId}" data-status="none">Not in shortlist</button>
                 <button class="filter-btn ${activeCapturing}" data-metric-id="${metricId}" data-status="capturing">✓ Already tracking</button>
                 <button class="filter-btn ${activePlanning}"  data-metric-id="${metricId}" data-status="planning">+ Plan to track</button>
             </div>
