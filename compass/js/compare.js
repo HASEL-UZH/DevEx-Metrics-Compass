@@ -8,6 +8,7 @@ const SORT_CARD_TOOLTIPS = {
     maturity: 'Group by collection maturity: Getting started (easy), Established (moderate), or Advanced (complex).',
     datatype: 'Group by data collection method: Self-reported (surveys, pop-ups) or Automated (logs, telemetry).',
     ai:       'Group by AI-specific focus area: AI Impact, Utilization, or Cost.',
+    alpha:    'Group metrics alphabetically by name, in four letter ranges.',
 };
 
 // ─── Value options per dimension type ────────────────────────────────────────
@@ -44,7 +45,29 @@ const GROUP_SORT_ORDER = {
     '📋 Self-reported': 0,
     '⚙️ Automated':     1,
     '📋⚙️ Both':        2,
+    // alphabetical — explicit order so 'Other' (unknown → 999) stays last
+    'A–C': 0,
+    'D–F': 1,
+    'G–P': 2,
+    'Q–Z': 3,
 };
+
+// Letter ranges for the alphabetical grouping. Per-letter groups would mean
+// ~20 headings and a mini chart that only ever shows "A, B, C, D, +18 more",
+// so names are bucketed instead. The spans are uneven on purpose — metric
+// names cluster hard in A–F — to keep the four buckets roughly comparable.
+const ALPHA_BUCKETS = [
+    { label: 'A–C', max: 'C' },
+    { label: 'D–F', max: 'F' },
+    { label: 'G–P', max: 'P' },
+    { label: 'Q–Z', max: 'Z' },
+];
+
+function alphaBucketFor(name) {
+    const first = (name || '').trim().charAt(0).toUpperCase();
+    if (first < 'A' || first > 'Z') return 'Other';
+    return (ALPHA_BUCKETS.find(b => first <= b.max) || { label: 'Other' }).label;
+}
 
 function sortGroupKey(a, b) {
     const oa = GROUP_SORT_ORDER[a] ?? 999;
@@ -432,7 +455,7 @@ function getGroupKeyForMetric(metric, sort) {
         return metric.outcome_goals || 'Other';
     }
     if (sort === 'maturity') return metric.ease_of_collection || 'Other';
-    if (sort === 'alpha')    return metric.name[0].toUpperCase();
+    if (sort === 'alpha')    return alphaBucketFor(metric.name);
     if (sort === 'datatype') {
         if (metric.type === 'qualitative')  return '📋 Self-reported';
         if (metric.type === 'quantitative') return '⚙️ Automated';
@@ -461,6 +484,7 @@ function buildSortChartData(leftMetrics, rightMetrics) {
         { sort: 'maturity', label: 'Maturity' },
         { sort: 'datatype', label: 'Data collection type' },
         { sort: 'ai',       label: 'AI impact' },
+        { sort: 'alpha',    label: 'Alphabetical' },
     ];
 
     return dims.map(({ sort, label }) => {
@@ -557,6 +581,7 @@ function renderSortCharts(chartDataArray) {
         card.addEventListener('click', () => {
             compareSort = sort;
             renderDiffView();
+            if (typeof scheduleUrlSync === 'function') scheduleUrlSync();
             logEvent(TELEMETRY.COMPARE_SORTED, { sortDimension: sort });
         });
         container.appendChild(card);

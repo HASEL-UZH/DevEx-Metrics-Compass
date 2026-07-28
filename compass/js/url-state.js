@@ -14,6 +14,10 @@ const SCALAR_URL_FILTER_DOM_GROUP = { dataType: 'dataType', focus: 'focus-dropdo
 
 const COMPARE_URL_TYPES = ['company', 'framework', 'maturity', 'outcome', 'companySize', 'shortlist'];
 
+// The Step 2 grouping dimensions offered as sort cards (see compare.js's
+// buildSortChartData); 'category' is the default and stays out of the URL.
+const COMPARE_URL_SORTS = ['category', 'outcome', 'maturity', 'datatype', 'ai', 'alpha'];
+
 // Builds a URLSearchParams from current live-synced state, omitting anything
 // at its default. Deliberately does NOT include the shortlist — that's
 // scoped and built separately by nextsteps.js's "Copy shareable link"
@@ -48,6 +52,8 @@ function serializeStateToParams() {
         params.set('rightType', compareState.rightType);
         params.set('rightValue', compareState.rightValue);
     }
+
+    if (typeof compareSort !== 'undefined' && compareSort !== 'category') params.set('sort', compareSort);
 
     if (openMetricId) params.set('specificMetric', openMetricId);
 
@@ -191,6 +197,12 @@ function restoreStateFromUrl() {
     }
     restoreCompareSide('left');
     restoreCompareSide('right');
+
+    const sortParam = params.get('sort');
+    if (sortParam && COMPARE_URL_SORTS.includes(sortParam)) {
+        compareSort = sortParam;
+        hadUrlState = true;
+    }
 
     // A bare ?specificMetric=<id> link (e.g. an SEO metric landing page or "Copy
     // link to this metric") should also count as URL state, so init.js dismisses

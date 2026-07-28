@@ -4,6 +4,11 @@
 
 - Added `compass/.htaccess` with four permanent redirects for links printed in the paper: `/paper` to the paper PDF, and `/paper-step1`, `/paper-step2`, `/paper-step3` to the matching step of the app (with filter/compare state on the query string).
 
+## 2026-07-28 — Step 2 grouping in the URL, plus an alphabetical grouping
+
+- The Step 2 grouping dimension (Category, Outcome goals, Maturity, Data collection type, AI impact) is now part of the shareable URL as `?sort=`, so a shared or bookmarked comparison reopens with the same grouping instead of falling back to Category. The default (Category) stays out of the URL.
+- Added an "Alphabetical" grouping as the sixth Step 2 sort card, filling the empty slot in the 2-column grid. It groups metric names into four letter ranges (A–C, D–F, G–P, Q–Z) rather than per-letter, so the mini chart stays readable; the ranges are uneven because metric names cluster in A–F.
+
 ## 2026-07-27 — Repo folders renamed: `compass/` and `dataset/`
 
 - Renamed `dashboard/` to `compass/` and `metrics and parser/` to `dataset/` (no more space in the path). Purely a repo-layout change: the deployed site is unaffected, since `compass/`'s contents are uploaded to the web root as before.
