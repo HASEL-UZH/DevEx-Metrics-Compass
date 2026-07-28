@@ -1,0 +1,16 @@
+# DevEx Metrics Compass — vanity redirects
+#
+# Lives in the web root (the deployed contents of compass/).
+# Apache 2.2+ with mod_rewrite enabled.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # /paper -> the paper PDF
+    RewriteRule ^paper$ /assets/devex-metrics-compass.pdf [R=301,L]
+
+    # /paper-stepN -> the matching step of the Compass app
+    RewriteRule ^paper-step1$ /?step=explore&role=practitioner&minMentions=25&aiMetric=ai-impact [R=301,L]
+    RewriteRule ^paper-step2$ /?step=compare&role=practitioner&leftType=company&leftValue=Google&rightType=company&rightValue=Microsoft&sort=datatype [R=301,L]
+    RewriteRule ^paper-step3$ /?shortlist_current=146,140,30,129&shortlist_planned=143,12,18,20,36,150,38,40,65,78&step=nextsteps [R=301,L]
+</IfModule>

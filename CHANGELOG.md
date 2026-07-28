@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-28 — Paper redirects
+
+- Added `compass/.htaccess` with four permanent redirects for links printed in the paper: `/paper` to the paper PDF, and `/paper-step1`, `/paper-step2`, `/paper-step3` to the matching step of the app (with filter/compare state on the query string).
+
 ## 2026-07-27 — Repo folders renamed: `compass/` and `dataset/`
 
 - Renamed `dashboard/` to `compass/` and `metrics and parser/` to `dataset/` (no more space in the path). Purely a repo-layout change: the deployed site is unaffected, since `compass/`'s contents are uploaded to the web root as before.
