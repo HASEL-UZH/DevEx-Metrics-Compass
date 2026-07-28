@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Experience Metrics Compass</title>
+    <meta name="description" content="Explore 120+ developer experience (DevEx) metrics from research and industry — SPACE, DORA, DX Core 4 and more. Filter, compare, and shortlist metrics used at companies like Microsoft and Google.">
+    <link rel="canonical" href="https://devexcompass.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Developer Experience Metrics Compass">
+    <meta property="og:title" content="Developer Experience Metrics Compass">
+    <meta property="og:description" content="Explore 120+ developer experience (DevEx) metrics from research and industry — SPACE, DORA, DX Core 4 and more. Filter, compare, and shortlist metrics used at leading companies.">
+    <meta property="og:url" content="https://devexcompass.com/">
+    <meta property="og:image" content="https://devexcompass.com/assets/favicon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Developer Experience Metrics Compass">
+    <meta name="twitter:description" content="Explore 120+ developer experience (DevEx) metrics from research and industry — SPACE, DORA, DX Core 4 and more.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Developer Experience Metrics Compass",
+      "url": "https://devexcompass.com/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web browser",
+      "description": "Interactive dashboard for navigating 120+ developer experience (DevEx) metrics across research and industry, including the SPACE, DORA and DX Core 4 frameworks.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-sunburst.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+    <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Small-screen gate: shown below 768px instead of the (desktop-oriented) app -->
+    <div id="mobile-gate" class="mobile-gate">
+        <div class="mobile-gate-main">
+            <span data-compass-size="56"></span>
+            <h1 class="mobile-gate-title">The DevEx Metrics Compass is best viewed on a larger screen</h1>
+            <p class="mobile-gate-text">
+                It relies on interactive charts that need the room of a tablet, laptop, or desktop.
+                Please open it on a wider screen to explore the metrics.
+            </p>
+            <p class="mobile-gate-text mobile-gate-paper">
+                In the meantime, you can
+                <a class="mobile-gate-paper-link" href="https://devexcompass.com/paper" target="_blank" rel="noopener">read the paper</a>
+                on your phone.
+            </p>
+        </div>
+        <div class="mobile-gate-footer">
+            <div>Created at <a href="https://hasel.dev" target="_blank" rel="noopener">HASEL</a>, <a href="https://uzh.ch" target="_blank" rel="noopener">University of Zurich</a></div>
+            <div><a href="mailto:ameyer@ifi.uzh.ch">Contact us</a></div>
+        </div>
+    </div>
+
+    <!-- 3-step progress bar -->
+    <div id="step-bar" class="step-bar">
+        <div class="step-bar-top">
+            <span class="step-bar-brand">
+                <span data-compass-size="22"></span>
+                <span class="step-bar-title">DevEx Metrics Compass</span>
+            </span>
+            <div class="step-bar-steps">
+            <button class="step-btn step-btn--active" id="step-btn-explore" data-step="explore">
+                <span class="step-btn-num">1</span>
+                <span class="step-btn-label">Explore Metrics</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-btn" id="step-btn-compare" data-step="compare">
+                <span class="step-btn-num">2</span>
+                <span class="step-btn-label">Compare Metrics</span>
+            </button>
+            <div class="step-connector"></div>
+            <button class="step-btn" id="step-btn-nextsteps" data-step="nextsteps">
+                <span class="step-btn-num">3</span>
+                <span class="step-btn-label">Review &amp; Implement Metrics</span>
+            </button>
+            </div><!-- /.step-bar-steps -->
+        </div><!-- /.step-bar-top -->
+        <div class="step-bar-meta">
+            <span id="step-hint" class="step-meta-action"></span>
+            <span class="step-meta-sep" id="step-sep-count">·</span>
+            <span id="step-metric-count" class="step-meta-count"></span>
+        </div>
+    </div>
+
+    <div class="main-container step-explore" id="main-container">
+
+        <!-- Container containing the visualization where the metrics are displayed -->
+        <div class="left-container">
+            <!-- Step 1: Sunburst chart -->
+            <div id="container"></div>
+
+            <!-- First-time hint pointing at a metric to teach that the outer ring is clickable -->
+            <svg id="metric-hint-arrow-svg" class="metric-hint-arrow-svg" style="display:none;">
+                <defs>
+                    <marker id="metric-hint-arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                        <path d="M0,0 L6,3 L0,6 Z" fill="#1B1AFF"></path>
+                    </marker>
+                </defs>
+                <path id="metric-hint-arrow-path" d="" marker-end="url(#metric-hint-arrowhead)"></path>
+            </svg>
+            <div id="metric-hint-bubble" class="metric-hint-bubble" style="display:none;">
+                <span id="metric-hint-text"></span>
+            </div>
+
+            <button id="clear-filters-chart" class="clear-filters-chart-btn" style="display: none;" onclick="clearAllFilters()">Clear all filters</button>
+
+            <button id="report-missing-chart-btn" class="report-missing-chart-btn" style="display: none;" onclick="window.openReportMetricOverlay('missing_metric', null)">Report something missing</button>
+
+            <div id="no-metrics-message" class="centered-message" style="display: none;">
+                No metrics match the current filters. Adapt or clear the filters.
+            </div>
+
+            <!-- Step 2: Diff view (shown in Compare mode) -->
+            <div id="diff-view" class="diff-view" style="display:none"></div>
+
+            <!-- Step 3: Next Steps two-column view -->
+            <div id="nextsteps-view" class="nextsteps-view" style="display:none">
+                <div class="nextsteps-empty-msg" id="nextsteps-empty-msg" style="display:none">
+                    Explore metrics first and mark ones that interest you — they'll appear here.
+                </div>
+                <div class="nextsteps-columns" id="nextsteps-columns">
+                    <div class="nextsteps-col nextsteps-col--capturing">
+                        <div class="nextsteps-col-header">
+                            <span class="nextsteps-col-badge nextsteps-col-badge--capturing">✓</span>
+                            Already tracking <span class="nextsteps-col-count" id="ns-capturing-count"></span>
+                        </div>
+                        <div class="nextsteps-col-list" id="ns-capturing-list"></div>
+                    </div>
+                    <div class="nextsteps-col nextsteps-col--planned">
+                        <div class="nextsteps-col-header">
+                            <span class="nextsteps-col-badge nextsteps-col-badge--planned">+</span>
+                            Plan to track <span class="nextsteps-col-count" id="ns-planned-count"></span>
+                        </div>
+                        <div class="nextsteps-col-list" id="ns-planned-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container containing the filters / step-specific controls -->
+        <div class="right-container">
+
+            <div class="right-panel-scroll">
+
+            <!-- Step 1: Explore filters panel -->
+            <div id="explore-right-panel">
+
+            <!-- Entry view: shown before a mode is chosen -->
+            <div id="explore-entry-panel">
+
+                <!-- Step 0: role selection -->
+                <div id="role-select-step" class="wizard-step">
+                    <div class="controls-title">What&rsquo;s your role in DevEx measurement?</div>
+                    <div class="explore-entry-cards">
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--guided">🌱</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Newcomer</div>
+                                <div class="explore-entry-card-description">I am new to the space and want to explore metrics that fit my context.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="newcomer">Continue as Newcomer</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--browse">⚙️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Practitioner</div>
+                                <div class="explore-entry-card-description">I have DevEx measurement in place, and want to systematically assess its coverage and benchmark it against frameworks and peers.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="practitioner">Continue as practitioner</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--additive">🔍</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Researcher</div>
+                                <div class="explore-entry-card-description">I am studying DevEx measurement and want to get an overview or identify research gaps.</div>
+                                <button class="overlay-action-button role-select-btn" data-role="researcher">Continue as researcher</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn" id="skip-wizard-link" type="button">Skip wizard</button>
+                    </div>
+                </div>
+
+                <!-- Step 1 (Practitioner/Researcher only): how to get started -->
+                <div id="start-choice-step" class="wizard-step hidden">
+                    <div class="controls-title">How would you like to get started?</div>
+                    <p class="filter-description" id="start-choice-context"></p>
+                    <div class="explore-entry-cards">
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--additive">🔽</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Answer a few questions</div>
+                                <div class="explore-entry-card-description">Answer a couple of quick questions, then progressively add metrics that fit your constraints.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="additive">Start with a few questions</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--framework">⚖️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Benchmark against a company or framework</div>
+                                <div class="explore-entry-card-description">See what a specific company or research framework tracks, compared to your shortlist. Doesn't change your shortlist.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="benchmark">Choose a benchmark</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--browse">🗺️</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Browse the full catalogue</div>
+                                <div class="explore-entry-card-description">See the full metric catalogue and narrow it down using filters.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="browse">Show all metrics</button>
+                            </div>
+                        </div>
+                        <div class="explore-entry-card">
+                            <div class="explore-entry-card-icon welcome-card-icon--import">📥</div>
+                            <div class="explore-entry-card-body">
+                                <div class="explore-entry-card-title">Start from an existing selection</div>
+                                <div class="explore-entry-card-description">Already tracking some of these? Load a company's metrics from the dataset, or import a previous export.</div>
+                                <button class="overlay-action-button start-choice-btn" data-action="existingSelection">Load a selection</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="role-select-step">&larr; Back to role selection</button>
+                    </div>
+                </div>
+
+                <!-- Question: measurement maturity (Practitioner/Researcher "quick questions" only) -->
+                <div id="q-easeOfCollection-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-easeOfCollection-label">Question</p>
+                    <h2>What is your team's or organization's measurement maturity?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Easy">
+                            <span class="option-num">🌱</span>
+                            <span class="option-content"><strong>Getting started</strong>: Includes metrics available out-of-the-box from standard tooling (code repo, CI, issue tracker) or a quick survey. No custom instrumentation needed.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Moderate">
+                            <span class="option-num">⚙️</span>
+                            <span class="option-content"><strong>Established</strong>: Includes Getting started metrics, plus those requiring combining data sources, a structured survey instrument, or light custom instrumentation. Achievable within a few weeks of setup.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="Complex">
+                            <span class="option-num">🔬</span>
+                            <span class="option-content"><strong>Advanced</strong>: Includes all metrics, up to those requiring significant custom tooling, IDE/calendar integration, dedicated research infrastructure, or ongoing qualitative data collection. Typically needs a dedicated DevEx or research team.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="easeOfCollection" data-filter-value="all">
+                            <span>No specific maturity level, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-easeOfCollection-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: AI-assisted development interest (Practitioner "quick questions" only) -->
+                <div id="q-aiMetric-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-aiMetric-label">Question</p>
+                    <h2>Are you interested in tracking AI-assisted development?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-impact">
+                            <span class="option-num">🎯</span><span class="option-content"><strong>AI impact</strong>: whether AI tools improve delivery speed, code quality, and developer experience.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-utilization">
+                            <span class="option-num">📊</span><span class="option-content"><strong>AI utilization</strong>: how many developers are adopting AI tooling, and how much work is touched by AI.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="ai-cost">
+                            <span class="option-num">💰</span><span class="option-content"><strong>AI cost</strong>: AI spend, license usage, and identifying power users.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="aiMetric" data-filter-value="all">
+                            <span>Not right now, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-aiMetric-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: data access (Newcomer, Practitioner, and Researcher) -->
+                <div id="q-dataType-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-dataType-label">Question</p>
+                    <h2 id="q-dataType-title">How would you like to collect metrics?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="quantitative">
+                            <span>⚙️ <strong>Automated</strong>, pulled from your tools (e.g., code repo, CI, IDE, telemetry/logs)</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="qualitative">
+                            <span>📋 <strong>Self-reported</strong>, gathered from people (e.g., surveys, pop-ups, interviews)</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="dataType" data-filter-value="all">
+                            <span>Both / not sure yet, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-dataType-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: outcome goal (Newcomer and Practitioner) -->
+                <div id="q-outcomeGoals-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-outcomeGoals-label">Question</p>
+                    <h2>Do you have a key outcome goal?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Developer Experience" title="Metrics about developer well-being, satisfaction, flow/focus, tooling friction, and onboarding (e.g. Burnout, Flow State, Cognitive Load, Feedback Loops, Sentiment).">
+                            <span class="option-num">🧑‍💻</span><span class="option-content"><strong>Developer Experience</strong>: Metrics about developer well-being, satisfaction, flow/focus, and tooling friction.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Product Excellence" title="Metrics about software quality, reliability, user-facing outcomes, and test quality (e.g. Change Failure Rate, Defects, Reliability, Test Coverage, Customer-Reported Defects).">
+                            <span class="option-num">⭐</span><span class="option-content"><strong>Product Excellence</strong>: Metrics about software quality, reliability, and user-facing outcomes.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="Organizational Effectiveness" title="Metrics about delivery throughput, business outcomes, DORA core metrics, and resource efficiency (e.g. Deployment Frequency, Lead Time, MTTR, Revenue per Engineer, Retention).">
+                            <span class="option-num">📈</span><span class="option-content"><strong>Organizational Effectiveness</strong>: Metrics about delivery throughput, business outcomes, and resource efficiency.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="outcomeGoals" data-filter-value="all">
+                            <span>No specific goal, show all metrics.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-outcomeGoals-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: research framework (Researcher only) -->
+                <div id="q-specificFramework-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-specificFramework-label">Question</p>
+                    <h2>Do you want to focus on a specific research framework?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="SPACE Framework">
+                            <span class="option-content"><strong>SPACE</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="DORA Framework">
+                            <span class="option-content"><strong>DORA</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="DX Core 4 Framework">
+                            <span class="option-content"><strong>DX Core 4</strong></span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="specificFramework" data-filter-value="all">
+                            <span>No preference, include all frameworks.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-specificFramework-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Question: research vs. industry focus (Researcher only) -->
+                <div id="q-focus-step" class="wizard-step hidden">
+                    <p class="wizard-step-label" id="q-focus-label">Question</p>
+                    <h2>What type of evidence do you prefer to rely on?</h2>
+                    <div class="wizard-options">
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="research-only">
+                            <span class="option-num">🔬</span><span class="option-content"><strong>Research-backed only</strong>: Metrics proposed in peer-reviewed studies or established frameworks (e.g., SPACE, DORA, DevEx), but not yet applied in industry.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="industry-only">
+                            <span class="option-num">🏭</span><span class="option-content"><strong>Industry-applied only</strong>: Metrics used in practice by companies, without formal research backing.</span><span class="wizard-option-count"></span>
+                        </button>
+                        <button class="wizard-option-btn" data-filter-key="focus" data-filter-value="all">
+                            <span>No preference, show both <strong>research-backed and industry-applied metrics</strong>.</span><span class="wizard-option-count"></span>
+                        </button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" id="q-focus-back-btn">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Benchmark against a company or framework (Practitioner/Researcher only).
+                     View/compare only — does not touch the shortlist. -->
+                <div id="benchmark-step" class="wizard-step hidden">
+                    <div class="controls-title">Benchmark against a company or framework</div>
+                    <p class="filter-description">See what a specific company or research framework tracks, compared to your shortlist. Doesn't change your shortlist.</p>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">See what a company tracks</div>
+                        <p class="predefined-section-desc">Filter to a specific company's metrics and compare it against your shortlist in Step 2. Doesn't change your shortlist.</p>
+                        <select id="benchmark-company-select" class="color-by-select">
+                            <option value="">Select a company&hellip;</option>
+                        </select>
+                        <div id="benchmark-company-info" class="predefined-info-text"></div>
+                        <button id="benchmark-company-btn" class="overlay-action-button" disabled>Benchmark against this company</button>
+                    </div>
+
+                    <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">See what a research framework tracks</div>
+                        <p class="predefined-section-desc">Filter to a specific framework's metrics and compare it against your shortlist in Step 2. Doesn't change your shortlist.</p>
+                        <select id="benchmark-framework-select" class="color-by-select">
+                            <option value="">Select a framework&hellip;</option>
+                        </select>
+                        <div id="benchmark-framework-info" class="predefined-info-text"></div>
+                        <button id="benchmark-framework-btn" class="overlay-action-button" disabled>Benchmark against this framework</button>
+                    </div>
+
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="start-choice-step">&larr; Go back</button>
+                    </div>
+                </div>
+
+                <!-- Start from an existing selection (Practitioner/Researcher only).
+                     Pre-fills the shortlist — this is "I already have some of these",
+                     not a benchmark/comparison. -->
+                <div id="existing-selection-step" class="wizard-step hidden">
+                    <div class="controls-title">Start from an existing selection</div>
+                    <p class="filter-description">Already tracking some of these? Load your own company's metrics from the dataset, or import a previous export.</p>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">My company is already in this dataset</div>
+                        <p class="predefined-section-desc">Pre-fill your shortlist with the metrics your company publicly discloses tracking.</p>
+                        <select id="predefined-company-select" class="color-by-select">
+                            <option value="">Select your company&hellip;</option>
+                        </select>
+                        <div id="predefined-company-info" class="predefined-info-text"></div>
+                        <button id="predefined-company-load-btn" class="overlay-action-button" disabled>Add metrics to shortlist as 'already tracking'</button>
+                    </div>
+
+                    <div class="predefined-or-divider"><span class="predefined-or-label">or</span></div>
+
+                    <div class="predefined-section">
+                        <div class="predefined-section-title">Import a previous export</div>
+                        <p class="predefined-section-desc">Re-load a selection you previously exported as JSON from the Compass.</p>
+                        <label class="predefined-file-label" for="predefined-import-file">Choose JSON file&hellip;</label>
+                        <input type="file" id="predefined-import-file" accept=".json" class="predefined-file-input">
+                        <div id="predefined-import-info" class="predefined-info-text"></div>
+                        <button id="predefined-import-btn" class="overlay-action-button" disabled>Import selection</button>
+                    </div>
+
+                    <div class="wizard-nav">
+                        <button class="wizard-back-btn go-back-btn" data-target-step="start-choice-step">&larr; Go back</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Filters section: shown after a mode is chosen -->
+            <div id="explore-filters-section" style="display:none">
+            <div class="controls-title" id="explore-panel-title">
+                Exploring DevEx metrics <span id="metrics-count" style="display:none"></span>
+            </div>
+
+            <!-- Role status: its own highlighted pill, no outer box (would double up the border) -->
+            <div id="role-badge" class="role-badge hidden">
+                <span>Exploring as <strong id="role-badge-name"></strong></span>
+                <button class="start-maturity-button" id="openMaturityAssessmentBtn">Change role</button>
+            </div>
+
+            <!-- Box 2: active filter pills, clear all, keyword search + role-adaptive filters -->
+            <div id="key-filters-container" class="filters-box">
+            <div class="filters-box-title">Key Filters</div>
+
+            <div id="active-filter-pills" class="active-filter-pills" style="display:none"></div>
+
+            <button class="clear-filters-button clear-filters-button--small" id="clear-filters" style="display: none;">Clear all filters</button>
+
+            <!-- Keyword search field -->
+            <div class="filter-group filter-group--spaced">
+                <label>Metrics search</label>
+                <div class="search-input-wrapper">
+                    <input type="text" id="keyword-search" placeholder="Enter keyword..." class="filter-btn"
+                        style="text-align: left;">
+                    <button id="keyword-clear" class="keyword-clear-btn" style="display:none" aria-label="Clear search">&times;</button>
+                </div>
+            </div>
+
+            <!-- Popularity filter (percentile buttons) -->
+            <div class="filter-group" data-role-filter="minMentions">
+                <div class="filter-heading" title="How often this metric appears across the research papers, company blogs, and talks that make up this dataset.">Popularity</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="minMentions" title="Show metrics of any popularity">All</button>
+                    <button class="filter-btn" data-filter="50" data-group="minMentions" title="The 50% most-referenced metrics across sources">Top 50%</button>
+                    <button class="filter-btn" data-filter="25" data-group="minMentions" title="The 25% most-referenced metrics across sources">Top 25%</button>
+                    <button class="filter-btn" data-filter="10" data-group="minMentions" title="The 10% most-referenced metrics across sources">Top 10%</button>
+                </div>
+            </div>
+
+            <!-- Filter for metrics type, telemetry-based vs. survey-based -->
+            <div class="filter-group" data-role-filter="dataType">
+                <div class="filter-heading">Data collection type</div>
+                <div class="segmented-control">
+                    <button id="all-type" class="filter-btn active" data-filter="all" data-group="dataType">All</button>
+                    <button id="quantitative" class="filter-btn" data-filter="qualitative" data-group="dataType" title="Self-reported: surveys, pop-ups, interviews">📋 Self-reported</button>
+                    <button id="qualitative" class="filter-btn" data-filter="quantitative" data-group="dataType" title="Automated: logs, telemetry">⚙️ Automated</button>
+                </div>
+            </div>
+
+            <!-- Filter by company -->
+            <div class="filter-group" data-role-filter="specificCompany">
+                <div class="filter-heading">Company</div>
+                <select id="company-dropdown" class="company-dropdown">
+                    <option value="all">No company selected</option>
+                </select>
+            </div>
+
+            <!-- Filter by research framework -->
+            <div class="filter-group" data-role-filter="specificFramework">
+                <div class="filter-heading">Research framework</div>
+                <select id="research-dropdown" class="company-dropdown">
+                    <option value="all">No research framework selected</option>
+                </select>
+            </div>
+
+            <!-- Filter for AI metrics -->
+            <div class="filter-group" data-role-filter="aiMetric">
+                <div class="filter-heading">AI impact metrics</div>
+                <div class="segmented-control">
+                    <button id="all-ai" class="filter-btn active" data-filter="all" data-group="aiMetric">All</button>
+                    <button id="ai-impact" class="filter-btn" data-filter="ai-impact" data-group="aiMetric">🎯 AI impact</button>
+                    <button id="ai-utilization" class="filter-btn" data-filter="ai-utilization" data-group="aiMetric">📊 AI utilization</button>
+                    <button id="ai-cost" class="filter-btn" data-filter="ai-cost" data-group="aiMetric">💰 AI cost</button>
+                </div>
+            </div>
+
+            <!-- Filter by outcome goals -->
+            <div class="filter-group" data-role-filter="outcomeGoals">
+                <div class="filter-heading">Outcome goal</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="outcomeGoals">All</button>
+                    <button class="filter-btn" data-filter="Developer Experience" data-group="outcomeGoals">🧑‍💻 Developer Experience</button>
+                    <button class="filter-btn" data-filter="Product Excellence" data-group="outcomeGoals">⭐ Product Excellence</button>
+                    <button class="filter-btn" data-filter="Organizational Effectiveness" data-group="outcomeGoals">📈 Organizat. Effectiveness</button>
+                </div>
+            </div>
+
+            <!-- Filter by collection maturity -->
+            <div class="filter-group" data-role-filter="easeOfCollection">
+                <div class="filter-heading">Collection maturity</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="easeOfCollection">All</button>
+                    <button class="filter-btn" data-filter="Easy" data-group="easeOfCollection">🌱 Getting started</button>
+                    <button class="filter-btn" data-filter="Moderate" data-group="easeOfCollection">⚙️ Established</button>
+                    <button class="filter-btn" data-filter="Complex" data-group="easeOfCollection">🔬 Advanced</button>
+                </div>
+            </div>
+
+            <!-- Filter by company size -->
+            <div class="filter-group" data-role-filter="companySize">
+                <div class="filter-heading">Company size</div>
+                <div class="segmented-control">
+                    <button class="filter-btn active" data-filter="all" data-group="companySize" title="Show all company sizes">All</button>
+                    <button class="filter-btn" data-filter="Enterprise" data-group="companySize" title="Enterprise: 5000+ developers">🏢 Enterprise</button>
+                    <button class="filter-btn" data-filter="Large" data-group="companySize" title="Large company: 501–5000 developers">🏬 Large</button>
+                    <button class="filter-btn" data-filter="Mid-size" data-group="companySize" title="Mid-size company: 51–500 developers">🏠 Mid-size</button>
+                    <button class="filter-btn" data-filter="Small" data-group="companySize" title="Small company: 1–50 developers — no data available yet" disabled>🏡 Small</button>
+                </div>
+            </div>
+
+            <!-- Filter by research vs. industry focus (always last — see ROLE_CONFIG ordering) -->
+            <div class="filter-group" data-role-filter="focus">
+                <div class="filter-heading">Research backing / industry use</div>
+                <select id="focus-dropdown" class="company-dropdown">
+                    <option value="all">Research-backed or industry-applied</option>
+                    <option value="research-only">Research-backed only</option>
+                    <option value="industry-only">Industry-applied only</option>
+                    <option value="research-and-industry">Industry-applied *and* research-backed</option>
+                </select>
+            </div>
+
+            </div><!-- /#key-filters-container -->
+
+            <!-- Box 3: collapsible advanced filters -->
+            <details id="more-filters-details" class="filters-box">
+                <summary>Advanced Filters</summary>
+                <div id="more-filters-body"></div>
+            </details>
+
+            <!-- Box 4: display-only options (not filters) -->
+            <div class="filters-box">
+                <div class="filters-box-title">Customize View</div>
+
+                <div class="filter-group">
+                    <label for="color-by-select">Chart coloring</label>
+                    <select id="color-by-select" class="color-by-select">
+                        <option value="categorization">Category (default)</option>
+                        <option value="collection_status">My metrics shortlist</option>
+                        <option value="popularity">Popularity</option>
+                        <option value="type">Data collection type</option>
+                        <option value="is_research">Research vs industry</option>
+                        <option value="outcome_goals">Outcome goals</option>
+                        <option value="ease_of_collection">Collection maturity</option>
+                    </select>
+                    <div id="color-legend" class="color-legend" style="display:none"></div>
+                </div>
+            </div>
+
+            </div><!-- /#explore-filters-section -->
+
+            </div><!-- /#explore-right-panel -->
+
+            <!-- Step 2: Compare controls panel -->
+            <div id="compare-panel" class="compare-panel" style="display:none">
+                <div class="controls-title">Compare two sets of DevEx metrics</div>
+                <div class="filter-description">Mix any dimensions — frameworks, companies, maturity levels, or outcome goals. Data is based on publicly reported sources and may be incomplete.<br /><a href="#" class="compare-report-link" onclick="event.preventDefault(); window.openReportMetricOverlay('missing_metric', null)">Report something missing</a></div>
+
+                <div class="filter-group-label compare-section-title">Quick comparisons</div>
+                <div class="compare-presets">
+                    <button class="compare-preset-btn" data-left-type="shortlist" data-left-value="shortlist" data-right-type="company" data-right-value="GitHub">My Shortlist vs GitHub</button>
+                    <button class="compare-preset-btn" data-left-type="company" data-left-value="Google" data-right-type="company" data-right-value="Microsoft">Google vs Microsoft</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="framework" data-right-value="DORA Framework">SPACE vs DORA</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="framework" data-right-value="DX Core 4 Framework">SPACE vs DX Core 4</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="SPACE Framework" data-right-type="company" data-right-value="Microsoft">SPACE vs Microsoft</button>
+                    <button class="compare-preset-btn" data-left-type="framework" data-left-value="DORA Framework" data-right-type="company" data-right-value="Google">DORA vs Google</button>
+                </div>
+
+                <div class="filter-group">
+                    <label>Custom comparison</label>
+                    <div class="compare-row-dropdowns">
+                        <select id="compare-left-type" class="company-dropdown">
+                            <option value="shortlist">My metrics shortlist</option>
+                            <option value="company">Company</option>
+                            <option value="framework">Framework</option>
+                            <option value="maturity">Maturity</option>
+                            <option value="outcome">Outcome goals</option>
+                            <option value="companySize">Company size</option>
+                        </select>
+                        <select id="compare-left-value" class="company-dropdown">
+                            <option value="all">Select...</option>
+                        </select>
+                    </div>
+                    <div class="compare-row-dropdowns">
+                        <select id="compare-right-type" class="company-dropdown">
+                            <option value="company">Company</option>
+                            <option value="shortlist">My metrics shortlist</option>
+                            <option value="framework">Framework</option>
+                            <option value="maturity">Maturity</option>
+                            <option value="outcome">Outcome goals</option>
+                            <option value="companySize">Company size</option>
+                        </select>
+                        <select id="compare-right-value" class="company-dropdown">
+                            <option value="all">Select...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="compare-summary" class="compare-summary"></div>
+
+                <div id="compare-save-section" class="compare-save-section" style="display:none">
+                    <button id="btn-save-comparison" class="compare-save-btn"
+                            title="Snapshot this comparison and include it in the PDF report in Step 3: Review &amp; Implement Metrics.">
+                        + Save comparison to PDF
+                    </button>
+                    <span id="compare-save-badge" class="compare-save-badge" style="display:none"></span>
+                </div>
+
+                <div class="filter-group" id="compare-sort-group-wrapper" style="display:none;">
+                    <label>Sort and group metrics by <span class="label-hint">(click a card)</span></label>
+                    <div id="compare-sort-charts" class="compare-sort-charts"></div>
+                </div>
+            </div><!-- /#compare-panel -->
+
+            <!-- Step 3: Next Steps right panel (export) -->
+            <div id="nextsteps-panel" class="nextsteps-panel" style="display:none">
+                <div class="controls-title">Review metrics selection</div>
+                <div class="filter-description" id="nextsteps-hint-text"></div>
+                <div id="ns-insights" class="ns-insights" style="display:none"></div>
+                <div id="ns-saved-comparisons" class="ns-saved-comparisons" style="display:none"></div>
+                <div class="ns-download-section">
+                    <div class="controls-title controls-title--download">Export metrics &amp; implement your plan</div>
+                    <div class="filter-description">Export or share your selection when you're ready.</div>
+                    <div id="nextsteps-actions" class="nextsteps-actions nextsteps-actions--row">
+                        <button class="download-csv-button ns-btn-export" id="download-pdf-nextsteps" title="Download an actionable PDF report of your shortlisted metrics and saved comparisons">📄 Export PDF report</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="download-json-nextsteps" title="Save your selection as a JSON file — can be re-imported later via &quot;Start with a predefined list&quot;">📤 Export JSON</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="copy-shortlist-link-nextsteps" title="Copy a link that lets someone else load your shortlist">🔗 Copy shareable link</button>
+                        <button class="clear-all-metrics ns-btn-clear" id="clear-all-metrics-nextsteps" title="Remove every metric from your shortlist">🗑️ Clear shortlist</button>
+                    </div>
+                    <a id="json-download-anchor" style="display:none"></a>
+                </div>
+            </div><!-- /#nextsteps-panel -->
+
+            </div><!-- /.right-panel-scroll -->
+
+            <!-- Step navigation bar: shared, always at bottom of right panel.
+                 Hidden by default (matches #explore-filters-section) so it can't
+                 flash visible before showExploreStartView() runs on first paint;
+                 hideExploreStartView() reveals it once a mode/role is chosen. -->
+            <div class="next-step-bar" style="display:none">
+                <button id="btn-back-explore" class="next-step-btn next-step-btn--secondary nav-btn--step-compare">&larr; Explore metrics</button>
+                <button id="btn-go-compare" class="next-step-btn next-step-btn--primary nav-btn--step-explore">Compare metrics &rarr;</button>
+                <button id="btn-back-compare" class="next-step-btn next-step-btn--secondary nav-btn--step-nextsteps">&larr; Compare metrics</button>
+                <button id="btn-go-nextsteps" class="next-step-btn next-step-btn--primary nav-btn--step-compare">Review &amp; Export &rarr;</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <div>Created at <a href="https://hasel.dev" target="_blank">HASEL</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> &bull; <a href="#" id="openAboutBtnFooter">About</a> &bull; <a href="#" id="openChangelogBtnFooter">Changelog</a> &bull; <a href="#" id="openReportMissingMetricBtn">Report something missing</a> &bull; <a href="https://github.com/HASEL-UZH/DevEx-Metrics-Compass" target="_blank">Contribute</a></div>
+                <div class="footer-disclaimer">Provided for research and informational use only &bull; Based on a literature review, not exhaustive</div>
+            </div>
+            <span class="footer-divider"></span>
+            <div class="footer-feedback">
+                <span class="feedback-widget-label">Is this useful?</span>
+                <div class="feedback-widget-btns">
+                    <button class="feedback-thumb-btn" data-rating="up" title="Helpful">&#x1F44D;</button>
+                    <button class="feedback-thumb-btn" data-rating="down" title="Not helpful">&#x1F44E;</button>
+                </div>
+            </div>
+        </div>
+        <div id="feedback-expand" class="feedback-expand hidden">
+            <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" maxlength="500"></textarea>
+            <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
+            <p id="feedback-thanks" class="feedback-thanks hidden">Thank you for your feedback!</p>
+            <a href="#" id="feedback-report-missing" class="feedback-report-missing hidden">Report something missing</a>
+        </div>
+    </footer>
+
+    <!-- Overlay containing the maturity assessment and landing page -->
+    <div class="overlay" id="myOverlay">
+        <div class="overlay-content">
+            <button class="close-button" id="closeOverlayBtn">&times;</button>
+
+            <!-- Landing page -->
+            <div id="initial-choice-screen" class="overlay-screen">
+                <div class="overlay-compass-icon">
+                    <span data-compass-size="56"></span>
+                </div>
+                <h2>Welcome to the Developer Experience Metrics Compass <span class="preview-badge">Preview</span></h2>
+                <p>
+                    Research and industry practice have collectively surfaced 120+ developer experience metrics
+                    &mdash; spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
+                    and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
+                </p>
+                <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
+                <p class="welcome-steps-intro">Through three steps, the Compass guides you from exploring the full landscape to a concrete implementation plan:</p>
+                <div class="welcome-steps-strip">
+                    <div class="welcome-step-item">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">1</span>
+                            <span class="welcome-step-name">Explore Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Filter 120+ metrics by company, framework, maturity, data collection type or outcome goal. Build a shortlist of what you already track and what you plan to add.</p>
+                    </div>
+                    <span class="welcome-step-arrow">→</span>
+                    <div class="welcome-step-item">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">2</span>
+                            <span class="welcome-step-name">Compare Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Compare frameworks like SPACE vs. DX Core 4, or companies like Microsoft vs. Google, side by side. Spot overlaps, differences, and what others track that you don't.</p>
+                    </div>
+                    <span class="welcome-step-arrow">→</span>
+                    <div class="welcome-step-item">
+                        <div class="welcome-step-pill">
+                            <span class="welcome-step-num">3</span>
+                            <span class="welcome-step-name">Review & Implement Metrics</span>
+                        </div>
+                        <p class="welcome-step-desc">Review my shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
+                    </div>
+                </div>
+                <button class="welcome-cta-btn" id="start-exploring-btn">Start exploring metrics</button>
+                <div class="welcome-provenance-group">
+                    <div class="welcome-provenance-tabs">
+                        <span class="welcome-provenance-tab" data-tab="created">How was the Compass created?</span>
+                        <span class="welcome-provenance-sep">&bull;</span>
+                        <span class="welcome-provenance-tab" data-tab="who">Who created the compass?</span>
+                    </div>
+                    <div class="welcome-provenance-body hidden" data-tab="created">
+                        The Compass curates metrics from scientific literature and public company resources
+                        (engineering blogs, case studies, and talks from organizations such as Google, Microsoft,
+                        Atlassian, and Spotify), bringing together perspectives from both research and industry.
+                        Each metric is coded across dimensions including data collection method, source context,
+                        company size, framework or company of origin, AI impact assessment, and outcome goal.
+                    </div>
+                    <div class="welcome-provenance-body hidden" data-tab="who">
+                        The Compass was created by Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy,
+                        and Prof. Dr. Thomas Fritz as part of research at the University of Zurich (UZH) and
+                        the University of British Columbia (UBC).
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Changelog overlay -->
+    <div class="overlay" id="changelogOverlay" style="display: none;">
+        <div class="overlay-content changelog-overlay-content">
+            <button class="close-button" id="closeChangelogBtn">&times;</button>
+            <div class="overlay-title-row">
+                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
+                <h2>Changelog</h2>
+            </div>
+
+            <div class="changelog-entries">
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">July 2026</div>
+                    <ul>
+                        <li>Added shareable links: share any filtered view, selected metric, or metrics shortlist with your peers</li>
+                        <li>Filters now support multi-select: combine several options at once (AI impact metric, Outcome goal, Company size, Collection maturity)</li>
+                        <li>Company size can now be used as a Step 2 comparison dimension</li>
+                        <li>Refined wizard to filter sunburst chart by role</li>
+                        <li>Added ability to report missing company and framework/publication, besides missing metric</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">June 2026</div>
+                    <ul>
+                        <li>Improved metrics search: queries now match regardless of word order, and common abbreviations expand automatically (e.g. &ldquo;pr&rdquo;, &ldquo;docs&rdquo;, &ldquo;debt&rdquo;)</li>
+                        <li>Added a form to report missing or incorrect metrics &mdash; accessible from the footer and each metric&rsquo;s detail popup</li>
+                        <li>Added related metrics links in the metric popup &mdash; clicking a related metric opens its details side-by-side</li>
+                        <li>Added a fourth starting option: load a company&rsquo;s metrics directly or import a saved DevEx Compass export (JSON)</li>
+                        <li>Refined the metrics dataset: unified similar metrics and added new ones</li>
+                        <li>Extended insights to surface more actionable recommendations</li>
+                        <li>Refined getting started view in "Explore Metrics"-step</li>
+                        <li>Added ability to color the sunburst chart by collection status (tracked, planned, not tracked)</li>
+                        <li>Added framework links on metric cards where applicable</li>
+                        <li>Added ability to compare your shortlist against other dimensions (e.g. companies)</li>
+                        <li>New About overlay with information on the Compass, its creators, and methodology</li>
+                        <li>Refreshed chart colors and icons to a colorblind-accessible palette</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">May 2026</div>
+                    <ul>
+                        <li>Added 2 new metrics and 2 new companies with 7 new sources</li>
+                        <li>Added insights panel in Step 3: automatically highlights coverage gaps across outcome goals, frameworks, data collection types, and metric categories</li>
+                        <li>Enriched &ldquo;Plan to track&rdquo; metric cards with ease-of-collection badges and links to companies tracking the metric and research recommending it</li>
+                        <li>Added company logos throughout the Compass for faster visual recognition of companies</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">April 2026</div>
+                    <ul>
+                        <li>Added three-step workflow for metrics identification: select metrics, compare with a benchmark or peer, and export results</li>
+                        <li>Added PDF export of selected metrics that are already tracked or the user plans to track</li>
+                        <li>Added in-app feedback widget to share reactions and comments directly from the dashboard</li>
+                        <li>Refined coloring, filtering dimensions, and guided metrics selection wizard</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">March 2026</div>
+                    <ul>
+                        <li>Redesigned getting started with three exploration modes: <em>Guided selection</em>, <em>Browse all metrics</em>, and <em>Explore by filtering</em></li>
+                        <li>Added Guided Selection mode where the user answers questions to help filter the right metrics</li>
+                        <li>Added <em>Outcome Goals</em> as a filter dimension (Developer Experience, Product Excellence, Organizational Effectiveness)</li>
+                        <li>Added <em>Ease of Collection</em> as a filter dimension (Easy, Moderate, Complex)</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">February 2026</div>
+                    <ul>
+                        <li>Added AI metrics and filter</li>
+                        <li>Updated company size filter categories and labels</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">January 2026</div>
+                    <ul>
+                        <li>Initial release of the DevEx Metrics Compass dashboard</li>
+                        <li>Sunburst visualization with filtering by data type, research/industry focus, company size, and specific framework or company</li>
+                        <li>Metrics shortlist with CSV export</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="overlay-footer">
+                Developer Experience Metrics Compass
+                &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
+                <a href="https://hasel.dev" target="_blank">HASEL</a>, University of Zurich
+            </div>
+        </div>
+    </div>
+
+    <!-- About overlay -->
+    <div class="overlay" id="aboutOverlay" style="display: none;">
+        <div class="overlay-content about-overlay-content">
+            <button class="close-button" id="closeAboutBtn">&times;</button>
+
+            <div class="overlay-title-row">
+                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
+                <h2>About the Developer Experience Metrics Compass</h2>
+            </div>
+
+            <p>
+                Research and industry practice have collectively surfaced 130+ developer experience metrics,
+                spanning frameworks like SPACE, DORA, and DX Core 4, among others. Yet their overlap, inconsistent operationalization,
+                and differing assumptions make it hard to know <strong>which metrics actually matter for <em>your</em> team, context, and goals</strong>.
+            </p>
+            <div class="welcome-steps-strip about-steps-strip">
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">1</span>
+                        <span class="welcome-step-name">Explore Metrics</span>
+                    </div>
+                    <p class="welcome-step-desc">Filter 130+ metrics by company, framework, maturity, data collection type or outcome goal. Build a shortlist of what you already track and what you plan to add.</p>
+                </div>
+                <span class="welcome-step-arrow">→</span>
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">2</span>
+                        <span class="welcome-step-name">Compare Metrics</span>
+                    </div>
+                    <p class="welcome-step-desc">Compare frameworks like SPACE vs. DX Core 4, or companies like Microsoft vs. Google, side by side. Spot overlaps, differences, and what others track that you don't.</p>
+                </div>
+                <span class="welcome-step-arrow">→</span>
+                <div class="welcome-step-item about-step-item">
+                    <div class="welcome-step-pill">
+                        <span class="welcome-step-num">3</span>
+                        <span class="welcome-step-name">Review &amp; Implement</span>
+                    </div>
+                    <p class="welcome-step-desc">Review my shortlist by tracking status, get insights on coverage gaps across frameworks, and export an actionable implementation plan for your team.</p>
+                </div>
+            </div>
+            <p>The goal is not to measure more, but to <strong>measure more deliberately</strong>. Use the Compass to validate metrics you already track, discover gaps in your current approach, or build an evidence-driven baseline from scratch.</p>
+
+            <div class="changelog-entries">
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Why we created the Compass</div>
+                    <p>With more than 130 developer experience metrics in circulation across research and industry, the challenge for most teams is not a lack of options. It is knowing which metrics are right for their specific context, maturity, and goals. The Compass helps teams at any stage of their measurement journey:</p>
+                    <ul>
+                        <li><strong>New to DevEx measurement.</strong> The guided wizard narrows 130+ metrics down to a manageable first set based on your context, available data, and outcome goals.</li>
+                        <li><strong>Running an existing program.</strong> Map your current metrics to identify dimensional coverage gaps, then benchmark against frameworks like SPACE and DX Core 4 or against what organizations like Google, Microsoft, and Stripe report measuring.</li>
+                        <li><strong>Researchers and dedicated DevEx teams.</strong> The full <a href="https://github.com/HASEL-UZH/DevEx-Metrics-Compass" target="_blank">open-source dataset</a> lets you filter by source (research vs. industry), compare frameworks, and identify understudied dimensions and metrics that may be worth pursuing.</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Who created the Compass</div>
+                    <p>The Compass was created by Dr. André N. Meyer, Patrick Meyer, Prof. Dr. Gail C. Murphy, and Prof. Dr. Thomas Fritz as part of research at the <a href="https://hasel.dev" target="_blank">HASEL Lab</a>, <a href="https://uzh.ch" target="_blank">University of Zurich</a> (UZH) and the University of British Columbia (UBC).</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">How we created the Compass</div>
+                    <p>The Compass is built on a systematic analysis of 130+ metrics drawn from scientific literature and the public practices of more than 50 engineering organizations (including Google, Microsoft, Atlassian, Spotify, Lloyds, and Stripe), covering engineering blogs, conference talks, case studies, and podcasts. Each metric is annotated across multiple dimensions: how data is collected (automated or self-reported), collection maturity (getting started through advanced), the framework or company of origin, AI relevance, and outcome goal (Developer Experience, Product Excellence, or Organizational Effectiveness).</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Something missing or incorrect?</div>
+                    <p>We'd love to hear from you. Use <a href="#" onclick="event.preventDefault(); window.openReportMetricOverlay('missing_metric', null)">Report something missing</a> to tell us about a missing metric, company, or research publication/framework, or reach out via <a href="mailto:ameyer@ifi.uzh.ch">ameyer@ifi.uzh.ch</a> for incorrect data or suggestions for improvement.</p>
+                    <p>Or create a Pull Request on <a href="https://github.com/HASEL-UZH/DevEx-Metrics-Compass" target="_blank">GitHub</a>.</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Browse metric collections</div>
+                    <p>Prefer to browse rather than filter? We publish curated collections of the metrics as standalone pages &mdash; by research framework (SPACE, DORA, DX Core 4, and more), by company (Microsoft, Google, and more), and as side-by-side comparisons. <a href="seo/index.html">Browse all metric collections</a>.</p>
+                </div>
+
+                <div class="changelog-entry">
+                    <div class="changelog-date">Privacy &amp; usage data</div>
+                    <p>We collect anonymous usage data, such as which filters are used and which metrics are opened, to understand how the Compass is used and improve it. This data is stored on our own web server in Switzerland and is not shared with third parties. We do not use tracking cookies or third-party analytics services. IP addresses are shortened before they are stored, so they are never recorded in full.</p>
+                </div>
+
+            </div>
+
+            <div class="overlay-footer about-overlay-footer">
+                <div class="about-logo-strip">
+                    <a href="https://flowlabs.ch" target="_blank" class="about-logo-link">
+                        <img src="assets/flowlabs-logo.png" alt="Flow Labs" class="about-logo">
+                    </a>
+                    <a href="https://hasel.dev" target="_blank" class="about-logo-link">
+                        <img src="assets/hasel-logo.png" alt="HASEL Lab" class="about-logo">
+                    </a>
+                    <a href="https://uzh.ch" target="_blank" class="about-logo-link">
+                        <img src="assets/uzh-logo.svg" alt="University of Zurich" class="about-logo">
+                    </a>
+                </div>
+                <div>Developer Experience Metrics Compass
+                &bull; <a href="mailto:ameyer@ifi.uzh.ch">Meyer</a>, Meyer, Murphy &amp; Fritz &bull;
+                Provided for research &amp; informational use only</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltyp containing metric details, opened when clicked -->
+    <div id="custom-tooltip" class="custom-tooltip"></div>
+    <div id="custom-tooltip-2" class="custom-tooltip"></div>
+
+    <!-- Hover popup for the shortlist pills in the title bar -->
+    <div id="shortlist-hover-popup" class="shortlist-hover-popup"></div>
+
+    <!-- Shortlist indicator: fixed top-right, always visible -->
+    <div id="shortlist-pills" class="shortlist-pills" style="display:none">
+        <span class="shortlist-pills-label">My metrics shortlist:</span>
+        <span id="shortlist-pill-tracking" class="shortlist-pill shortlist-pill--tracking" style="display:none">
+            <span class="shortlist-pill-icon">&check;</span>
+            <span id="shortlist-pill-tracking-count">0</span> already tracking
+        </span>
+        <span id="shortlist-pill-planned" class="shortlist-pill shortlist-pill--planned" style="display:none">
+            <span class="shortlist-pill-icon">+</span>
+            <span id="shortlist-pill-planned-count">0</span> planned to track
+        </span>
+    </div>
+
+    <!-- Report-metric overlay -->
+    <div class="overlay" id="reportMetricOverlay" style="display: none;">
+        <div class="overlay-content report-metric-overlay-content">
+            <button class="close-button" id="closeReportMetricOverlayBtn">&times;</button>
+            <div class="overlay-title-row">
+                <span data-compass-size="48" data-compass-style="flex-shrink:0;"></span>
+                <h2 id="reportMetricOverlayTitle">Report a metric issue</h2>
+            </div>
+            <p id="reportMetricIntro" class="report-metric-intro"></p>
+
+            <div class="report-metric-form">
+                <div class="report-metric-form-row hidden" id="reportMetricSubjectRow">
+                    <label>What is missing?</label>
+                    <div class="report-metric-subject-picker" id="reportMetricSubjectPicker">
+                        <button type="button" class="report-metric-subject-btn active" data-report-mode="missing_metric">A metric</button>
+                        <button type="button" class="report-metric-subject-btn" data-report-mode="missing_research">A publication / framework</button>
+                        <button type="button" class="report-metric-subject-btn" data-report-mode="missing_company">A company</button>
+                    </div>
+                </div>
+
+                <div class="report-metric-form-row">
+                    <label for="reportMetricName" id="reportMetricNameLabel">Metric name</label>
+                    <input type="text" id="reportMetricName" class="report-metric-input" placeholder="Name of the metric" maxlength="200" autocomplete="off">
+                </div>
+
+                <div class="report-metric-form-row hidden" id="reportMetricSourceRow">
+                    <label for="reportMetricSource">Reference to details on metric</label>
+                    <input type="text" id="reportMetricSource" class="report-metric-input" placeholder="Publication, company blog/report, or other source" maxlength="500" autocomplete="off">
+                </div>
+
+                <div class="report-metric-form-row">
+                    <label for="reportMetricDesc" id="reportMetricDescLabel">Definition</label>
+                    <textarea id="reportMetricDesc" class="report-metric-input report-metric-textarea" rows="4" placeholder="How is this metric defined? What does it measure?" maxlength="500"></textarea>
+                </div>
+
+                <div class="report-metric-form-row">
+                    <label for="reportMetricEmail">Your email<span class="report-metric-field-hint">for follow-up questions</span></label>
+                    <input type="email" id="reportMetricEmail" class="report-metric-input" placeholder="your@email.com" maxlength="200" autocomplete="email">
+                </div>
+            </div>
+
+            <p id="reportMetricError" class="report-metric-error-msg hidden"></p>
+
+            <div class="report-metric-actions">
+                <button id="reportMetricSubmitBtn" class="report-metric-submit-btn">Submit report</button>
+                <button id="reportMetricSaveAnotherBtn" class="report-metric-another-btn hidden">Submit and report another</button>
+            </div>
+
+            <p id="reportMetricThanks" class="report-metric-thanks hidden">Thank you! Your report has been submitted.</p>
+        </div>
+    </div>
+
+    <script src="js/compass.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/filtering.js"></script>
+    <script src="js/url-state.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/metrics-selection.js"></script>
+    <script src="js/wizard.js"></script>
+    <script src="js/titlebar.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/nextsteps.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/telemetry-logger.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/report-metric.js"></script>
+
+</body>
+
+</html>

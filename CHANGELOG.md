@@ -1,5 +1,93 @@
 # Changelog
 
+## 2026-07-27 — Repo folders renamed: `compass/` and `dataset/`
+
+- Renamed `dashboard/` to `compass/` and `metrics and parser/` to `dataset/` (no more space in the path). Purely a repo-layout change: the deployed site is unaffected, since `compass/`'s contents are uploaded to the web root as before.
+- Updated `generate_seo_pages.py` (its `COMPASS_DIR` path constant), `.gitignore`, `CLAUDE.md`, and both READMEs to match. Entries below this one refer to the old folder names.
+
+## 2026-07-13 — Usable on tablets and small laptops; graceful phone message
+
+- Below 768px (phones), the app now shows a short "best viewed on a larger screen" message instead of a broken layout, since the sunburst and side-by-side comparison need a wider screen. All iPads and larger pass through to the full app.
+- On tablets and small laptops (up to 1100px), the layout adapts: the sidebar narrows, the 3-step bar wraps and condenses, the metric detail popup becomes fluid (no more forced horizontal scrolling), and the footer/shortlist pills reflow to avoid overlap.
+- On narrower tablets, the Step 3 "Already tracking" and "Plan to track" columns stack vertically so each list stays readable.
+- The desktop layout (above 1100px) is unchanged.
+
+## 2026-07-10 — SEO: static landing pages and homepage meta tags
+
+- Added `metrics and parser/generate_seo_pages.py`, a stdlib-only generator that reads the app's `data.json`/`source_ids.json` and emits static, crawlable landing pages into `dashboard/seo/` — one per research framework (SPACE, DORA, DX Core 4, …), one per company above a metric threshold (Microsoft, Google, …), one per top-10% (most-referenced) metric, diff-style comparison pages matching the app's Compare presets (Google vs Microsoft, SPACE vs DORA, …), and an index.
+- Landing pages match the Compass design language (brand color, compass logo, footer) and show the same company favicons and research chips as the app (labelled as the other companies applying / research recommending each metric), plus a trimmed set of detail pills (outcome goal, AI category, and a top-5%/top-10% "most-referenced" badge). Comparison pages are a name-only diff (shared / unique to each side), mirroring the app's Step 2 diff view.
+- Each page carries real metric content plus a CTA that opens the live app pre-filtered via deep-link URL state; metric links include their filter context, and a bare `?metric=<id>` link now dismisses the welcome overlay too, so shared/landing links land on the intended view instead of the blank start screen.
+- Generated `dashboard/sitemap.xml` and `dashboard/robots.txt`.
+- Added meta description, Open Graph/Twitter tags, canonical URL, and `WebApplication` JSON-LD to `dashboard/index.html`; fixed the favicon MIME type. Regenerate the SEO pages after each `parser.py` run and upload the `seo/` folder, `sitemap.xml`, and `robots.txt`.
+
+## 2026-07-08 — Broadened reporting: metrics, companies, and research/frameworks
+
+- Renamed "Report a missing metric" to "Report something missing" and generalized the report form: a subject picker lets people report a missing metric, a missing company, or a missing research publication/framework, each with tailored wording and reference prompts.
+- Added report entry points where gaps surface: a "Report a missing company" item at the bottom of the company filter dropdown, a "Report a missing publication / framework" item in the research framework dropdown, a link in the Step 1 "no metrics match" empty state, and an in-app link in the About page.
+- Reporting an issue with an existing metric (from the metric detail popup) is unchanged.
+
+## 2026-07-08 — Shareable URL state for filters, role, step, compare, and metrics
+
+- Step 1 filters/role, Step 2 compare selection, the current step, and the open metric popup now live-sync to the URL via `history.replaceState`, so the address bar is always a valid link to the current view.
+- Added "Copy shareable link" (Step 3) to share just the shortlist (split into `shortlist_current`/`shortlist_planned` to preserve tracking status), and "Copy link to this metric" inside the metric detail popup — both scoped to just their own data, not the ambient live state.
+- Opening a shared shortlist link merges into the recipient's existing shortlist (confirm to proceed, cancel to do nothing); loads directly with no prompt if their shortlist is empty.
+- Renamed "Clear selection" to "Clear shortlist" for consistency with existing terminology; reworked the Step 3 export-row button layout and added hover tooltips.
+- Removed dead `MODE`/`currentMode` state (superseded by role-based onboarding and step-based navigation).
+
+## 2026-07-06 — Refined the per-role onboarding questions
+
+- Newcomers are now asked their outcome goal before the data-collection question, so the wizard leads with intent rather than mechanics.
+- The Practitioner "quick questions" path is down to three questions (measurement maturity, outcome goal, AI interest); the data-collection question is no longer asked of practitioners, who already have measurement in place.
+- Reworded the data-collection question ("How would you like to collect metrics?") and its options to read as a collection preference rather than a passive "what do you have access to".
+
+## 2026-07-03 — Company size added as a Step 2 comparison dimension
+
+- The Step 2 "Custom comparison" dropdowns now include "Company size" alongside Company, Framework, Maturity, and Outcome goals, so users can compare e.g. Enterprise-tracked metrics vs Mid-size-tracked metrics.
+
+## 2026-07-03 — AI impact metric, Outcome goal, and Company size filters are now multi-select
+
+- These filters no longer restrict to a single value at a time. Each option is now an independent toggle, so users can combine any subset (e.g. "AI impact" + "AI cost", or "Enterprise" + "Large") and see exact matches only.
+- Selecting every option in a group automatically collapses back to "All"; deselecting the last active option also reverts to "All" rather than showing zero results — same behavior already shipped for the "Collection maturity" filter.
+
+## 2026-07-02 — Collection maturity filter is now multi-select
+
+- The "Collection maturity" filter (Easy / Moderate / Complex) no longer works cumulatively (e.g. "Moderate" used to also include "Easy" results). Each tier is now an independent toggle, so users can combine any subset (e.g. Easy + Complex) and see exact matches only.
+- Selecting all three tiers automatically collapses back to "All"; deselecting the last active tier also reverts to "All" rather than showing zero results.
+
+## 2026-07-02 — Fixed incorrect "all planned metrics" collection-effort insight
+
+- The "All planned metrics require significant collection effort" insight chip could fire even when only some planned metrics were actually rated "Complex" (as long as none were rated "Easy"). It now only appears when every planned metric is "Complex"; the existing "Most planned metrics..." chip still covers the 60%+ case.
+
+## 2026-07-02 — First-time hint pointing at a clickable metric
+
+- Added a one-time hint (curved arrow + "click for details" note) pointing at the most-mentioned metric in the current view, to teach that individual metrics in the outer ring are clickable
+- Shown only until the user clicks any metric segment for the first time, then never again (persisted via localStorage)
+
+## 2026-07-02 — Refined the role-based onboarding flow
+
+- Grouped the filter sidepanel into titled boxes (role status, key filters with active-filter pills, advanced filters, chart coloring), tuned per-role filter visibility and quick questions, and reworded several onboarding prompts based on user feedback
+
+## 2026-07-01 — Role-based onboarding redesigned into a single sidepanel wizard
+
+- Replaced the flat 4-option "How would you like to start?" screen with a role-first flow: pick Newcomer/Practitioner/Researcher, then answer role-specific questions, embedded directly in the sidepanel instead of a separate modal
+- Chart stays blurred but updates live behind the blur as each question is answered, then unblurs once the flow finishes
+- Newcomer path shortened to 2 questions (data access, outcome goal); measurement maturity is now assumed "Getting started" automatically and hidden from the newcomer's filter panel
+- Practitioner/Researcher get a shared "how would you like to get started?" menu: start from scratch, explore by filtering, answer a couple of quick questions, benchmark against a company, benchmark against a framework, or import a previous export
+- Practitioner's quick questions expanded to include company size and AI-assisted development interest
+- Filter panel now adapts per role: relevant filters shown by default, less relevant ones (and anything already answered via the wizard) collapse into a new "More filters" expander
+- AI impact metrics filter is hidden entirely for Newcomers; the "appears in research/industry/both" filter always sorts last
+- Filter group headers simplified: removed the separate blue title above each "Filter by ...:" description
+- "Restart wizard" replaced by a persistent "Exploring as [Role] · Change role" indicator
+
+## 2026-07-01 — Clearer goal messaging, shortlist indicator, feedback relocation
+
+- Welcome overlay reordered so the problem statement is followed directly by the goal statement and a step-strip intro; step pills are no longer clickable (first-time visitors now always go through "Start exploring metrics")
+- Explore step's cold-start hint reworded to "Filter to your context, then mark what you track or plan to track"; hint text made slightly larger across all steps
+- Added a small brand icon next to the "DevEx Metrics Compass" title
+- Shortlist summary ("My metrics shortlist") moved from the meta row into an animated pill indicator fixed top-right, with a bump animation on add/remove; hover popup preserved and now centered over the pills
+- Feedback widget (thumbs up/down) moved from a fixed top-right position into the footer, appearing as a small popup above the footer bar when expanded
+- Renamed "Save comparison to PDF" button to "Save comparison to PDF Report"
+
 ## 2026-06-29 — Comparison legend, UI refinements, and security fix
 
 - Comparison sidebar legend now shows "Left (type) VS Right (type)" instead of item counts, using violet/green coloring to match the compare view
