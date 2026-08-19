@@ -1269,52 +1269,49 @@ a {
     white-space: nowrap;
 }
 
-/* Welcome screen provenance toggles */
-.welcome-provenance-group {
-    width: 100%;
-    max-width: 980px;
-    margin-top: 8px;
+/* Welcome screen paper banner */
+.welcome-paper-banner {
+    width: 90%;
+    max-width: 90%;
+    margin: 4px 0 20px;
     align-self: center;
+    padding: 12px 18px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
     text-align: left;
+    box-sizing: border-box;
 }
 
-.welcome-provenance-tabs {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.welcome-provenance-tab {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #999;
-    cursor: pointer;
-    user-select: none;
-}
-
-.welcome-provenance-tab:hover {
-    color: #555;
-}
-
-.welcome-provenance-tab.active {
-    color: #444;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.welcome-provenance-sep {
-    font-size: 0.75rem;
-    color: #ccc;
-}
-
-.welcome-provenance-body {
-    margin-top: 8px;
-    font-size: 0.82rem;
-    color: #999;
+.overlay-screen p.welcome-paper-banner-text {
+    margin: 0;
+    /* overrides the 90% cap on .overlay-screen p, which left a gap on the right */
+    max-width: 100%;
+    font-size: 0.85rem;
     line-height: 1.6;
-    text-align: center;
+    color: #445;
+}
+
+.welcome-paper-banner-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.welcome-paper-banner-link {
+    font-weight: 600;
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+.welcome-paper-banner-link:hover {
+    text-decoration: underline;
+}
+
+/* Citation line in the About overlay */
+.about-citation {
+    padding-left: 12px;
+    border-left: 3px solid #dbeafe;
+    color: #555;
 }
 
 .overlay-screen p.welcome-steps-intro {

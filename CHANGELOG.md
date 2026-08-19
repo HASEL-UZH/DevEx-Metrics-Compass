@@ -1,8 +1,16 @@
 # Changelog
 
+## 2026-08-19 — Paper integrated into the welcome page, About, and README
+
+- Welcome overlay: replaced the "How was the Compass created?" / "Who created the compass?" toggles with a light-blue banner pointing to the ACM Queue article. Both toggles duplicated text that already exists in the About overlay, so the banner shortens the overlay while making the paper the authoritative answer to how the Compass was built.
+- About overlay: added a "The paper behind the Compass" section (after "How we created the Compass") with the full citation and DOI.
+- `README.md`: added a "Paper" section with the citation, DOI, short link, and a collapsible BibTeX block; the dataset attribution note now also points at the paper.
+- Added `CITATION.cff` so GitHub shows a native "Cite this repository" button.
+- `compass/.htaccess`: `/paper` now redirects to the published ACM Queue article instead of a local PDF that was never committed, and the `/contribute` redirect was restored after it was lost in a sync from the server.
+
 ## 2026-08-19 — Compass paper published in ACM Queue
 
-- The paper behind the DevEx Metrics Compass is out in ACM Queue. It is linked from the app via <https://devexcompass.com/paper>, which redirects to the PDF; the `/paper-step1`, `/paper-step2`, and `/paper-step3` links printed in the paper open the matching step of the app.
+- The paper behind the DevEx Metrics Compass is out in ACM Queue. It is linked from the app via <https://devexcompass.com/paper>, which redirects to the article on the ACM site; the `/paper-step1`, `/paper-step2`, and `/paper-step3` links printed in the paper open the matching step of the app.
 
 ## 2026-07-28 — Paper redirects
 

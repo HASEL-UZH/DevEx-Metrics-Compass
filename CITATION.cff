@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use the DevEx Metrics Compass or its dataset, please cite the article below."
+title: "DevEx Metrics Compass"
+abstract: "Interactive dashboard for navigating developer experience metrics across research and industry."
+type: software
+url: "https://devexcompass.com"
+repository-code: "https://github.com/HASEL-UZH/DevEx-Metrics-Compass"
+license: MIT
+authors:
+  - family-names: Meyer
+    given-names: "André N."
+    affiliation: "HASEL Lab, University of Zurich"
+  - family-names: Meyer
+    given-names: Patrick
+    affiliation: "HASEL Lab, University of Zurich"
+  - family-names: Murphy
+    given-names: "Gail C."
+    affiliation: "University of British Columbia"
+  - family-names: Fritz
+    given-names: Thomas
+    affiliation: "HASEL Lab, University of Zurich"
+preferred-citation:
+  type: article
+  title: "Too Many DevEx Metrics, Too Little Guidance — DevEx Metrics Compass: Making Sense of Developer Experience Measurement"
+  journal: "ACM Queue"
+  volume: 24
+  issue: 4
+  year: 2026
+  month: 8
+  issn: "1542-7730"
+  doi: "10.1145/3831360"
+  url: "https://doi.org/10.1145/3831360"
+  publisher:
+    name: "Association for Computing Machinery"
+  authors:
+    - family-names: Meyer
+      given-names: "André N."
+    - family-names: Meyer
+      given-names: Patrick
+    - family-names: Murphy
+      given-names: "Gail C."
+    - family-names: Fritz
+      given-names: Thomas

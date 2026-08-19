@@ -20,19 +20,6 @@
     });
 })();
 
-document.querySelectorAll('.welcome-provenance-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        const key = tab.dataset.tab;
-        const isActive = tab.classList.contains('active');
-        document.querySelectorAll('.welcome-provenance-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.welcome-provenance-body').forEach(b => b.classList.add('hidden'));
-        if (!isActive) {
-            tab.classList.add('active');
-            document.querySelector(`.welcome-provenance-body[data-tab="${key}"]`).classList.remove('hidden');
-        }
-    });
-});
-
 // ─── Per-option metric-count preview (shown next to each wizard answer) ──────
 
 function countMetricsForOption(filterKey, filterValue) {

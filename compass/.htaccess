@@ -6,8 +6,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # /paper -> the paper PDF
-    RewriteRule ^paper$ /assets/devex-metrics-compass.pdf [R=301,L]
+    # /paper -> the published ACM Queue article
+    RewriteRule ^paper$ https://spawn-queue.acm.org/doi/10.1145/3831360 [R=301,L]
 
     # /paper-stepN -> the matching step of the Compass app
     RewriteRule ^paper-step1$ /?step=explore&role=practitioner&minMentions=25&aiMetric=ai-impact [R=301,L]
