@@ -17,7 +17,7 @@ server) -- not when the .html files are opened directly from disk (file://),
 because the SPA fetches data.json over HTTP.
 
 Standalone, stdlib-only. Run AFTER parser.py (whenever data.json changes). Never
-modifies the app's own files -- only writes compass/seo/ plus sitemap.xml and
+modifies the app's own files -- only writes compass/library/ plus sitemap.xml and
 robots.txt at the compass root.
 
 Usage:
@@ -74,7 +74,11 @@ COMPARISONS = [
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 COMPASS_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "compass"))
 DATA_DIR = os.path.join(COMPASS_DIR, "data")
-SEO_DIR = os.path.join(COMPASS_DIR, "seo")
+
+# Public folder the landing pages are published under.
+LIBRARY_DIR = os.path.join(COMPASS_DIR, "library")
+LIBRARY_URL = BASE_URL + "library/"
+LIBRARY_CSS_NAME = "library.css"
 
 SITE_NAME = "Developer Experience Metrics Compass"
 
@@ -236,7 +240,7 @@ def slugify(value):
 
 
 def app_link(params):
-    """Relative deep link into the live app (../index.html from /seo/)."""
+    """Relative deep link into the live app (../index.html from /library/)."""
     return "../index.html?" + urlencode(params)
 
 
@@ -396,7 +400,7 @@ def meta_desc(text, limit=160):
 
 def render_page(*, slug, title, description, h1_html, intro_html, cta_href,
                 cta_label, body_html, jsonld_html, related_html, keywords=None):
-    canonical = BASE_URL + "seo/" + slug + ".html"
+    canonical = LIBRARY_URL + slug + ".html"
     og_image = BASE_URL + "assets/favicon.png"
     keywords_html = (f'\n  <meta name="keywords" content="{esc(", ".join(keywords))}">'
                      if keywords else "")
@@ -418,7 +422,7 @@ def render_page(*, slug, title, description, h1_html, intro_html, cta_href,
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="{esc(title)}">
   <meta name="twitter:description" content="{esc(description)}">
-  <link rel="stylesheet" href="seo.css">
+  <link rel="stylesheet" href="{LIBRARY_CSS_NAME}">
 {jsonld_html}
 </head>
 <body>
@@ -490,7 +494,7 @@ def build_framework_page(name, bucket, all_frameworks, page_slugs):
                   f'research and industry practice.{ref_html}</p>')
     cta_href = app_link({"specificFramework": name})
     cta_label = f"Open these {short} metrics in the interactive Compass →"
-    canonical = BASE_URL + "seo/" + slug + ".html"
+    canonical = LIBRARY_URL + slug + ".html"
     context = {"specificFramework": name}
     related = [(slugify(strip_framework_suffix(o) + "-framework-metrics") + ".html",
                 f"{strip_framework_suffix(o)} framework metrics")
@@ -524,7 +528,7 @@ def build_company_page(name, bucket, other_companies, page_slugs):
                   f'research and industry practice.</p>')
     cta_href = app_link({"specificCompany": name})
     cta_label = f"Open {name}'s metrics in the interactive Compass →"
-    canonical = BASE_URL + "seo/" + slug + ".html"
+    canonical = LIBRARY_URL + slug + ".html"
     context = {"specificCompany": name}
     related = [(slugify(o + "-devex-metrics") + ".html", f"Metrics used at {o}")
                for o in other_companies]
@@ -549,7 +553,7 @@ def build_metric_page(metric, slug, sibling_links):
 
     cta_href = app_link({"specificMetric": metric["id"]})
     cta_label = "Open this metric in the interactive Compass →"
-    canonical = BASE_URL + "seo/" + slug + ".html"
+    canonical = LIBRARY_URL + slug + ".html"
 
     # Everything sits inside the white card so the pills read as pills against it.
     # "Also known as" comes last (the synonyms also go into the keywords meta + JSON-LD).
@@ -617,7 +621,7 @@ def build_comparison_page(cfg, framework_index, company_index, page_slugs):
                "rightType": right["type"], "rightValue": right["value"]}
     cta_href = app_link(context)
     cta_label = "Open this comparison in the interactive Compass →"
-    canonical = BASE_URL + "seo/" + slug + ".html"
+    canonical = LIBRARY_URL + slug + ".html"
 
     def group(heading, cls, group_metrics):
         inner = compact_metric_list(group_metrics, context, page_slugs)
@@ -659,7 +663,7 @@ def build_index_page(metric_entries, framework_entries, company_entries, compari
     description = ("Browse curated collections of developer experience metrics: the most-"
                   "referenced metrics, by research framework (SPACE, DORA, DX Core 4) and by "
                   "company (Microsoft, Google, and more).")
-    canonical = BASE_URL + "seo/index.html"
+    canonical = LIBRARY_URL + "index.html"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -673,7 +677,7 @@ def build_index_page(metric_entries, framework_entries, company_entries, compari
   <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(description)}">
   <meta property="og:url" content="{esc(canonical)}">
-  <link rel="stylesheet" href="seo.css">
+  <link rel="stylesheet" href="{LIBRARY_CSS_NAME}">
 </head>
 <body>
 {header_html()}
@@ -692,7 +696,7 @@ def build_index_page(metric_entries, framework_entries, company_entries, compari
 """
 
 
-SEO_CSS = """/* Static SEO landing pages for the DevEx Metrics Compass. Generated file.
+LIBRARY_CSS = """/* Static SEO landing pages for the DevEx Metrics Compass. Generated file.
    Colors and type mirror the app's design language (brand #1B1AFF, bg #f0f0f0). */
 * { box-sizing: border-box; }
 /* Sticky footer: body is a column flex box and main grows, so the footer sits at
@@ -780,8 +784,8 @@ h2 { font-size: 1.3rem; margin-top: 2rem; color: #222; }
 
 def write_sitemap(slugs):
     today = date.today().isoformat()
-    urls = [BASE_URL, BASE_URL + "seo/index.html"]
-    urls += [BASE_URL + "seo/" + slug + ".html" for slug in slugs]
+    urls = [BASE_URL, LIBRARY_URL + "index.html"]
+    urls += [LIBRARY_URL + slug + ".html" for slug in slugs]
     entries = "\n".join(
         f"  <url>\n    <loc>{esc(url)}</loc>\n    <lastmod>{today}</lastmod>\n  </url>"
         for url in urls)
@@ -801,7 +805,7 @@ def write_robots():
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def write_page(slug, content):
-    with open(os.path.join(SEO_DIR, slug + ".html"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(LIBRARY_DIR, slug + ".html"), "w", encoding="utf-8") as fh:
         fh.write(content)
 
 
@@ -819,13 +823,13 @@ def main():
     company_index = index_by_facet(metrics, "company",
                                    exclude_substrings=COMPANY_EXCLUDE_SUBSTRINGS)
 
-    os.makedirs(SEO_DIR, exist_ok=True)
+    os.makedirs(LIBRARY_DIR, exist_ok=True)
     # Clear previously generated pages so renamed/removed slugs don't linger.
-    for old in os.listdir(SEO_DIR):
+    for old in os.listdir(LIBRARY_DIR):
         if old.endswith(".html"):
-            os.remove(os.path.join(SEO_DIR, old))
-    with open(os.path.join(SEO_DIR, "seo.css"), "w", encoding="utf-8") as fh:
-        fh.write(SEO_CSS)
+            os.remove(os.path.join(LIBRARY_DIR, old))
+    with open(os.path.join(LIBRARY_DIR, LIBRARY_CSS_NAME), "w", encoding="utf-8") as fh:
+        fh.write(LIBRARY_CSS)
 
     all_slugs = []
 
@@ -900,7 +904,7 @@ def main():
     write_sitemap(all_slugs)
     write_robots()
 
-    print(f"Generated {len(all_slugs)} landing pages + index into {SEO_DIR}")
+    print(f"Generated {len(all_slugs)} landing pages + index into {LIBRARY_DIR}")
     print(f"  top-metric pages: {len(metric_entries)}  frameworks: {len(framework_entries)}  "
           f"companies: {len(company_entries)}  comparisons: {len(comparison_entries)}")
     print("Wrote sitemap.xml and robots.txt to", COMPASS_DIR)

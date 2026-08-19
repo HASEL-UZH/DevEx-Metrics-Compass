@@ -3,8 +3,8 @@
 ## 2026-08-19 — SEO landing pages moved from `/seo/` to `/library/`
 
 - The static landing pages now live under `compass/library/` and are served from `https://devexcompass.com/library/…`. A path segment named "seo" carries no ranking penalty, but it reads as SEO bait to anyone who sees the URL in a search result or a shared link, which costs clicks and inbound links — the signals that do matter. `/library/` describes what the pages actually are, and one folder keeps the deploy simple.
-- `dataset/generate_seo_pages.py`: the public folder and stylesheet names are now the constants `PAGES_DIR_NAME` / `PAGES_CSS_NAME` (with `PAGES_URL` derived from `BASE_URL`), instead of the path being spelled out in fourteen places; the generated stylesheet is `library.css`. Moving the collection again is a one-line change.
-- `compass/.htaccess`: added `RewriteRule ^seo/(.*)$ /library/$1 [R=301,L]` so every already-indexed `/seo/` URL redirects to its `/library/` counterpart.
+- `dataset/generate_seo_pages.py`: the canonical/sitemap URL prefix is now the constant `LIBRARY_URL` instead of `BASE_URL + "seo/"` repeated in eight places; the generated stylesheet is `library.css`.
+- `compass/.htaccess`: added `RewriteRule ^seo/(.*)$ /library/$1 [R=301,L]` so already-indexed `/seo/` URLs, and any links shared before the move, redirect to their `/library/` counterpart instead of 404ing.
 - `compass/js/url-state.js`: the landing-page referrer check matches `/library/` (it drives the `fromSeo` / `seoPage` entry-point tracking, which silently stopped firing otherwise).
 
 ## 2026-08-19 — The plain homepage URL no longer picks up default state
