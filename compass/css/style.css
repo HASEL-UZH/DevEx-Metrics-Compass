@@ -1699,21 +1699,6 @@ a {
     line-height: 1.7;
 }
 
-/* Preview badge shown in the welcome heading */
-.preview-badge {
-    display: inline-block;
-    font-size: 0.5em;
-    font-weight: 600;
-    background: #e8eafd;
-    color: #1B1AFF;
-    border: 1px solid #1B1AFF;
-    border-radius: 4px;
-    padding: 2px 7px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    vertical-align: super;
-}
-
 /* Compass icon above the welcome heading */
 .overlay-compass-icon {
     margin-bottom: 8px;
