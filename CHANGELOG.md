@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-19 — Compass paper published in ACM Queue
+
+- The paper behind the DevEx Metrics Compass is out in ACM Queue. It is linked from the app via <https://devexcompass.com/paper>, which redirects to the PDF; the `/paper-step1`, `/paper-step2`, and `/paper-step3` links printed in the paper open the matching step of the app.
+
 ## 2026-07-28 — Paper redirects
 
 - Added `compass/.htaccess` with four permanent redirects for links printed in the paper: `/paper` to the paper PDF, and `/paper-step1`, `/paper-step2`, `/paper-step3` to the matching step of the app (with filter/compare state on the query string).
