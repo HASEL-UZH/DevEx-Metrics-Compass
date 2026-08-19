@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-19 — SEO landing pages moved from `/seo/` to `/library/`
+
+- The static landing pages now live under `compass/library/` and are served from `https://devexcompass.com/library/…`. A path segment named "seo" carries no ranking penalty, but it reads as SEO bait to anyone who sees the URL in a search result or a shared link, which costs clicks and inbound links — the signals that do matter. `/library/` describes what the pages actually are, and one folder keeps the deploy simple.
+- `dataset/generate_seo_pages.py`: the public folder and stylesheet names are now the constants `PAGES_DIR_NAME` / `PAGES_CSS_NAME` (with `PAGES_URL` derived from `BASE_URL`), instead of the path being spelled out in fourteen places; the generated stylesheet is `library.css`. Moving the collection again is a one-line change.
+- `compass/.htaccess`: added `RewriteRule ^seo/(.*)$ /library/$1 [R=301,L]` so every already-indexed `/seo/` URL redirects to its `/library/` counterpart.
+- `compass/js/url-state.js`: the landing-page referrer check matches `/library/` (it drives the `fromSeo` / `seoPage` entry-point tracking, which silently stopped firing otherwise).
+
+## 2026-08-19 — The plain homepage URL no longer picks up default state
+
+- Opening the Compass rewrote the address bar to `?role=…&leftType=shortlist&leftValue=shortlist` before the visitor had chosen anything: Step 2's left dropdown defaults to "My metrics shortlist", and `initCompareControls()` copied that DOM default into `compareState`, which the URL sync then treated as a real selection. A new `compareSelectionMade` flag (`state.js`) keeps the compare parameters out of the URL until the selection is actually the user's — set by the Step 2 dropdowns, the presets, and the URL restore, but not by the init-time DOM sync.
+- A URL whose only state is `?role=…` no longer suppresses the welcome overlay, and no longer counts as URL state in `restoreStateFromUrl()`. Since the role is live-synced into the address bar for anyone with a saved role, such links are almost always someone copying their own address bar rather than sharing a view — so first-time visitors following them now get the welcome page. The role is still applied (filter layout and badge), and links carrying any other state — `/paper-step1`, `/paper-step2`, metric, comparison, filter, and shortlist links — are unaffected.
+
 ## 2026-08-19 — Paper integrated into the welcome page, About, and README
 
 - Welcome overlay: replaced the "How was the Compass created?" / "Who created the compass?" toggles with a light-blue banner pointing to the ACM Queue article. Both toggles duplicated text that already exists in the About overlay, so the banner shortens the overlay while making the paper the authoritative answer to how the Compass was built.

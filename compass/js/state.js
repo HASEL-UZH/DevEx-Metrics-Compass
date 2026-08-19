@@ -115,6 +115,10 @@ let currentStep = STEP.EXPLORE;
 // State for Compare step (Step 2)
 let compareState = { leftType: 'company', leftValue: 'all', rightType: 'company', rightValue: 'all' };
 
+// compareState starts out mirroring the dropdowns' own defaults, so it can't tell "nothing
+// picked yet" from a real choice. This can — it keeps the default out of the shared URL.
+let compareSelectionMade = false;
+
 // Selected metrics shortlist
 let clickedMetrics = [];
 

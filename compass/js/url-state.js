@@ -44,13 +44,17 @@ function serializeStateToParams() {
     const keyword = keywordEl ? keywordEl.value.trim() : '';
     if (keyword) params.set('q', keyword);
 
-    if (compareState.leftValue !== 'all') {
-        params.set('leftType', compareState.leftType);
-        params.set('leftValue', compareState.leftValue);
-    }
-    if (compareState.rightValue !== 'all') {
-        params.set('rightType', compareState.rightType);
-        params.set('rightValue', compareState.rightValue);
+    // Only once a comparison is really the user's — otherwise the left dropdown's default
+    // ("My metrics shortlist") lands in the URL of every plain visit. See state.js.
+    if (compareSelectionMade) {
+        if (compareState.leftValue !== 'all') {
+            params.set('leftType', compareState.leftType);
+            params.set('leftValue', compareState.leftValue);
+        }
+        if (compareState.rightValue !== 'all') {
+            params.set('rightType', compareState.rightType);
+            params.set('rightValue', compareState.rightValue);
+        }
     }
 
     if (typeof compareSort !== 'undefined' && compareSort !== 'category') params.set('sort', compareSort);
@@ -121,13 +125,15 @@ function restoreStateFromUrl() {
         hadUrlState = true;
     }
 
+    // The role is applied but, unlike every other param, does not set hadUrlState — which
+    // is what tells init.js to skip the welcome overlay for someone arriving via a shared
+    // link. A role-only URL isn't a shared view: everyone with a saved role gets ?role=
+    // written into their address bar, so such links are usually just a copied address bar.
     const roleParam = params.get('role');
     if (roleParam && Object.values(ROLE).includes(roleParam)) {
         currentRole = roleParam;
-        localStorage.setItem('currentRole', roleParam);
         if (typeof showRoleBadge === 'function') showRoleBadge();
         if (typeof applyRoleFilterLayout === 'function') applyRoleFilterLayout(roleParam);
-        hadUrlState = true;
     }
 
     Object.keys(SCALAR_URL_FILTERS).forEach(key => {
@@ -184,6 +190,7 @@ function restoreStateFromUrl() {
             const opts = typeof getOptionsForDimension === 'function' ? getOptionsForDimension(type) : [];
             if (!opts.some(o => o.value === value)) return;
         }
+        compareSelectionMade = true;
         compareState[`${side}Type`] = type;
         compareState[`${side}Value`] = value;
         const typeEl = document.getElementById(`compare-${side}-type`);
@@ -240,11 +247,11 @@ function getUrlEntry() {
     else if (params.get('specificMetric'))              entry = 'metric';
     else if ([...params.keys()].length > 0)             entry = 'shared_view';
 
-    // Same-origin referrer under /seo/ means they came from a landing page.
+    // Same-origin referrer under /library/ means they came from a landing page.
     let seoPage = null;
     try {
         const ref = new URL(document.referrer);
-        if (ref.origin === window.location.origin && ref.pathname.includes('/seo/')) {
+        if (ref.origin === window.location.origin && ref.pathname.includes('/library/')) {
             seoPage = ref.pathname.split('/').pop() || null;
         }
     } catch (e) { /* no referrer, or cross-origin — leave null */ }

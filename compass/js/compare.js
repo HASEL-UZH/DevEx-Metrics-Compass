@@ -629,6 +629,7 @@ function initCompareControls() {
     }
 
     function onTypeChange(typeEl, valueEl, side) {
+        compareSelectionMade = true;
         compareState[side + 'Type'] = typeEl.value;
         populateValueDropdown(valueEl, typeEl.value, 'all');
         if (typeEl.value === 'shortlist') {
@@ -651,6 +652,7 @@ function initCompareControls() {
     }
 
     function onValueChange(valueEl, side) {
+        compareSelectionMade = true;
         compareState[side + 'Value'] = valueEl.value;
         clearPresetHighlight();
         renderDiffView();
@@ -684,6 +686,7 @@ function applyComparePreset(leftType, leftValue, rightType, rightValue) {
     const rvEl = document.getElementById('compare-right-value');
     if (!ltEl || !lvEl || !rtEl || !rvEl) return;
 
+    compareSelectionMade = true;
     ltEl.value = leftType;
     rtEl.value = rightType;
     compareState.leftType  = leftType;
