@@ -132,7 +132,7 @@ function renderPlannedCard(metric) {
             return `<span class="source-chip">${s.url ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${inner}</a>` : inner}</span>`;
         }).join('<span class="ns-card-sep">·</span>');
         const more = rest > 0 ? `<span class="ns-card-more">+${rest} more</span>` : '';
-        companyHtml = `<div class="ns-card-sources"><span class="ns-card-sources-label">Companies tracking it:</span> ${links}${more ? '<span class="ns-card-sep">·</span>' + more : ''}</div>`;
+        companyHtml = `<div class="ns-card-sources" data-source-context="nextsteps" data-source-type="company" data-metric-id="${metric.id}"><span class="ns-card-sources-label">Companies tracking it:</span> ${links}${more ? '<span class="ns-card-sep">·</span>' + more : ''}</div>`;
     }
 
     // Research links (up to 3)
@@ -146,7 +146,7 @@ function renderPlannedCard(metric) {
             : s.name
         ).join('<span class="ns-card-sep">·</span>');
         const more = rest > 0 ? `<span class="ns-card-more">+${rest} more</span>` : '';
-        researchHtml = `<div class="ns-card-sources"><span class="ns-card-sources-label">Research recommending it:</span> ${links}${more ? '<span class="ns-card-sep">·</span>' + more : ''}</div>`;
+        researchHtml = `<div class="ns-card-sources" data-source-context="nextsteps" data-source-type="research" data-metric-id="${metric.id}"><span class="ns-card-sources-label">Research recommending it:</span> ${links}${more ? '<span class="ns-card-sep">·</span>' + more : ''}</div>`;
     }
 
     return `

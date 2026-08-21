@@ -1,2 +1,4 @@
-# Runtime logs written by compass/api/*.php (feedback, telemetry, reports)
-compass/api/logs/*.log
+# Runtime logs written by compass/api/*.php (feedback, telemetry, reports),
+# and any copy of them pulled off the server for local analysis — they hold
+# visitor data and must never end up in the repo.
+*.log

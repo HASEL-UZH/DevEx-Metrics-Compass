@@ -398,7 +398,15 @@ def meta_desc(text, limit=160):
     return text if len(text) <= limit else text[:limit - 1].rstrip() + "…"
 
 
-def render_page(*, slug, title, description, h1_html, intro_html, cta_href,
+def telemetry_script(slug, page_type):
+    """Landing-page telemetry (compass/js/seo-telemetry.js). Deferred, so it never
+    blocks rendering; the data attributes tell it which page it is running on.
+    Without it, landing-page visits that never click through are invisible."""
+    return (f'  <script defer src="../js/seo-telemetry.js" '
+            f'data-slug="{esc(slug)}" data-page-type="{esc(page_type)}"></script>')
+
+
+def render_page(*, slug, page_type, title, description, h1_html, intro_html, cta_href,
                 cta_label, body_html, jsonld_html, related_html, keywords=None):
     canonical = LIBRARY_URL + slug + ".html"
     og_image = BASE_URL + "assets/favicon.png"
@@ -423,6 +431,7 @@ def render_page(*, slug, title, description, h1_html, intro_html, cta_href,
   <meta name="twitter:title" content="{esc(title)}">
   <meta name="twitter:description" content="{esc(description)}">
   <link rel="stylesheet" href="{LIBRARY_CSS_NAME}">
+{telemetry_script(slug, page_type)}
 {jsonld_html}
 </head>
 <body>
@@ -501,7 +510,7 @@ def build_framework_page(name, bucket, all_frameworks, page_slugs):
                for o in all_frameworks if o != name]
 
     page = render_page(
-        slug=slug, title=title, description=description, h1_html=h1_html,
+        slug=slug, page_type="framework", title=title, description=description, h1_html=h1_html,
         intro_html=intro_html, cta_href=cta_href, cta_label=cta_label,
         body_html=metric_list_html(metrics, context, page_slugs),
         jsonld_html=jsonld_itemlist(strip_framework_suffix(name) + " metrics",
@@ -534,7 +543,7 @@ def build_company_page(name, bucket, other_companies, page_slugs):
                for o in other_companies]
 
     page = render_page(
-        slug=slug, title=title, description=description, h1_html=h1_html,
+        slug=slug, page_type="company", title=title, description=description, h1_html=h1_html,
         intro_html=intro_html, cta_href=cta_href, cta_label=cta_label,
         body_html=metric_list_html(metrics, context, page_slugs),
         jsonld_html=jsonld_itemlist(f"Metrics used at {name}", description, canonical, metrics),
@@ -573,7 +582,7 @@ def build_metric_page(metric, slug, sibling_links):
     jsonld = _jsonld(payload)
     keywords = [name] + syns + ["developer experience metric", "DevEx metric"]
     page = render_page(
-        slug=slug, title=title, description=description, h1_html=h1_html,
+        slug=slug, page_type="metric", title=title, description=description, h1_html=h1_html,
         intro_html=intro_html, cta_href=cta_href, cta_label=cta_label,
         body_html=body, jsonld_html=jsonld, keywords=keywords,
         related_html=related_block("Other most-referenced metrics", sibling_links),
@@ -636,7 +645,7 @@ def build_comparison_page(cfg, framework_index, company_index, page_slugs):
     ])
     all_metrics = list(by_id.values())
     page = render_page(
-        slug=slug, title=title, description=description, h1_html=esc(label),
+        slug=slug, page_type="comparison", title=title, description=description, h1_html=esc(label),
         intro_html=intro_html, cta_href=cta_href, cta_label=cta_label,
         body_html=body,
         jsonld_html=jsonld_itemlist(label, description, canonical, all_metrics),
@@ -678,6 +687,7 @@ def build_index_page(metric_entries, framework_entries, company_entries, compari
   <meta property="og:description" content="{esc(description)}">
   <meta property="og:url" content="{esc(canonical)}">
   <link rel="stylesheet" href="{LIBRARY_CSS_NAME}">
+{telemetry_script("index", "index")}
 </head>
 <body>
 {header_html()}

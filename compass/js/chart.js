@@ -489,8 +489,8 @@ function buildTooltipContent(metricData, excludeId = null) {
 
     content += `
         <div class="metric-detail"><strong>Number of mentions:</strong> ${metricValue}</div>
-        <div class="metric-detail"><strong>Companies:</strong> ${companyUsedByHtml}</div>
-        <div class="metric-detail"><strong>Research:</strong> ${researchUsedByHtml}</div>
+        <div class="metric-detail" data-source-context="detail" data-source-type="company" data-metric-id="${metricId}"><strong>Companies:</strong> ${companyUsedByHtml}</div>
+        <div class="metric-detail" data-source-context="detail" data-source-type="research" data-metric-id="${metricId}"><strong>Research:</strong> ${researchUsedByHtml}</div>
         <hr>
         <div class="metric-detail">
             <strong>Tags:</strong>

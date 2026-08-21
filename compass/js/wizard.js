@@ -155,6 +155,9 @@ function hideRoleBadge() {
 // "Change role" button — replaces the old "Restart wizard" button, same id/element.
 openMaturityAssessmentBtn.addEventListener('click', () => {
     logEvent(TELEMETRY.WIZARD_RESTARTED, { shortlistCount: clickedMetrics.length, currentStep, role: currentRole });
+    // A restart re-opens the wizard, so it can be abandoned again from here.
+    wizardStarted = false;
+    wizardFinished = false;
     modeChosen = false;
     if (currentStep !== STEP.EXPLORE) switchToStep(STEP.EXPLORE);
     showExploreStartView();
@@ -222,6 +225,23 @@ function goToWizardQuestion(key) {
 
 let wizardAnswers = {};
 
+// Abandonment tracking: the wizard is an inline sidepanel view, not a modal, so
+// there is no "close" to hook. A visitor who starts it and never reaches
+// finishWizard() has abandoned it — reported once, when the page is hidden.
+let wizardStarted  = false;
+let wizardFinished = false;
+let wizardAbandonReported = false;
+
+window.reportWizardAbandonIfUnfinished = function () {
+    if (!wizardStarted || wizardFinished || wizardAbandonReported) return;
+    wizardAbandonReported = true;
+    logEventBeacon(TELEMETRY.WIZARD_ABANDONED, {
+        screen:        currentWizardStepId,
+        role:          currentRole,
+        answeredCount: Object.keys(wizardAnswers).filter(k => wizardAnswers[k] !== 'all').length,
+    });
+};
+
 function resetWizardAnswers() {
     wizardAnswers = {
         dataType: 'all',
@@ -239,6 +259,7 @@ resetWizardAnswers();
 // Researcher "quick questions" sequence) is exhausted, or immediately for the
 // Practitioner/Researcher "browse the full catalogue" / "answer a few questions" choices.
 function finishWizard() {
+    wizardFinished = true;
     logEvent(TELEMETRY.WIZARD_COMPLETED, { role: currentRole, answers: Object.assign({}, wizardAnswers) });
     modeChosen = true;
     hideExploreStartView();
@@ -267,6 +288,7 @@ document.querySelectorAll('.role-select-btn').forEach(btn => {
     btn.addEventListener('click', function () {
         currentRole = this.dataset.role;
         resetWizardAnswers();
+        wizardStarted = true;
         logEvent(TELEMETRY.WIZARD_STARTED, { role: currentRole });
         showRoleBadge();
         if (currentRole === ROLE.NEWCOMER) {
@@ -286,7 +308,10 @@ document.querySelectorAll('.role-select-btn').forEach(btn => {
 document.getElementById('skip-wizard-link').addEventListener('click', () => {
     currentRole = ROLE.PRACTITIONER;
     resetWizardAnswers();
+    // Both events: WIZARD_STARTED keeps the funnel's first step complete, while
+    // the dedicated event lets the skip rate be counted without unpacking payloads.
     logEvent(TELEMETRY.WIZARD_STARTED, { role: currentRole, action: 'skip' });
+    logEvent(TELEMETRY.WIZARD_SKIPPED, { role: currentRole });
     showRoleBadge();
     clearAllFilters();
     finishWizard();
@@ -355,6 +380,7 @@ document.querySelectorAll('.go-back-btn').forEach(button => {
 const aboutOverlay = document.getElementById('aboutOverlay');
 
 function openAbout() {
+    logEvent(TELEMETRY.OVERLAY_OPENED, { overlay: 'about', currentStep });
     aboutOverlay.style.display = 'flex';
 }
 
@@ -378,6 +404,7 @@ aboutOverlay.addEventListener('click', (e) => {
 const changelogOverlay = document.getElementById('changelogOverlay');
 
 function openChangelog() {
+    logEvent(TELEMETRY.OVERLAY_OPENED, { overlay: 'changelog', currentStep });
     changelogOverlay.style.display = 'flex';
 }
 

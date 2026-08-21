@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-08-19 — Telemetry: landing pages, session length, and two events that were never recorded
+
+- `compass/api/telemetry.php`: `shortlist_link_copied` and `predefined_framework_loaded` were fired by the app but missing from `$ALLOWED_EVENTS`, so the endpoint answered every one of them with HTTP 400 and nothing was ever logged. Both are now allow-listed, together with the new events below.
+- `compass/js/seo-telemetry.js` (new): the landing pages under `/library/` carried no instrumentation at all, so a visit that read a page and left was invisible — only click-throughs into the app showed up, via `page_load`'s `fromSeo`. The pages now log `seo_page_view` and `seo_cta_click`. The script is standalone (the landing pages load no other app code), deferred, and keeps the same privacy properties as the app's logger: random per-visit id, no cookies, nothing stored on the device. `dataset/generate_seo_pages.py` emits the script tag with the page's slug and type; rerun it whenever the pages are regenerated.
+- Landing-page click-throughs hand their session id to the app on the query string (`?sid=…`), which `telemetry-logger.js` adopts and then strips from the URL immediately via `replaceState`, so the id cannot be copied or shared. This makes the landing page and the visit that follows one session instead of two unrelated ones.
+- `session_end` (new): reports `totalMs`, `activeMs` (visible time only), `maxStep`, `shortlistCount`, and `eventCount`. There was previously no way to tell a five-second visit from a twenty-minute one, so bounce rate and time-on-site could not be computed at all. It is sent with `navigator.sendBeacon` because a normal `fetch` is cancelled when the page goes away, and fires on every hide with a rising `seq` rather than only the first one — a tab switch would otherwise cut a long visit short. Analysis keeps the highest `seq` per session; the row count is not a session count.
+- `source_link_clicked` (new): outbound clicks on the source chips in the metric detail popup and on the Step 3 cards, with the metric, source name, and whether it came from the detail view or Step 3. Following a link to the underlying paper or report is the clearest signal that the catalogue did its job.
+- `overlay_opened` (new): About and Changelog opens, previously unlogged.
+- `wizard_skipped` and `wizard_abandoned` were declared and allow-listed but never fired by anything. Both now fire — abandonment is reported when the page is hidden with the wizard started and never finished, which is the only exit the inline wizard has.
+
 ## 2026-08-19 — SEO landing pages moved from `/seo/` to `/library/`
 
 - The static landing pages now live under `compass/library/` and are served from `https://devexcompass.com/library/…`. A path segment named "seo" carries no ranking penalty, but it reads as SEO bait to anyone who sees the URL in a search result or a shared link, which costs clicks and inbound links — the signals that do matter. `/library/` describes what the pages actually are, and one folder keeps the deploy simple.

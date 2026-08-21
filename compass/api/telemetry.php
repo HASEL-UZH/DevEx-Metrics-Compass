@@ -35,6 +35,8 @@ $ALLOWED_EVENTS = [
     'wizard_restarted',
     'predefined_company_loaded',
     'import_json',
+    'shortlist_link_copied',
+    'predefined_framework_loaded',
     'compare_dimension_changed',
     'compare_preset_applied',
     'compare_sorted',
@@ -44,6 +46,12 @@ $ALLOWED_EVENTS = [
     'export_json',
     'feedback_submitted',
     'metric_reported',
+    'session_end',
+    'source_link_clicked',
+    'overlay_opened',
+    // Fired by the static landing pages under /library/ (js/seo-telemetry.js).
+    'seo_page_view',
+    'seo_cta_click',
 ];
 
 $data    = json_decode(file_get_contents('php://input'), true);
