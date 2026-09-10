@@ -1,0 +1,9 @@
+# Derived aggregate snapshots and the dashboard's own state files. Never served.
+# Both syntaxes are guarded: an unguarded "Require" is invalid on Apache 2.2.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

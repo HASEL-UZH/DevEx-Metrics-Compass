@@ -807,7 +807,10 @@ def write_sitemap(slugs):
 
 
 def write_robots():
-    txt = f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}sitemap.xml\n"
+    # /stats is the password-protected usage dashboard: nothing there should ever
+    # be crawled or indexed (it also sends X-Robots-Tag headers of its own).
+    txt = (f"User-agent: *\nAllow: /\nDisallow: /stats/\n\n"
+           f"Sitemap: {BASE_URL}sitemap.xml\n")
     with open(os.path.join(COMPASS_DIR, "robots.txt"), "w", encoding="utf-8") as fh:
         fh.write(txt)
 

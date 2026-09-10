@@ -2,3 +2,13 @@
 # and any copy of them pulled off the server for local analysis — they hold
 # visitor data and must never end up in the repo.
 *.log
+
+# The /stats dashboard's password hash and self-traffic ignore list. Matches every
+# name the config is loaded under (config.php, compass-stats-config.php), so a local
+# copy can never be committed by accident. The *.example.php template IS committed.
+compass/stats/*config*.php
+!compass/stats/*config*.example.php
+
+# Derived aggregate snapshots + the dashboard's own small state files
+# (handled reports, manually excluded sessions). Safe to delete at any time.
+compass/stats/cache/*.json

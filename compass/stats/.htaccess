@@ -1,0 +1,41 @@
+# The /stats dashboard. index.php is the only file meant to be requested directly;
+# everything else here is either a secret, derived data, or an include.
+#
+# Both authz syntaxes are guarded by IfModule: an unguarded "Require" is an invalid
+# command on Apache 2.2 and takes the whole directory down with a 500.
+
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+
+# The password hash. PHP would normally execute rather than serve this file, but a host
+# that stops parsing PHP would otherwise hand it out as plain text.
+# Unanchored on purpose: matches config.php and compass-stats-config.php, plus their
+# .example.php counterparts.
+<FilesMatch "config(\.example)?\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Cached aggregates and any stray log copy are never served.
+<FilesMatch "\.(json|log)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Includes, templates and derived data are not URLs. They also refuse to run when
+# requested directly (every one starts with a STATS_ENTRY guard) — this is the outer
+# layer of that same defence.
+<IfModule mod_alias.c>
+    RedirectMatch 404 /stats/(lib|views|cache)/
+</IfModule>

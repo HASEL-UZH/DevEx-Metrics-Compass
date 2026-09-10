@@ -1,0 +1,354 @@
+/* Stats dashboard. Self-contained: shares the Compass's blue and typeface, but
+   none of its stylesheet — this is an admin tool, not part of the app. */
+
+:root {
+    --blue: #1B1AFF;
+    --blue-dark: #0f0ecc;
+    --blue-pale: #f4f5ff;
+    --blue-line: #d0d2f8;
+    --ink: #1a1a1a;
+    --muted: #6c757d;
+    --line: #e2e2e8;
+    --bg: #f0f0f0;
+    --card: #fff;
+    --up: #1f9d55;
+    --down: #d64545;
+    --warn: #b7791f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--bg);
+}
+
+a { color: var(--blue); }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+.muted { color: var(--muted); font-weight: normal; }
+.empty { color: var(--muted); font-style: italic; margin: 8px 0; }
+.nowrap { white-space: nowrap; }
+
+/* ── Top bar ─────────────────────────────────────────────────────────────── */
+.topbar { background: #fff; border-bottom: 1px solid var(--line); }
+.topbar-inner {
+    display: flex; align-items: center; gap: 24px;
+    max-width: 1400px; margin: 0 auto; padding: 12px 20px;
+}
+.brand {
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    font-weight: bold; font-size: 16px; text-decoration: none; color: var(--ink);
+}
+.brand img { display: block; }
+.brand span { color: var(--blue); }
+.tabs { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+.tabs a {
+    padding: 6px 12px; border-radius: 4px; text-decoration: none;
+    color: var(--ink); font-weight: 500;
+}
+.tabs a:hover { background: var(--blue-pale); }
+.tabs a.active { background: var(--blue); color: #fff; }
+.logout { color: var(--muted); text-decoration: none; font-size: 13px; }
+
+.timeframes {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    max-width: 1400px; margin: 0 auto; padding: 0 20px 12px;
+}
+.timeframes .spacer { flex: 1; }
+.pill {
+    padding: 4px 12px; border: 1px solid var(--blue-line); border-radius: 999px;
+    background: #fff; color: var(--ink); text-decoration: none; font-size: 13px;
+}
+.pill:hover { background: var(--blue-pale); }
+.pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.pill.subtle { border-style: dashed; color: var(--muted); }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.wrap { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .grid, .grid-3 { grid-template-columns: 1fr; } }
+
+.card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; margin-bottom: 16px;
+}
+.grid .card { margin-bottom: 0; }
+.card h2 { font-size: 15px; margin: 0 0 10px; }
+.card h3 { font-size: 13px; margin: 16px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.card-note { color: var(--muted); font-size: 13px; margin: 6px 0; }
+
+/* ── Info tooltips ───────────────────────────────────────────────────────── */
+/* Definitions that would otherwise cost three lines of every card. Shown on hover
+   and on keyboard focus, so the "i" is reachable without a mouse. */
+.info-wrap { position: relative; display: inline-block; vertical-align: middle; }
+.info {
+    width: 16px; height: 16px; padding: 0; line-height: 15px; text-align: center;
+    border-radius: 50%; background: var(--blue-pale); color: var(--blue);
+    border: 1px solid var(--blue-line); font-size: 11px; font-weight: bold;
+    font-style: italic; font-family: Georgia, serif; cursor: help;
+}
+.info:hover, .info:focus { background: var(--blue); color: #fff; }
+.tip {
+    display: none; position: absolute; z-index: 20; left: 0; top: calc(100% + 6px);
+    width: 280px; padding: 8px 10px;
+    background: #fff; border: 1px solid var(--blue-line); border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    color: var(--ink); font-size: 12px; font-weight: normal; line-height: 1.45;
+    white-space: normal; text-transform: none; letter-spacing: normal;
+}
+.info-wrap:hover .tip, .info-wrap:focus-within .tip { display: block; }
+/* Near the right edge of a card the bubble would overflow, so flip it. */
+.grid > .card:last-child .tip, .card > .grid > div:last-child .tip { left: auto; right: 0; }
+
+.notice {
+    background: var(--blue-pale); border: 1px solid var(--blue-line);
+    border-radius: 6px; padding: 12px 16px; margin-bottom: 16px;
+}
+.notice.warn { background: #fff8e6; border-color: #f0d999; }
+.notice.danger { background: #fdecec; border-color: #f3b6b6; }
+.notice.inline-notice { margin: 8px 0; font-size: 13px; }
+.notice ul { margin: 6px 0 0 18px; padding: 0; }
+
+.foot {
+    max-width: 1400px; margin: 0 auto; padding: 12px 20px 32px;
+    color: var(--muted); font-size: 12px;
+}
+
+/* ── Narrative summary ───────────────────────────────────────────────────── */
+.narrative { border-left: 3px solid var(--blue); }
+.prose { margin: 4px 0 12px; padding-left: 20px; }
+.prose li { margin: 2px 0; }
+.prose-note { color: var(--muted); margin: 0 0 12px; }
+.prose-dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; margin: 4px 0 12px; }
+.prose-dl dt { font-weight: bold; }
+.prose-dl dd { margin: 0; }
+.hidden-md { position: absolute; left: -9999px; width: 1px; height: 1px; }
+
+/* ── KPIs ────────────────────────────────────────────────────────────────── */
+.kpis {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px; margin-bottom: 16px;
+}
+.kpi { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
+.kpi-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi-value { font-size: 24px; font-weight: bold; line-height: 1.2; }
+.kpi-note { font-size: 12px; color: var(--muted); }
+
+/* ── Ranked lists ────────────────────────────────────────────────────────── */
+.ranklist { list-style: none; margin: 4px 0; padding: 0; counter-reset: rank; }
+/* Label and count share the first line; the meta line sits underneath at full width.
+   The label must be allowed to shrink (min-width: 0) but never below a readable size,
+   or a long meta line squeezes it into a vertical column of single letters. */
+.ranklist li {
+    position: relative; display: flex; flex-wrap: wrap; align-items: baseline;
+    column-gap: 8px; row-gap: 1px;
+    padding: 5px 8px; border-radius: 3px; overflow: hidden;
+}
+/* display:flex above would otherwise win over the [hidden] default, so the
+   collapsed rows of a long list have to be hidden explicitly. */
+.ranklist li[hidden] { display: none; }
+.ranklist .bar {
+    position: absolute; inset: 0 auto 0 0; background: var(--blue-pale); z-index: 0;
+}
+.ranklist .label, .ranklist .count, .ranklist .meta { position: relative; z-index: 1; }
+.ranklist .label {
+    flex: 1 1 auto; min-width: 0; overflow-wrap: break-word;
+}
+.ranklist a.label { text-decoration: none; }
+.ranklist a.label:hover { text-decoration: underline; }
+.ranklist .count { flex: 0 0 auto; margin-left: auto; font-weight: bold; }
+.ranklist .meta {
+    flex: 1 0 100%;              /* own line, full width */
+    color: var(--muted); font-size: 12px; line-height: 1.35;
+}
+.showall {
+    background: none; border: none; color: var(--blue); cursor: pointer;
+    padding: 4px 0; font-size: 13px;
+}
+
+/* Compact variant: tighter single-line rows, proportional bar kept. */
+.ranklist.compact li { padding: 3px 6px; flex-wrap: nowrap; }
+/* Keep everything on one line, and put the meta before the count rather than after it. */
+.ranklist.compact .label { order: 1; }
+.ranklist.compact .meta  { order: 2; flex: 0 1 auto; margin-left: auto; white-space: nowrap; }
+.ranklist.compact .count { order: 3; margin-left: 10px; }
+
+/* ── Funnel ──────────────────────────────────────────────────────────────── */
+.funnel { list-style: none; margin: 0; padding: 0; }
+.funnel li {
+    position: relative; display: flex; align-items: baseline; gap: 10px;
+    padding: 6px 8px; margin-bottom: 2px; overflow: hidden; border-radius: 3px;
+}
+.funnel .bar { position: absolute; inset: 0 auto 0 0; background: var(--blue-pale); }
+.funnel .label { position: relative; flex: 1; }
+.funnel .count { position: relative; font-weight: bold; }
+.funnel .meta { position: relative; color: var(--muted); font-size: 12px; min-width: 110px; text-align: right; }
+
+/* ── Sentiment ───────────────────────────────────────────────────────────── */
+.split { display: flex; height: 26px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.split span { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; }
+.split .up { background: var(--up); }
+.split .down { background: var(--down); }
+
+.comments { list-style: none; margin: 6px 0; padding: 0; }
+.comments li { display: flex; gap: 8px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--line); }
+.comments .text { flex: 1; }
+.comments .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.more { display: inline-block; margin-top: 8px; text-decoration: none; }
+
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; padding: 0; }
+.chips li {
+    background: var(--blue-pale); border: 1px solid var(--blue-line);
+    border-radius: 999px; padding: 2px 10px; font-size: 12px;
+}
+
+/* ── Feedback cards ──────────────────────────────────────────────────────── */
+/* The whole list sits behind one toggle; the cards inside are fully expanded. */
+.individual-list > summary {
+    cursor: pointer; color: var(--blue); font-weight: bold;
+    padding: 2px 0; list-style-position: inside;
+}
+.individual-list > summary:hover { text-decoration: underline; }
+.individual-list[open] > summary { margin-bottom: 14px; }
+.individual-list > .card { background: #fcfcff; }
+
+.feedback-card.is-down { border-left: 3px solid var(--down); }
+.feedback-card.is-up { border-left: 3px solid var(--up); }
+.fb-head { display: flex; gap: 10px; align-items: baseline; }
+.fb-head .rating { font-size: 18px; }
+blockquote {
+    margin: 8px 0; padding: 8px 12px; background: var(--blue-pale);
+    border-radius: 4px; overflow-wrap: anywhere;
+}
+/* ── Reports ─────────────────────────────────────────────────────────────── */
+/* The filter card reads as a toolbar, the reports below as distinct items, so the
+   controls are never mistaken for the first entry in the list. */
+.toolbar-card { background: #fafaff; border-color: var(--blue-line); }
+
+.report-list { display: grid; gap: 12px; }
+.report-list .card {
+    margin-bottom: 0;
+    border-left: 3px solid var(--blue);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.report-card h2 { font-size: 16px; }
+.report-card.is-handled {
+    opacity: 0.6;
+    border-left-color: var(--muted);
+    background: #fbfbfb;
+}
+.report-card.is-handled h2 { text-decoration: line-through; }
+
+/* ── Collapsed detail sections ───────────────────────────────────────────── */
+details.ratings-detail { margin: 10px 0 4px; }
+details.ratings-detail > summary {
+    cursor: pointer; color: var(--blue); font-size: 13px;
+    padding: 4px 0; list-style-position: inside;
+}
+details.ratings-detail > summary:hover { text-decoration: underline; }
+details.ratings-detail[open] > summary { margin-bottom: 8px; }
+
+.zero-results li { background: #fdecec; border-color: #f3b6b6; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+tr.is-excluded { opacity: 0.45; }
+th.sortable { padding: 0; }
+th.sortable a {
+    display: block; padding: 6px 8px; text-decoration: none; color: var(--muted);
+    white-space: nowrap;
+}
+th.sortable a:hover { background: var(--blue-pale); color: var(--blue); }
+th.sortable.active a { color: var(--blue); }
+.flags span {
+    display: inline-block; width: 18px; height: 18px; line-height: 18px; text-align: center;
+    background: var(--blue-pale); border-radius: 3px; font-size: 11px; font-weight: bold;
+}
+.payload { color: var(--muted); overflow-wrap: anywhere; }
+
+/* ── Forms ───────────────────────────────────────────────────────────────── */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+.filters input[type="search"], .filters select {
+    padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; font: inherit; font-size: 13px;
+}
+.filters input[type="search"] { min-width: 220px; }
+.check { font-size: 13px; color: var(--muted); }
+button, .button {
+    background: var(--blue); color: #fff; border: none; border-radius: 4px;
+    padding: 7px 14px; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none;
+    display: inline-block;
+}
+button:hover, .button:hover { background: var(--blue-dark); }
+.linkish {
+    background: none; border: none; color: var(--blue); cursor: pointer;
+    padding: 0 2px; font: inherit; font-size: 13px; text-decoration: none;
+}
+.linkish:hover { background: none; text-decoration: underline; }
+.clear { color: var(--muted); font-size: 13px; text-decoration: none; }
+form.inline { display: inline; }
+
+.linkbox { display: flex; gap: 6px; margin: 8px 0; }
+.linkbox input {
+    flex: 1; padding: 6px 8px; border: 1px solid var(--line);
+    border-radius: 4px; font-family: ui-monospace, monospace; font-size: 12px;
+}
+
+.pager { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+.pager a {
+    padding: 3px 9px; border: 1px solid var(--line); border-radius: 3px;
+    text-decoration: none; font-size: 13px;
+}
+.pager a.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+/* ── Session detail ──────────────────────────────────────────────────────── */
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li {
+    display: grid; grid-template-columns: 70px 50px 190px 1fr;
+    gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--line); align-items: baseline;
+}
+.timeline .ts { color: var(--muted); font-family: ui-monospace, monospace; font-size: 12px; }
+.timeline .delta { color: var(--muted); font-size: 12px; }
+.timeline .summary { overflow-wrap: anywhere; }
+.timeline details { grid-column: 3 / -1; }
+.timeline pre {
+    background: var(--blue-pale); padding: 8px; border-radius: 4px;
+    overflow-x: auto; font-size: 12px; margin: 4px 0;
+}
+@media (max-width: 700px) { .timeline li { grid-template-columns: 1fr; } }
+
+.badge {
+    background: var(--blue-pale); border: 1px solid var(--blue-line); border-radius: 3px;
+    padding: 1px 6px; font-family: ui-monospace, monospace; font-size: 11px;
+}
+
+/* ── Login ───────────────────────────────────────────────────────────────── */
+.login-page {
+    display: flex; align-items: center; justify-content: center; min-height: 100vh;
+}
+.login {
+    background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    padding: 28px 32px; width: 320px;
+}
+.login h1 { font-size: 20px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+.login h1 span { color: var(--blue); }
+.login .sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+.login label { display: block; font-size: 13px; margin-bottom: 4px; }
+.login input {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--line);
+    border-radius: 4px; font: inherit; margin-bottom: 14px;
+}
+.login button { width: 100%; padding: 9px; }
+.login .error { color: var(--down); font-size: 13px; margin: -6px 0 12px; }
