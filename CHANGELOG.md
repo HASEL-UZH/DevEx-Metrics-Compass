@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-10 — The phone gate is a signpost instead of a dead end
+
+- Below 768px the Compass hid itself behind `#mobile-gate` and offered exactly one way out, the paper link. Everything else — the metric library, About, contact — was unreachable, so a phone visitor's only real options were the paper or the back button. The library pages under `/library/` carry the same metric content (definitions, sources, frameworks, companies) and already read fine on a phone, which makes them the obvious mobile fallback.
+- The gate keeps its "best viewed on a larger screen" message but no longer stops there: it now leads into two full-width tap targets, **Browse the metric library** (primary) and **Read the paper** (secondary).
+- `compass/js/mobile-gate.js` (new): a phone visitor arriving on a deep link (`specificFramework`, `specificCompany`, `specificMetric`) is offered the landing page matching that link rather than the generic index — a SPACE link leads to the SPACE collection. Tapping a landing page's own "open in the interactive Compass" CTA is the most common way to hit the gate from a phone, so the script checks the referrer and falls back to the library index rather than offering the page the visitor just left.
+- `dataset/generate_seo_pages.py` now also emits `compass/library/library-map.js`, the param → page-slug map the gate looks up. It is generated alongside the pages, so a page that stops existing stops being offered; rerun the generator whenever the pages are regenerated.
+
 ## 2026-09-09 — `/stats`: a password-protected dashboard for usage logs and feedback
 
 - `compass/stats/` (new): the telemetry, feedback and reported-metric logs were effectively write-only — the `api/logs/` directory is denied by `.htaccess`, so reading them meant pulling `.log` files down by FTP and eyeballing JSON lines. The dashboard reads those same files in place and never writes to them.
