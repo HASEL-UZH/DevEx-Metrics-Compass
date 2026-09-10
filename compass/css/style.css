@@ -3593,14 +3593,57 @@ a {
     color: #555;
 }
 
-/* set the paper line apart from the message above it */
-.mobile-gate-paper {
-    margin-top: 22px;
+/* The two ways out of the gate: the metric library (primary) and the paper.
+   Full-width tap targets rather than inline links -- the gate exists precisely
+   because this visitor is on a phone. */
+.mobile-gate-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 26rem;
+    margin-top: 6px;
 }
 
-.mobile-gate-paper-link {
-    color: #1B1AFF;
+.mobile-gate-card {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    background: #fff;
+    text-align: left;
+    text-decoration: none;
+}
+
+.mobile-gate-card--primary {
+    border-color: #1B1AFF;
+    background: #f0f1ff;
+}
+
+.mobile-gate-card-label {
+    display: block;
+    font-size: 15px;
     font-weight: 600;
+    color: #1B1AFF;
+}
+
+/* the arrow sits with the label so it never wraps onto its own line */
+.mobile-gate-card-label::after {
+    content: " \2192";
+}
+
+.mobile-gate-card-text {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #666;
+}
+
+/* Only revealed when the primary card was retargeted at one specific page. */
+.mobile-gate-secondary {
+    font-size: 13px;
+    color: #1B1AFF;
     text-decoration: underline;
 }
 

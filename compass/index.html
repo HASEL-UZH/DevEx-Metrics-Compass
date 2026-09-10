@@ -40,24 +40,32 @@
 
 <body>
 
-    <!-- Small-screen gate: shown below 768px instead of the (desktop-oriented) app -->
+    <!-- Small-screen gate: shown below 768px instead of the (desktop-oriented) app.
+         It is a signpost, not a wall: the static /library/ pages carry the same
+         metric content and read fine on a phone, so send visitors there. -->
     <div id="mobile-gate" class="mobile-gate">
         <div class="mobile-gate-main">
             <span data-compass-size="56"></span>
             <h1 class="mobile-gate-title">The DevEx Metrics Compass is best viewed on a larger screen</h1>
             <p class="mobile-gate-text">
                 It relies on interactive charts that need the room of a tablet, laptop, or desktop.
-                Please open it on a wider screen to explore the metrics.
+                In the meantime, you can:
             </p>
-            <p class="mobile-gate-text mobile-gate-paper">
-                In the meantime, you can
-                <a class="mobile-gate-paper-link" href="https://devexcompass.com/paper" target="_blank" rel="noopener">read the paper</a>
-                on your phone.
-            </p>
+            <div class="mobile-gate-actions">
+                <a class="mobile-gate-card mobile-gate-card--primary" id="mobile-gate-library" href="library/index.html">
+                    <span class="mobile-gate-card-label" id="mobile-gate-library-label">Browse the metric library</span>
+                    <span class="mobile-gate-card-text" id="mobile-gate-library-text">The most-referenced metrics, the frameworks (SPACE, DORA, DX Core 4), and the metrics used at companies like Google, Microsoft, and Spotify.</span>
+                </a>
+                <a class="mobile-gate-card" href="https://devexcompass.com/paper" target="_blank" rel="noopener">
+                    <span class="mobile-gate-card-label">Read the paper</span>
+                    <span class="mobile-gate-card-text">The research behind the Compass, published in ACM Queue.</span>
+                </a>
+            </div>
+            <a class="mobile-gate-secondary" id="mobile-gate-all-collections" href="library/index.html" hidden>Browse all metric collections</a>
         </div>
         <div class="mobile-gate-footer">
-            <div>Created at <a href="https://hasel.dev" target="_blank" rel="noopener">HASEL</a>, <a href="https://uzh.ch" target="_blank" rel="noopener">University of Zurich</a></div>
-            <div><a href="mailto:ameyer@ifi.uzh.ch">Contact us</a></div>
+            Created at <a href="https://hasel.dev" target="_blank" rel="noopener">HASEL</a>, <a href="https://uzh.ch" target="_blank" rel="noopener">University of Zurich</a>
+            &bull; <a href="mailto:ameyer@ifi.uzh.ch">Contact us</a>
         </div>
     </div>
 
@@ -781,6 +789,13 @@
             <div class="changelog-entries">
 
                 <div class="changelog-entry">
+                    <div class="changelog-date">September 2026</div>
+                    <ul>
+                        <li>Users on mobile can now browse the library (accessing the Compass is reserved for larger screens)</li>
+                    </ul>
+                </div>
+
+                <div class="changelog-entry">
                     <div class="changelog-date">August 2026</div>
                     <ul>
                         <li>Our paper on the DevEx Metrics Compass is now published in ACM Queue: <a href="https://devexcompass.com/paper" target="_blank" rel="noopener">read the paper</a></li>
@@ -1071,6 +1086,10 @@
     <script src="js/telemetry-logger.js"></script>
     <script src="js/feedback.js"></script>
     <script src="js/report-metric.js"></script>
+    <!-- Small-screen gate: the generated page map plus the script that points
+         phone visitors at the landing page matching their deep link. -->
+    <script src="library/library-map.js"></script>
+    <script src="js/mobile-gate.js"></script>
 
 </body>
 
