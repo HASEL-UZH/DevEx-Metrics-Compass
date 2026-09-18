@@ -904,5 +904,11 @@
         "ref_name": "Microsoft EngThrive Framework",
         "ref_link": "https://arxiv.org/pdf/2605.04259",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "523",
+        "ref_name": "Brandebusemeyer (2026)",
+        "ref_link": "https://dl.acm.org/doi/10.1145/3847122",
+        "company_size": "N/A"
     }
 ]
