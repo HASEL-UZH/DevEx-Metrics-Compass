@@ -910,5 +910,29 @@
         "ref_name": "Brandebusemeyer (2026)",
         "ref_link": "https://dl.acm.org/doi/10.1145/3847122",
         "company_size": "N/A"
+    },
+    {
+        "ref_number": "524a",
+        "ref_name": "SonarSource",
+        "ref_link": "https://www.sonarsource.com/resources/library/measuring-and-identifying-code-level-technical-debt-a-practical-guide/",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "524b",
+        "ref_name": "DX (2025)",
+        "ref_link": "https://getdx.com/blog/technical-debt-ratio/",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "525a",
+        "ref_name": "Storey (2026)",
+        "ref_link": "https://arxiv.org/abs/2603.22106",
+        "company_size": "N/A"
+    },
+    {
+        "ref_number": "525b",
+        "ref_name": "Alakmeh (2026)",
+        "ref_link": "https://dl.acm.org/doi/10.1145/3794763.3794804",
+        "company_size": "N/A"
     }
 ]
