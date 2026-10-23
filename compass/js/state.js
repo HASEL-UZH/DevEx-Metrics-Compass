@@ -14,6 +14,19 @@ const DIMENSION_TOOLTIPS = {
     'AI Impact':      'AI Impact: metrics that show whether AI tools improve delivery speed, code quality, and developer experience.',
     'AI Utilization': 'AI Utilization: metrics that reveal how many and what types of developers are adopting AI tooling, and how much work is being touched by AI.',
     'AI Cost':        'AI Cost: metrics related to AI spend, license usage, and identifying power users to optimize AI investment.',
+    // Data collection type
+    'qualitative': 'Self-reported: surveys, pop-ups, interviews.',
+    'quantitative': 'Automated: logs, telemetry.',
+    'both':        'Self-reported and automated: surveys, interviews, logs, and telemetry.',
+    // Research and industry focus
+    'Applied in industry':                  'Metrics reported or observed in use at companies through industry sources such as engineering blogs, talks, or reports.',
+    'Proposed by research':                 'Metrics introduced or studied in research literature, without identified company usage in this dataset.',
+    'Applied by industry and research':     'Metrics supported by both research literature and company sources in this dataset.',
+    // Company size
+    'Enterprise': 'Enterprise: 5000+ developers.',
+    'Large':      'Large company: 501–5000 developers.',
+    'Mid-size':   'Mid-size company: 51–500 developers.',
+    'Small':      'Small company: 1–50 developers — no data available yet.',
 };
 
 // Display labels for ease_of_collection values

@@ -398,6 +398,7 @@ function buildTooltipContent(metricData, excludeId = null) {
         typeTagClass = 'both-types';
         typeTagText = '📋⚙️ Self-reported & Automated';
     }
+    const typeTooltip = DIMENSION_TOOLTIPS[metricType] || '';
 
     let focusTagClass = '';
     let focusTagText = '';
@@ -411,6 +412,7 @@ function buildTooltipContent(metricData, excludeId = null) {
         focusTagClass = 'research-and-practitioners';
         focusTagText = '🔬🏭 Applied by industry and research';
     }
+    const focusTooltip = DIMENSION_TOOLTIPS[focusTagText.replace(/^[^A-Za-z]+/, '')] || '';
 
     let AImetricTagText = '';
     if (metricAISpecificCategory === "Utilization") {
@@ -420,6 +422,12 @@ function buildTooltipContent(metricData, excludeId = null) {
     } else if (metricAISpecificCategory === "Cost") {
         AImetricTagText = "💰 AI Cost";
     }
+    const aiTooltipKey = {
+        Impact: 'AI Impact',
+        Utilization: 'AI Utilization',
+        Cost: 'AI Cost'
+    }[metricAISpecificCategory];
+    const aiTooltip = aiTooltipKey ? DIMENSION_TOOLTIPS[aiTooltipKey] : '';
 
     let companyUsedByHtml = 'no mentions';
     if (Array.isArray(metricData.company) && metricData.company.length > 0) {
@@ -494,12 +502,12 @@ function buildTooltipContent(metricData, excludeId = null) {
         <hr>
         <div class="metric-detail">
             <strong>Tags:</strong>
-                <span class="metric-type-tag ${typeTagClass}">${typeTagText}</span>
-                <span class="metric-focus-tag ${focusTagClass}">${focusTagText}</span>
-                ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag">${AImetricTagText}</span>` : ''}
-                ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}">${{ Enterprise: '🏢', Large: '🏬', 'Mid-size': '🏠', Small: '🏡' }[s] || ''} ${s} Company</span>`).join('')}
-                ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}">${{ 'Developer Experience': '🧑‍💻 Developer Experience', 'Product Excellence': '⭐ Product Excellence', 'Organizational Effectiveness': '📈 Organizational Effectiveness' }[metricOutcomeGoals] || metricOutcomeGoals}</span>` : ''}
-                ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}">${MATURITY_FULL_LABEL[metricEaseOfCollection] || metricEaseOfCollection}</span>` : ''}
+                <span class="metric-type-tag ${typeTagClass}" title="${typeTooltip}">${typeTagText}</span>
+                <span class="metric-focus-tag ${focusTagClass}" title="${focusTooltip}">${focusTagText}</span>
+                ${metricAISpecificCategory ? `<span class="metric-ai-specific-category-tag" title="${aiTooltip}">${AImetricTagText}</span>` : ''}
+                ${companySizes.map(s => `<span class="metric-company-size-tag size-${s.toLowerCase().replace('-', '')}" title="${DIMENSION_TOOLTIPS[s] || ''}">${{ Enterprise: '🏢', Large: '🏬', 'Mid-size': '🏠', Small: '🏡' }[s] || ''} ${s} Company</span>`).join('')}
+                ${metricOutcomeGoals ? `<span class="metric-outcome-goals-tag outcome-${metricOutcomeGoals.toLowerCase().replace(/\s+/g, '-')}" title="${DIMENSION_TOOLTIPS[metricOutcomeGoals] || ''}">${{ 'Developer Experience': '🧑‍💻 Developer Experience', 'Product Excellence': '⭐ Product Excellence', 'Organizational Effectiveness': '📈 Organizational Effectiveness' }[metricOutcomeGoals] || metricOutcomeGoals}</span>` : ''}
+                ${metricEaseOfCollection ? `<span class="metric-ease-tag ease-${metricEaseOfCollection.toLowerCase()}" title="${DIMENSION_TOOLTIPS[metricEaseOfCollection] || ''}">${MATURITY_FULL_LABEL[metricEaseOfCollection] || metricEaseOfCollection}</span>` : ''}
         </div>`;
 
     if (metricAlsoKnownAs && metricAlsoKnownAs !== '-') {
